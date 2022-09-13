@@ -3,6 +3,7 @@ languageCode: en-us
 theme: hugo-theme-stack
 paginate: 5
 title: Example Site
+publishDir: "docs"
 
 languages:
     en:
