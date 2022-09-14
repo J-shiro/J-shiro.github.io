@@ -14,11 +14,11 @@ languages:
         languageName: 中文
         title: J-shiro's 博客
         weight: 2
-    ar:
-        languageName: عربي
-        languagedirection: rtl
-        title: موقع تجريبي
-        weight: 3
+    # ar:
+    #     languageName: عربي
+    #     languagedirection: rtl
+    #     title: موقع تجريبي
+    #     weight: 3
 
 # Change it to your Disqus shortname before using
 disqusShortname: hugo-theme-stack
