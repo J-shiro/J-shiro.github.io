@@ -16,7 +16,11 @@ menu:
             icon: user
 ---
 
-This is my first time to create a blog. Maybe there're something not so good, but I will try my best to make it better.
+This is my first time to create a blog.
+Maybe there're something not so good, 
+but I will try my best to make it better.
+The English page will be different from the Chinese page.
+
 
 
 
