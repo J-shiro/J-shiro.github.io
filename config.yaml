@@ -8,11 +8,11 @@ publishDir: "docs"
 languages:
     en:
         languageName: English
-        title: Example Site
+        title: J-shiro's Blog
         weight: 1
     zh-cn:
         languageName: 中文
-        title: 演示站点
+        title: J-shiro's 博客
         weight: 2
     ar:
         languageName: عربي
@@ -55,7 +55,8 @@ params:
 
     sidebar:
         emoji: 🍥
-        subtitle: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        subtitle: Welcome! I will record some of my own hobbies there.
+        #Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         avatar:
             enabled: true
             local: true
