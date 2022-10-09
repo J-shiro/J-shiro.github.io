@@ -114,5 +114,17 @@
                 hreflang="zh-cn"
                 href="https://J-shiro.github.io/zh-cn/%E9%93%BE%E6%8E%A5/"
                 />
+  </url><url>
+    <loc>https://J-shiro.github.io/zh-cn/search/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://J-shiro.github.io/search/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://J-shiro.github.io/zh-cn/search/"
+                />
   </url>
 </urlset>

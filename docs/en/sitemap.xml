@@ -95,6 +95,16 @@
                 />
   </url><url>
     <loc>https://J-shiro.github.io/search/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://J-shiro.github.io/zh-cn/search/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://J-shiro.github.io/search/"
+                />
   </url><url>
     <loc>https://J-shiro.github.io/tags/</loc>
     <xhtml:link
