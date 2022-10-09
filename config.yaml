@@ -72,7 +72,7 @@ params:
 
     comments:
         enabled: true
-        provider: disqus
+        provider: waline
 
         disqusjs:
             shortname:
@@ -101,7 +101,7 @@ params:
 
         # Waline client configuration see: https://waline.js.org/en/reference/component.html
         waline:
-            serverURL:
+            serverURL: https://blog-waline-ox87ky1di-j-shiro.vercel.app/
             lang:
             pageview:
             emoji:
