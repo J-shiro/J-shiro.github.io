@@ -43,7 +43,7 @@ params:
         - post
     featuredImageField: image
     rssFullContent: true
-    favicon:
+    favicon: https://j-shiro.github.io/img/somebody.png
 
     footer:
         since: 2020
