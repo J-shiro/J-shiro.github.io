@@ -55,7 +55,7 @@ params:
 
     sidebar:
         emoji: 🍥
-        subtitle: Welcome! I will record some of my own hobbies there.
+        subtitle: Welcome! I will record some of my own hobbies there.//欢迎来到我的博客！
         #Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         avatar:
             enabled: true
