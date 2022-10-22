@@ -5,6 +5,7 @@
             - Widget different from 'TOC' is enabled
             - TOC is enabled and not empty
     */}}
+    
     {{- $HasWidgetNotTOC := false -}}
     {{- $TOCWidgetEnabled := false -}}
     {{- range .Site.Params.widgets.page -}}
@@ -44,3 +45,4 @@
 {{ define "right-sidebar" }}
     {{ if .Scratch.Get "hasWidget" }}{{ partial "sidebar/right.html" (dict "Context" . "Scope" "page") }}{{ end}}
 {{ end }}
+

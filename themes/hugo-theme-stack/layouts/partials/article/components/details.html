@@ -40,6 +40,10 @@
                 <time class="article-time--reading">
                     {{ T "article.readingTime" .ReadingTime }}
                 </time>
+                {{ partial "helper/icon" "copyright" }}
+                <time class="article-words">
+                    {{ .WordCount }} 字
+                </time>
             </div>
         {{ end }}
     </footer>
