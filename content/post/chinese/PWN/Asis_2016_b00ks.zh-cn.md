@@ -40,7 +40,7 @@ sub_B6D函数需要输入作者名称，将读入名字author_name，其中`32LL
 
 ![](/img/b00ks/image-20221025152439174.png)
 
-sub_B6D函数最后效果为将name读入到0新02040位置。
+sub_B6D函数最后效果为将name读入到0x02040位置。
 
 ![](/img/b00ks/image-20221025154415885.png)
 
