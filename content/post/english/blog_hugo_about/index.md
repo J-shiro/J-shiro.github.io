@@ -24,12 +24,12 @@ git commit -m "xxxx"
 git push -u origin master
 ```
 
-
+some more commands
 
 ```shell
-git remote -v //查看远程库
-git branch	//查看分支
-git checkout main	//切换分支
+git remote -v #view the remote library
+git branch	#view the branch
+git checkout main	#change the default branch
 ```
 
 
