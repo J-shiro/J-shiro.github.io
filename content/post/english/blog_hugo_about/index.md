@@ -24,12 +24,26 @@ git commit -m "xxxx"
 git push -u origin master
 ```
 
-some more commands
+some more commands.
 
 ```shell
 git remote -v #view the remote library
 git branch	#view the branch
 git checkout main	#change the default branch
+```
+
+standardization:
+
+```shell
+git checkout -b project_name/my_name/add_function
+fork:
+git add xxx
+git commit -m "[XXX] add xxx
+add xxx
+issue:#xxxx
+"#the supplementation of commit information
+#git commit --amend 
+git push -f
 ```
 
 
