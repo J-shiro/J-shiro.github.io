@@ -12,7 +12,7 @@ categories:
     - blog
 ---
 
-# git
+## git
 
 Use the following statement to upload the local file to GitHub.
 
@@ -32,7 +32,7 @@ git branch	#view the branch
 git checkout main	#change the default branch
 ```
 
-standardization:
+**standardization:**
 
 ```shell
 git checkout -b project_name/my_name/add_function
@@ -46,9 +46,18 @@ issue:#xxxx
 git push -f
 ```
 
+## Problems encountered 
 
+**error1: Updates were rejected because the remote contains work that you do not have locally. This is usually caused by another repository pushing to the same ref. You may want to  first integrate the remote changes (e.g., 'git pull ...') before pushing again.**
 
-# add picture
+**solution:**
+
+```shell
+git pull origin master --allow-unrelated-histories
+# I created a README.md but the local didn't have it.
+```
+
+## add picture
 
 Add images to the markdown: the images need to be placed in path: `/static/img`. Then, use the following statement in the markdown.(Typora)
 

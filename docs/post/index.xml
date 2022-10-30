@@ -38,7 +38,7 @@
         <pubDate>Mon, 24 Oct 2022 00:00:00 +0000</pubDate>
         
         <guid>https://J-shiro.github.io/p/hugo_blog/</guid>
-        <description>&lt;img src="https://J-shiro.github.io/p/hugo_blog/86.jpg" alt="Featured image of post HUGO_blog" /&gt;&lt;h1 id=&#34;git&#34;&gt;git&lt;/h1&gt;
+        <description>&lt;img src="https://J-shiro.github.io/p/hugo_blog/86.jpg" alt="Featured image of post HUGO_blog" /&gt;&lt;h2 id=&#34;git&#34;&gt;git&lt;/h2&gt;
 &lt;p&gt;Use the following statement to upload the local file to GitHub.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -69,7 +69,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git checkout main	&lt;span class=&#34;c1&#34;&gt;#change the default branch&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;standardization:&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;standardization:&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -94,7 +94,20 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git push -f
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h1 id=&#34;add-picture&#34;&gt;add picture&lt;/h1&gt;
+&lt;/div&gt;&lt;h2 id=&#34;problems-encountered&#34;&gt;Problems encountered&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;error1: Updates were rejected because the remote contains work that you do not have locally. This is usually caused by another repository pushing to the same ref. You may want to  first integrate the remote changes (e.g., &amp;lsquo;git pull &amp;hellip;&amp;rsquo;) before pushing again.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;solution:&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git pull origin master --allow-unrelated-histories
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# I created a README.md but the local didn&amp;#39;t have it.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;add-picture&#34;&gt;add picture&lt;/h2&gt;
 &lt;p&gt;Add images to the markdown: the images need to be placed in path: &lt;code&gt;/static/img&lt;/code&gt;. Then, use the following statement in the markdown.(Typora)&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
