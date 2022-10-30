@@ -32,7 +32,7 @@ categories:
 
 level 1-6: there're some simple programs that can directly read the flag：**cat, more, less, tail, head, sort**
 
-level 7-9: there're some tools  ----> over-privileged editors：**vim, emacs, nano**
+level 7-9: there're some tools  ----> over-privileged **editors**：**vim, emacs, nano**
 
 > emacs points to emacs-gtk by default, it will try to open if there's a graphical interface. But gtk can't setuid, so we can use the `-nw` to forces the graphics window not to pop up.
 
@@ -67,5 +67,19 @@ level 16: **split**---> split the file to the 'xaa' file default(1000row to spli
 
 ```shell
 split [-b byte][-C ][-][-l rowcount][the file to split][the prefix of the output_file][-a suffix_len]
+```
+
+**different archieve format**
+
+level 17: **gzip**---> If the binary has the SUID bit set, it does not drop the elevated privileges and may be abused to access the file system, escalate or maintain privileged access as a SUID backdoor.(-d decompress)
+
+```shell
+gzip -f file_name -t
+```
+
+level 18: **bzip2**--->
+
+```shell
+bzip2 -c file_name | bzip2 -d
 ```
 

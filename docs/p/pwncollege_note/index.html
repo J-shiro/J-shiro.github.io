@@ -335,7 +335,7 @@ suid: Suid special permissions only apply to executable files, the function is t
 
 
                 <time class="article-words">
-                    260 字
+                    315 字
                 </time>
             </div>
         
@@ -356,7 +356,7 @@ suid: Suid special permissions only apply to executable files, the function is t
 <p><strong>init:</strong> we can use the Desktop or the Workspace(then change to the terminal) to operate.</p>
 <p><strong>suid:</strong> Suid special permissions only apply to executable files, the function is that as long as the user has execute permissions on the file with Suid, then <strong>when the user executes the file, the file will be executed as the  file owner</strong>, once the file is executed, the identity switch disappears.</p>
 <p>level 1-6: there&rsquo;re some simple programs that can directly read the flag：<strong>cat, more, less, tail, head, sort</strong></p>
-<p>level 7-9: there&rsquo;re some tools  &mdash;-&gt; over-privileged editors：<strong>vim, emacs, nano</strong></p>
+<p>level 7-9: there&rsquo;re some tools  &mdash;-&gt; over-privileged <strong>editors</strong>：<strong>vim, emacs, nano</strong></p>
 <blockquote>
 <p>emacs points to emacs-gtk by default, it will try to open if there&rsquo;s a graphical interface. But gtk can&rsquo;t setuid, so we can use the <code>-nw</code> to forces the graphics window not to pop up.</p>
 </blockquote>
@@ -407,6 +407,25 @@ suid: Suid special permissions only apply to executable files, the function is t
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">split <span class="o">[</span>-b byte<span class="o">][</span>-C <span class="o">][</span>-<span class="o">][</span>-l rowcount<span class="o">][</span>the file to split<span class="o">][</span>the prefix of the output_file<span class="o">][</span>-a suffix_len<span class="o">]</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>different archieve format</strong></p>
+<p>level 17: <strong>gzip</strong>&mdash;&gt; If the binary has the SUID bit set, it does not drop the elevated privileges and may be abused to access the file system, escalate or maintain privileged access as a SUID backdoor.(-d decompress)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">gzip -f file_name -t
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level 18: <strong>bzip2</strong>&mdash;&gt;</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">bzip2 -c file_name <span class="p">|</span> bzip2 -d
 </span></span></code></pre></td></tr></table>
 </div>
 </div>
@@ -485,7 +504,7 @@ suid: Suid special permissions only apply to executable files, the function is t
         
             
         
-        共 0.51k 字 · 共 3篇文章
+        共 0.57k 字 · 共 3篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
             <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
