@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://J-shiro.github.io/zh-cn/</loc>
-    <lastmod>2022-10-25T00:00:00+00:00</lastmod>
+    <lastmod>2022-10-31T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -15,11 +15,8 @@
                 href="https://J-shiro.github.io/zh-cn/"
                 />
   </url><url>
-    <loc>https://J-shiro.github.io/zh-cn/p/asis_2016_b00ks/</loc>
-    <lastmod>2022-10-25T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://J-shiro.github.io/zh-cn/categories/</loc>
-    <lastmod>2022-10-25T00:00:00+00:00</lastmod>
+    <lastmod>2022-10-31T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -31,8 +28,11 @@
                 href="https://J-shiro.github.io/zh-cn/categories/"
                 />
   </url><url>
+    <loc>https://J-shiro.github.io/zh-cn/categories/cet6/</loc>
+    <lastmod>2022-10-31T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://J-shiro.github.io/zh-cn/post/</loc>
-    <lastmod>2022-10-25T00:00:00+00:00</lastmod>
+    <lastmod>2022-10-31T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -43,6 +43,15 @@
                 hreflang="zh-cn"
                 href="https://J-shiro.github.io/zh-cn/post/"
                 />
+  </url><url>
+    <loc>https://J-shiro.github.io/zh-cn/p/%E5%85%AD%E7%BA%A7%E7%BF%BB%E8%AF%91/</loc>
+    <lastmod>2022-10-31T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://J-shiro.github.io/zh-cn/p/%E5%85%AD%E7%BA%A7%E4%BD%9C%E6%96%87/</loc>
+    <lastmod>2022-10-31T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://J-shiro.github.io/zh-cn/p/asis_2016_b00ks/</loc>
+    <lastmod>2022-10-25T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://J-shiro.github.io/zh-cn/categories/pwn_exercise/</loc>
     <lastmod>2022-10-25T00:00:00+00:00</lastmod>

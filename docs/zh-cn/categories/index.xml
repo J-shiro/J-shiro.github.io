@@ -6,7 +6,15 @@
         <description>Recent content in Categories on J-shiro&#39;s 博客</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Tue, 25 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://J-shiro.github.io/zh-cn/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 31 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://J-shiro.github.io/zh-cn/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>CET6</title>
+        <link>https://J-shiro.github.io/zh-cn/categories/cet6/</link>
+        <pubDate>Mon, 31 Oct 2022 00:00:00 +0000</pubDate>
+        
+        <guid>https://J-shiro.github.io/zh-cn/categories/cet6/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>pwn_exercise</title>
         <link>https://J-shiro.github.io/zh-cn/categories/pwn_exercise/</link>
         <pubDate>Tue, 25 Oct 2022 00:00:00 +0000</pubDate>
