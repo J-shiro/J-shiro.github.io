@@ -335,7 +335,7 @@ suid: Suid special permissions only apply to executable files, the function is t
 
 
                 <time class="article-words">
-                    315 字
+                    353 字
                 </time>
             </div>
         
@@ -410,22 +410,45 @@ suid: Suid special permissions only apply to executable files, the function is t
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>different archieve format</strong></p>
-<p>level 17: <strong>gzip</strong>&mdash;&gt; If the binary has the SUID bit set, it does not drop the elevated privileges and may be abused to access the file system, escalate or maintain privileged access as a SUID backdoor.(-d decompress)</p>
+<p>If the binary has the SUID bit set, it does not drop the elevated privileges and may be abused to access the file system, escalate or maintain privileged access as a SUID backdoor.</p>
+<p>level 17: <strong>gzip</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">gzip -f file_name -t
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">gzip -f file_name -t		<span class="o">(</span>-d decompress<span class="o">)</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>level 18: <strong>bzip2</strong>&mdash;&gt;</p>
+</div><p>level 18: <strong>bzip2</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">bzip2 -c file_name <span class="p">|</span> bzip2 -d
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level 19: <strong>zip</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">zip flag.zip flag <span class="c1">#flag --&gt; flag.zip</span>
+</span></span><span class="line"><span class="cl">cat flag.zip <span class="c1">#you can see the flag</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level 20: <strong>tar</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">tar -cf flag.tar.gz flag  	<span class="c1">#(-c:create new backup file -f:specify the backup file)</span>
+</span></span><span class="line"><span class="cl">cat flag.tar.gz
 </span></span></code></pre></td></tr></table>
 </div>
 </div>
@@ -504,7 +527,7 @@ suid: Suid special permissions only apply to executable files, the function is t
         
             
         
-        共 0.57k 字 · 共 3篇文章
+        共 0.61k 字 · 共 3篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
             <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---

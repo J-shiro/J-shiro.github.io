@@ -71,15 +71,31 @@ split [-b byte][-C ][-][-l rowcount][the file to split][the prefix of the output
 
 **different archieve format**
 
-level 17: **gzip**---> If the binary has the SUID bit set, it does not drop the elevated privileges and may be abused to access the file system, escalate or maintain privileged access as a SUID backdoor.(-d decompress)
+If the binary has the SUID bit set, it does not drop the elevated privileges and may be abused to access the file system, escalate or maintain privileged access as a SUID backdoor.
+
+level 17: **gzip**
 
 ```shell
-gzip -f file_name -t
+gzip -f file_name -t		(-d decompress)
 ```
 
-level 18: **bzip2**--->
+level 18: **bzip2**
 
 ```shell
 bzip2 -c file_name | bzip2 -d
+```
+
+level 19: **zip**
+
+```shell
+zip flag.zip flag #flag --> flag.zip
+cat flag.zip #you can see the flag
+```
+
+level 20: **tar**
+
+```shell
+tar -cf flag.tar.gz flag  	#(-c:create new backup file -f:specify the backup file)
+cat flag.tar.gz
 ```
 
