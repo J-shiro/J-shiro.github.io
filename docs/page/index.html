@@ -5,7 +5,7 @@
 
 <link rel='canonical' href='https://J-shiro.github.io/page/'>
 
-<link rel="stylesheet" href="/scss/style.min.ac77dcf8b111b51da39a92990f431923f210f3876d85798a2125667f96dc33a4.css"><meta property='og:title' content='Pages'>
+<link rel="stylesheet" href="/scss/style.min.60f827246f83cc44ebee82f18c268140d2b47484c0e30b531cfec086e0fd2f2b.css"><meta property='og:title' content='Pages'>
 <meta property='og:description' content='Welcome! I will record some of my own hobbies there.//欢迎来到我的博客！'>
 <meta property='og:url' content='https://J-shiro.github.io/page/'>
 <meta property='og:site_name' content='J-shiro&#39;s Blog'>
@@ -495,7 +495,28 @@
         customFont.rel = "stylesheet";
 
         document.head.appendChild(customFont);
+
     }());
+</script>
+
+//加载进度条
+<script
+    src="https://cdn.jsdelivr.net/gh/zhixuan2333/gh-blog@v0.1.0/js/nprogress.min.js"
+    integrity="sha384-bHDlAEUFxsRI7JfULv3DTpL2IXbbgn4JHQJibgo5iiXSK6Iu8muwqHANhun74Cqg"
+    crossorigin="anonymous"
+></script>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/zhixuan2333/gh-blog@v0.1.0/css/nprogress.css"
+    integrity="sha384-KJyhr2syt5+4M9Pz5dipCvTrtvOmLk/olWVdfhAp858UCa64Ia5GFpTN7+G4BWpE"
+    crossorigin="anonymous"
+/>
+<script>
+    NProgress.start();
+    document.addEventListener("readystatechange", () => {
+        if (document.readyState === "interactive") NProgress.inc(0.8);
+        if (document.readyState === "complete") NProgress.done();
+    });
 </script>
 
     </body>
