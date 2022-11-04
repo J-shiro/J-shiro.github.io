@@ -79,6 +79,7 @@ level 17: **gzip**
 
 ```shell
 gzip -f file_name -t		(-d decompress)
+# -f:--force Forcibly compressed files		-t:--test Test whether the compressed file is correct.
 ```
 
 level 18: **bzip2**

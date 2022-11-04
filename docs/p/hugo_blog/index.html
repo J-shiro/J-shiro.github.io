@@ -3,24 +3,24 @@
     <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='git Use the following statement to upload the local file to GitHub.
 1 2 3 4 5 hugo server -D hugo -F --cleanDestinationDir git add . git commit -m &amp;#34;xxxx&amp;#34; git push -u origin master some more commands.
-1 2 3 git remote -v #view the remote library git branch	#view the branch git checkout main	#change the default branch standardization:
-1 2 3 4 5 6 7 8 9 git checkout -b project_name/my_name/add_function fork: git add xxx git commit -m &amp;#34;[XXX] add xxx add xxx issue:#xxxx &amp;#34;#the supplementation of commit information #git commit --amend git push -f Problems encountered error1: Updates were rejected because the remote contains work that you do not have locally.'><title>HUGO_blog</title>
+1 2 3 git remote -v #view the remote library git branch	#view the branch git checkout main	#change the default branch init：
+1 2 3 4 5 6 7 echo &amp;#34;# Algorithm-design-and-analysis&amp;#34; &amp;gt;&amp;gt; README.'><title>HUGO_blog</title>
 
 <link rel='canonical' href='https://J-shiro.github.io/p/hugo_blog/'>
 
 <link rel="stylesheet" href="/scss/style.min.60f827246f83cc44ebee82f18c268140d2b47484c0e30b531cfec086e0fd2f2b.css"><meta property='og:title' content='HUGO_blog'>
 <meta property='og:description' content='git Use the following statement to upload the local file to GitHub.
 1 2 3 4 5 hugo server -D hugo -F --cleanDestinationDir git add . git commit -m &amp;#34;xxxx&amp;#34; git push -u origin master some more commands.
-1 2 3 git remote -v #view the remote library git branch	#view the branch git checkout main	#change the default branch standardization:
-1 2 3 4 5 6 7 8 9 git checkout -b project_name/my_name/add_function fork: git add xxx git commit -m &amp;#34;[XXX] add xxx add xxx issue:#xxxx &amp;#34;#the supplementation of commit information #git commit --amend git push -f Problems encountered error1: Updates were rejected because the remote contains work that you do not have locally.'>
+1 2 3 git remote -v #view the remote library git branch	#view the branch git checkout main	#change the default branch init：
+1 2 3 4 5 6 7 echo &amp;#34;# Algorithm-design-and-analysis&amp;#34; &amp;gt;&amp;gt; README.'>
 <meta property='og:url' content='https://J-shiro.github.io/p/hugo_blog/'>
 <meta property='og:site_name' content='J-shiro&#39;s Blog'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2022-10-24T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-10-24T00:00:00&#43;00:00'/><meta property='og:image' content='https://J-shiro.github.io/p/hugo_blog/86.jpg' />
 <meta name="twitter:title" content="HUGO_blog">
 <meta name="twitter:description" content="git Use the following statement to upload the local file to GitHub.
 1 2 3 4 5 hugo server -D hugo -F --cleanDestinationDir git add . git commit -m &amp;#34;xxxx&amp;#34; git push -u origin master some more commands.
-1 2 3 git remote -v #view the remote library git branch	#view the branch git checkout main	#change the default branch standardization:
-1 2 3 4 5 6 7 8 9 git checkout -b project_name/my_name/add_function fork: git add xxx git commit -m &amp;#34;[XXX] add xxx add xxx issue:#xxxx &amp;#34;#the supplementation of commit information #git commit --amend git push -f Problems encountered error1: Updates were rejected because the remote contains work that you do not have locally."><meta name="twitter:card" content="summary_large_image">
+1 2 3 git remote -v #view the remote library git branch	#view the branch git checkout main	#change the default branch init：
+1 2 3 4 5 6 7 echo &amp;#34;# Algorithm-design-and-analysis&amp;#34; &amp;gt;&amp;gt; README."><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://J-shiro.github.io/p/hugo_blog/86.jpg' />
     <link rel="shortcut icon" href="https://j-shiro.github.io/img/somebody.png" />
 
@@ -339,7 +339,7 @@
 
 
                 <time class="article-time--reading">
-                    1 minute read
+                    2 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -350,7 +350,7 @@
 
 
                 <time class="article-words">
-                    188 字
+                    270 字
                 </time>
             </div>
         
@@ -395,6 +395,27 @@
 </span></span><span class="line"><span class="cl">git checkout main	<span class="c1">#change the default branch</span>
 </span></span></code></pre></td></tr></table>
 </div>
+</div><p><strong>init：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;# Algorithm-design-and-analysis&#34;</span> &gt;&gt; README.md
+</span></span><span class="line"><span class="cl">git init
+</span></span><span class="line"><span class="cl">git remote add origin sshcopy
+</span></span><span class="line"><span class="cl">git branch -M main
+</span></span><span class="line"><span class="cl">git add README.md
+</span></span><span class="line"><span class="cl">git commit -m <span class="s2">&#34;xx&#34;</span>
+</span></span><span class="line"><span class="cl">git push -u origin main
+</span></span></code></pre></td></tr></table>
+</div>
 </div><p><strong>standardization:</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -431,6 +452,17 @@
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">git pull origin master --allow-unrelated-histories
 </span></span><span class="line"><span class="cl"><span class="c1"># I created a README.md but the local didn&#39;t have it.</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>error2: warning: in the working copy of &lsquo;.vscode/tasks.json&rsquo;, LF will be replaced by CRLF the next time Git touches it</strong></p>
+<p>Line breaks in Windows are different from line breaks in Unix, and Git converts them automatically.</p>
+<p><strong>solution: Disable automatic conversion</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">git config --global core.autocrlf <span class="nb">false</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="add-picture">add picture</h2>
@@ -519,7 +551,7 @@
         
             
         
-        共 0.80k 字 · 共 3篇文章
+        共 0.90k 字 · 共 3篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
             <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---

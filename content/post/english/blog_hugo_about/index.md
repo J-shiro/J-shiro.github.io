@@ -32,6 +32,18 @@ git branch	#view the branch
 git checkout main	#change the default branch
 ```
 
+**init：**
+
+```shell
+echo "# Algorithm-design-and-analysis" >> README.md
+git init
+git remote add origin sshcopy
+git branch -M main
+git add README.md
+git commit -m "xx"
+git push -u origin main
+```
+
 **standardization:**
 
 ```shell
@@ -56,6 +68,18 @@ git push -f
 git pull origin master --allow-unrelated-histories
 # I created a README.md but the local didn't have it.
 ```
+
+**error2: warning: in the working copy of '.vscode/tasks.json', LF will be replaced by CRLF the next time Git touches it**
+
+Line breaks in Windows are different from line breaks in Unix, and Git converts them automatically.
+
+**solution: Disable automatic conversion**
+
+```shell
+git config --global core.autocrlf false
+```
+
+
 
 ## add picture
 
