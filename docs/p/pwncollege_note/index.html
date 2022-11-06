@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='ASU CSE 365 Program Misuse Program Interaction:Linux Command Line babysuid challenge init: we can use the Desktop or the Workspace(then change to the terminal) to operate. suid: Suid special permissions only apply to executable files, the function is that as long as the user has execute permissions on the file with Suid, then when the user executes the file, the file will be executed as the file owner, once the'><title>PwnCollege_Note</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='I will record some knowledge that I didn&#39;t know'><title>PwnCollege_Note</title>
 
 <link rel='canonical' href='https://J-shiro.github.io/p/pwncollege_note/'>
 
 <link rel="stylesheet" href="/scss/style.min.60f827246f83cc44ebee82f18c268140d2b47484c0e30b531cfec086e0fd2f2b.css"><meta property='og:title' content='PwnCollege_Note'>
-<meta property='og:description' content='ASU CSE 365 Program Misuse Program Interaction:Linux Command Line babysuid challenge init: we can use the Desktop or the Workspace(then change to the terminal) to operate. suid: Suid special permissions only apply to executable files, the function is that as long as the user has execute permissions on the file with Suid, then when the user executes the file, the file will be executed as the file owner, once the'>
+<meta property='og:description' content='I will record some knowledge that I didn&#39;t know'>
 <meta property='og:url' content='https://J-shiro.github.io/p/pwncollege_note/'>
 <meta property='og:site_name' content='J-shiro&#39;s Blog'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2022-10-29T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-10-29T00:00:00&#43;00:00'/>
 <meta name="twitter:title" content="PwnCollege_Note">
-<meta name="twitter:description" content="ASU CSE 365 Program Misuse Program Interaction:Linux Command Line babysuid challenge init: we can use the Desktop or the Workspace(then change to the terminal) to operate. suid: Suid special permissions only apply to executable files, the function is that as long as the user has execute permissions on the file with Suid, then when the user executes the file, the file will be executed as the file owner, once the">
+<meta name="twitter:description" content="I will record some knowledge that I didn&#39;t know">
     <link rel="shortcut icon" href="https://j-shiro.github.io/img/somebody.png" />
 
     </head>
@@ -291,6 +291,10 @@
         </h2>
     
         
+        <h3 class="article-subtitle">
+            I will record some knowledge that I didn&#39;t know
+        </h3>
+        
     </div>
 
     
@@ -332,7 +336,7 @@
 
 
                 <time class="article-words">
-                    1121 字
+                    1360 字
                 </time>
             </div>
         
@@ -349,6 +353,47 @@
     <h1 id="asu-cse-365">ASU CSE 365</h1>
 <h2 id="program-misuse">Program Misuse</h2>
 <h3 id="program-interactionlinux-command-line">Program Interaction:Linux Command Line</h3>
+<p><strong>Learning the command line</strong></p>
+<ol>
+<li><a class="link" href="https://overthewire.org/wargames/bandit/"  target="_blank" rel="noopener"
+    >Bandit</a></li>
+</ol>
+<p><img src="/img/pwn_college/lesson/filesystem.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><strong>env:</strong> Environment variables are a set of Key/Value pairs pased into every process when is is launched.</p>
+<p><strong>files:</strong> there&rsquo;re many different types of files.</p>
+<blockquote>
+<p><code>-</code> is a <strong>regular file</strong></p>
+<p><code>d</code> is a <strong>directory</strong></p>
+<p><code>l</code> is a <strong>symbolic link</strong>(point to another file or directory)</p>
+<p><code>p</code> is a <strong>named pipe</strong>(FIFO)</p>
+<p><code>c</code> is a <strong>character device file</strong>(backed by a hardware device that receives and produces data stream)</p>
+<p><code>b</code> is a <strong>block device file</strong>(backed by a hardware device that stores and loads blocks of data)</p>
+<p><code>s</code> is a <strong>unix socket</strong>(essentially a local network connection encapsulated in a file)</p>
+</blockquote>
+<p><strong>Symbolic/soft links</strong> created by <code>ln -s</code>(-s stands for symbolic), it likes a pointer</p>
+<p><strong>Hard links</strong>: it copys the original file. If the original file is deleted, the links won&rsquo;t be deleted, and all the hard links can update the same time.</p>
+<p><strong>pipes</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="nb">echo</span> hi		<span class="c1">#echo hi</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="nb">echo</span> hi <span class="p">|</span> bash	<span class="c1">#hi</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Input and output redirection</strong></p>
+<p><code>&lt;in_file、&gt;outfile、&gt;&gt;out_file、2&gt;error_file、2&gt;&gt;error_file</code></p>
+<h3 id="program-misuseprivilege-escalation">Program Misuse:Privilege Escalation</h3>
+<h3 id="program-misusemitigations">Program Misuse:Mitigations</h3>
 <h3 id="babysuid-challenge">babysuid challenge</h3>
 <p><strong>init:</strong> we can use the Desktop or the Workspace(then change to the terminal) to operate.</p>
 <p><strong>suid:</strong> Suid special permissions only apply to executable files, the function is that as long as the user has execute permissions on the file with Suid, then <strong>when the user executes the file, the file will be executed as the  file owner</strong>, once the file is executed, the identity switch disappears.</p>
@@ -720,7 +765,7 @@ Run COMMAND with an adjusted niceness, which affects process scheduling.With no 
         
             
         
-        共 1.46k 字 · 共 3篇文章
+        共 1.70k 字 · 共 3篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
             <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -885,6 +930,8 @@ Run COMMAND with an adjusted niceness, which affects process scheduling.With no 
     <li><a href="#program-misuse">Program Misuse</a>
       <ol>
         <li><a href="#program-interactionlinux-command-line">Program Interaction:Linux Command Line</a></li>
+        <li><a href="#program-misuseprivilege-escalation">Program Misuse:Privilege Escalation</a></li>
+        <li><a href="#program-misusemitigations">Program Misuse:Mitigations</a></li>
         <li><a href="#babysuid-challenge">babysuid challenge</a></li>
       </ol>
     </li>

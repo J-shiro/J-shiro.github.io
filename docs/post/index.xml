@@ -28,6 +28,47 @@
         <description>&lt;h1 id=&#34;asu-cse-365&#34;&gt;ASU CSE 365&lt;/h1&gt;
 &lt;h2 id=&#34;program-misuse&#34;&gt;Program Misuse&lt;/h2&gt;
 &lt;h3 id=&#34;program-interactionlinux-command-line&#34;&gt;Program Interaction:Linux Command Line&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Learning the command line&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://overthewire.org/wargames/bandit/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Bandit&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/filesystem.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;env:&lt;/strong&gt; Environment variables are a set of Key/Value pairs pased into every process when is is launched.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;files:&lt;/strong&gt; there&amp;rsquo;re many different types of files.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;-&lt;/code&gt; is a &lt;strong&gt;regular file&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;d&lt;/code&gt; is a &lt;strong&gt;directory&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;l&lt;/code&gt; is a &lt;strong&gt;symbolic link&lt;/strong&gt;(point to another file or directory)&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;p&lt;/code&gt; is a &lt;strong&gt;named pipe&lt;/strong&gt;(FIFO)&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;c&lt;/code&gt; is a &lt;strong&gt;character device file&lt;/strong&gt;(backed by a hardware device that receives and produces data stream)&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;b&lt;/code&gt; is a &lt;strong&gt;block device file&lt;/strong&gt;(backed by a hardware device that stores and loads blocks of data)&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;s&lt;/code&gt; is a &lt;strong&gt;unix socket&lt;/strong&gt;(essentially a local network connection encapsulated in a file)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Symbolic/soft links&lt;/strong&gt; created by &lt;code&gt;ln -s&lt;/code&gt;(-s stands for symbolic), it likes a pointer&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Hard links&lt;/strong&gt;: it copys the original file. If the original file is deleted, the links won&amp;rsquo;t be deleted, and all the hard links can update the same time.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;pipes&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; hi		&lt;span class=&#34;c1&#34;&gt;#echo hi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; hi &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; bash	&lt;span class=&#34;c1&#34;&gt;#hi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;Input and output redirection&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;&amp;lt;in_file、&amp;gt;outfile、&amp;gt;&amp;gt;out_file、2&amp;gt;error_file、2&amp;gt;&amp;gt;error_file&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;program-misuseprivilege-escalation&#34;&gt;Program Misuse:Privilege Escalation&lt;/h3&gt;
+&lt;h3 id=&#34;program-misusemitigations&#34;&gt;Program Misuse:Mitigations&lt;/h3&gt;
 &lt;h3 id=&#34;babysuid-challenge&#34;&gt;babysuid challenge&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;init:&lt;/strong&gt; we can use the Desktop or the Workspace(then change to the terminal) to operate.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;suid:&lt;/strong&gt; Suid special permissions only apply to executable files, the function is that as long as the user has execute permissions on the file with Suid, then &lt;strong&gt;when the user executes the file, the file will be executed as the  file owner&lt;/strong&gt;, once the file is executed, the identity switch disappears.&lt;/p&gt;

@@ -1,6 +1,6 @@
 ---
 title: "PwnCollege_Note"
-description: 
+description: I will record some knowledge that I didn't know
 date: 2022-10-29
 image: 
 math: 
@@ -20,7 +20,50 @@ categories:
 
 ### Program Interaction:Linux Command Line
 
+**Learning the command line**
 
+1. [Bandit](https://overthewire.org/wargames/bandit/)
+
+![](img/pwn_college/lesson/filesystem.png)
+
+**env:** Environment variables are a set of Key/Value pairs pased into every process when is is launched.
+
+**files:** there're many different types of files.
+
+> `-` is a **regular file**
+>
+> `d` is a **directory**
+>
+> `l` is a **symbolic link**(point to another file or directory)
+>
+> `p` is a **named pipe**(FIFO)
+>
+> `c` is a **character device file**(backed by a hardware device that receives and produces data stream)
+>
+> `b` is a **block device file**(backed by a hardware device that stores and loads blocks of data)
+>
+> `s` is a **unix socket**(essentially a local network connection encapsulated in a file)
+
+**Symbolic/soft links** created by `ln -s`(-s stands for symbolic), it likes a pointer
+
+**Hard links**: it copys the original file. If the original file is deleted, the links won't be deleted, and all the hard links can update the same time.
+
+**pipes**
+
+```shell
+echo echo hi		#echo hi
+echo echo hi | bash	#hi
+```
+
+**Input and output redirection**
+
+`<in_file、>outfile、>>out_file、2>error_file、2>>error_file`
+
+### Program Misuse:Privilege Escalation
+
+
+
+### Program Misuse:Mitigations
 
 ### babysuid challenge
 
