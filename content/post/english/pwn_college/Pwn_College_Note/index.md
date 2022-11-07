@@ -20,15 +20,15 @@ categories:
 
 ### Program Interaction:Linux Command Line
 
-**Learning the command line**
+①	**Learning the command line**
 
 1. [Bandit](https://overthewire.org/wargames/bandit/)
 
 ![](img/pwn_college/lesson/filesystem.png)
 
-**env:** Environment variables are a set of Key/Value pairs pased into every process when is is launched.
+②	**env:** Environment variables are a set of Key/Value pairs pased into every process when is is launched.
 
-**files:** there're many different types of files.
+③	**files:** there're many different types of files.
 
 > `-` is a **regular file**
 >
@@ -44,26 +44,63 @@ categories:
 >
 > `s` is a **unix socket**(essentially a local network connection encapsulated in a file)
 
-**Symbolic/soft links** created by `ln -s`(-s stands for symbolic), it likes a pointer
+④	**Symbolic/soft links** created by `ln -s`(-s stands for symbolic), it likes a pointer
 
-**Hard links**: it copys the original file. If the original file is deleted, the links won't be deleted, and all the hard links can update the same time.
+⑤	**Hard links**: it copys the original file. If the original file is deleted, the links won't be deleted, and all the hard links can update the same time.
 
-**pipes**
+⑥	**pipes**
 
 ```shell
 echo echo hi		#echo hi
 echo echo hi | bash	#hi
 ```
 
-**Input and output redirection**
+⑦	**Input and output redirection**
 
-`<in_file、>outfile、>>out_file、2>error_file、2>>error_file`
+`<in_file`、`>outfile`、`>>out_file`、`2>error_file`、`2>>error_file`
 
 ### Program Misuse:Privilege Escalation
 
+①	**permission model**
 
+Permissions: **r: 4	w: 2	x: 1**
+
+File: first `rwx`: **owner user**	second `rwx`: **owner group**	third `rwx`: **other groups**
+
+default **UID: 1000**, **UID 0** is the Linux administrator user root
+
+②	**Privilege elevation**
+
+run an suid binary such as `sudo`, `su`, `newgrp`(SUID is a bit in the Linux permission model)
+
+**SUID**: execute with the `eUID` of the file owner rather than the parent process.
+
+**SGID**: execute with the `eGID` of the file owner rather than the parent process.
+
+**Sticky**: used for shared directories to limit file removal to file owners.
+
+
+
+three different type of user and group IDs
+
+- **Effective(eUID,eGID):** used for most access checks-->root:0
+- **Real(UID,GID):** true identity of the process owner, used for signal checks
+- **Saved:** used for temporarily dropping privileges
+
+```shell
+gcc -w:Does not generate any warning information.
+```
+
+```shell
+sudo chmod u+s xxx	#SetUID bit, other users can have the file owner permissions
+#user:rwx--->rws
+sudo chown root.root xxx #it will cancel the 's' user:rws--->rwx
+sudo chmod g+s xxx 	#group:rwx--->rws
+```
 
 ### Program Misuse:Mitigations
+
+
 
 ### babysuid challenge
 
@@ -280,4 +317,64 @@ level 32: **socat**
   #I didn't succed to get the shell(cry...)
   ```
 
-  
+
+**require some light programming**
+
+level 33: **whiptail**--->display dialog boxes from shell scripts
+
+```shell
+#--textbox <file> <height> <width>
+#--scrolltext :force vertical scollbars
+whiptail --textbox --scrolltext flag 20 20
+```
+
+![](img/pwn_college/level33/image-20221107161717570.png)
+
+level 34: **awk**--->pattern scanning and processing language
+
+Use regular, string matching
+
+```shell
+awk '//' flag #read the flag
+
+awk '$2 ~ /x/' file
+# $2:the 2nd column
+# ~:pattern begins
+# /x/:pattern match the 'x'
+```
+
+awk shell
+
+```shell
+#xx.awk
+BEGIN{the statement before execution}
+END{the statement that should execute after processing all the rows}
+awk -f xx.awk <file>
+```
+
+level 35: **sed**-->	stream editor for filtering and transforming text
+
+```shell
+#USAGE: sed [OPTION]... {script-only-if-no-other-script} [input-file]...
+sed -e '' flag #read the flag
+#-e:--expression=script 	add the script to the commands to be executed
+```
+
+level 36: **ed**---> text editor
+
+> USAGE:	ed [options] [file]
+>
+> Start edit by reading in 'file' if given. If 'file' begins with a '!', read output of shell command.
+
+```shell
+ed flag
+56	#output:this is the length of flag
+,p	#input
+the content of flag	#output
+q	#input
+exit from this command
+```
+
+`(.,.)p:` Prints the addressed lines. If invoked from a terminal, **ed** pauses at the end of each page until a newline is entered. The current address is set to the last line printed.
+
+`q:` quits ed

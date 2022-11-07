@@ -325,7 +325,7 @@
 
 
                 <time class="article-time--reading">
-                    3 minute read
+                    4 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -336,7 +336,7 @@
 
 
                 <time class="article-words">
-                    1360 字
+                    1755 字
                 </time>
             </div>
         
@@ -353,7 +353,7 @@
     <h1 id="asu-cse-365">ASU CSE 365</h1>
 <h2 id="program-misuse">Program Misuse</h2>
 <h3 id="program-interactionlinux-command-line">Program Interaction:Linux Command Line</h3>
-<p><strong>Learning the command line</strong></p>
+<p>①	<strong>Learning the command line</strong></p>
 <ol>
 <li><a class="link" href="https://overthewire.org/wargames/bandit/"  target="_blank" rel="noopener"
     >Bandit</a></li>
@@ -366,8 +366,8 @@
 	
 	
 ></p>
-<p><strong>env:</strong> Environment variables are a set of Key/Value pairs pased into every process when is is launched.</p>
-<p><strong>files:</strong> there&rsquo;re many different types of files.</p>
+<p>②	<strong>env:</strong> Environment variables are a set of Key/Value pairs pased into every process when is is launched.</p>
+<p>③	<strong>files:</strong> there&rsquo;re many different types of files.</p>
 <blockquote>
 <p><code>-</code> is a <strong>regular file</strong></p>
 <p><code>d</code> is a <strong>directory</strong></p>
@@ -377,9 +377,9 @@
 <p><code>b</code> is a <strong>block device file</strong>(backed by a hardware device that stores and loads blocks of data)</p>
 <p><code>s</code> is a <strong>unix socket</strong>(essentially a local network connection encapsulated in a file)</p>
 </blockquote>
-<p><strong>Symbolic/soft links</strong> created by <code>ln -s</code>(-s stands for symbolic), it likes a pointer</p>
-<p><strong>Hard links</strong>: it copys the original file. If the original file is deleted, the links won&rsquo;t be deleted, and all the hard links can update the same time.</p>
-<p><strong>pipes</strong></p>
+<p>④	<strong>Symbolic/soft links</strong> created by <code>ln -s</code>(-s stands for symbolic), it likes a pointer</p>
+<p>⑤	<strong>Hard links</strong>: it copys the original file. If the original file is deleted, the links won&rsquo;t be deleted, and all the hard links can update the same time.</p>
+<p>⑥	<strong>pipes</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -390,10 +390,47 @@
 </span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="nb">echo</span> hi <span class="p">|</span> bash	<span class="c1">#hi</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><strong>Input and output redirection</strong></p>
-<p><code>&lt;in_file、&gt;outfile、&gt;&gt;out_file、2&gt;error_file、2&gt;&gt;error_file</code></p>
+</div><p>⑦	<strong>Input and output redirection</strong></p>
+<p><code>&lt;in_file</code>、<code>&gt;outfile</code>、<code>&gt;&gt;out_file</code>、<code>2&gt;error_file</code>、<code>2&gt;&gt;error_file</code></p>
 <h3 id="program-misuseprivilege-escalation">Program Misuse:Privilege Escalation</h3>
-<h3 id="program-misusemitigations">Program Misuse:Mitigations</h3>
+<p>①	<strong>permission model</strong></p>
+<p>Permissions: <strong>r: 4	w: 2	x: 1</strong></p>
+<p>File: first <code>rwx</code>: <strong>owner user</strong>	second <code>rwx</code>: <strong>owner group</strong>	third <code>rwx</code>: <strong>other groups</strong></p>
+<p>default <strong>UID: 1000</strong>, <strong>UID 0</strong> is the Linux administrator user root</p>
+<p>②	<strong>Privilege elevation</strong></p>
+<p>run an suid binary such as <code>sudo</code>, <code>su</code>, <code>newgrp</code>(SUID is a bit in the Linux permission model)</p>
+<p><strong>SUID</strong>: execute with the <code>eUID</code> of the file owner rather than the parent process.</p>
+<p><strong>SGID</strong>: execute with the <code>eGID</code> of the file owner rather than the parent process.</p>
+<p><strong>Sticky</strong>: used for shared directories to limit file removal to file owners.</p>
+<p>three different type of user and group IDs</p>
+<ul>
+<li><strong>Effective(eUID,eGID):</strong> used for most access checks&ndash;&gt;root:0</li>
+<li><strong>Real(UID,GID):</strong> true identity of the process owner, used for signal checks</li>
+<li><strong>Saved:</strong> used for temporarily dropping privileges</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">gcc -w:Does not generate any warning information.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">sudo chmod u+s xxx	<span class="c1">#SetUID bit, other users can have the file owner permissions</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#user:rwx---&gt;rws</span>
+</span></span><span class="line"><span class="cl">sudo chown root.root xxx <span class="c1">#it will cancel the &#39;s&#39; user:rws---&gt;rwx</span>
+</span></span><span class="line"><span class="cl">sudo chmod g+s xxx 	<span class="c1">#group:rwx---&gt;rws</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="program-misusemitigations">Program Misuse:Mitigations</h3>
 <h3 id="babysuid-challenge">babysuid challenge</h3>
 <p><strong>init:</strong> we can use the Desktop or the Workspace(then change to the terminal) to operate.</p>
 <p><strong>suid:</strong> Suid special permissions only apply to executable files, the function is that as long as the user has execute permissions on the file with Suid, then <strong>when the user executes the file, the file will be executed as the  file owner</strong>, once the file is executed, the identity switch disappears.</p>
@@ -689,6 +726,101 @@ Run COMMAND with an adjusted niceness, which affects process scheduling.With no 
 </div>
 </div></li>
 </ul>
+<p><strong>require some light programming</strong></p>
+<p>level 33: <strong>whiptail</strong>&mdash;&gt;display dialog boxes from shell scripts</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1">#--textbox &lt;file&gt; &lt;height&gt; &lt;width&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#--scrolltext :force vertical scollbars</span>
+</span></span><span class="line"><span class="cl">whiptail --textbox --scrolltext flag <span class="m">20</span> <span class="m">20</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/img/pwn_college/level33/image-20221107161717570.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>level 34: <strong>awk</strong>&mdash;&gt;pattern scanning and processing language</p>
+<p>Use regular, string matching</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">awk <span class="s1">&#39;//&#39;</span> flag <span class="c1">#read the flag</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">awk <span class="s1">&#39;$2 ~ /x/&#39;</span> file
+</span></span><span class="line"><span class="cl"><span class="c1"># $2:the 2nd column</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ~:pattern begins</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># /x/:pattern match the &#39;x&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>awk shell</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1">#xx.awk</span>
+</span></span><span class="line"><span class="cl">BEGIN<span class="o">{</span>the statement before execution<span class="o">}</span>
+</span></span><span class="line"><span class="cl">END<span class="o">{</span>the statement that should execute after processing all the rows<span class="o">}</span>
+</span></span><span class="line"><span class="cl">awk -f xx.awk &lt;file&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level 35: <strong>sed</strong>&ndash;&gt;	stream editor for filtering and transforming text</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1">#USAGE: sed [OPTION]... {script-only-if-no-other-script} [input-file]...</span>
+</span></span><span class="line"><span class="cl">sed -e <span class="s1">&#39;&#39;</span> flag <span class="c1">#read the flag</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-e:--expression=script 	add the script to the commands to be executed</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level 36: <strong>ed</strong>&mdash;&gt; text editor</p>
+<blockquote>
+<p>USAGE:	ed [options] [file]</p>
+<p>Start edit by reading in &lsquo;file&rsquo; if given. If &lsquo;file&rsquo; begins with a &lsquo;!&rsquo;, read output of shell command.</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">ed flag
+</span></span><span class="line"><span class="cl">56	<span class="c1">#output:this is the length of flag</span>
+</span></span><span class="line"><span class="cl">,p	<span class="c1">#input</span>
+</span></span><span class="line"><span class="cl">the content of flag	<span class="c1">#output</span>
+</span></span><span class="line"><span class="cl">q	<span class="c1">#input</span>
+</span></span><span class="line"><span class="cl"><span class="nb">exit</span> from this <span class="nb">command</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>(.,.)p:</code> Prints the addressed lines. If invoked from a terminal, <strong>ed</strong> pauses at the end of each page until a newline is entered. The current address is set to the last line printed.</p>
+<p><code>q:</code> quits ed</p>
 
 </section>
 
@@ -765,7 +897,7 @@ Run COMMAND with an adjusted niceness, which affects process scheduling.With no 
         
             
         
-        共 1.70k 字 · 共 3篇文章
+        共 2.09k 字 · 共 3篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
             <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
