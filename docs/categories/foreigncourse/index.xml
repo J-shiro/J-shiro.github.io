@@ -12,9 +12,9 @@
         <pubDate>Sat, 29 Oct 2022 00:00:00 +0000</pubDate>
         
         <guid>https://J-shiro.github.io/p/pwncollege_note/</guid>
-        <description>&lt;h1 id=&#34;asu-cse-365&#34;&gt;ASU CSE 365&lt;/h1&gt;
-&lt;h2 id=&#34;program-misuse&#34;&gt;Program Misuse&lt;/h2&gt;
-&lt;h3 id=&#34;program-interactionlinux-command-line&#34;&gt;Program Interaction:Linux Command Line&lt;/h3&gt;
+        <description>&lt;h1 id=&#34;program-misuse&#34;&gt;Program Misuse&lt;/h1&gt;
+&lt;p&gt;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;&lt;strong&gt;ASU CSE 365&lt;/strong&gt;: Introduction to Cybersecurity&lt;/p&gt;
+&lt;h2 id=&#34;program-interactionlinux-command-line&#34;&gt;Program Interaction:Linux Command Line&lt;/h2&gt;
 &lt;p&gt;①	&lt;strong&gt;Learning the command line&lt;/strong&gt;&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://overthewire.org/wargames/bandit/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -54,7 +54,7 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;⑦	&lt;strong&gt;Input and output redirection&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;&amp;lt;in_file&lt;/code&gt;、&lt;code&gt;&amp;gt;outfile&lt;/code&gt;、&lt;code&gt;&amp;gt;&amp;gt;out_file&lt;/code&gt;、&lt;code&gt;2&amp;gt;error_file&lt;/code&gt;、&lt;code&gt;2&amp;gt;&amp;gt;error_file&lt;/code&gt;&lt;/p&gt;
-&lt;h3 id=&#34;program-misuseprivilege-escalation&#34;&gt;Program Misuse:Privilege Escalation&lt;/h3&gt;
+&lt;h2 id=&#34;program-misuseprivilege-escalation&#34;&gt;Program Misuse:Privilege Escalation&lt;/h2&gt;
 &lt;p&gt;①	&lt;strong&gt;permission model&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;Permissions: &lt;strong&gt;r: 4	w: 2	x: 1&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;File: first &lt;code&gt;rwx&lt;/code&gt;: &lt;strong&gt;owner user&lt;/strong&gt;	second &lt;code&gt;rwx&lt;/code&gt;: &lt;strong&gt;owner group&lt;/strong&gt;	third &lt;code&gt;rwx&lt;/code&gt;: &lt;strong&gt;other groups&lt;/strong&gt;&lt;/p&gt;
@@ -92,8 +92,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo chmod g+s xxx 	&lt;span class=&#34;c1&#34;&gt;#group:rwx---&amp;gt;rws&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;program-misusemitigations&#34;&gt;Program Misuse:Mitigations&lt;/h3&gt;
-&lt;h3 id=&#34;babysuid-challenge&#34;&gt;babysuid challenge&lt;/h3&gt;
+&lt;/div&gt;&lt;h2 id=&#34;program-misusemitigations&#34;&gt;Program Misuse:Mitigations&lt;/h2&gt;
+&lt;h2 id=&#34;babysuid-challenge&#34;&gt;babysuid challenge&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;init:&lt;/strong&gt; we can use the Desktop or the Workspace(then change to the terminal) to operate.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;suid:&lt;/strong&gt; Suid special permissions only apply to executable files, the function is that as long as the user has execute permissions on the file with Suid, then &lt;strong&gt;when the user executes the file, the file will be executed as the  file owner&lt;/strong&gt;, once the file is executed, the identity switch disappears.&lt;/p&gt;
 &lt;p&gt;level 1-6: there&amp;rsquo;re some simple programs that can directly read the flag：&lt;strong&gt;cat, more, less, tail, head, sort&lt;/strong&gt;&lt;/p&gt;
@@ -483,7 +483,75 @@ Run COMMAND with an adjusted niceness, which affects process scheduling.With no 
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;code&gt;(.,.)p:&lt;/code&gt; Prints the addressed lines. If invoked from a terminal, &lt;strong&gt;ed&lt;/strong&gt; pauses at the end of each page until a newline is entered. The current address is set to the last line printed.&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;q:&lt;/code&gt; quits ed&lt;/p&gt;
-</description>
+&lt;p&gt;&lt;strong&gt;doing tricks with permissions&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;level 37: &lt;strong&gt;chown&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;chown hacker:hacker flag
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cat flag
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;level 38: &lt;strong&gt;chmod&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;chmod &lt;span class=&#34;m&#34;&gt;777&lt;/span&gt; flag
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cat flag
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;level 39: &lt;strong&gt;cp&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cp flag /dev/stdout &lt;span class=&#34;c1&#34;&gt;#can read the flag&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#if put the echo of the output to /dev/stdout, it will be sent directly to the standard output(the screen)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;xx&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; cp /dev/stdin flag &lt;span class=&#34;c1&#34;&gt;#this can write the &amp;#39;xx&amp;#39; to the flag&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;level 40: &lt;strong&gt;mv&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mv /usr/bin/cat /usr/bin/mv &lt;span class=&#34;c1&#34;&gt;# overwrite the mv, use the mv actually run the cat&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;./babysuid_level40 &lt;span class=&#34;c1&#34;&gt;#execute the program&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mv flag &lt;span class=&#34;c1&#34;&gt;#get the flag&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#the normal way to use the &amp;#39;mv&amp;#39; is overwrite the /etc/shadow or /etc/passwd or /etc/sudoers&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;let you program anything&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;level 41: &lt;strong&gt;perl&lt;/strong&gt;&amp;mdash;&amp;gt; extract the language practical statements&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Usage: perl [options] [program file] [para]&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;perl -ne print flag	&lt;span class=&#34;c1&#34;&gt;#can read the flag&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#-n:resume the &amp;#34;while(&amp;lt;&amp;gt;){..}&amp;#34; with the program circulating&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#-e:can make the Perl program run in the terminal&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
         </item>
         
     </channel>

