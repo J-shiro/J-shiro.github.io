@@ -265,3 +265,13 @@
         }
     }
 }
+
+// 隐藏文字
+.spoiler { 
+    color: rgb(134, 204, 232); 
+    background-color:rgb(134, 204, 232);
+  }
+  .spoiler:hover{
+    color: white;
+  }
+  

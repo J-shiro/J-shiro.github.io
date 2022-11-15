@@ -17,4 +17,4 @@ weight: 1000
 
 
 
-Now I am learning the PWN. We may write some markdown about what I have learnt. Peace and love!  
+Now I am learning the PWN. I may write some markdown about what I have learnt. {{< spoiler >}} Actually, I am still a rookie. Hope you like some of my articles.  {{< /spoiler >}}  Peace and love!  
