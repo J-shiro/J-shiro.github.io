@@ -2,7 +2,7 @@
 title: "Asis_2016_b00ks"
 description: 
 date: 2022-10-25
-image: 
+image: ../pwn.png
 math: 
 license: 
 hidden: false

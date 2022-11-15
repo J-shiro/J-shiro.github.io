@@ -2,7 +2,7 @@
 title: "六级作文"
 description: 
 date: 2022-10-31
-image: 
+image: liujizuowen.jpg
 math: 
 license: 
 hidden: false

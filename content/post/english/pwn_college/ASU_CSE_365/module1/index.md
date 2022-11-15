@@ -2,7 +2,7 @@
 title: "PwnCollege_Note"
 description: I will record some knowledge that I didn't know
 date: 2022-10-29
-image: 
+image: pwncollege.png
 math: 
 license: 
 hidden: false

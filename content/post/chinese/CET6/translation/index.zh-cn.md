@@ -2,7 +2,7 @@
 title: "六级翻译"
 description: 
 date: 2022-10-31
-image: 
+image: liujifan.png
 math: 
 license: 
 hidden: false
