@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='I will record some knowledge that I didn&#39;t know'><title>PwnCollege_Note</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='the 1st module of ASU CSE 365, program misuse.'><title>PwnCollege_Note1</title>
 
-<link rel='canonical' href='https://J-shiro.github.io/p/pwncollege_note/'>
+<link rel='canonical' href='https://J-shiro.github.io/p/pwncollege_note1/'>
 
-<link rel="stylesheet" href="/scss/style.min.1c22be9c0d3cdc66f3ddced3767b9ba8a88bd3b5fcc80a4abdc3399441a0776f.css"><meta property='og:title' content='PwnCollege_Note'>
-<meta property='og:description' content='I will record some knowledge that I didn&#39;t know'>
-<meta property='og:url' content='https://J-shiro.github.io/p/pwncollege_note/'>
+<link rel="stylesheet" href="/scss/style.min.1c22be9c0d3cdc66f3ddced3767b9ba8a88bd3b5fcc80a4abdc3399441a0776f.css"><meta property='og:title' content='PwnCollege_Note1'>
+<meta property='og:description' content='the 1st module of ASU CSE 365, program misuse.'>
+<meta property='og:url' content='https://J-shiro.github.io/p/pwncollege_note1/'>
 <meta property='og:site_name' content='J-shiro&#39;s Blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2022-10-29T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-10-29T00:00:00&#43;00:00'/><meta property='og:image' content='https://J-shiro.github.io/p/pwncollege_note/pwncollege.png' />
-<meta name="twitter:title" content="PwnCollege_Note">
-<meta name="twitter:description" content="I will record some knowledge that I didn&#39;t know"><meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content='https://J-shiro.github.io/p/pwncollege_note/pwncollege.png' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2022-10-29T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-10-29T00:00:00&#43;00:00'/><meta property='og:image' content='https://J-shiro.github.io/p/pwncollege_note1/pwncollege.png' />
+<meta name="twitter:title" content="PwnCollege_Note1">
+<meta name="twitter:description" content="the 1st module of ASU CSE 365, program misuse."><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://J-shiro.github.io/p/pwncollege_note1/pwncollege.png' />
     <link rel="shortcut icon" href="https://j-shiro.github.io/img/somebody.png" />
 
     </head>
@@ -271,13 +271,13 @@
     <article class="has-image main-article">
     <header class="article-header">
         <div class="article-image">
-            <a href="/p/pwncollege_note/">
-                <img src="/p/pwncollege_note/pwncollege_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_800x0_resize_box_3.png"
-                        srcset="/p/pwncollege_note/pwncollege_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_800x0_resize_box_3.png 800w, /p/pwncollege_note/pwncollege_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_1600x0_resize_box_3.png 1600w"
+            <a href="/p/pwncollege_note1/">
+                <img src="/p/pwncollege_note1/pwncollege_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_800x0_resize_box_3.png"
+                        srcset="/p/pwncollege_note1/pwncollege_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_800x0_resize_box_3.png 800w, /p/pwncollege_note1/pwncollege_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_1600x0_resize_box_3.png 1600w"
                         width="800" 
                         height="276" 
                         loading="lazy"
-                        alt="Featured image of post PwnCollege_Note" />
+                        alt="Featured image of post PwnCollege_Note1" />
                 
             </a>
         </div>
@@ -300,12 +300,12 @@
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/p/pwncollege_note/">PwnCollege_Note</a>
+            <a href="/p/pwncollege_note1/">PwnCollege_Note1</a>
         </h2>
     
         
         <h3 class="article-subtitle">
-            I will record some knowledge that I didn&#39;t know
+            the 1st module of ASU CSE 365, program misuse.
         </h3>
         
     </div>
@@ -349,7 +349,7 @@
 
 
                 <time class="article-words">
-                    3095 字
+                    3137 字
                 </time>
             </div>
         
@@ -444,6 +444,11 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="program-misusemitigations">Program Misuse:Mitigations</h2>
+<p><strong>command injection</strong></p>
+<p><strong>/bin/sh</strong> SUID mitigation：</p>
+<p>if <code>/bin/sh</code> is run as SUID (eUID==0 but rUID !=0)</p>
+<p>it will drop privileges to the rUID(root UID) (eUID=rUID and rUID !=0)</p>
+<p>Mitigation: to disable <code>sh -p</code></p>
 <h2 id="babysuid-challenge">babysuid challenge</h2>
 <p><strong>init:</strong> we can use the Desktop or the Workspace(then change to the terminal) to operate.</p>
 <p><strong>suid:</strong> Suid special permissions only apply to executable files, the function is that as long as the user has execute permissions on the file with Suid, then <strong>when the user executes the file, the file will be executed as the  file owner</strong>, once the file is executed, the identity switch disappears.</p>
@@ -1338,6 +1343,39 @@ more than one FILE is specified.</p>
 
     
 
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/pwncollege_note2/">
+        
+        
+            <div class="article-image">
+                <img src="/p/pwncollege_note2/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_250x150_fill_box_smart1_3.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post PwnCollege_Note2"
+                        
+                        data-hash="md5-5dm6QKOrg9PvxuuyEglVkg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">PwnCollege_Note2</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
      
     
         
@@ -1385,7 +1423,9 @@ more than one FILE is specified.</p>
         
             
         
-        共 3.44k 字 · 共 3篇文章
+            
+        
+        共 3.53k 字 · 共 4篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---

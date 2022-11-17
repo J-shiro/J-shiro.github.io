@@ -1,6 +1,6 @@
 ---
-title: "PwnCollege_Note"
-description: I will record some knowledge that I didn't know
+title: "PwnCollege_Note1"
+description: the 1st module of ASU CSE 365, program misuse.
 date: 2022-10-29
 image: pwncollege.png
 math: 
@@ -100,7 +100,15 @@ sudo chmod g+s xxx 	#group:rwx--->rws
 
 ## Program Misuse:Mitigations
 
+**command injection**
 
+**/bin/sh** SUID mitigation：
+
+if `/bin/sh` is run as SUID (eUID==0 but rUID !=0)
+
+it will drop privileges to the rUID(root UID) (eUID=rUID and rUID !=0)
+
+Mitigation: to disable `sh -p`
 
 ## babysuid challenge
 

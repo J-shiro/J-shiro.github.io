@@ -6,7 +6,7 @@
         <description>Recent content in Posts on J-shiro&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Sat, 29 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://J-shiro.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 17 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://J-shiro.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Introduction</title>
         <link>https://J-shiro.github.io/p/introduction/</link>
         <pubDate>Wed, 14 Sep 2022 20:22:06 +0800</pubDate>
@@ -21,12 +21,53 @@
 </description>
         </item>
         <item>
-        <title>PwnCollege_Note</title>
-        <link>https://J-shiro.github.io/p/pwncollege_note/</link>
+        <title>PwnCollege_Note2</title>
+        <link>https://J-shiro.github.io/p/pwncollege_note2/</link>
+        <pubDate>Thu, 17 Nov 2022 00:00:00 +0000</pubDate>
+        
+        <guid>https://J-shiro.github.io/p/pwncollege_note2/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/p/pwncollege_note2/pwncollege.png" alt="Featured image of post PwnCollege_Note2" /&gt;&lt;h1 id=&#34;talking-web&#34;&gt;Talking Web&lt;/h1&gt;
+&lt;p&gt;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;&lt;strong&gt;ASU CSE 365&lt;/strong&gt;: Introduction to Cybersecurity&lt;/p&gt;
+&lt;h2 id=&#34;talking-web-introduction&#34;&gt;Talking Web: Introduction&lt;/h2&gt;
+&lt;p&gt;static http request:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;GET /cat.gif HTTP/1.0&lt;/code&gt;—&amp;gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;HTTP/1.0 200 OK&lt;/code&gt;  &amp;lt;—&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;dynamic http request:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;GET /time?tz=UTC HTTP/1.0&lt;/code&gt; —&amp;gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;HTTP/1.0 200 OK
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Content-Type: text/plain
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Content-Length: 19
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2022-01-19 03:14:07 //&amp;lt;——
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;talking-web-the-internet&#34;&gt;Talking Web: The Internet&lt;/h2&gt;
+</description>
+        </item>
+        <item>
+        <title>PwnCollege_Note1</title>
+        <link>https://J-shiro.github.io/p/pwncollege_note1/</link>
         <pubDate>Sat, 29 Oct 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/p/pwncollege_note/</guid>
-        <description>&lt;img src="https://J-shiro.github.io/p/pwncollege_note/pwncollege.png" alt="Featured image of post PwnCollege_Note" /&gt;&lt;h1 id=&#34;program-misuse&#34;&gt;Program Misuse&lt;/h1&gt;
+        <guid>https://J-shiro.github.io/p/pwncollege_note1/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/p/pwncollege_note1/pwncollege.png" alt="Featured image of post PwnCollege_Note1" /&gt;&lt;h1 id=&#34;program-misuse&#34;&gt;Program Misuse&lt;/h1&gt;
 &lt;p&gt;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;&lt;strong&gt;ASU CSE 365&lt;/strong&gt;: Introduction to Cybersecurity&lt;/p&gt;
 &lt;h2 id=&#34;program-interactionlinux-command-line&#34;&gt;Program Interaction:Linux Command Line&lt;/h2&gt;
 &lt;p&gt;①	&lt;strong&gt;Learning the command line&lt;/strong&gt;&lt;/p&gt;
@@ -107,6 +148,11 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;h2 id=&#34;program-misusemitigations&#34;&gt;Program Misuse:Mitigations&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;command injection&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;/bin/sh&lt;/strong&gt; SUID mitigation：&lt;/p&gt;
+&lt;p&gt;if &lt;code&gt;/bin/sh&lt;/code&gt; is run as SUID (eUID==0 but rUID !=0)&lt;/p&gt;
+&lt;p&gt;it will drop privileges to the rUID(root UID) (eUID=rUID and rUID !=0)&lt;/p&gt;
+&lt;p&gt;Mitigation: to disable &lt;code&gt;sh -p&lt;/code&gt;&lt;/p&gt;
 &lt;h2 id=&#34;babysuid-challenge&#34;&gt;babysuid challenge&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;init:&lt;/strong&gt; we can use the Desktop or the Workspace(then change to the terminal) to operate.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;suid:&lt;/strong&gt; Suid special permissions only apply to executable files, the function is that as long as the user has execute permissions on the file with Suid, then &lt;strong&gt;when the user executes the file, the file will be executed as the  file owner&lt;/strong&gt;, once the file is executed, the identity switch disappears.&lt;/p&gt;
