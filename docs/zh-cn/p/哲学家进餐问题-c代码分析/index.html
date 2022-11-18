@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='由于我拙劣的编程能力不能自己手搓，于是分析大佬的代码ing..并学点知识'><title>哲学家进餐问题-c代码分析</title>
+
+<link rel='canonical' href='https://J-shiro.github.io/zh-cn/p/%E5%93%B2%E5%AD%A6%E5%AE%B6%E8%BF%9B%E9%A4%90%E9%97%AE%E9%A2%98-c%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/'>
+
+<link rel="stylesheet" href="/scss/style.min.1c22be9c0d3cdc66f3ddced3767b9ba8a88bd3b5fcc80a4abdc3399441a0776f.css"><meta property='og:title' content='哲学家进餐问题-c代码分析'>
+<meta property='og:description' content='由于我拙劣的编程能力不能自己手搓，于是分析大佬的代码ing..并学点知识'>
+<meta property='og:url' content='https://J-shiro.github.io/zh-cn/p/%E5%93%B2%E5%AD%A6%E5%AE%B6%E8%BF%9B%E9%A4%90%E9%97%AE%E9%A2%98-c%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/'>
+<meta property='og:site_name' content='J-shiro&#39;s 博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2022-11-18T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-11-18T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="哲学家进餐问题-c代码分析">
+<meta name="twitter:description" content="由于我拙劣的编程能力不能自己手搓，于是分析大佬的代码ing..并学点知识">
+    <link rel="shortcut icon" href="https://j-shiro.github.io/img/somebody.png" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/zh-cn">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu42aab1a06b48994d4eab55119e198264_548369_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/zh-cn">J-shiro&#39;s 博客</a></h1>
+            <h2 class="site-description">Welcome! I will record some of my own hobbies there.//欢迎来到我的博客！</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/zh-cn/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/zh-cn/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/zh-cn/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>档案</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/zh-cn/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/zh-cn/%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>链接</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+                <li id="i18n-switch">  
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                    <select name="language" onchange="window.location.href = this.selectedOptions[0].value">
+                        
+                            <option value="https://J-shiro.github.io/" >English</option>
+                        
+                            <option value="https://J-shiro.github.io/zh-cn/" selected>中文</option>
+                        
+                    </select>
+                </li>
+            
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/zh-cn/categories/takenotes/" >
+                takenotes
+            </a>
+        
+            <a href="/zh-cn/categories/code/" >
+                code
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/zh-cn/p/%E5%93%B2%E5%AD%A6%E5%AE%B6%E8%BF%9B%E9%A4%90%E9%97%AE%E9%A2%98-c%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/">哲学家进餐问题-c代码分析</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            由于我拙劣的编程能力不能自己手搓，于是分析大佬的代码ing..并学点知识
+        </h3>
+        
+    </div>
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Nov 18, 2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 6 分钟
+                </time>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+                <time class="article-words">
+                    2711 字
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="问题分析">问题分析</h2>
+<p>使用信号量机制解决，会出现产生死锁的情况，所以需要解决死锁，有一种方法为<strong>至多只允许四位哲学家同时去拿左边的筷子，最终能保证至少有一位哲学家能够进餐，并在用毕时能释放用过的两只筷子</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">do</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">wait</span><span class="p">(</span><span class="n">chopstick</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">wait</span><span class="p">(</span><span class="n">chopstick</span><span class="p">[(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="mi">5</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">eat</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">signal</span><span class="p">(</span><span class="n">chopstick</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">signal</span><span class="p">(</span><span class="n">chopstick</span><span class="p">[(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="mi">5</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">think</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span><span class="k">while</span><span class="p">(</span><span class="n">TRUE</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="伪代码">伪代码</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">semaphore</span> <span class="n">chopstick</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">};</span> 
+</span></span><span class="line"><span class="cl"><span class="n">semphore</span> <span class="n">room</span><span class="o">=</span><span class="mi">4</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">Pi</span> <span class="p">(){</span>
+</span></span><span class="line"><span class="cl">	<span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">		<span class="n">P</span><span class="p">(</span><span class="n">room</span><span class="p">);</span><span class="c1">//只能有四个人进入拿左边的筷子
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">P</span><span class="p">(</span><span class="n">chopstick</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span> <span class="c1">//先拿左筷子
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">P</span><span class="p">(</span><span class="n">chopstick</span><span class="p">[(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="mi">5</span><span class="p">]);</span><span class="c1">//再拿右筷子
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="err">进餐</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">		<span class="n">V</span><span class="p">(</span><span class="n">chopstick</span><span class="p">[(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="mi">5</span><span class="p">];</span> 
+</span></span><span class="line"><span class="cl">		<span class="n">V</span><span class="p">(</span><span class="n">chopstick</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span> 
+</span></span><span class="line"><span class="cl">		<span class="n">V</span><span class="p">(</span><span class="n">room</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="err">思考</span> 
+</span></span><span class="line"><span class="cl">	<span class="p">}</span> 
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="分析及知识点">分析及知识点</h2>
+<h3 id="sembuf结构体">sembuf结构体</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">sembuf</span>  
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">unsigned</span> <span class="kt">short</span> <span class="kt">int</span> <span class="n">sem_num</span><span class="p">;</span>   	<span class="c1">//信号量集中的第几个信号量(0~nsems-1,0:第一个,nsems-1:最后一个)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="kt">short</span> <span class="kt">int</span> <span class="n">sem_op</span><span class="p">;</span>            	<span class="c1">//对信号量的操作，&gt;0:挂起操作, 0, &lt;0 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="kt">short</span> <span class="kt">int</span> <span class="n">sem_flg</span><span class="p">;</span>            	<span class="c1">//操作标识：0， IPC_WAIT, SEM_UNDO
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>sem_op</strong>标识对信号量的所进行的操作类型。对信号量的操作有三种类型：</p>
+<ul>
+<li><strong>sem_op &gt; 0，对该信号量执行挂出操作</strong>，挂出的值由sem_op决定，系统会把sem_op的值加到该信号量的当前值semval上。如果sem_flag指定了SEM_UNDO（还原）标志，那么相应信号量的semadj值会减掉sem_op的值。</li>
+<li><strong>sem_op &lt; 0，对该信号量执行等待操作</strong>，当信号量的当前值semval &gt;= -sem_op时，semval减掉sem_op的绝对值，为该线程分配对应数目的资源。如果指定SEM_UNDO，相应信号量的semadj就加上sem_op的绝对值。当semval &lt; -sem_op时，相应信号量的semncnt就加1，调用线程被阻塞，直到semval &gt;= -sem_op，当此条件满足时，调用线程被唤醒，执行相应的分配操作，然后semncnt减去1.</li>
+<li><strong>sem_op = 0，表示调用者希望semval变为0</strong>。如果为0则立即返回，如果不为0，相应信号量的semzcnt加1，调用调用线程被阻塞。</li>
+</ul>
+<p><strong>sem_flg</strong>：信号量操作的属性标志。①如果为0，表示正常操作；②如果为IPC_WAIT，使对信号量的操作是非阻塞的，即指定了该标志，调用线程在信号量的值不满足条件的情况下不会被阻塞，而是直接返回-1，并将errno设置为EAGAIN；③如果为SEM_UNDO，那么将维护进程对信号量的调整值，以便进程结束时恢复信号量的状态。</p>
+<p><strong>semadj</strong>：指定信号量针对某个特定进程的调整值。只有sembuf结构的sem_flag指定为SEM_UNDO后，semadj才会随着sem_op而更新。</p>
+<p><strong>semncnt</strong>：等待semval变为大于当前值的线程数。</p>
+<p><strong>semzcnt</strong>：等待semval变为0的线程数。</p>
+<h3 id="semop函数">semop函数</h3>
+<p>在 Linux 下，PV 操作通过调用<strong>semop</strong>函数来实现，用于请求和释放信号量，改变信号量的值。当请求的信号量值 &gt; 0 时，semop 直接返回，否则会阻塞，直到信号量值大于 0。如果是释放（归还）资源，semop 直接返回。</p>
+<p>该函数定义在头文件 sys/sem.h中，原型如下：</p>
+<p><code>int  semop(int  semid, struct sembuf  *sops, size_t nsops);</code>成功返回0，失败返回-1</p>
+<ul>
+<li>semid 为信号量集的标识符</li>
+<li>参数 sops 指向进行操作的结构体数组的首地址</li>
+<li>参数 nsops 指出将要进行操作的信号的个数</li>
+</ul>
+<h3 id="semget函数">semget函数</h3>
+<p>是用来创建或获取信号量的ipc内核对象，同时返回id号，函数原型：</p>
+<p><code>int semget(key_t key, int nsems, int semflg);</code></p>
+<ul>
+<li>
+<p><strong>key：整数值（唯一非零）</strong>，用户可自己设定</p>
+<ul>
+<li>键值是IPC_PRIVATE，该值通常为0，意思就是创建一个仅能被进程访问的信号量。</li>
+<li>键值不是IPC_PRIVATE，我们可以指定键值。</li>
+<li>不相关的进程可以通过它访问一个信号量，它代表程序可能要使用的某个资源，程序对所有信号量的访问都是间接的，程序先通过调用semget()函数并提供一个键，再由系统生成一个相应的信号标识符（semget()函数的返回值），只有semget()函数才直接使用信号量键，所有其他的信号量函数使用由semget()函数返回的信号量标识符。如果多个程序使用相同的key值，key将负责协调工作。</li>
+</ul>
+</li>
+<li>
+<p><strong>num_sems：指定需要的信号量数目</strong>，它的值几乎总是1。</p>
+</li>
+<li>
+<p><strong>sem_flags：是一组标志</strong>，IPC_CREAT如果信号量不存在，则创建一个信号量，否则获取；IPC_EXCL只有信号量不存在的时候，新的信号量才建立，否则就产生错误。0660代表读写权限等</p>
+</li>
+</ul>
+<p>返回值：semget()函数成功返回一个相应信号标识符（非零），失败返回-1</p>
+<h3 id="semctl函数">semctl函数</h3>
+<p>设置、获取、控制信号量值，原型为：</p>
+<p><code>int semctl(int sem_id, int sem_num, int command, ...);</code></p>
+<p>若有第四个参数一般为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">union</span> <span class="n">semun</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">val</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">semid_ds</span> <span class="o">*</span><span class="n">buf</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">unsigned</span> <span class="kt">short</span> <span class="o">*</span><span class="n">arry</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>command通常是下面两个值中的其中一个</p>
+<ul>
+<li>
+<p><strong>SETVAL</strong>：用来把信号量初始化为一个已知的值。p 这个值通过union semun中的val成员设置，其作用是在信号量第一次使用前对它进行设置。</p>
+</li>
+<li>
+<p><strong>IPC_RMID</strong>：用于删除一个已经无需继续使用的信号量标识符。</p>
+</li>
+</ul>
+<h2 id="代码">代码</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;time.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/ipc.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/shm.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/sem.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#define MAX_BUFFER_SIZE 5
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define SHM_MODE 0600
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define SEM_MODE 0600
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define mutex 5
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define true 1
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define room 6
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">chopstick</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">sem_id</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">pid_t</span> <span class="n">philosopher</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//P操作
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">Wait</span><span class="p">(</span><span class="kt">int</span> <span class="n">sem_id</span><span class="p">,</span><span class="kt">int</span> <span class="n">sem_num</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">struct</span> <span class="n">sembuf</span> <span class="n">buf</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">buf</span><span class="p">.</span><span class="n">sem_num</span> <span class="o">=</span> <span class="n">sem_num</span><span class="p">;</span><span class="c1">//第几个信号量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">buf</span><span class="p">.</span><span class="n">sem_op</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="c1">//对该信号量执行等待
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">buf</span><span class="p">.</span><span class="n">sem_flg</span> <span class="o">=</span> <span class="n">SEM_UNDO</span><span class="p">;</span><span class="c1">//维护进程对信号量的调整值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">if</span><span class="p">(</span><span class="n">semop</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="o">&amp;</span><span class="n">buf</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">perror</span><span class="p">(</span><span class="s">&#34;wait failed&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//V操作
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">Signal</span><span class="p">(</span><span class="kt">int</span> <span class="n">sem_id</span><span class="p">,</span><span class="kt">int</span> <span class="n">sem_num</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">struct</span> <span class="n">sembuf</span> <span class="n">buf</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">buf</span><span class="p">.</span><span class="n">sem_num</span> <span class="o">=</span> <span class="n">sem_num</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">buf</span><span class="p">.</span><span class="n">sem_op</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span><span class="c1">//对该信号量执行挂出
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">buf</span><span class="p">.</span><span class="n">sem_flg</span> <span class="o">=</span> <span class="n">SEM_UNDO</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">if</span><span class="p">(</span><span class="n">semop</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="o">&amp;</span><span class="n">buf</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">perror</span><span class="p">(</span><span class="s">&#34;signal failed&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">think</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;the philosopher of %d is thinking(pid is %d)</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">getpid</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">eat</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;the philosopher of %d is eating(pid is %d)</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">getpid</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">Philosophers1</span><span class="p">(</span><span class="kt">int</span> <span class="n">sem_id</span><span class="p">,</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">j</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span><span class="p">(</span><span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">j</span><span class="o">&lt;</span><span class="mi">2</span><span class="p">;</span><span class="n">j</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">		<span class="n">think</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">Wait</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">room</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl">		<span class="n">Wait</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">chopstick</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span> 
+</span></span><span class="line"><span class="cl">		<span class="n">Wait</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">chopstick</span><span class="p">[(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="mi">5</span><span class="p">]);</span> 
+</span></span><span class="line"><span class="cl">		<span class="n">eat</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">Signal</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">chopstick</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span> 
+</span></span><span class="line"><span class="cl">		<span class="n">Signal</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">chopstick</span><span class="p">[(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="mi">5</span><span class="p">]);</span> 
+</span></span><span class="line"><span class="cl">		<span class="n">printf</span><span class="p">(</span><span class="s">&#34;the process of %d(pid is %d,ppid is %d)has finished eating</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">getpid</span><span class="p">(),</span><span class="n">getppid</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">		<span class="n">Signal</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">room</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl">		<span class="n">fflush</span><span class="p">(</span><span class="n">stdout</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span><span class="p">((</span><span class="n">sem_id</span> <span class="o">=</span> <span class="n">semget</span><span class="p">(</span><span class="n">IPC_PRIVATE</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="n">SEM_MODE</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>					
+</span></span><span class="line"><span class="cl">		<span class="n">perror</span><span class="p">(</span><span class="s">&#34;create semaphore failed! </span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span><span class="p">(</span><span class="n">semctl</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">mutex</span><span class="p">,</span><span class="n">SETVAL</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">perror</span><span class="p">(</span><span class="s">&#34;sem set value error! </span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">5</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">semctl</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">chopstick</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">SETVAL</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">perror</span><span class="p">(</span><span class="s">&#34;sem set value error! </span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span><span class="p">(</span><span class="n">semctl</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">room</span><span class="p">,</span><span class="n">SETVAL</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">perror</span><span class="p">(</span><span class="s">&#34;sem set value error! </span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">5</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">philosopher</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">philosopher</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">perror</span><span class="p">(</span><span class="s">&#34;the fork failed&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">philosopher</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Philosophers1</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">i</span><span class="p">);</span>       
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="n">wait</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">shmctl</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">IPC_RMID</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;finish!!!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fflush</span><span class="p">(</span><span class="n">stdout</span><span class="p">);</span><span class="c1">//在prinf()后加上fflush(stdout); 强制马上输出，避免错误。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>结果显示：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">[</span>j@master test<span class="o">]</span>$ ./test
+</span></span><span class="line"><span class="cl">the philosopher <span class="m">1</span> is thinking<span class="o">(</span>pid is 5185<span class="o">)</span>
+</span></span><span class="line"><span class="cl">the philosopher <span class="m">1</span> is eating<span class="o">(</span>pid is 5185<span class="o">)</span>
+</span></span><span class="line"><span class="cl">the process of 1<span class="o">(</span>pid is 5185,ppid is 5183<span class="o">)</span>has finished eating
+</span></span><span class="line"><span class="cl">the philosopher <span class="m">1</span> is thinking<span class="o">(</span>pid is 5185<span class="o">)</span>
+</span></span><span class="line"><span class="cl">the philosopher <span class="m">1</span> is eating<span class="o">(</span>pid is 5185<span class="o">)</span>
+</span></span><span class="line"><span class="cl">the process of 1<span class="o">(</span>pid is 5185,ppid is 5183<span class="o">)</span>has finished eating
+</span></span><span class="line"><span class="cl">the philosopher <span class="m">2</span> is thinking<span class="o">(</span>pid is 5186<span class="o">)</span>
+</span></span><span class="line"><span class="cl">the philosopher <span class="m">2</span> is eating<span class="o">(</span>pid is 5186<span class="o">)</span>
+</span></span><span class="line"><span class="cl">the process of 2<span class="o">(</span>pid is 5186,ppid is 5183<span class="o">)</span>has finished eating
+</span></span><span class="line"><span class="cl">the philosopher <span class="m">2</span> is thinking<span class="o">(</span>pid is 5186<span class="o">)</span>
+</span></span><span class="line"><span class="cl">the philosopher <span class="m">2</span> is eating<span class="o">(</span>pid is 5186<span class="o">)</span>
+</span></span><span class="line"><span class="cl">the process of 2<span class="o">(</span>pid is 5186,ppid is 5183<span class="o">)</span>has finished eating
+</span></span><span class="line"><span class="cl">the philosopher <span class="m">3</span> is thinking<span class="o">(</span>pid is 5187<span class="o">)</span>
+</span></span><span class="line"><span class="cl">the philosopher <span class="m">3</span> is eating<span class="o">(</span>pid is 5187<span class="o">)</span>
+</span></span><span class="line"><span class="cl">the process of 3<span class="o">(</span>pid is 5187,ppid is 5183<span class="o">)</span>has finished eating
+</span></span><span class="line"><span class="cl">the philosopher <span class="m">3</span> is thinking<span class="o">(</span>pid is 5187<span class="o">)</span>
+</span></span><span class="line"><span class="cl">the philosopher <span class="m">3</span> is eating<span class="o">(</span>pid is 5187<span class="o">)</span>
+</span></span><span class="line"><span class="cl">the process of 3<span class="o">(</span>pid is 5187,ppid is 5183<span class="o">)</span>has finished eating
+</span></span><span class="line"><span class="cl">the philosopher <span class="m">4</span> is thinking<span class="o">(</span>pid is 5188<span class="o">)</span>
+</span></span><span class="line"><span class="cl">the philosopher <span class="m">4</span> is eating<span class="o">(</span>pid is 5188<span class="o">)</span>
+</span></span><span class="line"><span class="cl">the process of 4<span class="o">(</span>pid is 5188,ppid is 5183<span class="o">)</span>has finished eating
+</span></span><span class="line"><span class="cl">the philosopher <span class="m">4</span> is thinking<span class="o">(</span>pid is 5188<span class="o">)</span>
+</span></span><span class="line"><span class="cl">the philosopher <span class="m">4</span> is eating<span class="o">(</span>pid is 5188<span class="o">)</span>
+</span></span><span class="line"><span class="cl">the process of 4<span class="o">(</span>pid is 5188,ppid is 5183<span class="o">)</span>has finished eating
+</span></span><span class="line"><span class="cl">the philosopher <span class="m">0</span> is thinking<span class="o">(</span>pid is 5184<span class="o">)</span>
+</span></span><span class="line"><span class="cl">the philosopher <span class="m">0</span> is eating<span class="o">(</span>pid is 5184<span class="o">)</span>
+</span></span><span class="line"><span class="cl">the process of 0<span class="o">(</span>pid is 5184,ppid is 5183<span class="o">)</span>has finished eating
+</span></span><span class="line"><span class="cl">the philosopher <span class="m">0</span> is thinking<span class="o">(</span>pid is 5184<span class="o">)</span>
+</span></span><span class="line"><span class="cl">the philosopher <span class="m">0</span> is eating<span class="o">(</span>pid is 5184<span class="o">)</span>
+</span></span><span class="line"><span class="cl">the process of 0<span class="o">(</span>pid is 5184,ppid is 5183<span class="o">)</span>has finished eating
+</span></span><span class="line"><span class="cl">end
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>代码原文链接：<a class="link" href="https://cxybb.com/article/qq_44528283/115125474"  target="_blank" rel="noopener"
+    >linux下操作系统哲学家进餐问题参考C代码</a></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
+<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet'/>
+<div id="waline" class="waline-container"></div>
+<style>
+    .waline-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+        --waline-font-size: var(--article-font-size);
+    }
+    .waline-container .wl-count {
+        color: var(--card-text-color-main);
+    }
+</style><script>
+    
+    Waline.init({"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://unpkg.com/@waline/emojis@1.0.1/weibo"],"locale":{"admin":"Admin","placeholder":null},"requiredMeta":["name","email","url"],"serverURL":"https://blog-waline-ox87ky1di-j-shiro.vercel.app/"});
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2022 J-shiro&#39;s 博客<br />
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+        共 11.10k 字 · 共 6篇文章
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
+            <span id="busuanzi_container_site_pv"> 总访问量<span id="busuanzi_value_site_pv"></span>次 </span>---
+            <span id="busuanzi_container_page_pv">本文阅读量<span id="busuanzi_value_page_pv"></span>次</span>    
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.13.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+
+    
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/live2d-widget@3.1.4/lib/L2Dwidget.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/live2d-widget@3.1.4/lib/L2Dwidget.0.min.js"></script>
+
+<script type="text/javascript">
+    L2Dwidget.init({
+        model: {
+            scale: 1,
+            hHeadPos: 0.5,
+            vHeadPos: 0.618,
+            jsonPath: 'https://cdn.jsdelivr.net/npm/live2d-widget-model-hibiki@1.0.5/assets/hibiki.model.json',       
+        },
+        display: {
+            superSample: 9,     
+            width: 160,         
+            height: 440,        
+            position: 'left',   
+            hOffset: 130,         
+            vOffset: -50,         
+        },
+        mobile: {
+            show: false,         
+            scale: 1,           
+            motion: true,       
+        },
+        react: {
+            opacityDefault: 1,  
+            opacityOnHover: 1,  
+        },
+    });
+</script>
+
+
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+    <div id="backTop" onclick="backTopFunction()" style="right: 40px; bottom: 40px; display: flex;">
+        <svg xmlns="http://www.w3.org/2000/svg" height="30" width="20" viewBox="0 0 512 512"><title>Caret Up</title>
+            <path d="M414 321.94L274.22 158.82a24 24 0 00-36.44 0L98 321.94c-13.34 15.57-2.28 39.62 18.22 39.62h279.6c20.5 0 31.56-24.05 18.18-39.62z" fill="#adb5bd"></path>
+        </svg>
+        <style type="text/css">
+            #backTop {
+                position: fixed;
+                background-color: #fff;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 0 6px rgba(0,0,0,.12);
+                cursor: pointer;
+                z-index: 5;
+            }
+    
+            #backTop:hover {
+                background-color: #f1f4f8;
+            }
+        </style>
+        <script>
+    
+            window.onscroll = function() {scrollFunction()};
+    
+            function scrollFunction() {console.log(121);
+                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                    document.getElementById("backTop").style.display = "flex";
+                } else {
+                    document.getElementById("backTop").style.display = "none";
+                }
+            }
+    
+    
+            function backTopFunction() {
+                document.body.scrollTop = 0;
+                document.documentElement.scrollTop = 0;
+            }
+        </script>
+    </div>
+    
+
+
+            </main>
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#问题分析">问题分析</a></li>
+    <li><a href="#伪代码">伪代码</a></li>
+    <li><a href="#分析及知识点">分析及知识点</a>
+      <ol>
+        <li><a href="#sembuf结构体">sembuf结构体</a></li>
+        <li><a href="#semop函数">semop函数</a></li>
+        <li><a href="#semget函数">semget函数</a></li>
+        <li><a href="#semctl函数">semctl函数</a></li>
+      </ol>
+    </li>
+    <li><a href="#代码">代码</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+
+    }());
+</script>
+
+<script
+    src="https://cdn.jsdelivr.net/gh/zhixuan2333/gh-blog@v0.1.0/js/nprogress.min.js"
+    integrity="sha384-bHDlAEUFxsRI7JfULv3DTpL2IXbbgn4JHQJibgo5iiXSK6Iu8muwqHANhun74Cqg"
+    crossorigin="anonymous"
+></script>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/zhixuan2333/gh-blog@v0.1.0/css/nprogress.css"
+    integrity="sha384-KJyhr2syt5+4M9Pz5dipCvTrtvOmLk/olWVdfhAp858UCa64Ia5GFpTN7+G4BWpE"
+    crossorigin="anonymous"
+/>
+<script>
+    NProgress.start();
+    document.addEventListener("readystatechange", () => {
+        if (document.readyState === "interactive") NProgress.inc(0.8);
+        if (document.readyState === "complete") NProgress.done();
+    });
+</script>
+
+    </body>
+</html>
