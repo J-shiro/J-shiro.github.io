@@ -96,11 +96,10 @@ USAGE: curl [options...] <url>
 
 execute the file and click into the web: 
 
-```
+```shell
 Incorrect client: value `/usr/lib/code-server/lib/node`, should be `/usr/bin/curl`
-```
-
 so open a new terminal: `curl 127.0.0.1:80` get the flag
+```
 
 level2: **nc**----->Used to send and to monitor any TCP and UDP data, so we can simulate any client or server
 
@@ -110,5 +109,44 @@ nc 127.0.0.1 80
 GET / HTTP/1.1	#input
 host: localhost	#127.0.0.1 either
 -l:listeng		-p:port
+```
+
+level3: **python**
+
+```shell
+python
+>>import requests
+>>response = requests.get(url='http://127.0.0.1:80')
+>>print(response) #<Response [200]>
+>>print(response.content) #get the flag
+```
+
+level4: **curl**
+
+```shell
+curl 127.0.0.1:80 
+#Incorrect host: value `127.0.0.1`, should be `xxx`
+curl 127.0.0.1:80 -H 'Host:xxx' #get the flag
+#-H :Request custom IP address and specify HOST only for the 'HTTP'
+```
+
+level5: **nc**
+
+just change the `host: localhost` to the `host: xxx` so that we can get the flag.
+
+level6: **python**
+
+```shell
+python
+>>import requests
+>>headers={"host":"xxx"}
+>>res=requests.get("http://127.0.0.1:80",headers=headers)
+>>print(response.text) #get the flag
+```
+
+level7: **curl**
+
+```shell
+curl -v 127.0.0.1/xxx #get the shell:it's not explicit so I even didn't understand the meaning of 'path'
 ```
 

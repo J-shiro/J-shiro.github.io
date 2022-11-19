@@ -338,7 +338,7 @@
 
 
                 <time class="article-time--reading">
-                    2 minute read
+                    3 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -349,7 +349,7 @@
 
 
                 <time class="article-words">
-                    327 字
+                    436 字
                 </time>
             </div>
         
@@ -489,13 +489,14 @@
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Incorrect client: value `/usr/lib/code-server/lib/node`, should be `/usr/bin/curl`
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">Incorrect client: value <span class="sb">`</span>/usr/lib/code-server/lib/node<span class="sb">`</span>, should be <span class="sb">`</span>/usr/bin/curl<span class="sb">`</span>
+</span></span><span class="line"><span class="cl">so open a new terminal: <span class="sb">`</span>curl 127.0.0.1:80<span class="sb">`</span> get the flag
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>so open a new terminal: <code>curl 127.0.0.1:80</code> get the flag</p>
-<p>level2: <strong>nc</strong>&mdash;&ndash;&gt;Used to send and to monitor any TCP and UDP data, so we can simulate any client or server</p>
+</div><p>level2: <strong>nc</strong>&mdash;&ndash;&gt;Used to send and to monitor any TCP and UDP data, so we can simulate any client or server</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -510,6 +511,66 @@
 </span></span><span class="line"><span class="cl">GET / HTTP/1.1	<span class="c1">#input</span>
 </span></span><span class="line"><span class="cl">host: localhost	<span class="c1">#127.0.0.1 either</span>
 </span></span><span class="line"><span class="cl">-l:listeng		-p:port
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level3: <strong>python</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">python
+</span></span><span class="line"><span class="cl">&gt;&gt;import requests
+</span></span><span class="line"><span class="cl">&gt;&gt;response <span class="o">=</span> requests.get<span class="o">(</span><span class="nv">url</span><span class="o">=</span><span class="s1">&#39;http://127.0.0.1:80&#39;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">&gt;&gt;print<span class="o">(</span>response<span class="o">)</span> <span class="c1">#&lt;Response [200]&gt;</span>
+</span></span><span class="line"><span class="cl">&gt;&gt;print<span class="o">(</span>response.content<span class="o">)</span> <span class="c1">#get the flag</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level4: <strong>curl</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">curl 127.0.0.1:80 
+</span></span><span class="line"><span class="cl"><span class="c1">#Incorrect host: value `127.0.0.1`, should be `xxx`</span>
+</span></span><span class="line"><span class="cl">curl 127.0.0.1:80 -H <span class="s1">&#39;Host:xxx&#39;</span> <span class="c1">#get the flag</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-H :Request custom IP address and specify HOST only for the &#39;HTTP&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level5: <strong>nc</strong></p>
+<p>just change the <code>host: localhost</code> to the <code>host: xxx</code> so that we can get the flag.</p>
+<p>level6: <strong>python</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">python
+</span></span><span class="line"><span class="cl">&gt;&gt;import requests
+</span></span><span class="line"><span class="cl">&gt;&gt;headers<span class="o">={</span><span class="s2">&#34;host&#34;</span>:<span class="s2">&#34;xxx&#34;</span><span class="o">}</span>
+</span></span><span class="line"><span class="cl">&gt;&gt;res<span class="o">=</span>requests.get<span class="o">(</span><span class="s2">&#34;http://127.0.0.1:80&#34;</span>,headers<span class="o">=</span>headers<span class="o">)</span>
+</span></span><span class="line"><span class="cl">&gt;&gt;print<span class="o">(</span>response.text<span class="o">)</span> <span class="c1">#get the flag</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level7: <strong>curl</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">curl -v 127.0.0.1/xxx <span class="c1">#get the shell:it&#39;s not explicit so I even didn&#39;t understand the meaning of &#39;path&#39;</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div>
@@ -623,7 +684,7 @@
         
             
         
-        共 3.81k 字 · 共 4篇文章
+        共 3.92k 字 · 共 4篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
