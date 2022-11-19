@@ -40,3 +40,75 @@ dynamic http request:
 
 ## Talking Web: The Internet
 
+TCP/IP
+
+![](img/pwn_college/lesson/TCPIP.png)
+
+- Link Layer(Physically link computers)
+- Internet Layer(Find the right computer:IP、ICMP、ARP)
+- Transport Layer(Find the right program:UDP、TCP)
+- Application Layer(Talk with the program:HTTP、FTP、SMTP、SSH)
+
+## Talking Web: RFC 1945
+
+
+
+## babyhttp
+
+**the challenge python shell**
+
+```python
+#!/opt/pwn.college/python
+import random
+import pathlib
+import shutil
+import hashlib
+import psutil
+from flask import Flask, request, make_response, redirect, session
+
+app = Flask(__name__)#app is an instance of a flask that accepts requests from a web server, the parameter is the __name__(env parameter)-->py file_name/function_name
+flag = open("/flag").read()
+config = (pathlib.Path(__file__).parent / ".config").read_text()
+#__file__:the current file path; /:add ; read_text():read the text file to string
+challenge_name, client_name = config.split()#client_name:used command
+
+def value(n): #Generates a n-character hexadecimal number
+    return "".join(random.choice("0123456789abcdef") for _ in range(n)) #_:temp parameter
+
+def validate(name, value, correct):
+    assertion_message = f"Incorrect {name}: value `{value}`, should be `{correct}`\n" #f-string
+    assert value == correct, assertion_message
+    #assert expression (if false:output)
+
+......#only analyse some of the whole code
+
+if __name__ == "__main__":
+    app.secret_key = flag#SECRET_KEY major role is to provide a value for all kinds of HASH
+    app.run("127.0.0.1", 80)
+```
+
+level1: **curl**-----> (CommandLine Uniform Resource Locator):   The network request tool used under the terminal
+
+```shell
+USAGE: curl [options...] <url>
+-v: output details
+```
+
+execute the file and click into the web: 
+
+```
+Incorrect client: value `/usr/lib/code-server/lib/node`, should be `/usr/bin/curl`
+```
+
+so open a new terminal: `curl 127.0.0.1:80` get the flag
+
+level2: **nc**----->Used to send and to monitor any TCP and UDP data, so we can simulate any client or server
+
+```shell
+nc 127.0.0.1 80
+#Simulate the HTTP request
+GET / HTTP/1.1	#input
+host: localhost	#127.0.0.1 either
+-l:listeng		-p:port
+```
+
