@@ -14,10 +14,11 @@
         <guid>https://J-shiro.github.io/p/introduction/</guid>
         <description>&lt;img src="https://J-shiro.github.io/p/introduction/introduction.jpg" alt="Featured image of post Introduction" /&gt;&lt;h2 id=&#34;about-me&#34;&gt;About Me&lt;/h2&gt;
 &lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;tags：&lt;/strong&gt; Breaking &lt;strong&gt;/&lt;/strong&gt; drawing &lt;strong&gt;/&lt;/strong&gt; wotare &lt;strong&gt;/&lt;/strong&gt; security &lt;strong&gt;/&lt;/strong&gt; PingPong &lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;tags：&lt;/strong&gt; Breaking &lt;strong&gt;/&lt;/strong&gt; drawing &lt;strong&gt;/&lt;/strong&gt; wotayi &lt;strong&gt;/&lt;/strong&gt; security &lt;strong&gt;/&lt;/strong&gt; PingPong &lt;br&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;Now I am learning the PWN. I may write some markdown about what I have learnt. &lt;span class=&#34;spoiler&#34; &gt; Actually, I am still a rookie. Hope you like some of my articles.  &lt;/span&gt;
   Peace and love!&lt;/p&gt;
+&lt;p&gt;&lt;span style=&#34;background: #86cce8&#34;&gt;   I am still just an undergraduate student who has been confused, and I may participate in the postgraduate entrance examination in the future.  I will record some content related to life, study and interests here&lt;/span&gt;&lt;/p&gt;
 </description>
         </item>
         <item>
@@ -1326,9 +1327,24 @@ more than one FILE is specified.&lt;/p&gt;
 Maybe there&amp;rsquo;re something not so good,
 but I will try my best to make it better.
 The English page will be different from the Chinese page.&lt;/p&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;!-- raw HTML omitted --&gt;
-</description>
+&lt;!-- Written in Go, Hugo is an open source static site generator available under the [Apache Licence 2.0.](https://github.com/gohugoio/hugo/blob/master/LICENSE) Hugo supports TOML, YAML and JSON data file types, Markdown and HTML content files and uses shortcodes to add rich content. Other notable features are taxonomies, multilingual mode, image processing, custom output formats, HTML/CSS/JS minification and support for Sass SCSS workflows.
+
+Hugo makes use of a variety of open source projects including:
+
+* https://github.com/yuin/goldmark
+* https://github.com/alecthomas/chroma
+* https://github.com/muesli/smartcrop
+* https://github.com/spf13/cobra
+* https://github.com/spf13/viper
+
+Hugo is ideal for blogs, corporate websites, creative portfolios, online magazines, single page applications or even a website with thousands of pages.
+
+Hugo is for people who want to hand code their own website without worrying about setting up complicated runtimes, dependencies and databases.
+
+Websites built with Hugo are extremelly fast, secure and can be deployed anywhere including, AWS, GitHub Pages, Heroku, Netlify and any other hosting provider.
+
+Learn more and contribute on [GitHub](https://github.com/gohugoio).
+ --&gt;</description>
         </item>
         <item>
         <title>Archives</title>
@@ -1344,9 +1360,23 @@ The English page will be different from the Chinese page.&lt;/p&gt;
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
         <guid>https://J-shiro.github.io/links/</guid>
-        <description>&lt;!-- raw HTML omitted --&gt;
-&lt;!-- raw HTML omitted --&gt;
-</description>
+        <description>&lt;!-- To use this feature, add `links` section to frontmatter.
+
+This page&#39;s frontmatter:
+
+```yaml
+links:
+  - title: GitHub
+    description: GitHub is the world&#39;s largest software development platform.
+    website: https://github.com
+    image: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
+  - title: TypeScript
+    description: TypeScript is a typed superset of JavaScript that compiles to plain JavaScript.
+    website: https://www.typescriptlang.org
+    image: ts-logo-128.jpg
+```
+
+`image` field accepts both local and external images. --&gt;</description>
         </item>
         <item>
         <title>Search</title>
