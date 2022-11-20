@@ -144,9 +144,48 @@ python
 >>print(response.text) #get the flag
 ```
 
-level7: **curl**
+level7: **curl**--->hint: path
 
 ```shell
 curl -v 127.0.0.1/xxx #get the shell:it's not explicit so I even didn't understand the meaning of 'path'
+```
+
+level8: **nc**
+
+just change the `GET / HTTP/1.1` to the `GET /xxx HTTP/1.1` so that we can get the flag.
+
+level9: **python**
+
+change the `http://127.0.0.1:80` to `http://127.0.0.1/xxx` and get the flag
+
+level10: **curl**--->hint:path_encoded
+
+```shell
+curl -v 127.0.0.1/xx%20xx%20xx # /xx xx xx the blank will be the %20 in the url
+```
+
+level11: **nc**
+
+```shell
+GET /xx%20xx%20xx HTTP/1.1 #get the flag
+```
+
+level12: **python**
+
+```python
+res=requests.get("http://127.0.0.1/xx%20xx%20xx")
+```
+
+level13: **curl**--->hint: arg
+
+```shell
+curl -v 127.0.0.1:80?a=xxx
+curl -v 127.0.0.1:80/?a=xxx
+```
+
+level14: **nc**
+
+```shell
+GET /?a=xxx HTTP/1.1 
 ```
 

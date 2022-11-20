@@ -349,7 +349,7 @@
 
 
                 <time class="article-words">
-                    436 字
+                    517 字
                 </time>
             </div>
         
@@ -564,13 +564,64 @@
 </span></span><span class="line"><span class="cl">&gt;&gt;print<span class="o">(</span>response.text<span class="o">)</span> <span class="c1">#get the flag</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>level7: <strong>curl</strong></p>
+</div><p>level7: <strong>curl</strong>&mdash;&gt;hint: path</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">curl -v 127.0.0.1/xxx <span class="c1">#get the shell:it&#39;s not explicit so I even didn&#39;t understand the meaning of &#39;path&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level8: <strong>nc</strong></p>
+<p>just change the <code>GET / HTTP/1.1</code> to the <code>GET /xxx HTTP/1.1</code> so that we can get the flag.</p>
+<p>level9: <strong>python</strong></p>
+<p>change the <code>http://127.0.0.1:80</code> to <code>http://127.0.0.1/xxx</code> and get the flag</p>
+<p>level10: <strong>curl</strong>&mdash;&gt;hint:path_encoded</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">curl -v 127.0.0.1/xx%20xx%20xx <span class="c1"># /xx xx xx the blank will be the %20 in the url</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level11: <strong>nc</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">GET /xx%20xx%20xx HTTP/1.1 <span class="c1">#get the flag</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level12: <strong>python</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">res</span><span class="o">=</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;http://127.0.0.1/xx</span><span class="si">%20x</span><span class="s2">x</span><span class="si">%20x</span><span class="s2">x&#34;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level13: <strong>curl</strong>&mdash;&gt;hint: arg</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">curl -v 127.0.0.1:80?a<span class="o">=</span>xxx
+</span></span><span class="line"><span class="cl">curl -v 127.0.0.1:80/?a<span class="o">=</span>xxx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level14: <strong>nc</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">GET /?a<span class="o">=</span>xxx HTTP/1.1 
 </span></span></code></pre></td></tr></table>
 </div>
 </div>
@@ -684,7 +735,7 @@
         
             
         
-        共 3.96k 字 · 共 4篇文章
+        共 4.04k 字 · 共 4篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
