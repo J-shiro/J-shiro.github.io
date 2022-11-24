@@ -189,3 +189,51 @@ level14: **nc**
 GET /?a=xxx HTTP/1.1 
 ```
 
+level15: **python**
+
+```python
+res=requests.get("http://127.0.0.1:80?a=xxx")
+```
+
+level16: **curl**--->hint:arg_multi
+
+First, there're some special character escape encodings in urls: `&:%26` `#:%23`. Change these character
+
+```shell
+curl -v 127.0.0.1:80?a=xxx&b=xxx  #same as'curl -v 127.0.0.1:80?a=xxx
+#need to transfer meaning
+curl -v 127.0.0.1:80?a=xxx\&b=xxx	#get flag
+```
+
+another solution:
+
+```shell
+curl -X GET -G --data-urlencode "a=xxx" --data-urlencode "b=xx#xx xx&xx" -i http://127.0.0.1:80
+#in double quote the '&# ' don't need to change
+#-X:--request <command> Specify request command to use
+#-G:--get	Put the post data in the URL and use GET
+#--data-urlencode:HTTP POST data url encoded
+#-i:--include Include protocol response headers in the output
+```
+
+level17: **nc**
+
+```shell
+nc 127.0.0.1 80
+GET /?a=xxx&b=xxx HTTP/1.1 #didn't use HTTP/1.1 can also get the flag
+```
+
+level18: **python**
+
+```python
+payload={'a':'xxx','b':'xx xx&xx#xx'}
+res=requests.get("http://127.0.0.1",params=payload)
+```
+
+level19: **curl**--->form, The form property returns a form reference that contains a URL field.
+
+```shell
+#POST
+curl 127.0.0.1 -d "a=xxx"
+#-d:--data <data>   HTTP POST data
+```

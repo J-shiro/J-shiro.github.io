@@ -338,7 +338,7 @@
 
 
                 <time class="article-time--reading">
-                    3 minute read
+                    4 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -349,7 +349,7 @@
 
 
                 <time class="article-words">
-                    517 字
+                    668 字
                 </time>
             </div>
         
@@ -624,6 +624,83 @@
 <pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">GET /?a<span class="o">=</span>xxx HTTP/1.1 
 </span></span></code></pre></td></tr></table>
 </div>
+</div><p>level15: <strong>python</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">res</span><span class="o">=</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;http://127.0.0.1:80?a=xxx&#34;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level16: <strong>curl</strong>&mdash;&gt;hint:arg_multi</p>
+<p>First, there&rsquo;re some special character escape encodings in urls: <code>&amp;:%26</code> <code>#:%23</code>. Change these character</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">curl -v 127.0.0.1:80?a<span class="o">=</span>xxx<span class="p">&amp;</span><span class="nv">b</span><span class="o">=</span>xxx  <span class="c1">#same as&#39;curl -v 127.0.0.1:80?a=xxx</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#need to transfer meaning</span>
+</span></span><span class="line"><span class="cl">curl -v 127.0.0.1:80?a<span class="o">=</span>xxx<span class="se">\&amp;</span><span class="nv">b</span><span class="o">=</span>xxx	<span class="c1">#get flag</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>another solution:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">curl -X GET -G --data-urlencode <span class="s2">&#34;a=xxx&#34;</span> --data-urlencode <span class="s2">&#34;b=xx#xx xx&amp;xx&#34;</span> -i http://127.0.0.1:80
+</span></span><span class="line"><span class="cl"><span class="c1">#in double quote the &#39;&amp;# &#39; don&#39;t need to change</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-X:--request &lt;command&gt; Specify request command to use</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-G:--get	Put the post data in the URL and use GET</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#--data-urlencode:HTTP POST data url encoded</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-i:--include Include protocol response headers in the output</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level17: <strong>nc</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">nc 127.0.0.1 <span class="m">80</span>
+</span></span><span class="line"><span class="cl">GET /?a<span class="o">=</span>xxx<span class="p">&amp;</span><span class="nv">b</span><span class="o">=</span>xxx HTTP/1.1 <span class="c1">#didn&#39;t use HTTP/1.1 can also get the flag</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level18: <strong>python</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">payload</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span><span class="s1">&#39;xxx&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">:</span><span class="s1">&#39;xx xx&amp;xx#xx&#39;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">res</span><span class="o">=</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;http://127.0.0.1&#34;</span><span class="p">,</span><span class="n">params</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level19: <strong>curl</strong>&mdash;&gt;form, The form property returns a form reference that contains a URL field.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1">#POST</span>
+</span></span><span class="line"><span class="cl">curl 127.0.0.1 -d <span class="s2">&#34;a=xxx&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-d:--data &lt;data&gt;   HTTP POST data</span>
+</span></span></code></pre></td></tr></table>
+</div>
 </div>
 </section>
 
@@ -735,7 +812,7 @@
         
             
         
-        共 4.04k 字 · 共 4篇文章
+        共 4.19k 字 · 共 4篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
