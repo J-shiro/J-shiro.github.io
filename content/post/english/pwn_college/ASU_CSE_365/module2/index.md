@@ -237,3 +237,93 @@ level19: **curl**--->form, The form property returns a form reference that conta
 curl 127.0.0.1 -d "a=xxx"
 #-d:--data <data>   HTTP POST data
 ```
+
+level20: **nc**
+
+```shell
+vim a.txt
+#POST / HTTP/1.1
+#Content-Length: 34 #this counts must be equal to the arguments
+#Content-Type: application/x-www-form-urlencoded #Form data is encoded as name/value pairs. This is the standard encoding format
+#
+#a=xxx
+cat a.txt | nc 127.0.0.1 80 # get the flag
+```
+
+level21: **python**
+
+```python
+para={'a':'xx'}
+res=requests.post("http://127.0.0.1",data=para)
+```
+
+level22: **curl**--->hint: form_multi
+
+```shell
+curl http://127.0.0.1:80 -d "a=xx" -d "b=xx" #get the flag
+#found that '#' and ' ' don't need to change to %23 and %20, but '&' must change
+```
+
+level23: **nc**
+
+```shell
+POST / HTTP/1.1
+Content-Length: 74
+Content-Type: application/x-www-form-urlencoded
+
+a=xxx&b=xxx
+```
+
+level24: **python**
+
+```python
+para={'a':'xx','b':'xx'} #the '&, ,#' all don't need to change
+```
+
+level25: **curl**--->hint: json
+
+```shell
+curl 127.0.0.1 -H "Content-Type: application/json" -d '{"a":"xxx"}'
+```
+
+level26: **nc**
+
+```shell
+POST / HTTP/1.1
+Content-Length: 57
+Content-Type: application/json
+
+{"a":"xxx"}
+```
+
+level27: **python**
+
+```python
+import json,requests
+data={"a":"xx"}
+headers={'Content-Type':'application/json'}
+res=requests.post("http://127.0.0.1",headers=headers,data=json.dumps(data))
+print(res.text)
+```
+
+level28: **curl**--->hint: json_multi
+
+having trouble here!
+
+```shell
+# the first try
+curl 127.0.0.1 -H "Content-Type: application/json" -d '{"a":"8484e2a3838f64b6943f66c57d0d52a2","b":"{'\'c\'': '\'99aa4d7f\'', '\'d\'': ['\'7eb4984c\'', '\'c2c37973\ eb81af72\&b1ffc820\#f4fb51c1\'']}"}'
+
+hacker@babyhttp_level28:/challenge$ curl 127.0.0.1 -H "Content-Type: application/json" -d '{"a":"8484e2a3838f64b6943f66c57d0d52a2","b":"{'\'c\'': '\'99aa4d7f\'', '\'d\'': ['\'7eb4984c\'', '\'c2c37973\ eb81af72&b1ffc820\#f4fb51c1\'']}"}'
+Incorrect json b: value {'c': '99aa4d7f', 'd': ['7eb4984c', 'c2c37973 eb81af72&b1ffc820#f4fb51c1']}, should be {'c': '99aa4d7f', 'd': ['7eb4984c', 'c2c37973 eb81af72&b1ffc820#f4fb51c1']}
+#question: it is string instead of json, so we need to remove the quotes around the values of b
+```
+
+```shell
+# after many tries, get the solution
+hacker@babyhttp_level28:/challenge$ curl 127.0.0.1 -H "Content-Type: application/json" -d '{"a":"8484e2a3838f64b6943f66c57d0d52a2","b":{"c":"99aa4d7f","d":["7eb4984c","c2c37973 eb81af72&b1ffc820#f4fb51c1"]}}'
+pwn.college{xxx} #get the flag
+#and remove the blackslash because it is not neccessory.
+#and can't interchange the quotes!
+```
+
