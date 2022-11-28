@@ -327,3 +327,92 @@ pwn.college{xxx} #get the flag
 #and can't interchange the quotes!
 ```
 
+level29: **nc**
+
+```shell
+#test.txt
+POST / HTTP/1.1
+Content-Length: 123
+Content-Type: application/json
+
+{
+"a":"xx",
+"b":{"c": "xxx", "d": ["xx", "x xx&xxx#xxxx"]}
+}
+cat test.txt | nc 127.0.0.1 80
+```
+
+level30: **python**
+
+```python
+data={"a":"xx","b":{'c': 'x', 'd': ['xx', 'x xx&xxx#xxx']}} #just change this line
+```
+
+level31: **curl**--->hint: redirect
+
+```shell
+curl 127.0.0.1:80
+curl 127.0.0.1:80/xxx #1
+curl -L 127.0.0.1:80  #2	
+#-L:-location-->follow redirects
+#--max-redirs options :redirect counts,-l:Always follow the redirect
+```
+
+level32: **nc**
+
+```shell
+nc -v 127.0.0.1 80
+GET /xxx HTTP/1.1
+#xxx from the "Location:xxx" of the response headers
+```
+
+level33: **python**
+
+```python
+res=requests.get("http://127.0.0.1",allow_redirects=True)
+```
+
+level34: **curl**--->hint: cookie
+
+```shell
+curl 127.0.0.1 -b "anything"
+#<p>You should be redirected automatically to the target URL: <a href="/">/</a>. If not, click the link.
+curl 127.0.0.1 -L
+#curl: (47) Maximum (50) redirects followed
+curl 127.0.0.1 -L -b "anything"	#get flag
+```
+
+level35: **nc**
+
+```shell
+nc -v 127.0.0.1 80
+GET / HTTP/1.1
+Cookie: cookie=xxx
+```
+
+level36: **python**
+
+```python
+headers={"cookie":"anything"}#I found that the cookie is no need
+```
+
+level37: **curl**--->hint: state
+
+```shell
+curl -L -b "xx" 127.0.0.1
+```
+
+level38: **nc**
+
+```shell
+nc 127.0.0.1 80
+GET / HTTP/1.1
+Cookie: session=xxx
+```
+
+level39: **python**
+
+```python
+res=requests.get("http://127.0.0.1")
+```
+
