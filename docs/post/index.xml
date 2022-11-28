@@ -76,6 +76,88 @@
 &lt;li&gt;Application Layer(Talk with the program:HTTP、FTP、SMTP、SSH)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;talking-web-rfc-1945&#34;&gt;Talking Web: RFC 1945&lt;/h2&gt;
+&lt;p&gt;①Hyper Transfer Protocol: HTTP is an application-level protocol&lt;/p&gt;
+&lt;p&gt;②Request-Line = &lt;span style=&#34;background: #86cce8&#34;&gt;Method SP Request-URI SP HTTP-Version CRLF&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;SP: space, CRLF: \n&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Method: &amp;ldquo;GET&amp;rdquo;	|	&amp;ldquo;HEAD&amp;rdquo;	|	&amp;ldquo;POST&amp;rdquo;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;③Status-Line = &lt;span style=&#34;background: #86cce8&#34;&gt;HTTP-Version SP Status-Code SP Reason-Phrase CRLF&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Status-Code Definition&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;1xx: &lt;strong&gt;Informational&lt;/strong&gt;-Not used, but reserved for futrue use&lt;/p&gt;
+&lt;p&gt;2xx: &lt;strong&gt;Success&lt;/strong&gt;-The action was successfully received, understood, and accepted&lt;/p&gt;
+&lt;p&gt;3xx: &lt;strong&gt;Redirection&lt;/strong&gt;-Further action must be taken in order to complete the request&lt;/p&gt;
+&lt;p&gt;4xx: &lt;strong&gt;Client Error&lt;/strong&gt;-The request contains bad syntax or can&amp;rsquo;t be fulfilled&lt;/p&gt;
+&lt;p&gt;5xx: &lt;strong&gt;Server Error&lt;/strong&gt;-The server failed to fulfill an apparently valid request&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/StatusCode.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;④ GET&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;GET /greet HTTP/1.0&lt;/p&gt;
+&lt;p&gt;Host: hello.example.com&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;HTTP/1.0 200 OK&lt;/p&gt;
+&lt;p&gt;Content-Type: text/html; charset=UTF-8&lt;/p&gt;
+&lt;p&gt;Content-Length: 39&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;&amp;lt;html&amp;gt;&amp;lt;body&amp;gt;Hello, World!&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;⑤ HEAD&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;HEAD /greet HTTP/1.0&lt;/p&gt;
+&lt;p&gt;Host: hello.example.com&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;HTTP/1.0 200 OK&lt;/p&gt;
+&lt;p&gt;Content-Type: text/html; charset=UTF-8&lt;/p&gt;
+&lt;p&gt;Content-Length: 39&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;⑥ POST&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;POST /greet HTTP/1.0&lt;/p&gt;
+&lt;p&gt;Host: hello.example.com&lt;/p&gt;
+&lt;p&gt;Content-Length: 11&lt;/p&gt;
+&lt;p&gt;Content-Type: application/x-www-form-urlencoded&lt;/p&gt;
+&lt;p&gt;name=Connor&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;HTTP/1.0 200 OK&lt;/p&gt;
+&lt;p&gt;Content-Length: 0&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;talking-web-urls-and-encoding&#34;&gt;Talking Web: URLs and Encoding&lt;/h2&gt;
+&lt;p&gt;① URL: &lt;code&gt;&amp;lt;scheme&amp;gt;://&amp;lt;host&amp;gt;:&amp;lt;port&amp;gt;/&amp;lt;path&amp;gt;?&amp;lt;query&amp;gt;#&amp;lt;fragment&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;scheme: Protocol used to access resource&lt;/p&gt;
+&lt;p&gt;host: Host that holds resource&lt;/p&gt;
+&lt;p&gt;port: Port for program servicing resource&lt;/p&gt;
+&lt;p&gt;path: Identifies the specific resource&lt;/p&gt;
+&lt;p&gt;query: Information that the resource can use&lt;/p&gt;
+&lt;p&gt;fragment: Client information about the resource&lt;/p&gt;
+&lt;p&gt;②URL encoding&lt;/p&gt;
+&lt;p&gt;SP=%20	#=%23	/=%2F	?=%3F	A=%41&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/URLenCode.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;③ Content-Type: Form&lt;/p&gt;
+&lt;p&gt;application/x-www-form-urlencoded	name=xx&lt;/p&gt;
+&lt;p&gt;application/json	{&amp;ldquo;name&amp;rdquo;:&amp;ldquo;xx&amp;rdquo;}&lt;/p&gt;
+&lt;h2 id=&#34;talking-web-state&#34;&gt;Talking Web: State&lt;/h2&gt;
+&lt;p&gt;① HTTP is a stateless protocol&lt;/p&gt;
+&lt;p&gt;**solution:**use HTTP Headers for maintaning state&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;The server sets a cookie in a response with the header: Set-Cookie&lt;/li&gt;
+&lt;li&gt;The client includes the cookie in future requests with the header: Cookie&lt;/li&gt;
+&lt;/ol&gt;
 &lt;h2 id=&#34;babyhttp&#34;&gt;babyhttp&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;the challenge python shell&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;

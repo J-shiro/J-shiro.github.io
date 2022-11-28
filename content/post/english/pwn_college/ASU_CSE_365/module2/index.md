@@ -51,7 +51,112 @@ TCP/IP
 
 ## Talking Web: RFC 1945
 
+①Hyper Transfer Protocol: HTTP is an application-level protocol 
 
+②Request-Line = <span style="background: #86cce8">Method SP Request-URI SP HTTP-Version CRLF</span>
+
+SP: space, CRLF: \n
+
+- Method: "GET"	|	"HEAD"	|	"POST"
+
+③Status-Line = <span style="background: #86cce8">HTTP-Version SP Status-Code SP Reason-Phrase CRLF</span>
+
+**Status-Code Definition**
+
+1xx: **Informational**-Not used, but reserved for futrue use
+
+2xx: **Success**-The action was successfully received, understood, and accepted
+
+3xx: **Redirection**-Further action must be taken in order to complete the request
+
+4xx: **Client Error**-The request contains bad syntax or can't be fulfilled
+
+5xx: **Server Error**-The server failed to fulfill an apparently valid request
+
+![](img/pwn_college/lesson/StatusCode.png)
+
+④ GET
+
+> GET /greet HTTP/1.0
+>
+> Host: hello.example.com
+
+> HTTP/1.0 200 OK
+>
+> Content-Type: text/html; charset=UTF-8
+>
+> Content-Length: 39
+>
+> 
+>
+> `<html><body>Hello, World!</body></html>`
+
+⑤ HEAD
+
+> HEAD /greet HTTP/1.0
+>
+> Host: hello.example.com
+
+> HTTP/1.0 200 OK
+>
+> Content-Type: text/html; charset=UTF-8
+>
+> Content-Length: 39
+
+⑥ POST
+
+> POST /greet HTTP/1.0
+>
+> Host: hello.example.com
+>
+> Content-Length: 11
+>
+> Content-Type: application/x-www-form-urlencoded
+>
+> 
+>
+> name=Connor
+
+> HTTP/1.0 200 OK
+>
+> Content-Length: 0
+
+## Talking Web: URLs and Encoding
+
+① URL: `<scheme>://<host>:<port>/<path>?<query>#<fragment>`
+
+scheme: Protocol used to access resource
+
+host: Host that holds resource
+
+port: Port for program servicing resource
+
+path: Identifies the specific resource
+
+query: Information that the resource can use
+
+fragment: Client information about the resource
+
+②URL encoding
+
+SP=%20	#=%23	/=%2F	?=%3F	A=%41
+
+![](img/pwn_college/lesson/URLenCode.png)
+
+③ Content-Type: Form
+
+application/x-www-form-urlencoded	name=xx
+
+application/json	{"name":"xx"}
+
+## Talking Web: State
+
+① HTTP is a stateless protocol
+
+**solution:**use HTTP Headers for maintaning state
+
+1. The server sets a cookie in a response with the header: Set-Cookie
+2. The client includes the cookie in future requests with the header: Cookie
 
 ## babyhttp
 

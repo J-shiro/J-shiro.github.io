@@ -338,7 +338,7 @@
 
 
                 <time class="article-time--reading">
-                    6 minute read
+                    7 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -349,7 +349,7 @@
 
 
                 <time class="article-words">
-                    1133 字
+                    1365 字
                 </time>
             </div>
         
@@ -412,6 +412,88 @@
 <li>Application Layer(Talk with the program:HTTP、FTP、SMTP、SSH)</li>
 </ul>
 <h2 id="talking-web-rfc-1945">Talking Web: RFC 1945</h2>
+<p>①Hyper Transfer Protocol: HTTP is an application-level protocol</p>
+<p>②Request-Line = <span style="background: #86cce8">Method SP Request-URI SP HTTP-Version CRLF</span></p>
+<p>SP: space, CRLF: \n</p>
+<ul>
+<li>Method: &ldquo;GET&rdquo;	|	&ldquo;HEAD&rdquo;	|	&ldquo;POST&rdquo;</li>
+</ul>
+<p>③Status-Line = <span style="background: #86cce8">HTTP-Version SP Status-Code SP Reason-Phrase CRLF</span></p>
+<p><strong>Status-Code Definition</strong></p>
+<p>1xx: <strong>Informational</strong>-Not used, but reserved for futrue use</p>
+<p>2xx: <strong>Success</strong>-The action was successfully received, understood, and accepted</p>
+<p>3xx: <strong>Redirection</strong>-Further action must be taken in order to complete the request</p>
+<p>4xx: <strong>Client Error</strong>-The request contains bad syntax or can&rsquo;t be fulfilled</p>
+<p>5xx: <strong>Server Error</strong>-The server failed to fulfill an apparently valid request</p>
+<p><img src="/img/pwn_college/lesson/StatusCode.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>④ GET</p>
+<blockquote>
+<p>GET /greet HTTP/1.0</p>
+<p>Host: hello.example.com</p>
+</blockquote>
+<blockquote>
+<p>HTTP/1.0 200 OK</p>
+<p>Content-Type: text/html; charset=UTF-8</p>
+<p>Content-Length: 39</p>
+<p><code>&lt;html&gt;&lt;body&gt;Hello, World!&lt;/body&gt;&lt;/html&gt;</code></p>
+</blockquote>
+<p>⑤ HEAD</p>
+<blockquote>
+<p>HEAD /greet HTTP/1.0</p>
+<p>Host: hello.example.com</p>
+</blockquote>
+<blockquote>
+<p>HTTP/1.0 200 OK</p>
+<p>Content-Type: text/html; charset=UTF-8</p>
+<p>Content-Length: 39</p>
+</blockquote>
+<p>⑥ POST</p>
+<blockquote>
+<p>POST /greet HTTP/1.0</p>
+<p>Host: hello.example.com</p>
+<p>Content-Length: 11</p>
+<p>Content-Type: application/x-www-form-urlencoded</p>
+<p>name=Connor</p>
+</blockquote>
+<blockquote>
+<p>HTTP/1.0 200 OK</p>
+<p>Content-Length: 0</p>
+</blockquote>
+<h2 id="talking-web-urls-and-encoding">Talking Web: URLs and Encoding</h2>
+<p>① URL: <code>&lt;scheme&gt;://&lt;host&gt;:&lt;port&gt;/&lt;path&gt;?&lt;query&gt;#&lt;fragment&gt;</code></p>
+<p>scheme: Protocol used to access resource</p>
+<p>host: Host that holds resource</p>
+<p>port: Port for program servicing resource</p>
+<p>path: Identifies the specific resource</p>
+<p>query: Information that the resource can use</p>
+<p>fragment: Client information about the resource</p>
+<p>②URL encoding</p>
+<p>SP=%20	#=%23	/=%2F	?=%3F	A=%41</p>
+<p><img src="/img/pwn_college/lesson/URLenCode.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>③ Content-Type: Form</p>
+<p>application/x-www-form-urlencoded	name=xx</p>
+<p>application/json	{&ldquo;name&rdquo;:&ldquo;xx&rdquo;}</p>
+<h2 id="talking-web-state">Talking Web: State</h2>
+<p>① HTTP is a stateless protocol</p>
+<p>**solution:**use HTTP Headers for maintaning state</p>
+<ol>
+<li>The server sets a cookie in a response with the header: Set-Cookie</li>
+<li>The client includes the cookie in future requests with the header: Cookie</li>
+</ol>
 <h2 id="babyhttp">babyhttp</h2>
 <p><strong>the challenge python shell</strong></p>
 <div class="highlight"><div class="chroma">
@@ -1105,7 +1187,7 @@
         
             
         
-        共 4.65k 字 · 共 4篇文章
+        共 4.89k 字 · 共 4篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -1304,6 +1386,8 @@
     <li><a href="#talking-web-introduction">Talking Web: Introduction</a></li>
     <li><a href="#talking-web-the-internet">Talking Web: The Internet</a></li>
     <li><a href="#talking-web-rfc-1945">Talking Web: RFC 1945</a></li>
+    <li><a href="#talking-web-urls-and-encoding">Talking Web: URLs and Encoding</a></li>
+    <li><a href="#talking-web-state">Talking Web: State</a></li>
     <li><a href="#babyhttp">babyhttp</a></li>
   </ol>
 </nav>
