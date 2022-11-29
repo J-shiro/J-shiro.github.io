@@ -1,6 +1,6 @@
 ---
 title: "PwnCollege_Note3"
-description: the 2nd module of ASU CSE 365, talking web
+description: the 3rd module of ASU CSE 365, assembly crash course
 date: 2022-11-29
 image: pwncollege.png
 math: 
