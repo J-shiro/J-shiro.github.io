@@ -35,4 +35,6 @@ and gate&	or gate≥1	xor gate=1	not gate1
 
 ③
 
-CU: control units	
+![](img/pwn_college/lesson/ComputerA.png)
+
+CU: control units
