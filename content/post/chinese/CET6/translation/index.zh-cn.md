@@ -30,4 +30,26 @@ The plum blossom, the **king** of the China's **top ten** famous flowers, **orig
 
 The plum blossom, a symbol of **strength**, **purity** and **elegance** , motivates people to **brave hardship and forge ahead**.
 
-自古以来：since ancient times 不朽作品：immortal works 普通大众：general public 冒着严寒：irrespective of the severe cold
+自古以来：since ancient times 
+
+不朽作品：immortal works 
+
+普通大众：general public 
+
+冒着严寒：irrespective of the severe cold
+
+## 2
+
+这部小说描绘了著名僧侣玄奘在三个随从的陪同下穿越中国西部地区前往印度取经的艰难历程
+
+It depicts the **tough** journey of the famous **monk** Xuanzang, who, accompanied by his three followers, travelled across **Western China** to India for **Buddhist scriptures**.
+
+这部小说采用了大量中国民间故事和神话的素材，创造了各种栩栩如生的人物和动物形象
+
+The novel **draws on a host of** Chinese folk tales and mythology to create various **vivid and lifelike** human and animal characters
+
+中国文学四大经典小说：Four Great Classical Novels of Chinese literature
+
+佛教：Buddhism
+
+妖魔：monsters and demons
