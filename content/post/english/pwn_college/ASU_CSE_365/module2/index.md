@@ -153,7 +153,7 @@ application/json	{"name":"xx"}
 
 ① HTTP is a stateless protocol
 
-**solution:**use HTTP Headers for maintaning state
+**solution:** use HTTP Headers for maintaning state
 
 1. The server sets a cookie in a response with the header: Set-Cookie
 2. The client includes the cookie in future requests with the header: Cookie

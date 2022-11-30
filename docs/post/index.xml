@@ -193,7 +193,7 @@
 &lt;p&gt;application/json	{&amp;ldquo;name&amp;rdquo;:&amp;ldquo;xx&amp;rdquo;}&lt;/p&gt;
 &lt;h2 id=&#34;talking-web-state&#34;&gt;Talking Web: State&lt;/h2&gt;
 &lt;p&gt;① HTTP is a stateless protocol&lt;/p&gt;
-&lt;p&gt;**solution:**use HTTP Headers for maintaning state&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;solution:&lt;/strong&gt; use HTTP Headers for maintaning state&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;The server sets a cookie in a response with the header: Set-Cookie&lt;/li&gt;
 &lt;li&gt;The client includes the cookie in future requests with the header: Cookie&lt;/li&gt;
