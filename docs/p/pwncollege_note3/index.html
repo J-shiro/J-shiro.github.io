@@ -338,7 +338,7 @@
 
 
                 <time class="article-time--reading">
-                    1 minute read
+                    2 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -349,7 +349,7 @@
 
 
                 <time class="article-words">
-                    37 字
+                    329 字
                 </time>
             </div>
         
@@ -395,7 +395,125 @@
 	
 ></p>
 <p>CU: control units</p>
-
+<h2 id="assembly-crash-course-assembly">Assembly Crash Course: Assembly</h2>
+<p>① nouns: Data</p>
+<ul>
+<li>data we directly give it as part of the instruction</li>
+<li>data that is close at hand(register)</li>
+<li>data in storage(memory)</li>
+</ul>
+<p>② verbs: operations</p>
+<p><strong>add</strong> :add some data together</p>
+<p><strong>sub</strong> :subtract some data</p>
+<p><strong>mul</strong> :multiply some data</p>
+<p><strong>div</strong> :divide some data</p>
+<p><strong>mov</strong> :move some data into or out of storage</p>
+<p><strong>cmp</strong> :compare two pieces of data with each other</p>
+<p><strong>test</strong> :test some other properties of data</p>
+<p>③every architecture has its own variant: <strong>x86(√)、arm、ppc、mips、risc-v、pdp-11</strong></p>
+<p>history: 8085-&gt;8086-&gt;80186-&gt;80286-&gt;80386&ndash;x86</p>
+<p>intel syntax(√) and AT&amp;T syntax</p>
+<h2 id="assembly-crash-course-data">Assembly Crash Course: Data</h2>
+<p>decimal(base 10), binary(base 2), a binary digit is called a <em>bit</em></p>
+<h2 id="embryoasm">embryoasm</h2>
+<p>&mdash;&mdash;&mdash;&ndash;send/craft/assemble/pipe raw bytes over stdin to program</p>
+<p><strong>registers</strong></p>
+<p>level1: <strong>mov</strong>&mdash;-&gt;<code>* rdi = 0x11</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">#1.s
+</span></span><span class="line"><span class="cl">.global _start
+</span></span><span class="line"><span class="cl">#global:make a symbol visible to the linker _start:the starting address of function
+</span></span><span class="line"><span class="cl">.intel_syntax noprefix
+</span></span><span class="line"><span class="cl">#use the intel syntax
+</span></span><span class="line"><span class="cl">_start:
+</span></span><span class="line"><span class="cl">	mov rdi,0x11
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>shell: to get the flag</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">gcc -nostdlib -static 1.s	<span class="c1">#get a.out</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-nostdlib: Do not use the standard system startup files or libraries when linking</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-static: Disable the use of dynamic libraries</span>
+</span></span><span class="line"><span class="cl">objcopy --dump-section .text<span class="o">=</span>a.bin a.out
+</span></span><span class="line"><span class="cl"><span class="c1">#Copy the part or all of the content of the target file to another file</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#[--dump-section sectionname=filename]</span>
+</span></span><span class="line"><span class="cl">cat a.bin <span class="p">|</span> /challenge/embryoasm <span class="c1">#pipe it to program</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>something to mention:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">hacker@embryoasm_level1:~/module3/1$ objdump -M intel -d a.out
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">a.out:     file format elf64-x86-64
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Disassembly of section .text:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="m">0000000000401000</span> &lt;_start&gt;:
+</span></span><span class="line"><span class="cl">  401000:       <span class="m">48</span> c7 c7 <span class="m">37</span> <span class="m">13</span> <span class="m">00</span> <span class="m">00</span>    mov    rdi,0x1337
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level2: <strong>add</strong>&mdash;&gt;<code>* add 0x11 to rdi</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">.global _start
+</span></span><span class="line"><span class="cl">.intel_syntax noprefix
+</span></span><span class="line"><span class="cl">_start:
+</span></span><span class="line"><span class="cl">	add rdi,0x11
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level3: <strong>function</strong>&mdash;&gt;<code>rax:f(x) = mx + b m = rdi, x = rsi, b = rdx</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">imul rdi,rsi #multiply---&gt;imul
+</span></span><span class="line"><span class="cl">add rdi,rdx
+</span></span><span class="line"><span class="cl">mov rax,rdi
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 
@@ -532,7 +650,7 @@
         
             
         
-        共 4.92k 字 · 共 5篇文章
+        共 5.22k 字 · 共 5篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -729,6 +847,9 @@
             <nav id="TableOfContents">
   <ol>
     <li><a href="#assembly-crash-course-computer-architecture">Assembly Crash Course: Computer Architecture</a></li>
+    <li><a href="#assembly-crash-course-assembly">Assembly Crash Course: Assembly</a></li>
+    <li><a href="#assembly-crash-course-data">Assembly Crash Course: Data</a></li>
+    <li><a href="#embryoasm">embryoasm</a></li>
   </ol>
 </nav>
         </div>
