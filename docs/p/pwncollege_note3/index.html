@@ -349,7 +349,7 @@
 
 
                 <time class="article-words">
-                    466 字
+                    550 字
                 </time>
             </div>
         
@@ -587,7 +587,25 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>If B is a power of 2, <code>A % B</code> can be simplified to <code>A &amp; (B-1)</code> . A can be any number, B = 2^0^,2^1^,2^2^,2^N^&hellip;(If B is 256, so B-1 is FFFF,FFFF in binary)</p>
-
+<p>level7: <strong>shl,shr</strong>&mdash;-&gt;it will add 0 in another side</p>
+<p>shift: <strong>rax=10001010</strong> ,  after the instruction<code>shl rax, 1</code>, <strong>rax=00010100</strong>&mdash;&mdash;&gt;8bits</p>
+<p>register has 64bits=8*8bits</p>
+<p>shl reg1, x       &lt;=&gt;     Shift reg1 left by x
+shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
+<p>rdi = | B7 | B6 | B5 | B4 | B3 | B2 | B1| B0 |, and set the rax to the value of B4, (rdi=0x77665544332211)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rax,rdi
+</span></span><span class="line"><span class="cl">shl rax,24 #3*8=0x18
+</span></span><span class="line"><span class="cl">shr rax,56 #3*8+4*8=0x38 &lt;----It&#39;s important to add the front move
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 
@@ -724,7 +742,7 @@
         
             
         
-        共 5.35k 字 · 共 5篇文章
+        共 5.44k 字 · 共 5篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---

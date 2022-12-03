@@ -176,3 +176,21 @@ mov bx,dx	#16bits
 ```
 
 If B is a power of 2, `A % B` can be simplified to `A & (B-1)` . A can be any number, B = 2^0^,2^1^,2^2^,2^N^...(If B is 256, so B-1 is FFFF,FFFF in binary)
+
+level7: **shl,shr**---->it will add 0 in another side
+
+shift: **rax=10001010** ,  after the instruction`shl rax, 1`, **rax=00010100**------>8bits
+
+register has 64bits=8*8bits			
+
+shl reg1, x       <=>     Shift reg1 left by x
+shr reg1, x      <=>     Shift reg1 right by x
+
+rdi = | B7 | B6 | B5 | B4 | B3 | B2 | B1| B0 |, and set the rax to the value of B4, (rdi=0x77665544332211)
+
+```assembly
+mov rax,rdi
+shl rax,24 #3*8=0x18
+shr rax,56 #3*8+4*8=0x38 <----It's important to add the front move
+```
+
