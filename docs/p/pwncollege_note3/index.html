@@ -338,7 +338,7 @@
 
 
                 <time class="article-time--reading">
-                    2 minute read
+                    3 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -349,7 +349,7 @@
 
 
                 <time class="article-words">
-                    329 字
+                    466 字
                 </time>
             </div>
         
@@ -513,7 +513,81 @@
 </span></span><span class="line"><span class="cl">mov rax,rdi
 </span></span></code></pre></td></tr></table>
 </div>
+</div><p>level4: <strong>divide</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rax, reg1; div reg2 #reg1:divided reg2:divisor
+</span></span><span class="line"><span class="cl">#rax = reg1/reg2	;rdx = remainder
+</span></span><span class="line"><span class="cl">mov rax, rdi; div rsi #get the flag
+</span></span></code></pre></td></tr></table>
 </div>
+</div><p>level5: <strong>modulo</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># rdi % rsi -&gt;remainder to rax
+</span></span><span class="line"><span class="cl">mov rax, rdi; div rsi
+</span></span><span class="line"><span class="cl">mov rax, rdx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level6: <strong>lower register</strong></p>
+<p>independent access to lower register bytes</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>64bits</th>
+<th>32bits</th>
+<th>16bits</th>
+<th>8bits</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rax</td>
+<td>eax</td>
+<td>ax</td>
+<td>ah al</td>
+</tr>
+</tbody>
+</table></div>
+<p><img src="/img/pwn_college/level6/rax.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>only use the &lsquo;mov&rsquo; to compute:</p>
+<ul>
+<li>rax = rdi modulo 256				,256=2^8^&mdash;&mdash;&mdash;-&gt;8&mdash;1,0000,0000</li>
+<li>rbx = rsi modulo 65536            ,65536=2^16^&mdash;&mdash;-&gt;16&mdash;1,0000,0000,0000,0000</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rcx,rdi #first move to the General-Purpose Registers
+</span></span><span class="line"><span class="cl">mov al,cl	#8bits
+</span></span><span class="line"><span class="cl">mov rdx,rsi
+</span></span><span class="line"><span class="cl">mov bx,dx	#16bits
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>If B is a power of 2, <code>A % B</code> can be simplified to <code>A &amp; (B-1)</code> . A can be any number, B = 2^0^,2^1^,2^2^,2^N^&hellip;(If B is 256, so B-1 is FFFF,FFFF in binary)</p>
+
 </section>
 
 
@@ -650,7 +724,7 @@
         
             
         
-        共 5.22k 字 · 共 5篇文章
+        共 5.35k 字 · 共 5篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---

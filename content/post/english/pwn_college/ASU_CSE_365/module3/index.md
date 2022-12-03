@@ -137,3 +137,42 @@ add rdi,rdx
 mov rax,rdi
 ```
 
+level4: **divide**
+
+```assembly
+mov rax, reg1; div reg2 #reg1:divided reg2:divisor
+#rax = reg1/reg2	;rdx = remainder
+mov rax, rdi; div rsi #get the flag
+```
+
+level5: **modulo**
+
+```assembly
+# rdi % rsi ->remainder to rax
+mov rax, rdi; div rsi
+mov rax, rdx
+```
+
+level6: **lower register**
+
+independent access to lower register bytes
+
+| 64bits | 32bits | 16bits | 8bits |
+| ------ | ------ | ------ | ----- |
+| rax    | eax    | ax     | ah al |
+
+![](img/pwn_college/level6/rax.png)
+
+only use the 'mov' to compute:
+
+- rax = rdi modulo 256				,256=2^8^---------->8---1,0000,0000
+- rbx = rsi modulo 65536            ,65536=2^16^------->16---1,0000,0000,0000,0000
+
+```assembly
+mov rcx,rdi #first move to the General-Purpose Registers
+mov al,cl	#8bits
+mov rdx,rsi
+mov bx,dx	#16bits
+```
+
+If B is a power of 2, `A % B` can be simplified to `A & (B-1)` . A can be any number, B = 2^0^,2^1^,2^2^,2^N^...(If B is 256, so B-1 is FFFF,FFFF in binary)
