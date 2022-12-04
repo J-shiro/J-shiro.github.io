@@ -338,7 +338,7 @@
 
 
                 <time class="article-time--reading">
-                    3 minute read
+                    4 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -349,7 +349,7 @@
 
 
                 <time class="article-words">
-                    550 字
+                    722 字
                 </time>
             </div>
         
@@ -605,6 +605,79 @@ shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
 </span></span><span class="line"><span class="cl">shr rax,56 #3*8+4*8=0x38 &lt;----It&#39;s important to add the front move
 </span></span></code></pre></td></tr></table>
 </div>
+</div><p>level8: <strong>and,or,xor,no</strong>&mdash;-&gt;bitwise logic</p>
+<p><img src="/img/pwn_college/level8/andorxor.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>rax = rdi AND rsi</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">and rdi, rsi
+</span></span><span class="line"><span class="cl">xor rax, rax #make the rax to 0
+</span></span><span class="line"><span class="cl">or rax, rdi  #use the or 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level9: <strong>and,or,xor</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">if x is even(2,4,6..) then	y = 1
+</span></span><span class="line"><span class="cl">else	y = 0
+</span></span><span class="line"><span class="cl">where:x = rdi;y = rax 
+</span></span><span class="line"><span class="cl">only use the &#39;and,or,xor&#39;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>tips: We judge it by the value on the smallest bit.==&gt;0: even, 1: odd</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">and rdi, 1 #first 0and1=0,1and1=1,so the smalliest bit even turn to 0,odd turn to 1
+</span></span><span class="line"><span class="cl">#other bits and 0 so they&#39;re turned to 0
+</span></span><span class="line"><span class="cl">xor rdi, 1 #second 0xor1=1,1xor1=0,so the smalliest bit even to 1, odd to 0
+</span></span><span class="line"><span class="cl">#other bits 0 xor 0 = 0
+</span></span><span class="line"><span class="cl">xor rax, rax #make rax 0
+</span></span><span class="line"><span class="cl">or rax, rdi 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level10: <strong>AddressOperation</strong></p>
+<p>mov rax, [some_address]        &lt;=&gt;     Moves the thing at &lsquo;some_address&rsquo; into rax</p>
+<p>task: move the [xxx] to rax, and then value in [xxx] should add yyy</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rax, [xxx]
+</span></span><span class="line"><span class="cl">mov rbx, rax
+</span></span><span class="line"><span class="cl">add rbx, yyy
+</span></span><span class="line"><span class="cl">mov [xxx], yyy
+</span></span></code></pre></td></tr></table>
+</div>
 </div>
 </section>
 
@@ -742,7 +815,7 @@ shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
         
             
         
-        共 5.44k 字 · 共 5篇文章
+        共 5.61k 字 · 共 5篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---

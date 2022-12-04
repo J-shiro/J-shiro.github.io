@@ -194,3 +194,48 @@ shl rax,24 #3*8=0x18
 shr rax,56 #3*8+4*8=0x38 <----It's important to add the front move
 ```
 
+level8: **and,or,xor,no**---->bitwise logic
+
+![](img/pwn_college/level8/andorxor.png)
+
+rax = rdi AND rsi
+
+```assembly
+and rdi, rsi
+xor rax, rax #make the rax to 0
+or rax, rdi  #use the or 
+```
+
+level9: **and,or,xor**
+
+```text
+if x is even(2,4,6..) then	y = 1
+else	y = 0
+where:x = rdi;y = rax 
+only use the 'and,or,xor'
+```
+
+tips: We judge it by the value on the smallest bit.==>0: even, 1: odd
+
+```assembly
+and rdi, 1 #first 0and1=0,1and1=1,so the smalliest bit even turn to 0,odd turn to 1
+#other bits and 0 so they're turned to 0
+xor rdi, 1 #second 0xor1=1,1xor1=0,so the smalliest bit even to 1, odd to 0
+#other bits 0 xor 0 = 0
+xor rax, rax #make rax 0
+or rax, rdi 
+```
+
+level10: **AddressOperation**
+
+mov rax, [some_address]        <=>     Moves the thing at 'some_address' into rax
+
+task: move the [xxx] to rax, and then value in [xxx] should add yyy
+
+```assembly
+mov rax, [xxx]
+mov rbx, rax
+add rbx, yyy
+mov [xxx], yyy
+```
+
