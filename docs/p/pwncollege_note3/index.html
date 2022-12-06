@@ -432,9 +432,9 @@
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">#1.s
 </span></span><span class="line"><span class="cl">.global _start
-</span></span><span class="line"><span class="cl">#global:make a symbol visible to the linker _start:the starting address of function
+</span></span><span class="line"><span class="cl">;#global:make a symbol visible to the linker _start:the starting address of function
 </span></span><span class="line"><span class="cl">.intel_syntax noprefix
-</span></span><span class="line"><span class="cl">#use the intel syntax
+</span></span><span class="line"><span class="cl">;#use the intel syntax
 </span></span><span class="line"><span class="cl">_start:
 </span></span><span class="line"><span class="cl">	mov rdi,0x11
 </span></span></code></pre></td></tr></table>
@@ -508,7 +508,7 @@
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">imul rdi,rsi #multiply---&gt;imul
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">imul rdi,rsi ;#multiply---&gt;imul
 </span></span><span class="line"><span class="cl">add rdi,rdx
 </span></span><span class="line"><span class="cl">mov rax,rdi
 </span></span></code></pre></td></tr></table>
@@ -522,8 +522,8 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rax, reg1; div reg2 #reg1:divided reg2:divisor
-</span></span><span class="line"><span class="cl">#rax = reg1/reg2	;rdx = remainder
-</span></span><span class="line"><span class="cl">mov rax, rdi; div rsi #get the flag
+</span></span><span class="line"><span class="cl">;#rax = reg1/reg2	;rdx = remainder
+</span></span><span class="line"><span class="cl">mov rax, rdi; div rsi ;#get the flag
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>level5: <strong>modulo</strong></p>
@@ -534,7 +534,7 @@
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># rdi % rsi -&gt;remainder to rax
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">;# rdi % rsi -&gt;remainder to rax
 </span></span><span class="line"><span class="cl">mov rax, rdi; div rsi
 </span></span><span class="line"><span class="cl">mov rax, rdx
 </span></span></code></pre></td></tr></table>
@@ -580,10 +580,10 @@
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rcx,rdi #first move to the General-Purpose Registers
-</span></span><span class="line"><span class="cl">mov al,cl	#8bits
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rcx,rdi ;#first move to the General-Purpose Registers
+</span></span><span class="line"><span class="cl">mov al,cl	;#8bits
 </span></span><span class="line"><span class="cl">mov rdx,rsi
-</span></span><span class="line"><span class="cl">mov bx,dx	#16bits
+</span></span><span class="line"><span class="cl">mov bx,dx	;#16bits
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>If B is a power of 2, <code>A % B</code> can be simplified to <code>A &amp; (B-1)</code> . A can be any number, B = 2^0^,2^1^,2^2^,2^N^&hellip;(If B is 256, so B-1 is FFFF,FFFF in binary)</p>
@@ -601,8 +601,8 @@ shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rax,rdi
-</span></span><span class="line"><span class="cl">shl rax,24 #3*8=0x18
-</span></span><span class="line"><span class="cl">shr rax,56 #3*8+4*8=0x38 &lt;----It&#39;s important to add the front move
+</span></span><span class="line"><span class="cl">shl rax,24 ;#3*8=0x18
+</span></span><span class="line"><span class="cl">shr rax,56 ;#3*8+4*8=0x38 &lt;----It&#39;s important to add the front move
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>level8: <strong>and,or,xor,no</strong>&mdash;-&gt;bitwise logic</p>
@@ -623,8 +623,8 @@ shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">and rdi, rsi
-</span></span><span class="line"><span class="cl">xor rax, rax #make the rax to 0
-</span></span><span class="line"><span class="cl">or rax, rdi  #use the or 
+</span></span><span class="line"><span class="cl">xor rax, rax ;#make the rax to 0
+</span></span><span class="line"><span class="cl">or rax, rdi  ;#use the or 
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>level9: <strong>and,or,xor</strong></p>
@@ -653,11 +653,11 @@ shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">and rdi, 1 #first 0and1=0,1and1=1,so the smalliest bit even turn to 0,odd turn to 1
-</span></span><span class="line"><span class="cl">#other bits and 0 so they&#39;re turned to 0
-</span></span><span class="line"><span class="cl">xor rdi, 1 #second 0xor1=1,1xor1=0,so the smalliest bit even to 1, odd to 0
-</span></span><span class="line"><span class="cl">#other bits 0 xor 0 = 0
-</span></span><span class="line"><span class="cl">xor rax, rax #make rax 0
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">and rdi, 1 ;#first 0and1=0,1and1=1,so the smalliest bit even turn to 0,odd turn to 1
+</span></span><span class="line"><span class="cl">;#other bits and 0 so they&#39;re turned to 0
+</span></span><span class="line"><span class="cl">xor rdi, 1 ;#second 0xor1=1,1xor1=0,so the smalliest bit even to 1, odd to 0
+</span></span><span class="line"><span class="cl">;#other bits 0 xor 0 = 0
+</span></span><span class="line"><span class="cl">xor rax, rax ;#make rax 0
 </span></span><span class="line"><span class="cl">or rax, rdi 
 </span></span></code></pre></td></tr></table>
 </div>
@@ -704,7 +704,7 @@ shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
 <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov al, [0x404000]
 </span></span><span class="line"><span class="cl">mov bx, [0x404000]
 </span></span><span class="line"><span class="cl">mov ecx, [0x404000]
-</span></span><span class="line"><span class="cl">mov rdx, [0x404000] #get flag
+</span></span><span class="line"><span class="cl">mov rdx, [0x404000] ;#get flag
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>level12:</p>
@@ -722,8 +722,8 @@ shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rax, 0xaaa
-</span></span><span class="line"><span class="cl">mov [rdi], rax #get flag
-</span></span><span class="line"><span class="cl">#show like below:
+</span></span><span class="line"><span class="cl">mov [rdi], rax ;#get flag
+</span></span><span class="line"><span class="cl">;#show like below:
 </span></span><span class="line"><span class="cl">movabs  rax, 0xaaa
 </span></span><span class="line"><span class="cl">mov     qword ptr [rdi], rax
 </span></span></code></pre></td></tr></table>
@@ -762,7 +762,7 @@ shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rax, [rdi]
-</span></span><span class="line"><span class="cl">mov rbx, [rdi+8]	#8bytes =&gt; quad words
+</span></span><span class="line"><span class="cl">mov rbx, [rdi+8]	;#8bytes =&gt; quad words
 </span></span><span class="line"><span class="cl">add rax,rbx
 </span></span><span class="line"><span class="cl">mov [rsi], rax
 </span></span></code></pre></td></tr></table>
@@ -820,7 +820,7 @@ shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">add</span><span class="w"> </span><span class="n">rax</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">rsp</span><span class="o">+</span><span class="mi">24</span><span class="p">]</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">mov</span><span class="w"> </span><span class="n">rbx</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">div</span><span class="w"> </span><span class="n">rbx</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">mov</span><span class="w"> </span><span class="p">[</span><span class="n">rsp</span><span class="p">],</span><span class="w"> </span><span class="n">rax</span><span class="p">;</span><span class="w"> </span><span class="c1">#-----&gt; the first method
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">mov</span><span class="w"> </span><span class="p">[</span><span class="n">rsp</span><span class="p">],</span><span class="w"> </span><span class="n">rax</span><span class="p">;</span><span class="w"> </span><span class="p">;</span><span class="c1">#-----&gt; the first method
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">;</span><span class="n">mov</span><span class="w"> </span><span class="p">[</span><span class="n">rsp</span><span class="o">-</span><span class="mi">8</span><span class="p">],</span><span class="w"> </span><span class="n">rax</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">;</span><span class="n">sub</span><span class="w"> </span><span class="n">rsp</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="w">     </span><span class="c1">#-----&gt; the second method:simulate the `push` instruction
