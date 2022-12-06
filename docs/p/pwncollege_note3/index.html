@@ -338,7 +338,7 @@
 
 
                 <time class="article-time--reading">
-                    5 minute read
+                    6 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -349,7 +349,7 @@
 
 
                 <time class="article-words">
-                    884 字
+                    1149 字
                 </time>
             </div>
         
@@ -661,7 +661,8 @@ shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
 </span></span><span class="line"><span class="cl">or rax, rdi 
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>level10: <strong>AddressOperation</strong></p>
+</div><p><strong>memory</strong></p>
+<p>level10: <strong>AddressOperation</strong></p>
 <p>mov rax, [some_address]        &lt;=&gt;     Moves the thing at &lsquo;some_address&rsquo; into rax</p>
 <p>task: move the [xxx] to rax, and then value in [xxx] should add yyy</p>
 <div class="highlight"><div class="chroma">
@@ -687,10 +688,10 @@ shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
 <li>Byte = 1 byte = 8 bits                              ah, al</li>
 </ul>
 <p>perform:</p>
-<pre><code>1. Set rax to the **byte** at 0x404000
-2. Set rbx to the **word** at 0x404000
-3. Set rcx to the **double** word at 0x404000
-4. Set rdx to the **quad** word at 0x404000
+<pre><code>1. Set rax to the byte at 0x404000
+2. Set rbx to the word at 0x404000
+3. Set rcx to the double word at 0x404000
+4. Set rdx to the quad word at 0x404000
 </code></pre>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -707,7 +708,7 @@ shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>level12:</p>
-<p>**Little Endian **:  values are stored <em>in reverse</em> order of how we represent them</p>
+<p>**Little Endian ** :  values are stored <em>in reverse</em> order of how we represent them</p>
 <p>[0x1330] = 0x00000000deadc0de</p>
 <p>[0x1330] = 0xde 0xc0 0xad 0xde 0x00 0x00 0x00 0x00	&lt;&mdash;&mdash;&ndash;actually in memory</p>
 <p><strong>Register indirect addressing</strong> : Perform&mdash;-&gt; set [rdi] = 0xaaa , can&rsquo;t directly use like this</p>
@@ -727,7 +728,111 @@ shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
 </span></span><span class="line"><span class="cl">mov     qword ptr [rdi], rax
 </span></span></code></pre></td></tr></table>
 </div>
+</div><p>level13:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">[0xa] = 0x1122334455667778
+</span></span><span class="line"><span class="cl">---&gt;byte by byte
+</span></span><span class="line"><span class="cl">[0xa] = 0x78
+</span></span><span class="line"><span class="cl">[0xa + 1] = 0x77
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">[0xa + 7] = 0x11
+</span></span></code></pre></td></tr></table>
 </div>
+</div><p><strong>relative addressing</strong>  &mdash;&mdash;-&gt; perform:</p>
+<ul>
+<li>Load two consecutive quad words from the address stored in rdi, get a, b.</li>
+<li>Get the sum of a, b.</li>
+<li>Store the sum at the address in rsi.</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rax, [rdi]
+</span></span><span class="line"><span class="cl">mov rbx, [rdi+8]	#8bytes =&gt; quad words
+</span></span><span class="line"><span class="cl">add rax,rbx
+</span></span><span class="line"><span class="cl">mov [rsi], rax
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>stack</strong></p>
+<p>level14:</p>
+<p>stack: last in first out(LIFO) memory structure and <strong>push</strong> value into it and <strong>pop</strong> value out of it.</p>
+<p>perform: <strong>&ldquo;Subtract rdi from the top value on the stack&rdquo;</strong> means <code>TopValue in stack - rdi</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">pop rax
+</span></span><span class="line"><span class="cl">sub rax, rdi
+</span></span><span class="line"><span class="cl">push rax
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level15: <strong>exchange</strong> &mdash;-&gt; swap rdi, rsi only use the push and pop</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">push rdi
+</span></span><span class="line"><span class="cl">push rsi
+</span></span><span class="line"><span class="cl">pop rdi
+</span></span><span class="line"><span class="cl">pop rsi
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level16: <strong>rsp</strong>&mdash;-&gt;rsp points to the top of the stack, can use the [rsp] to access the value at the memory address in rsp.</p>
+<p>perform: calculate average of 4 consecutive qwords on the stack, and store it to the top of the stack</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="line"><span class="cl"><span class="n">mov</span><span class="w"> </span><span class="n">rax</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">rsp</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">add</span><span class="w"> </span><span class="n">rax</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">rsp</span><span class="o">+</span><span class="mi">8</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">add</span><span class="w"> </span><span class="n">rax</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">rsp</span><span class="o">+</span><span class="mi">16</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">add</span><span class="w"> </span><span class="n">rax</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">rsp</span><span class="o">+</span><span class="mi">24</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">mov</span><span class="w"> </span><span class="n">rbx</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">div</span><span class="w"> </span><span class="n">rbx</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">mov</span><span class="w"> </span><span class="p">[</span><span class="n">rsp</span><span class="p">],</span><span class="w"> </span><span class="n">rax</span><span class="p">;</span><span class="w"> </span><span class="c1">#-----&gt; the first method
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">;</span><span class="n">mov</span><span class="w"> </span><span class="p">[</span><span class="n">rsp</span><span class="o">-</span><span class="mi">8</span><span class="p">],</span><span class="w"> </span><span class="n">rax</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">;</span><span class="n">sub</span><span class="w"> </span><span class="n">rsp</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="w">     </span><span class="c1">#-----&gt; the second method:simulate the `push` instruction
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>control flow manipulation</strong> : directly or indirectly control the regester &ldquo;RIP&rdquo;</p>
+<p>level17: <strong>jumps</strong></p>
+<ul>
+<li><strong>unconditional</strong> jumps and <strong>conditional</strong> jumps</li>
+<li><strong>Relative</strong> jumps and <strong>Absolute</strong> jumps and <strong>Indirect</strong> jumps</li>
+</ul>
+
 </section>
 
 
@@ -864,7 +969,7 @@ shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
         
             
         
-        共 5.77k 字 · 共 5篇文章
+        共 6.04k 字 · 共 5篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---

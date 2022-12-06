@@ -13,6 +13,8 @@ categories:
     - ForeignCourse
 
 
+
+
 ---
 
 # Assembly Crash Course
@@ -226,6 +228,8 @@ xor rax, rax #make rax 0
 or rax, rdi 
 ```
 
+**memory**
+
 level10: **AddressOperation**
 
 mov rax, [some_address]        <=>     Moves the thing at 'some_address' into rax
@@ -250,10 +254,10 @@ memory size:
 
 perform:
 
- 	1. Set rax to the **byte** at 0x404000
- 	2. Set rbx to the **word** at 0x404000
- 	3. Set rcx to the **double** word at 0x404000
- 	4. Set rdx to the **quad** word at 0x404000
+ 	1. Set rax to the byte at 0x404000
+ 	2. Set rbx to the word at 0x404000
+ 	3. Set rcx to the double word at 0x404000
+ 	4. Set rdx to the quad word at 0x404000
 
 ```assembly
 mov al, [0x404000]
@@ -264,7 +268,7 @@ mov rdx, [0x404000] #get flag
 
 level12:
 
-**Little Endian **:  values are stored *in reverse* order of how we represent them
+**Little Endian ** :  values are stored *in reverse* order of how we represent them
 
 [0x1330] = 0x00000000deadc0de
 
@@ -279,4 +283,77 @@ mov [rdi], rax #get flag
 movabs  rax, 0xaaa
 mov     qword ptr [rdi], rax
 ```
+
+level13:
+
+```
+[0xa] = 0x1122334455667778
+--->byte by byte
+[0xa] = 0x78
+[0xa + 1] = 0x77
+...
+[0xa + 7] = 0x11
+```
+
+**relative addressing**  -------> perform:
+
+- Load two consecutive quad words from the address stored in rdi, get a, b.
+- Get the sum of a, b. 
+- Store the sum at the address in rsi.
+
+```assembly
+mov rax, [rdi]
+mov rbx, [rdi+8]	#8bytes => quad words
+add rax,rbx
+mov [rsi], rax
+```
+
+**stack**
+
+level14:	
+
+stack: last in first out(LIFO) memory structure and **push** value into it and **pop** value out of it.
+
+perform: **"Subtract rdi from the top value on the stack"** means `TopValue in stack - rdi`
+
+```assembly
+pop rax
+sub rax, rdi
+push rax
+```
+
+level15: **exchange** ----> swap rdi, rsi only use the push and pop
+
+```assembly
+push rdi
+push rsi
+pop rdi
+pop rsi
+```
+
+level16: **rsp**---->rsp points to the top of the stack, can use the [rsp] to access the value at the memory address in rsp.
+
+perform: calculate average of 4 consecutive qwords on the stack, and store it to the top of the stack 
+
+```assembly
+mov rax, [rsp]
+add rax, [rsp+8]
+add rax, [rsp+16]
+add rax, [rsp+24]
+mov rbx, 4
+div rbx
+mov [rsp], rax; #-----> the first method
+
+;mov [rsp-8], rax
+;sub rsp, 8     #-----> the second method:simulate the `push` instruction
+```
+
+**control flow manipulation** : directly or indirectly control the regester "RIP"
+
+level17: **jumps** 
+
+- **unconditional** jumps and **conditional** jumps
+- **Relative** jumps and **Absolute** jumps and **Indirect** jumps
+
+
 
