@@ -86,11 +86,11 @@ decimal(base 10), binary(base 2), a binary digit is called a *bit*
 level1: **mov**---->`* rdi = 0x11`
 
 ```assembly
-#1.s
+; 1.s
 .global _start
-;#global:make a symbol visible to the linker _start:the starting address of function
+; global:make a symbol visible to the linker _start:the starting address of function
 .intel_syntax noprefix
-;#use the intel syntax
+; use the intel syntax
 _start:
 	mov rdi,0x11
 ```
@@ -134,7 +134,7 @@ level3: **function**--->`rax:f(x) = mx + b
 m = rdi, x = rsi, b = rdx`
 
 ```assembly
-imul rdi,rsi ;#multiply--->imul
+imul rdi,rsi ; multiply--->imul
 add rdi,rdx
 mov rax,rdi
 ```
@@ -142,15 +142,15 @@ mov rax,rdi
 level4: **divide**
 
 ```assembly
-mov rax, reg1; div reg2 #reg1:divided reg2:divisor
-;#rax = reg1/reg2	;rdx = remainder
-mov rax, rdi; div rsi ;#get the flag
+mov rax, reg1; div reg2 ; reg1:divided reg2:divisor
+;#rax = reg1/reg2	; rdx = remainder
+mov rax, rdi; div rsi ; get the flag
 ```
 
 level5: **modulo**
 
 ```assembly
-;# rdi % rsi ->remainder to rax
+; rdi % rsi ->remainder to rax
 mov rax, rdi; div rsi
 mov rax, rdx
 ```
@@ -171,10 +171,10 @@ only use the 'mov' to compute:
 - rbx = rsi modulo 65536            ,65536=2^16^------->16---1,0000,0000,0000,0000
 
 ```assembly
-mov rcx,rdi ;#first move to the General-Purpose Registers
-mov al,cl	;#8bits
+mov rcx,rdi ; first move to the General-Purpose Registers
+mov al,cl	; 8bits
 mov rdx,rsi
-mov bx,dx	;#16bits
+mov bx,dx	; 16bits
 ```
 
 If B is a power of 2, `A % B` can be simplified to `A & (B-1)` . A can be any number, B = 2^0^,2^1^,2^2^,2^N^...(If B is 256, so B-1 is FFFF,FFFF in binary)
@@ -192,8 +192,8 @@ rdi = | B7 | B6 | B5 | B4 | B3 | B2 | B1| B0 |, and set the rax to the value of 
 
 ```assembly
 mov rax,rdi
-shl rax,24 ;#3*8=0x18
-shr rax,56 ;#3*8+4*8=0x38 <----It's important to add the front move
+shl rax,24 ; 3*8=0x18
+shr rax,56 ; 3*8+4*8=0x38 <----It's important to add the front move
 ```
 
 level8: **and,or,xor,no**---->bitwise logic
@@ -204,8 +204,8 @@ rax = rdi AND rsi
 
 ```assembly
 and rdi, rsi
-xor rax, rax ;#make the rax to 0
-or rax, rdi  ;#use the or 
+xor rax, rax ; make the rax to 0
+or rax, rdi  ; use the or 
 ```
 
 level9: **and,or,xor**
@@ -220,11 +220,11 @@ only use the 'and,or,xor'
 tips: We judge it by the value on the smallest bit.==>0: even, 1: odd
 
 ```assembly
-and rdi, 1 ;#first 0and1=0,1and1=1,so the smalliest bit even turn to 0,odd turn to 1
-;#other bits and 0 so they're turned to 0
-xor rdi, 1 ;#second 0xor1=1,1xor1=0,so the smalliest bit even to 1, odd to 0
-;#other bits 0 xor 0 = 0
-xor rax, rax ;#make rax 0
+and rdi, 1 ; first 0and1=0,1and1=1,so the smalliest bit even turn to 0,odd turn to 1
+; other bits and 0 so they're turned to 0
+xor rdi, 1 ; second 0xor1=1,1xor1=0,so the smalliest bit even to 1, odd to 0
+; other bits 0 xor 0 = 0
+xor rax, rax ; make rax 0
 or rax, rdi 
 ```
 
@@ -263,7 +263,7 @@ perform:
 mov al, [0x404000]
 mov bx, [0x404000]
 mov ecx, [0x404000]
-mov rdx, [0x404000] ;#get flag
+mov rdx, [0x404000] ; get flag
 ```
 
 level12:
@@ -278,8 +278,8 @@ level12:
 
 ```assembly
 mov rax, 0xaaa
-mov [rdi], rax ;#get flag
-;#show like below:
+mov [rdi], rax ; get flag
+; show like below:
 movabs  rax, 0xaaa
 mov     qword ptr [rdi], rax
 ```
@@ -303,7 +303,7 @@ level13:
 
 ```assembly
 mov rax, [rdi]
-mov rbx, [rdi+8]	;#8bytes => quad words
+mov rbx, [rdi+8]	;8bytes => quad words
 add rax,rbx
 mov [rsi], rax
 ```
