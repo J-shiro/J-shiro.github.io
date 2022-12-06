@@ -338,7 +338,7 @@
 
 
                 <time class="article-time--reading">
-                    4 minute read
+                    5 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -349,7 +349,7 @@
 
 
                 <time class="article-words">
-                    722 字
+                    884 字
                 </time>
             </div>
         
@@ -678,6 +678,55 @@ shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
 </span></span><span class="line"><span class="cl">mov [xxx], yyy
 </span></span></code></pre></td></tr></table>
 </div>
+</div><p>level11: <strong>byte,word,dword,qword</strong></p>
+<p>memory size:</p>
+<ul>
+<li>Quad Word = 8 Bytes = 64 bits			 rax</li>
+<li>Double Word = 4 bytes = 32 bits          eax</li>
+<li>Word = 2 bytes = 16 bits                        ax</li>
+<li>Byte = 1 byte = 8 bits                              ah, al</li>
+</ul>
+<p>perform:</p>
+<pre><code>1. Set rax to the **byte** at 0x404000
+2. Set rbx to the **word** at 0x404000
+3. Set rcx to the **double** word at 0x404000
+4. Set rdx to the **quad** word at 0x404000
+</code></pre>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov al, [0x404000]
+</span></span><span class="line"><span class="cl">mov bx, [0x404000]
+</span></span><span class="line"><span class="cl">mov ecx, [0x404000]
+</span></span><span class="line"><span class="cl">mov rdx, [0x404000] #get flag
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level12:</p>
+<p>**Little Endian **:  values are stored <em>in reverse</em> order of how we represent them</p>
+<p>[0x1330] = 0x00000000deadc0de</p>
+<p>[0x1330] = 0xde 0xc0 0xad 0xde 0x00 0x00 0x00 0x00	&lt;&mdash;&mdash;&ndash;actually in memory</p>
+<p><strong>Register indirect addressing</strong> : Perform&mdash;-&gt; set [rdi] = 0xaaa , can&rsquo;t directly use like this</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rax, 0xaaa
+</span></span><span class="line"><span class="cl">mov [rdi], rax #get flag
+</span></span><span class="line"><span class="cl">#show like below:
+</span></span><span class="line"><span class="cl">movabs  rax, 0xaaa
+</span></span><span class="line"><span class="cl">mov     qword ptr [rdi], rax
+</span></span></code></pre></td></tr></table>
+</div>
 </div>
 </section>
 
@@ -815,7 +864,7 @@ shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
         
             
         
-        共 5.61k 字 · 共 5篇文章
+        共 5.77k 字 · 共 5篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---

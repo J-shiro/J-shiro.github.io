@@ -239,3 +239,44 @@ add rbx, yyy
 mov [xxx], yyy
 ```
 
+level11: **byte,word,dword,qword**
+
+memory size:
+
+* Quad Word = 8 Bytes = 64 bits			 rax
+* Double Word = 4 bytes = 32 bits          eax
+* Word = 2 bytes = 16 bits                        ax
+* Byte = 1 byte = 8 bits                              ah, al
+
+perform:
+
+ 	1. Set rax to the **byte** at 0x404000
+ 	2. Set rbx to the **word** at 0x404000
+ 	3. Set rcx to the **double** word at 0x404000
+ 	4. Set rdx to the **quad** word at 0x404000
+
+```assembly
+mov al, [0x404000]
+mov bx, [0x404000]
+mov ecx, [0x404000]
+mov rdx, [0x404000] #get flag
+```
+
+level12:
+
+**Little Endian **:  values are stored *in reverse* order of how we represent them
+
+[0x1330] = 0x00000000deadc0de
+
+[0x1330] = 0xde 0xc0 0xad 0xde 0x00 0x00 0x00 0x00	<--------actually in memory
+
+**Register indirect addressing** : Perform----> set [rdi] = 0xaaa , can't directly use like this
+
+```assembly
+mov rax, 0xaaa
+mov [rdi], rax #get flag
+#show like below:
+movabs  rax, 0xaaa
+mov     qword ptr [rdi], rax
+```
+
