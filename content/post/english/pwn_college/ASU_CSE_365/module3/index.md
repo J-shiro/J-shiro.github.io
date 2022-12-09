@@ -355,5 +355,73 @@ level17: **jumps**
 - **unconditional** jumps and **conditional** jumps
 - **Relative** jumps and **Absolute** jumps and **Indirect** jumps
 
+relative jump: we should fill space in the code to make it possible so we use the `nop` like
 
+```assembly
+jmp (reg1 | addr | offset) ; nop
+```
 
+perform:
+
+> 1. Make the first instruction in your code a jmp
+> 2. Make that jmp a relative jump to 0x51 bytes from its current position
+> 3. At 0x51 write the following code:
+> 4. Place the top value on the stack into register rdi
+> 5. jmp to the absolute address 0x403000
+
+we should use the `.rept count ... .endr` : Repeat the sequence of lines between the .rept directive and the next .endr directive count times.
+
+```assembly
+_start:
+	jmp instruction		;relative jumps
+	.rept 0x51
+		nop				;0x51 nop so the instruction is after 0x51 from the 2:jmp
+	.endr
+
+instruction:
+	mov rdi, [rsp]
+	mov rax, 0x403000	;address!
+	jmp rax		; absolute jumps
+```
+
+level18: **conditional jumps** ---> get a if-else function using the `jne` and `je` and `cmp`
+
+> if [x] is 0x7f454c46:
+>    y = [x+4] + [x+8] + [x+12]
+> else if [x] is 0x00005A4D:
+>    y = [x+4] - [x+8] - [x+12]
+> else:
+>    y = [x+4] * [x+8] * [x+12]
+> where:
+> x = rdi, y = rax. Assume each dereferenced value is a **signed dword** .
+
+```assembly
+_start:
+        mov ebx, [rdi]
+        cmp ebx, 0x7f454c46
+        je first
+        nop
+        mov ebx, [rdi]
+        cmp ebx, 0x00005A4D
+        je second
+        nop
+        mov ecx, [rdi+4]
+        imul ecx, [rdi+8]
+        imul ecx, [rdi+12]
+        jmp done
+first:
+        mov ecx, [rdi+4]
+        add ecx, [rdi+8]
+        add ecx, [rdi+12]
+        jmp done
+second:
+        mov ecx, [rdi+4]
+        sub ecx, [rdi+8]
+        sub ecx, [rdi+12]
+        jmp done
+done:
+        mov eax, ecx
+```
+
+1. `done` function is the most important to add because of the **order of execution** .
+2. the **ZF, the Zero Flag** . The ZF is set to 1 when a cmp is equal. 0 otherwise.

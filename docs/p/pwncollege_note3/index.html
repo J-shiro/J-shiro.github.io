@@ -338,7 +338,7 @@
 
 
                 <time class="article-time--reading">
-                    6 minute read
+                    7 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -349,7 +349,7 @@
 
 
                 <time class="article-words">
-                    1171 字
+                    1491 字
                 </time>
             </div>
         
@@ -832,6 +832,123 @@ shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
 <li><strong>unconditional</strong> jumps and <strong>conditional</strong> jumps</li>
 <li><strong>Relative</strong> jumps and <strong>Absolute</strong> jumps and <strong>Indirect</strong> jumps</li>
 </ul>
+<p>relative jump: we should fill space in the code to make it possible so we use the <code>nop</code> like</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">jmp (reg1 | addr | offset) ; nop
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>perform:</p>
+<blockquote>
+<ol>
+<li>Make the first instruction in your code a jmp</li>
+<li>Make that jmp a relative jump to 0x51 bytes from its current position</li>
+<li>At 0x51 write the following code:</li>
+<li>Place the top value on the stack into register rdi</li>
+<li>jmp to the absolute address 0x403000</li>
+</ol>
+</blockquote>
+<p>we should use the <code>.rept count ... .endr</code> : Repeat the sequence of lines between the .rept directive and the next .endr directive count times.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">_start:
+</span></span><span class="line"><span class="cl">	jmp instruction		;relative jumps
+</span></span><span class="line"><span class="cl">	.rept 0x51
+</span></span><span class="line"><span class="cl">		nop				;0x51 nop so the instruction is after 0x51 from the 2:jmp
+</span></span><span class="line"><span class="cl">	.endr
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">instruction:
+</span></span><span class="line"><span class="cl">	mov rdi, [rsp]
+</span></span><span class="line"><span class="cl">	mov rax, 0x403000	;address!
+</span></span><span class="line"><span class="cl">	jmp rax		; absolute jumps
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level18: <strong>conditional jumps</strong> &mdash;&gt; get a if-else function using the <code>jne</code> and <code>je</code> and <code>cmp</code></p>
+<blockquote>
+<p>if [x] is 0x7f454c46:
+y = [x+4] + [x+8] + [x+12]
+else if [x] is 0x00005A4D:
+y = [x+4] - [x+8] - [x+12]
+else:
+y = [x+4] * [x+8] * [x+12]
+where:
+x = rdi, y = rax. Assume each dereferenced value is a <strong>signed dword</strong> .</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">_start:
+</span></span><span class="line"><span class="cl">        mov ebx, [rdi]
+</span></span><span class="line"><span class="cl">        cmp ebx, 0x7f454c46
+</span></span><span class="line"><span class="cl">        je first
+</span></span><span class="line"><span class="cl">        nop
+</span></span><span class="line"><span class="cl">        mov ebx, [rdi]
+</span></span><span class="line"><span class="cl">        cmp ebx, 0x00005A4D
+</span></span><span class="line"><span class="cl">        je second
+</span></span><span class="line"><span class="cl">        nop
+</span></span><span class="line"><span class="cl">        mov ecx, [rdi+4]
+</span></span><span class="line"><span class="cl">        imul ecx, [rdi+8]
+</span></span><span class="line"><span class="cl">        imul ecx, [rdi+12]
+</span></span><span class="line"><span class="cl">        jmp done
+</span></span><span class="line"><span class="cl">first:
+</span></span><span class="line"><span class="cl">        mov ecx, [rdi+4]
+</span></span><span class="line"><span class="cl">        add ecx, [rdi+8]
+</span></span><span class="line"><span class="cl">        add ecx, [rdi+12]
+</span></span><span class="line"><span class="cl">        jmp done
+</span></span><span class="line"><span class="cl">second:
+</span></span><span class="line"><span class="cl">        mov ecx, [rdi+4]
+</span></span><span class="line"><span class="cl">        sub ecx, [rdi+8]
+</span></span><span class="line"><span class="cl">        sub ecx, [rdi+12]
+</span></span><span class="line"><span class="cl">        jmp done
+</span></span><span class="line"><span class="cl">done:
+</span></span><span class="line"><span class="cl">        mov eax, ecx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol>
+<li><code>done</code> function is the most important to add because of the <strong>order of execution</strong> .</li>
+<li>the <strong>ZF, the Zero Flag</strong> . The ZF is set to 1 when a cmp is equal. 0 otherwise.</li>
+</ol>
 
 </section>
 
@@ -969,7 +1086,7 @@ shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
         
             
         
-        共 6.06k 字 · 共 5篇文章
+        共 6.38k 字 · 共 5篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
