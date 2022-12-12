@@ -268,7 +268,7 @@ mov rdx, [0x404000] ; get flag
 
 level12:
 
-**Little Endian ** :  values are stored *in reverse* order of how we represent them
+**Little Endian** :  values are stored *in reverse* order of how we represent them
 
 [0x1330] = 0x00000000deadc0de
 
@@ -425,3 +425,103 @@ done:
 
 1. `done` function is the most important to add because of the **order of execution** .
 2. the **ZF, the Zero Flag** . The ZF is set to 1 when a cmp is equal. 0 otherwise.
+
+level19
+
+> switch(number):
+>     0: jmp do_thing_0
+>     1: jmp do_thing_1
+>     2: jmp do_thing_2
+>     default: jmp do_default_thing
+
+reduced else-if
+
+using jump table: A jump table is a contiguous section of memory that holds addresses of places to jump
+
+jump table could look like:
+
+> [0x1337] = address of do_thing_0
+> [0x1337+0x8] = address of do_thing_1
+> [0x1337+0x10] = address of do_thing_2
+> [0x1337+0x18] = address of do_default_thing
+
+**implement:** 
+
+> if rdi is 0:
+>     jmp 0x403040
+> else if rdi is 1:
+>     jmp 0x4030f7
+> else if rdi is 2:
+>     jmp 0x4031f1
+> else if rdi is 3:
+>     jmp 0x4032b9
+> else:
+>     jmp 0x40337c
+
+**an example jump table:** 
+
+> [0x4041df] = 0x403040 
+> [0x4041e7] = 0x4030f7
+> [0x4041ef] = 0x4031f1
+> [0x4041f7] = 0x4032b9
+> [0x4041ff] = 0x40337c
+
+**constraints:**
+
+- assume rdi will NOT be negative
+- use no more than 1 cmp instruction
+- use no more than 3 jumps (of any variant)
+- we will provide you with the number to 'switch' on in rdi.
+- we will provide you with a jump table base address in rsi.
+
+```assembly
+_start:
+        mov rax, rdi
+        cmp rax, 4
+        jl done			;jump to `done` if less
+        nop
+        mov rdi, 4
+
+done:
+        jmp [rsi+rdi*0x8]
+        nop
+```
+
+level20: **loop**
+
+perform: compute the average of n consecutive quad words
+
+```c
+sum = 0		
+i = 1	
+for i <= n:
+    sum += i
+    i += 1
+//rdi = memory address of the 1st quad word
+//rsi = n (amount to loop for)
+//rax = average compute
+```
+
+- [0x404128:0x404310] = {n qwords}	---->8 bytes
+
+- rdi = 0x404128
+- rsi = 61
+
+```assembly
+_start:
+        xor rax, rax
+        xor rbx, rbx
+        mov rbx, rsi
+loop:
+        sub rbx, 1
+        add rax, [rdi+rbx*8]
+        cmp rbx, 0
+        jne loop
+        nop
+        div rax, rsi
+```
+
+ps: **jle : ≤**
+
+level21
+

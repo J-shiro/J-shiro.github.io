@@ -338,7 +338,7 @@
 
 
                 <time class="article-time--reading">
-                    7 minute read
+                    9 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -349,7 +349,7 @@
 
 
                 <time class="article-words">
-                    1491 字
+                    1788 字
                 </time>
             </div>
         
@@ -708,7 +708,7 @@ shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>level12:</p>
-<p>**Little Endian ** :  values are stored <em>in reverse</em> order of how we represent them</p>
+<p><strong>Little Endian</strong> :  values are stored <em>in reverse</em> order of how we represent them</p>
 <p>[0x1330] = 0x00000000deadc0de</p>
 <p>[0x1330] = 0xde 0xc0 0xad 0xde 0x00 0x00 0x00 0x00	&lt;&mdash;&mdash;&ndash;actually in memory</p>
 <p><strong>Register indirect addressing</strong> : Perform&mdash;-&gt; set [rdi] = 0xaaa , can&rsquo;t directly use like this</p>
@@ -949,6 +949,143 @@ x = rdi, y = rax. Assume each dereferenced value is a <strong>signed dword</stro
 <li><code>done</code> function is the most important to add because of the <strong>order of execution</strong> .</li>
 <li>the <strong>ZF, the Zero Flag</strong> . The ZF is set to 1 when a cmp is equal. 0 otherwise.</li>
 </ol>
+<p>level19</p>
+<blockquote>
+<p>switch(number):
+0: jmp do_thing_0
+1: jmp do_thing_1
+2: jmp do_thing_2
+default: jmp do_default_thing</p>
+</blockquote>
+<p>reduced else-if</p>
+<p>using jump table: A jump table is a contiguous section of memory that holds addresses of places to jump</p>
+<p>jump table could look like:</p>
+<blockquote>
+<p>[0x1337] = address of do_thing_0
+[0x1337+0x8] = address of do_thing_1
+[0x1337+0x10] = address of do_thing_2
+[0x1337+0x18] = address of do_default_thing</p>
+</blockquote>
+<p><strong>implement:</strong></p>
+<blockquote>
+<p>if rdi is 0:
+jmp 0x403040
+else if rdi is 1:
+jmp 0x4030f7
+else if rdi is 2:
+jmp 0x4031f1
+else if rdi is 3:
+jmp 0x4032b9
+else:
+jmp 0x40337c</p>
+</blockquote>
+<p><strong>an example jump table:</strong></p>
+<blockquote>
+<p>[0x4041df] = 0x403040 
+[0x4041e7] = 0x4030f7
+[0x4041ef] = 0x4031f1
+[0x4041f7] = 0x4032b9
+[0x4041ff] = 0x40337c</p>
+</blockquote>
+<p><strong>constraints:</strong></p>
+<ul>
+<li>assume rdi will NOT be negative</li>
+<li>use no more than 1 cmp instruction</li>
+<li>use no more than 3 jumps (of any variant)</li>
+<li>we will provide you with the number to &lsquo;switch&rsquo; on in rdi.</li>
+<li>we will provide you with a jump table base address in rsi.</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="line"><span class="cl"><span class="n">_start</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">mov</span><span class="w"> </span><span class="n">rax</span><span class="p">,</span><span class="w"> </span><span class="n">rdi</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">cmp</span><span class="w"> </span><span class="n">rax</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">jl</span><span class="w"> </span><span class="n">done</span><span class="w">			</span><span class="p">;</span><span class="n">jump</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="o">`</span><span class="n">done</span><span class="o">`</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">less</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">nop</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">mov</span><span class="w"> </span><span class="n">rdi</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">done</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">jmp</span><span class="w"> </span><span class="p">[</span><span class="n">rsi</span><span class="o">+</span><span class="n">rdi</span><span class="o">*</span><span class="mi">0</span><span class="n">x8</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">nop</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>level20: <strong>loop</strong></p>
+<p>perform: compute the average of n consecutive quad words</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span>		
+</span></span><span class="line"><span class="cl"><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>	
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="nl">n</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">sum</span> <span class="o">+=</span> <span class="n">i</span>
+</span></span><span class="line"><span class="cl">    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//rdi = memory address of the 1st quad word
+</span></span></span><span class="line"><span class="cl"><span class="c1">//rsi = n (amount to loop for)
+</span></span></span><span class="line"><span class="cl"><span class="c1">//rax = average compute
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<p>[0x404128:0x404310] = {n qwords}	&mdash;-&gt;8 bytes</p>
+</li>
+<li>
+<p>rdi = 0x404128</p>
+</li>
+<li>
+<p>rsi = 61</p>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">_start:
+</span></span><span class="line"><span class="cl">        xor rax, rax
+</span></span><span class="line"><span class="cl">        xor rbx, rbx
+</span></span><span class="line"><span class="cl">        mov rbx, rsi
+</span></span><span class="line"><span class="cl">loop:
+</span></span><span class="line"><span class="cl">        sub rbx, 1
+</span></span><span class="line"><span class="cl">        add rax, [rdi+rbx*8]
+</span></span><span class="line"><span class="cl">        cmp rbx, 0
+</span></span><span class="line"><span class="cl">        jne loop
+</span></span><span class="line"><span class="cl">        nop
+</span></span><span class="line"><span class="cl">        div rax, rsi
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>ps: <strong>jle : ≤</strong></p>
+<p>level21</p>
 
 </section>
 
@@ -1086,7 +1223,7 @@ x = rdi, y = rax. Assume each dereferenced value is a <strong>signed dword</stro
         
             
         
-        共 6.38k 字 · 共 5篇文章
+        共 6.67k 字 · 共 5篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
