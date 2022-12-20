@@ -141,6 +141,79 @@ drawback2: arithmetic operations have to be signedness-aware
 
 ![](img/pwn_college/lesson/Word.png)
 
+## Assembly Crash Course: Registers
+
+CPU need rapid access to data via the Register File, it's fast and temporary stores for data
+
+**"general purpose" registers**
+
+- 8085: a,c,d,b,e,h,l
+- 8086:ax,cx,dx,bx,`sp`,`bp`,si,di
+- x86:eax,ecx,edx,ebx,`esp`,`ebp`,esi,edi
+- amd64:rax,rcx,rdx,rbx,`rsp`,`rbp`,rsi,rdi,r8,r9,r10,r11,r12,r13,r14,r15
+- arm:r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,`r13`,`r14`
+
+**address of the next instruction**
+
+- eip(x86), rip(amd64), r15(arm)
+
+①partial accesses on amd64
+
+![](img/pwn_college/lesson/register1.png)
+
+data specified directly in the instruction is called an **Immediate Value**
+
+`sets rax to 0xffffffffffff0539`
+
+```assembly
+mov rax, 0xffffffffffffffff		;doesn't move, it copies it
+mov ax, 0x539
+```
+
+`sets rax to 0x0000000000000539`
+
+```assembly
+mov rax, 0xffffffffffffffff
+mov eax, 0x539	;---->32-bit partial:CPU will zero out the rest of the register
+```
+
+```assembly
+mov rax, rbx;	between registers
+```
+
+②extending data
+
+`mov eax, -1`
+
+eax is now 0xffffffff(both 4294967295 and -1)
+
+rax is now 0x00000000ffffffff(only 4294967295 )
+
+**operate on that -1 in 64-bit land**
+
+`mov eax, -1`
+
+`movsx rax, eax` ---> do a sign-extending move, preserving the two's complement value(copies the top bit to the rest of the register)
+
+eax is now 0xffffffff(both 4294967295 and -1)
+
+rax is now 0xffffffffffffffff(both 4294967295 and -1) 
+
+③register arithmetic
+
+most arithmetic instructions the first specified register stores the result
+
+![](img/pwn_college/lesson/operation.png)
+
+④special registers
+
+- can't directly read from or write to **rip** , it contains the memory address of the next instruction to be executed (Instruction Pointer)
+- careful with **rsp** , it contains the address of an region of memory to store temporary data (Stack Pointer)
+
+## Assembly Crash Course: Memory
+
+
+
 ## embryoasm
 
 -----------send/craft/assemble/pipe raw bytes over stdin to program

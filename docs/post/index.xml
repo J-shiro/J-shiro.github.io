@@ -139,6 +139,85 @@
 	
 	
 &gt;&lt;/p&gt;
+&lt;h2 id=&#34;assembly-crash-course-registers&#34;&gt;Assembly Crash Course: Registers&lt;/h2&gt;
+&lt;p&gt;CPU need rapid access to data via the Register File, it&amp;rsquo;s fast and temporary stores for data&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&amp;ldquo;general purpose&amp;rdquo; registers&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;8085: a,c,d,b,e,h,l&lt;/li&gt;
+&lt;li&gt;8086:ax,cx,dx,bx,&lt;code&gt;sp&lt;/code&gt;,&lt;code&gt;bp&lt;/code&gt;,si,di&lt;/li&gt;
+&lt;li&gt;x86:eax,ecx,edx,ebx,&lt;code&gt;esp&lt;/code&gt;,&lt;code&gt;ebp&lt;/code&gt;,esi,edi&lt;/li&gt;
+&lt;li&gt;amd64:rax,rcx,rdx,rbx,&lt;code&gt;rsp&lt;/code&gt;,&lt;code&gt;rbp&lt;/code&gt;,rsi,rdi,r8,r9,r10,r11,r12,r13,r14,r15&lt;/li&gt;
+&lt;li&gt;arm:r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,&lt;code&gt;r13&lt;/code&gt;,&lt;code&gt;r14&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;address of the next instruction&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;eip(x86), rip(amd64), r15(arm)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;①partial accesses on amd64&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/register1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;data specified directly in the instruction is called an &lt;strong&gt;Immediate Value&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;sets rax to 0xffffffffffff0539&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mov rax, 0xffffffffffffffff		;doesn&amp;#39;t move, it copies it
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mov ax, 0x539
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;code&gt;sets rax to 0x0000000000000539&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mov rax, 0xffffffffffffffff
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mov eax, 0x539	;----&amp;gt;32-bit partial:CPU will zero out the rest of the register
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mov rax, rbx;	between registers
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;②extending data&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;mov eax, -1&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;eax is now 0xffffffff(both 4294967295 and -1)&lt;/p&gt;
+&lt;p&gt;rax is now 0x00000000ffffffff(only 4294967295 )&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;operate on that -1 in 64-bit land&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;mov eax, -1&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;movsx rax, eax&lt;/code&gt; &amp;mdash;&amp;gt; do a sign-extending move, preserving the two&amp;rsquo;s complement value(copies the top bit to the rest of the register)&lt;/p&gt;
+&lt;p&gt;eax is now 0xffffffff(both 4294967295 and -1)&lt;/p&gt;
+&lt;p&gt;rax is now 0xffffffffffffffff(both 4294967295 and -1)&lt;/p&gt;
+&lt;p&gt;③register arithmetic&lt;/p&gt;
+&lt;p&gt;most arithmetic instructions the first specified register stores the result&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/operation.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;④special registers&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;can&amp;rsquo;t directly read from or write to &lt;strong&gt;rip&lt;/strong&gt; , it contains the memory address of the next instruction to be executed (Instruction Pointer)&lt;/li&gt;
+&lt;li&gt;careful with &lt;strong&gt;rsp&lt;/strong&gt; , it contains the address of an region of memory to store temporary data (Stack Pointer)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;assembly-crash-course-memory&#34;&gt;Assembly Crash Course: Memory&lt;/h2&gt;
 &lt;h2 id=&#34;embryoasm&#34;&gt;embryoasm&lt;/h2&gt;
 &lt;p&gt;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;send/craft/assemble/pipe raw bytes over stdin to program&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;registers&lt;/strong&gt;&lt;/p&gt;
