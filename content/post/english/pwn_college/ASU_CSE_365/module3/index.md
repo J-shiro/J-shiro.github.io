@@ -15,6 +15,7 @@ categories:
 
 
 
+
 ---
 
 # Assembly Crash Course
@@ -73,9 +74,72 @@ intel syntax(√) and AT&T syntax
 
 ## Assembly Crash Course: Data
 
-decimal(base 10), binary(base 2), a binary digit is called a *bit*
+hexadecimal(base 16), decimal(base 10),octal(base 8),  binary(base 2), a binary digit is called a *bit*
 
+①Expressing text
 
+ASCII(American Standard Code for Information Exchange): Specified how to encode, in 7 bits, the English alphabet and common symbols.
+
+below: the top is the first hex digit, the left is the second hex digit
+
+![](img/pwn_college/lesson/ascii.png)
+
+Uppercase(Lowercase) letters: 0x40(0x60) + LETTER_INDEX_IN_HEX
+
+Digit representations: 0x30 + DIGIT
+
+lower than 0x20(SPACE) are "control characters": 0x09(tab), 0x0a(newline), 0x07(bell)
+
+**ASCII has evolved into UTF-8, used on 98% of the web. Extend more than 8 bits**
+
+②  Grouping bits into bytes
+
+IBM invented 8-bits EBCDIC in 1963 for use on their terminals. ASCII(1963) replaced it but the 8-bit byte stuck.
+
+③ Grouping bytes into words
+
+most modern architectures are 64-bit
+
+**Nibble: 4bits**
+
+**Byte: 8 bits**
+
+**word: 2 bytes, 16bits**
+
+**Double word(dword): 4 bytes, 32 bits**
+
+**Quad word(qword): 8 bytes, 64 bits**
+
+`thinking: what happens if add 1 to 0xffffffffffffffff`
+
+integer overflow: 1 + 0x<ins>ffffffffffffffff</ins> = 0x1<ins>0000000000000000</ins>
+
+the extra bit gets put in common carry bit storage by the CPU and the result becomes 0
+
+④Expressing negative numbers(-1)
+
+- sign bit(leftmost bit): **0b00000011 == 3** and **0b10000011 == -3**
+
+drawback1: 0b00000000 = 0 = 0b10000000
+
+drawback2: arithmetic operations have to be signedness-aware
+
+> (unsigned) 0b00000000 - 1 = 0 - 1 = 255 == 0b11111111
+>
+> (signed) 	 0b00000000 - 1 = 0 - 1 = -1    == 0b10000001
+
+- two's complement
+
+1. 0 == 0b00000000
+2. negative numbers are represented as the large positive numbers that they would correlate to
+   1.   0 - 1 == 0b11111111 == 255(unsigned) == -1(signed)
+   2.  -1 - 1 == 0b11111110 == 254 == -2
+3. the leftmost sign is still there, smallest expressible negative number : 0b10000000 = -128
+4. unsigned: -128->127             signed: 0->255
+
+⑤anatomy of a word
+
+![](img/pwn_college/lesson/Word.png)
 
 ## embryoasm
 
@@ -87,10 +151,8 @@ level1: **mov**---->`* rdi = 0x11`
 
 ```assembly
 ; 1.s
-.global _start
-; global:make a symbol visible to the linker _start:the starting address of function
-.intel_syntax noprefix
-; use the intel syntax
+.global _start					; global:make a symbol visible to the linker _start:the starting address of function
+.intel_syntax noprefix			; use the intel syntax
 _start:
 	mov rdi,0x11
 ```
@@ -134,7 +196,7 @@ level3: **function**--->`rax:f(x) = mx + b
 m = rdi, x = rsi, b = rdx`
 
 ```assembly
-imul rdi,rsi ; multiply--->imul
+imul rdi,rsi 	; multiply--->imul
 add rdi,rdx
 mov rax,rdi
 ```
@@ -142,15 +204,16 @@ mov rax,rdi
 level4: **divide**
 
 ```assembly
-mov rax, reg1; div reg2 ; reg1:divided reg2:divisor
-;#rax = reg1/reg2	; rdx = remainder
-mov rax, rdi; div rsi ; get the flag
+mov rax, reg1; div reg2 	; reg1:divided reg2:divisor
+							;#rax = reg1/reg2	; rdx = remainder
+mov rax, rdi; div rsi 		; get the flag
 ```
 
 level5: **modulo**
 
 ```assembly
 ; rdi % rsi ->remainder to rax
+
 mov rax, rdi; div rsi
 mov rax, rdx
 ```
@@ -162,22 +225,23 @@ independent access to lower register bytes
 | 64bits | 32bits | 16bits | 8bits |
 | ------ | ------ | ------ | ----- |
 | rax    | eax    | ax     | ah al |
+| rdi    | edi    | di     | dil   |
 
 ![](img/pwn_college/level6/rax.png)
 
 only use the 'mov' to compute:
 
-- rax = rdi modulo 256				,256=2^8^---------->8---1,0000,0000
-- rbx = rsi modulo 65536            ,65536=2^16^------->16---1,0000,0000,0000,0000
+- rax = rdi modulo 256				,256= 2<sup>8</sup> ---------->8---1,0000,0000
+- rbx = rsi modulo 65536            ,65536=2<sup>16</sup>------->16---1,0000,0000,0000,0000
 
 ```assembly
-mov rcx,rdi ; first move to the General-Purpose Registers
-mov al,cl	; 8bits
+mov rcx,rdi 		; first move to the General-Purpose Registers
+mov al,cl			; 8bits
 mov rdx,rsi
-mov bx,dx	; 16bits
+mov bx,dx			; 16bits
 ```
 
-If B is a power of 2, `A % B` can be simplified to `A & (B-1)` . A can be any number, B = 2^0^,2^1^,2^2^,2^N^...(If B is 256, so B-1 is FFFF,FFFF in binary)
+If B is a power of 2, `A % B` can be simplified to `A & (B-1)` . A can be any number, B = 2<sup>0</sup> ,2<sup>1</sup> ,2<sup>2</sup> ,2<sup>N</sup> ...(If B is 256, so B-1 is FFFF,FFFF in binary)
 
 level7: **shl,shr**---->it will add 0 in another side
 
@@ -192,8 +256,8 @@ rdi = | B7 | B6 | B5 | B4 | B3 | B2 | B1| B0 |, and set the rax to the value of 
 
 ```assembly
 mov rax,rdi
-shl rax,24 ; 3*8=0x18
-shr rax,56 ; 3*8+4*8=0x38 <----It's important to add the front move
+shl rax,24 		; 3*8=0x18
+shr rax,56 		; 3*8+4*8=0x38 <----It's important to add the front move
 ```
 
 level8: **and,or,xor,no**---->bitwise logic
@@ -204,8 +268,8 @@ rax = rdi AND rsi
 
 ```assembly
 and rdi, rsi
-xor rax, rax ; make the rax to 0
-or rax, rdi  ; use the or 
+xor rax, rax 		; make the rax to 0
+or rax, rdi  		; use the or 
 ```
 
 level9: **and,or,xor**
@@ -220,11 +284,11 @@ only use the 'and,or,xor'
 tips: We judge it by the value on the smallest bit.==>0: even, 1: odd
 
 ```assembly
-and rdi, 1 ; first 0and1=0,1and1=1,so the smalliest bit even turn to 0,odd turn to 1
-; other bits and 0 so they're turned to 0
-xor rdi, 1 ; second 0xor1=1,1xor1=0,so the smalliest bit even to 1, odd to 0
-; other bits 0 xor 0 = 0
-xor rax, rax ; make rax 0
+and rdi, 1 					; first 0and1=0,1and1=1,so the smalliest bit even turn to 0,odd turn to 1
+							; other bits and 0 so they're turned to 0
+xor rdi, 1 					; second 0xor1=1,1xor1=0,so the smalliest bit even to 1, odd to 0
+							; other bits 0 xor 0 = 0
+xor rax, rax 				; make rax 0
 or rax, rdi 
 ```
 
@@ -247,10 +311,10 @@ level11: **byte,word,dword,qword**
 
 memory size:
 
-* Quad Word = 8 Bytes = 64 bits			 rax
-* Double Word = 4 bytes = 32 bits          eax
-* Word = 2 bytes = 16 bits                        ax
-* Byte = 1 byte = 8 bits                              ah, al
+* Quad Word = 8 Bytes = 64 bits			 rax             0x1234567812345678
+* Double Word = 4 bytes = 32 bits          eax            0x12345678
+* Word = 2 bytes = 16 bits                        ax              0x1234
+* Byte = 1 byte = 8 bits                              ah, al         0x12
 
 perform:
 
@@ -263,7 +327,7 @@ perform:
 mov al, [0x404000]
 mov bx, [0x404000]
 mov ecx, [0x404000]
-mov rdx, [0x404000] ; get flag
+mov rdx, [0x404000] 		; get flag
 ```
 
 level12:
@@ -278,7 +342,8 @@ level12:
 
 ```assembly
 mov rax, 0xaaa
-mov [rdi], rax ; get flag
+mov [rdi], rax 		; get flag
+
 ; show like below:
 movabs  rax, 0xaaa
 mov     qword ptr [rdi], rax
@@ -342,10 +407,10 @@ add rax, [rsp+16]
 add rax, [rsp+24]
 mov rbx, 4
 div rbx
-mov [rsp], rax; ;#-----> the first method
+mov [rsp], rax			#-----> the first method
 
 ;mov [rsp-8], rax
-;sub rsp, 8     #-----> the second method:simulate the `push` instruction
+;sub rsp, 8     		#-----> the second method:simulate the `push` instruction
 ```
 
 **control flow manipulation** : directly or indirectly control the regester "RIP"
@@ -373,25 +438,25 @@ we should use the `.rept count ... .endr` : Repeat the sequence of lines between
 
 ```assembly
 _start:
-	jmp instruction		;relative jumps
+	jmp instruction			;relative jumps
 	.rept 0x51
-		nop				;0x51 nop so the instruction is after 0x51 from the 2:jmp
+		nop					;0x51 nop so the instruction is after 0x51 from the 2:jmp
 	.endr
 
 instruction:
 	mov rdi, [rsp]
-	mov rax, 0x403000	;address!
-	jmp rax		; absolute jumps
+	mov rax, 0x403000		;address!
+	jmp rax					; absolute jumps
 ```
 
 level18: **conditional jumps** ---> get a if-else function using the `jne` and `je` and `cmp`
 
 > if [x] is 0x7f454c46:
->    y = [x+4] + [x+8] + [x+12]
+> y = [x+4] + [x+8] + [x+12]
 > else if [x] is 0x00005A4D:
->    y = [x+4] - [x+8] - [x+12]
+> y = [x+4] - [x+8] - [x+12]
 > else:
->    y = [x+4] * [x+8] * [x+12]
+> y = [x+4] * [x+8] * [x+12]
 > where:
 > x = rdi, y = rax. Assume each dereferenced value is a **signed dword** .
 
@@ -429,10 +494,10 @@ done:
 level19
 
 > switch(number):
->     0: jmp do_thing_0
->     1: jmp do_thing_1
->     2: jmp do_thing_2
->     default: jmp do_default_thing
+>  0: jmp do_thing_0
+>  1: jmp do_thing_1
+>  2: jmp do_thing_2
+>  default: jmp do_default_thing
 
 reduced else-if
 
@@ -448,15 +513,15 @@ jump table could look like:
 **implement:** 
 
 > if rdi is 0:
->     jmp 0x403040
+>  jmp 0x403040
 > else if rdi is 1:
->     jmp 0x4030f7
+>  jmp 0x4030f7
 > else if rdi is 2:
->     jmp 0x4031f1
+>  jmp 0x4031f1
 > else if rdi is 3:
->     jmp 0x4032b9
+>  jmp 0x4032b9
 > else:
->     jmp 0x40337c
+>  jmp 0x40337c
 
 **an example jump table:** 
 
@@ -487,19 +552,19 @@ done:
         nop
 ```
 
-level20: **loop**
+level20: **for-loop** ----->iterate for a *number* of times
 
 perform: compute the average of n consecutive quad words
 
-```c
+```python
 sum = 0		
 i = 1	
 for i <= n:
     sum += i
     i += 1
-//rdi = memory address of the 1st quad word
-//rsi = n (amount to loop for)
-//rax = average compute
+#rdi = memory address of the 1st quad word
+#rsi = n (amount to loop for)
+#rax = average compute
 ```
 
 - [0x404128:0x404310] = {n qwords}	---->8 bytes
@@ -523,5 +588,125 @@ loop:
 
 ps: **jle : ≤**
 
-level21
+level21: **while-loop** ----->iterate until meet a *condition*
+
+```python
+average = 0
+i = 0
+while x[i] < 0xff:
+    average += x[i]
+    i += 1
+average /= i
+```
+
+**Count** the consecutive non-zero bytes in a contiguous region of memory, where:
+
+- rdi = memory address of the 1st byte
+
+- rax = number of consecutive non-zero bytes
+- if rdi = 0, then set rax = 0
+
+**Example**
+
+```assembly
+rdi = 0x1000
+[0x1000] = 0x41
+[0x1001] = 0x42
+[0x1002] = 0x43
+[0x1003] = 0x00
+
+;then: rax = 3 should be set
+```
+
+```assembly
+.global _start
+.intel_syntax noprefix
+
+_start:
+        xor rbx, rbx
+        xor rax, rax
+        cmp rdi, 0
+        je done
+        mov rsi, 0
+loop:
+        mov rbx, [rdi+rsi]	;<------------------------------------------+
+        add rsi, 1			;<------------------------------------------|
+        cmp rbx,0			;											|
+        jne loop			;											|
+        sub rsi, 1			;rsi need to sub 1 because of the add 1 is behind the mov
+        mov rax, rsi
+done:
+```
+
+**functions**
+
+level22: **function** ---->a callable segment of code that does not destory control flow. Use the "call" and "ret" instructions
+
+>  ip control 、utilize the stack to save things 、call other functions provided
+
+The "call" instruction pushes the memory address of the next instruction onto the stack and then jumps to the value stored in the first argument.
+
+```assembly
+0x1021 mov rax, 0x400000
+0x1028 call rax
+0x102a mov [rsi], rax
+...
+0x1042 ret
+
+STACK ADDR VALUE
+RSP+0x0	   0x0000102a
+```
+
+- call pushes `0x102a`, the address of the next instruction, onto the stack
+- call jumps to `0x400000`, the value stored in rax
+- ret pops the top value off of the stack and jumps to it`0x102a`
+
+**implement the following logic:**
+
+```c
+str_lower(src_addr):
+    rax = 0
+    if src_addr != 0:
+        while [src_addr] != 0x0:
+            if [src_addr] <= 90:
+                [src_addr] = foo([src_addr])
+                rax += 1
+            src_addr += 1
+//foo is provided at 0x403000. foo takes a single argument as a value
+```
+
+**example**
+
+```
+- (data) [0x404000] = {10 random bytes},
+- rdi = 0x404000
+```
+
+```assembly
+_start:
+	mov rax,0
+    mov rsi,rdi
+    cmp rsi,0
+    je done
+loop:
+    mov bl,[rsi]	
+    cmp bl,0			;**bl**! --->0x00
+    je done
+    cmp bl,90			;**bl**! --->0x5a
+    ja next
+    mov dil,bl		  	;rdi is the first parameter of the function call
+    mov rdx,rax			;rax is the first return of function call,save original rax to rdx
+    mov rcx,0x403000
+    call rcx
+    mov [rsi],al
+    mov rax,rdx		
+    add rax,1
+next:
+	add rsi,1
+	jmp loop
+done:
+	ret
+```
+
+level23
 

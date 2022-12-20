@@ -338,7 +338,7 @@
 
 
                 <time class="article-time--reading">
-                    9 minute read
+                    12 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -349,7 +349,7 @@
 
 
                 <time class="article-words">
-                    1788 字
+                    2523 字
                 </time>
             </div>
         
@@ -414,7 +414,67 @@
 <p>history: 8085-&gt;8086-&gt;80186-&gt;80286-&gt;80386&ndash;x86</p>
 <p>intel syntax(√) and AT&amp;T syntax</p>
 <h2 id="assembly-crash-course-data">Assembly Crash Course: Data</h2>
-<p>decimal(base 10), binary(base 2), a binary digit is called a <em>bit</em></p>
+<p>hexadecimal(base 16), decimal(base 10),octal(base 8),  binary(base 2), a binary digit is called a <em>bit</em></p>
+<p>①Expressing text</p>
+<p>ASCII(American Standard Code for Information Exchange): Specified how to encode, in 7 bits, the English alphabet and common symbols.</p>
+<p>below: the top is the first hex digit, the left is the second hex digit</p>
+<p><img src="/img/pwn_college/lesson/ascii.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>Uppercase(Lowercase) letters: 0x40(0x60) + LETTER_INDEX_IN_HEX</p>
+<p>Digit representations: 0x30 + DIGIT</p>
+<p>lower than 0x20(SPACE) are &ldquo;control characters&rdquo;: 0x09(tab), 0x0a(newline), 0x07(bell)</p>
+<p><strong>ASCII has evolved into UTF-8, used on 98% of the web. Extend more than 8 bits</strong></p>
+<p>②  Grouping bits into bytes</p>
+<p>IBM invented 8-bits EBCDIC in 1963 for use on their terminals. ASCII(1963) replaced it but the 8-bit byte stuck.</p>
+<p>③ Grouping bytes into words</p>
+<p>most modern architectures are 64-bit</p>
+<p><strong>Nibble: 4bits</strong></p>
+<p><strong>Byte: 8 bits</strong></p>
+<p><strong>word: 2 bytes, 16bits</strong></p>
+<p><strong>Double word(dword): 4 bytes, 32 bits</strong></p>
+<p><strong>Quad word(qword): 8 bytes, 64 bits</strong></p>
+<p><code>thinking: what happens if add 1 to 0xffffffffffffffff</code></p>
+<p>integer overflow: 1 + 0x<ins>ffffffffffffffff</ins> = 0x1<ins>0000000000000000</ins></p>
+<p>the extra bit gets put in common carry bit storage by the CPU and the result becomes 0</p>
+<p>④Expressing negative numbers(-1)</p>
+<ul>
+<li>sign bit(leftmost bit): <strong>0b00000011 == 3</strong> and <strong>0b10000011 == -3</strong></li>
+</ul>
+<p>drawback1: 0b00000000 = 0 = 0b10000000</p>
+<p>drawback2: arithmetic operations have to be signedness-aware</p>
+<blockquote>
+<p>(unsigned) 0b00000000 - 1 = 0 - 1 = 255 == 0b11111111</p>
+<p>(signed) 	 0b00000000 - 1 = 0 - 1 = -1    == 0b10000001</p>
+</blockquote>
+<ul>
+<li>two&rsquo;s complement</li>
+</ul>
+<ol>
+<li>0 == 0b00000000</li>
+<li>negative numbers are represented as the large positive numbers that they would correlate to
+<ol>
+<li>0 - 1 == 0b11111111 == 255(unsigned) == -1(signed)</li>
+<li>-1 - 1 == 0b11111110 == 254 == -2</li>
+</ol>
+</li>
+<li>the leftmost sign is still there, smallest expressible negative number : 0b10000000 = -128</li>
+<li>unsigned: -128-&gt;127             signed: 0-&gt;255</li>
+</ol>
+<p>⑤anatomy of a word</p>
+<p><img src="/img/pwn_college/lesson/Word.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <h2 id="embryoasm">embryoasm</h2>
 <p>&mdash;&mdash;&mdash;&ndash;send/craft/assemble/pipe raw bytes over stdin to program</p>
 <p><strong>registers</strong></p>
@@ -426,15 +486,11 @@
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">; 1.s
-</span></span><span class="line"><span class="cl">.global _start
-</span></span><span class="line"><span class="cl">; global:make a symbol visible to the linker _start:the starting address of function
-</span></span><span class="line"><span class="cl">.intel_syntax noprefix
-</span></span><span class="line"><span class="cl">; use the intel syntax
+</span></span><span class="line"><span class="cl">.global _start					; global:make a symbol visible to the linker _start:the starting address of function
+</span></span><span class="line"><span class="cl">.intel_syntax noprefix			; use the intel syntax
 </span></span><span class="line"><span class="cl">_start:
 </span></span><span class="line"><span class="cl">	mov rdi,0x11
 </span></span></code></pre></td></tr></table>
@@ -508,7 +564,7 @@
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">imul rdi,rsi ; multiply---&gt;imul
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">imul rdi,rsi 	; multiply---&gt;imul
 </span></span><span class="line"><span class="cl">add rdi,rdx
 </span></span><span class="line"><span class="cl">mov rax,rdi
 </span></span></code></pre></td></tr></table>
@@ -521,9 +577,9 @@
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rax, reg1; div reg2 ; reg1:divided reg2:divisor
-</span></span><span class="line"><span class="cl">;#rax = reg1/reg2	; rdx = remainder
-</span></span><span class="line"><span class="cl">mov rax, rdi; div rsi ; get the flag
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rax, reg1; div reg2 	; reg1:divided reg2:divisor
+</span></span><span class="line"><span class="cl">							;#rax = reg1/reg2	; rdx = remainder
+</span></span><span class="line"><span class="cl">mov rax, rdi; div rsi 		; get the flag
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>level5: <strong>modulo</strong></p>
@@ -532,9 +588,11 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
+</span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">; rdi % rsi -&gt;remainder to rax
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">mov rax, rdi; div rsi
 </span></span><span class="line"><span class="cl">mov rax, rdx
 </span></span></code></pre></td></tr></table>
@@ -557,6 +615,12 @@
 <td>ax</td>
 <td>ah al</td>
 </tr>
+<tr>
+<td>rdi</td>
+<td>edi</td>
+<td>di</td>
+<td>dil</td>
+</tr>
 </tbody>
 </table></div>
 <p><img src="/img/pwn_college/level6/rax.png"
@@ -569,8 +633,8 @@
 ></p>
 <p>only use the &lsquo;mov&rsquo; to compute:</p>
 <ul>
-<li>rax = rdi modulo 256				,256=2^8^&mdash;&mdash;&mdash;-&gt;8&mdash;1,0000,0000</li>
-<li>rbx = rsi modulo 65536            ,65536=2^16^&mdash;&mdash;-&gt;16&mdash;1,0000,0000,0000,0000</li>
+<li>rax = rdi modulo 256				,256= 2<sup>8</sup> &mdash;&mdash;&mdash;-&gt;8&mdash;1,0000,0000</li>
+<li>rbx = rsi modulo 65536            ,65536=2<sup>16</sup>&mdash;&mdash;-&gt;16&mdash;1,0000,0000,0000,0000</li>
 </ul>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -580,13 +644,13 @@
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rcx,rdi ; first move to the General-Purpose Registers
-</span></span><span class="line"><span class="cl">mov al,cl	; 8bits
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rcx,rdi 		; first move to the General-Purpose Registers
+</span></span><span class="line"><span class="cl">mov al,cl			; 8bits
 </span></span><span class="line"><span class="cl">mov rdx,rsi
-</span></span><span class="line"><span class="cl">mov bx,dx	; 16bits
+</span></span><span class="line"><span class="cl">mov bx,dx			; 16bits
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>If B is a power of 2, <code>A % B</code> can be simplified to <code>A &amp; (B-1)</code> . A can be any number, B = 2^0^,2^1^,2^2^,2^N^&hellip;(If B is 256, so B-1 is FFFF,FFFF in binary)</p>
+</div><p>If B is a power of 2, <code>A % B</code> can be simplified to <code>A &amp; (B-1)</code> . A can be any number, B = 2<sup>0</sup> ,2<sup>1</sup> ,2<sup>2</sup> ,2<sup>N</sup> &hellip;(If B is 256, so B-1 is FFFF,FFFF in binary)</p>
 <p>level7: <strong>shl,shr</strong>&mdash;-&gt;it will add 0 in another side</p>
 <p>shift: <strong>rax=10001010</strong> ,  after the instruction<code>shl rax, 1</code>, <strong>rax=00010100</strong>&mdash;&mdash;&gt;8bits</p>
 <p>register has 64bits=8*8bits</p>
@@ -601,8 +665,8 @@ shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rax,rdi
-</span></span><span class="line"><span class="cl">shl rax,24 ; 3*8=0x18
-</span></span><span class="line"><span class="cl">shr rax,56 ; 3*8+4*8=0x38 &lt;----It&#39;s important to add the front move
+</span></span><span class="line"><span class="cl">shl rax,24 		; 3*8=0x18
+</span></span><span class="line"><span class="cl">shr rax,56 		; 3*8+4*8=0x38 &lt;----It&#39;s important to add the front move
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>level8: <strong>and,or,xor,no</strong>&mdash;-&gt;bitwise logic</p>
@@ -623,8 +687,8 @@ shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">and rdi, rsi
-</span></span><span class="line"><span class="cl">xor rax, rax ; make the rax to 0
-</span></span><span class="line"><span class="cl">or rax, rdi  ; use the or 
+</span></span><span class="line"><span class="cl">xor rax, rax 		; make the rax to 0
+</span></span><span class="line"><span class="cl">or rax, rdi  		; use the or 
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>level9: <strong>and,or,xor</strong></p>
@@ -653,11 +717,11 @@ shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">and rdi, 1 ; first 0and1=0,1and1=1,so the smalliest bit even turn to 0,odd turn to 1
-</span></span><span class="line"><span class="cl">; other bits and 0 so they&#39;re turned to 0
-</span></span><span class="line"><span class="cl">xor rdi, 1 ; second 0xor1=1,1xor1=0,so the smalliest bit even to 1, odd to 0
-</span></span><span class="line"><span class="cl">; other bits 0 xor 0 = 0
-</span></span><span class="line"><span class="cl">xor rax, rax ; make rax 0
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">and rdi, 1 					; first 0and1=0,1and1=1,so the smalliest bit even turn to 0,odd turn to 1
+</span></span><span class="line"><span class="cl">							; other bits and 0 so they&#39;re turned to 0
+</span></span><span class="line"><span class="cl">xor rdi, 1 					; second 0xor1=1,1xor1=0,so the smalliest bit even to 1, odd to 0
+</span></span><span class="line"><span class="cl">							; other bits 0 xor 0 = 0
+</span></span><span class="line"><span class="cl">xor rax, rax 				; make rax 0
 </span></span><span class="line"><span class="cl">or rax, rdi 
 </span></span></code></pre></td></tr></table>
 </div>
@@ -682,10 +746,10 @@ shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
 </div><p>level11: <strong>byte,word,dword,qword</strong></p>
 <p>memory size:</p>
 <ul>
-<li>Quad Word = 8 Bytes = 64 bits			 rax</li>
-<li>Double Word = 4 bytes = 32 bits          eax</li>
-<li>Word = 2 bytes = 16 bits                        ax</li>
-<li>Byte = 1 byte = 8 bits                              ah, al</li>
+<li>Quad Word = 8 Bytes = 64 bits			 rax             0x1234567812345678</li>
+<li>Double Word = 4 bytes = 32 bits          eax            0x12345678</li>
+<li>Word = 2 bytes = 16 bits                        ax              0x1234</li>
+<li>Byte = 1 byte = 8 bits                              ah, al         0x12</li>
 </ul>
 <p>perform:</p>
 <pre><code>1. Set rax to the byte at 0x404000
@@ -704,7 +768,7 @@ shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
 <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov al, [0x404000]
 </span></span><span class="line"><span class="cl">mov bx, [0x404000]
 </span></span><span class="line"><span class="cl">mov ecx, [0x404000]
-</span></span><span class="line"><span class="cl">mov rdx, [0x404000] ; get flag
+</span></span><span class="line"><span class="cl">mov rdx, [0x404000] 		; get flag
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>level12:</p>
@@ -719,10 +783,12 @@ shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
+</span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rax, 0xaaa
-</span></span><span class="line"><span class="cl">mov [rdi], rax ; get flag
+</span></span><span class="line"><span class="cl">mov [rdi], rax 		; get flag
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">; show like below:
 </span></span><span class="line"><span class="cl">movabs  rax, 0xaaa
 </span></span><span class="line"><span class="cl">mov     qword ptr [rdi], rax
@@ -820,10 +886,10 @@ shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">add</span><span class="w"> </span><span class="n">rax</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">rsp</span><span class="o">+</span><span class="mi">24</span><span class="p">]</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">mov</span><span class="w"> </span><span class="n">rbx</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">div</span><span class="w"> </span><span class="n">rbx</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">mov</span><span class="w"> </span><span class="p">[</span><span class="n">rsp</span><span class="p">],</span><span class="w"> </span><span class="n">rax</span><span class="p">;</span><span class="w"> </span><span class="p">;</span><span class="c1">#-----&gt; the first method
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">mov</span><span class="w"> </span><span class="p">[</span><span class="n">rsp</span><span class="p">],</span><span class="w"> </span><span class="n">rax</span><span class="w">			</span><span class="c1">#-----&gt; the first method
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">;</span><span class="n">mov</span><span class="w"> </span><span class="p">[</span><span class="n">rsp</span><span class="o">-</span><span class="mi">8</span><span class="p">],</span><span class="w"> </span><span class="n">rax</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">;</span><span class="n">sub</span><span class="w"> </span><span class="n">rsp</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="w">     </span><span class="c1">#-----&gt; the second method:simulate the `push` instruction
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">;</span><span class="n">sub</span><span class="w"> </span><span class="n">rsp</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="w">     		</span><span class="c1">#-----&gt; the second method:simulate the `push` instruction
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>control flow manipulation</strong> : directly or indirectly control the regester &ldquo;RIP&rdquo;</p>
@@ -867,15 +933,15 @@ shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">_start:
-</span></span><span class="line"><span class="cl">	jmp instruction		;relative jumps
+</span></span><span class="line"><span class="cl">	jmp instruction			;relative jumps
 </span></span><span class="line"><span class="cl">	.rept 0x51
-</span></span><span class="line"><span class="cl">		nop				;0x51 nop so the instruction is after 0x51 from the 2:jmp
+</span></span><span class="line"><span class="cl">		nop					;0x51 nop so the instruction is after 0x51 from the 2:jmp
 </span></span><span class="line"><span class="cl">	.endr
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">instruction:
 </span></span><span class="line"><span class="cl">	mov rdi, [rsp]
-</span></span><span class="line"><span class="cl">	mov rax, 0x403000	;address!
-</span></span><span class="line"><span class="cl">	jmp rax		; absolute jumps
+</span></span><span class="line"><span class="cl">	mov rax, 0x403000		;address!
+</span></span><span class="line"><span class="cl">	jmp rax					; absolute jumps
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>level18: <strong>conditional jumps</strong> &mdash;&gt; get a if-else function using the <code>jne</code> and <code>je</code> and <code>cmp</code></p>
@@ -1021,7 +1087,7 @@ jmp 0x40337c</p>
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">nop</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
-</div><p>level20: <strong>loop</strong></p>
+</div><p>level20: <strong>for-loop</strong> &mdash;&ndash;&gt;iterate for a <em>number</em> of times</p>
 <p>perform: compute the average of n consecutive quad words</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -1035,15 +1101,15 @@ jmp 0x40337c</p>
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span>		
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="nb">sum</span> <span class="o">=</span> <span class="mi">0</span>		
 </span></span><span class="line"><span class="cl"><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>	
-</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="nl">n</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">    <span class="n">sum</span> <span class="o">+=</span> <span class="n">i</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">sum</span> <span class="o">+=</span> <span class="n">i</span>
 </span></span><span class="line"><span class="cl">    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-</span></span><span class="line"><span class="cl"><span class="c1">//rdi = memory address of the 1st quad word
-</span></span></span><span class="line"><span class="cl"><span class="c1">//rsi = n (amount to loop for)
-</span></span></span><span class="line"><span class="cl"><span class="c1">//rax = average compute
-</span></span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl"><span class="c1">#rdi = memory address of the 1st quad word</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#rsi = n (amount to loop for)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#rax = average compute</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><ul>
 <li>
@@ -1085,7 +1151,220 @@ jmp 0x40337c</p>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>ps: <strong>jle : ≤</strong></p>
-<p>level21</p>
+<p>level21: <strong>while-loop</strong> &mdash;&ndash;&gt;iterate until meet a <em>condition</em></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">average</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mh">0xff</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">average</span> <span class="o">+=</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl"><span class="n">average</span> <span class="o">/=</span> <span class="n">i</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Count</strong> the consecutive non-zero bytes in a contiguous region of memory, where:</p>
+<ul>
+<li>
+<p>rdi = memory address of the 1st byte</p>
+</li>
+<li>
+<p>rax = number of consecutive non-zero bytes</p>
+</li>
+<li>
+<p>if rdi = 0, then set rax = 0</p>
+</li>
+</ul>
+<p><strong>Example</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">rdi = 0x1000
+</span></span><span class="line"><span class="cl">[0x1000] = 0x41
+</span></span><span class="line"><span class="cl">[0x1001] = 0x42
+</span></span><span class="line"><span class="cl">[0x1002] = 0x43
+</span></span><span class="line"><span class="cl">[0x1003] = 0x00
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">;then: rax = 3 should be set
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">.global _start
+</span></span><span class="line"><span class="cl">.intel_syntax noprefix
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">_start:
+</span></span><span class="line"><span class="cl">        xor rbx, rbx
+</span></span><span class="line"><span class="cl">        xor rax, rax
+</span></span><span class="line"><span class="cl">        cmp rdi, 0
+</span></span><span class="line"><span class="cl">        je done
+</span></span><span class="line"><span class="cl">        mov rsi, 0
+</span></span><span class="line"><span class="cl">loop:
+</span></span><span class="line"><span class="cl">        mov rbx, [rdi+rsi]	;&lt;------------------------------------------+
+</span></span><span class="line"><span class="cl">        add rsi, 1			;&lt;------------------------------------------|
+</span></span><span class="line"><span class="cl">        cmp rbx,0			;											|
+</span></span><span class="line"><span class="cl">        jne loop			;											|
+</span></span><span class="line"><span class="cl">        sub rsi, 1			;rsi need to sub 1 because of the add 1 is behind the mov
+</span></span><span class="line"><span class="cl">        mov rax, rsi
+</span></span><span class="line"><span class="cl">done:
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>functions</strong></p>
+<p>level22: <strong>function</strong> &mdash;-&gt;a callable segment of code that does not destory control flow. Use the &ldquo;call&rdquo; and &ldquo;ret&rdquo; instructions</p>
+<blockquote>
+<p>ip control 、utilize the stack to save things 、call other functions provided</p>
+</blockquote>
+<p>The &ldquo;call&rdquo; instruction pushes the memory address of the next instruction onto the stack and then jumps to the value stored in the first argument.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">0x1021 mov rax, 0x400000
+</span></span><span class="line"><span class="cl">0x1028 call rax
+</span></span><span class="line"><span class="cl">0x102a mov [rsi], rax
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">0x1042 ret
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">STACK ADDR VALUE
+</span></span><span class="line"><span class="cl">RSP+0x0	   0x0000102a
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>call pushes <code>0x102a</code>, the address of the next instruction, onto the stack</li>
+<li>call jumps to <code>0x400000</code>, the value stored in rax</li>
+<li>ret pops the top value off of the stack and jumps to it<code>0x102a</code></li>
+</ul>
+<p><strong>implement the following logic:</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">str_lower</span><span class="p">(</span><span class="n">src_addr</span><span class="p">)</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">rax</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">src_addr</span> <span class="o">!=</span> <span class="mi">0</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="p">[</span><span class="n">src_addr</span><span class="p">]</span> <span class="o">!=</span> <span class="mh">0x0</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">[</span><span class="n">src_addr</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">90</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">                <span class="p">[</span><span class="n">src_addr</span><span class="p">]</span> <span class="o">=</span> <span class="n">foo</span><span class="p">([</span><span class="n">src_addr</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">                <span class="n">rax</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">            <span class="n">src_addr</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//foo is provided at 0x403000. foo takes a single argument as a value
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>example</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">- (data) [0x404000] = {10 random bytes},
+</span></span><span class="line"><span class="cl">- rdi = 0x404000
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">_start:
+</span></span><span class="line"><span class="cl">	mov rax,0
+</span></span><span class="line"><span class="cl">    mov rsi,rdi
+</span></span><span class="line"><span class="cl">    cmp rsi,0
+</span></span><span class="line"><span class="cl">    je done
+</span></span><span class="line"><span class="cl">loop:
+</span></span><span class="line"><span class="cl">    mov bl,[rsi]	
+</span></span><span class="line"><span class="cl">    cmp bl,0			;**bl**! ---&gt;0x00
+</span></span><span class="line"><span class="cl">    je done
+</span></span><span class="line"><span class="cl">    cmp bl,90			;**bl**! ---&gt;0x5a
+</span></span><span class="line"><span class="cl">    ja next
+</span></span><span class="line"><span class="cl">    mov dil,bl		  	;rdi is the first parameter of the function call
+</span></span><span class="line"><span class="cl">    mov rdx,rax			;rax is the first return of function call,save original rax to rdx
+</span></span><span class="line"><span class="cl">    mov rcx,0x403000
+</span></span><span class="line"><span class="cl">    call rcx
+</span></span><span class="line"><span class="cl">    mov [rsi],al
+</span></span><span class="line"><span class="cl">    mov rax,rdx		
+</span></span><span class="line"><span class="cl">    add rax,1
+</span></span><span class="line"><span class="cl">next:
+</span></span><span class="line"><span class="cl">	add rsi,1
+</span></span><span class="line"><span class="cl">	jmp loop
+</span></span><span class="line"><span class="cl">done:
+</span></span><span class="line"><span class="cl">	ret
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level23</p>
 
 </section>
 
@@ -1223,7 +1502,7 @@ jmp 0x40337c</p>
         
             
         
-        共 6.67k 字 · 共 5篇文章
+        共 7.41k 字 · 共 5篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
