@@ -198,15 +198,15 @@ menu:
     social:
         - identifier: github
           name: GitHub
-          url: https://github.com/CaiJimmy/hugo-theme-stack
+          url: https://github.com/J-shiro
           params:
               icon: brand-github
 
-        - identifier: twitter
-          name: Twitter
-          url: https://twitter.com
-          params:
-              icon: brand-twitter
+        # - identifier: twitter
+        #   name: Twitter
+        #   url: https://twitter.com
+        #   params:
+        #       icon: brand-twitter
 
 related:
     includeNewer: true

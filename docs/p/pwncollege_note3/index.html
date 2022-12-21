@@ -78,7 +78,7 @@
             
                 <li>
                     <a 
-                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        href='https://github.com/J-shiro'
                         target="_blank"
                         title="GitHub"
                     >
@@ -87,25 +87,6 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
   <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='https://twitter.com'
-                        target="_blank"
-                        title="Twitter"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
 </svg>
 
 
@@ -338,7 +319,7 @@
 
 
                 <time class="article-time--reading">
-                    13 minute read
+                    15 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -349,7 +330,7 @@
 
 
                 <time class="article-words">
-                    2745 字
+                    3032 字
                 </time>
             </div>
         
@@ -554,6 +535,150 @@
 <li>careful with <strong>rsp</strong> , it contains the address of an region of memory to store temporary data (Stack Pointer)</li>
 </ul>
 <h2 id="assembly-crash-course-memory">Assembly Crash Course: Memory</h2>
+<p>Registers: expensive+limited numbers</p>
+<p>system Memory: a place to store lots of data and fast</p>
+<p>①Process Perspective</p>
+<p>Memory &lt;&mdash;-&gt; Registers+Dist+Network+Video Card</p>
+<p>Process memory is addressed linearly</p>
+<p><strong>From: 0x10000</strong> (for security reasons)</p>
+<p><strong>To: 0x7fffffffffff</strong> (for architecture / OS purposes)</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>0x10000</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th>0x7fffffffffff</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>Program Binary Code</td>
+<td></td>
+<td>Dynamically Allocated Memory(managed by libraries)</td>
+<td></td>
+<td>[Dynamically Mapped Memory(requested by process)]</td>
+<td></td>
+<td>Library Code</td>
+<td></td>
+<td>Process Stack</td>
+<td></td>
+<td>OS Helper Regions</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<p>②Stack - temporary data storage</p>
+<p>registers and immediates can be pushed to stack <code>push rax</code>, <code>push 0xaabbccdd</code> (even on 64-bit x86, can only push 32-bit immediates)</p>
+<p>values can be popped back off of the stack(to the register) <code>pop rax</code></p>
+<p>[CPU knows: stack address is stored in rsp] (top stack address &lt; bottom stack address)</p>
+<ul>
+<li>push decreases rsp by 8 in hex</li>
+<li>pop increases rsp by 8 in hex</li>
+</ul>
+<p>③accessing memory(between register and memory)</p>
+<p>load the 64-bit value stored at memory address 0x12345 into rbx:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rax, 0x12345
+</span></span><span class="line"><span class="cl">mov rbx, [rax]
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>store the 64-bit value in rbx into memory at address 0x133337</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rax, 0x133337
+</span></span><span class="line"><span class="cl">mov [rax], rbx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>push rcx :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">sub rsp, 8
+</span></span><span class="line"><span class="cl">mov [rsp], rcx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Each addressed memory location contains one byte!!!: 8-byte write at address 0x133337 will write to addresses 0x133337 through 0x13333f</strong></p>
+<p>④Memory Endianess</p>
+<p>backwards&mdash;&gt;in little endian</p>
+<p><img src="/img/pwn_college/lesson/endian.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>⑤address calculation</p>
+<p>get the calculated address with <strong>Load Effective Address(lea)</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rax, 1
+</span></span><span class="line"><span class="cl">pop rcx
+</span></span><span class="line"><span class="cl">lea rbx, [rsp+rax*8+5] 			;rbx holds the computed address
+</span></span><span class="line"><span class="cl">mov rbx, [rbx]
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>limits: <em><em>reg+reg</em>(2 or 4 or 8)+value</em>*</p>
+<p>⑥RIP-Relative Addressing</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">lea rax, [rip+8]
+</span></span><span class="line"><span class="cl">lea rax, [rip]
+</span></span><span class="line"><span class="cl">--------------
+</span></span><span class="line"><span class="cl">mov rax, [rip]
+</span></span><span class="line"><span class="cl">--------------
+</span></span><span class="line"><span class="cl">mov [rip], rax
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>also can write immediate values (must specify the size)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rax, 0x133337
+</span></span><span class="line"><span class="cl">mov DWORD PTR [rax], 0x1337
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="assembly-crash-course-control-flow">Assembly Crash Course: Control Flow</h2>
 <h2 id="embryoasm">embryoasm</h2>
 <p>&mdash;&mdash;&mdash;&ndash;send/craft/assemble/pipe raw bytes over stdin to program</p>
 <p><strong>registers</strong></p>
@@ -1581,7 +1706,7 @@ jmp 0x40337c</p>
         
             
         
-        共 7.63k 字 · 共 5篇文章
+        共 7.92k 字 · 共 5篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -1782,6 +1907,7 @@ jmp 0x40337c</p>
     <li><a href="#assembly-crash-course-data">Assembly Crash Course: Data</a></li>
     <li><a href="#assembly-crash-course-registers">Assembly Crash Course: Registers</a></li>
     <li><a href="#assembly-crash-course-memory">Assembly Crash Course: Memory</a></li>
+    <li><a href="#assembly-crash-course-control-flow">Assembly Crash Course: Control Flow</a></li>
     <li><a href="#embryoasm">embryoasm</a></li>
   </ol>
 </nav>

@@ -212,6 +212,99 @@ most arithmetic instructions the first specified register stores the result
 
 ## Assembly Crash Course: Memory
 
+Registers: expensive+limited numbers
+
+system Memory: a place to store lots of data and fast
+
+①Process Perspective
+
+Memory <----> Registers+Dist+Network+Video Card
+
+Process memory is addressed linearly
+
+**From: 0x10000** (for security reasons)
+
+**To: 0x7fffffffffff** (for architecture / OS purposes)
+
+| 0x10000 |                     |      |                                                    |      |                                                   |      |              |      |               |      |                   | 0x7fffffffffff |
+| ------- | ------------------- | ---- | -------------------------------------------------- | ---- | ------------------------------------------------- | ---- | ------------ | ---- | ------------- | ---- | ----------------- | -------------- |
+|         | Program Binary Code |      | Dynamically Allocated Memory(managed by libraries) |      | [Dynamically Mapped Memory(requested by process)] |      | Library Code |      | Process Stack |      | OS Helper Regions |                |
+
+②Stack - temporary data storage
+
+registers and immediates can be pushed to stack `push rax`, `push 0xaabbccdd` (even on 64-bit x86, can only push 32-bit immediates)
+
+values can be popped back off of the stack(to the register) `pop rax`
+
+[CPU knows: stack address is stored in rsp] (top stack address < bottom stack address)
+
+- push decreases rsp by 8 in hex
+- pop increases rsp by 8 in hex
+
+③accessing memory(between register and memory)
+
+load the 64-bit value stored at memory address 0x12345 into rbx:
+
+```assembly
+mov rax, 0x12345
+mov rbx, [rax]
+```
+
+store the 64-bit value in rbx into memory at address 0x133337
+
+```assembly
+mov rax, 0x133337
+mov [rax], rbx
+```
+
+push rcx :
+
+```assembly
+sub rsp, 8
+mov [rsp], rcx
+```
+
+**Each addressed memory location contains one byte!!!: 8-byte write at address 0x133337 will write to addresses 0x133337 through 0x13333f**
+
+④Memory Endianess
+
+backwards--->in little endian
+
+![](img/pwn_college/lesson/endian.png)
+
+⑤address calculation
+
+get the calculated address with **Load Effective Address(lea)**
+
+```assembly
+mov rax, 1
+pop rcx
+lea rbx, [rsp+rax*8+5] 			;rbx holds the computed address
+mov rbx, [rbx]
+```
+
+limits: **reg+reg*(2 or 4 or 8)+value**
+
+⑥RIP-Relative Addressing
+
+```assembly
+lea rax, [rip+8]
+lea rax, [rip]
+--------------
+mov rax, [rip]
+--------------
+mov [rip], rax
+```
+
+also can write immediate values (must specify the size)
+
+```assembly
+mov rax, 0x133337
+mov DWORD PTR [rax], 0x1337
+```
+
+## Assembly Crash Course: Control Flow 
+
 
 
 ## embryoasm
