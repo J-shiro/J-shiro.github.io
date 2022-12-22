@@ -547,7 +547,7 @@
         <guid>https://J-shiro.github.io/zh-cn/p/asis_2016_b00ks/</guid>
         <description>&lt;img src="https://J-shiro.github.io/zh-cn/p/asis_2016_b00ks/pwn.png" alt="Featured image of post Asis_2016_b00ks" /&gt;&lt;p&gt;这道题是第一次通过一步步调试在本地打通，参考了很多大佬的WP，记录一下。&lt;/p&gt;
 &lt;h2 id=&#34;分析功能及数据结构&#34;&gt;分析功能及数据结构&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025152027671.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025152027671.png&#34;
 	
 	
 	
@@ -557,7 +557,7 @@
 &gt;&lt;/p&gt;
 &lt;p&gt;checksec之后可知是amd64的结构，放入IDA64中分析，进入找到main函数按F5键查看伪代码。&lt;/p&gt;
 &lt;h3 id=&#34;main&#34;&gt;main&lt;/h3&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025152231748.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025152231748.png&#34;
 	
 	
 	
@@ -567,7 +567,7 @@
 &gt;&lt;/p&gt;
 &lt;h3 id=&#34;sub_a77&#34;&gt;sub_A77&lt;/h3&gt;
 &lt;p&gt;首先初始化stdout和stdin，sub_A77函数输出一行文字&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025152349337.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025152349337.png&#34;
 	
 	
 	
@@ -577,7 +577,7 @@
 &gt;&lt;/p&gt;
 &lt;h3 id=&#34;sub_b6d&#34;&gt;sub_B6D&lt;/h3&gt;
 &lt;p&gt;sub_B6D函数需要输入作者名称，将读入名字author_name，其中&lt;code&gt;32LL&lt;/code&gt;为0x20的长度，还需要进一步看sub_9F5函数。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025152439174.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025152439174.png&#34;
 	
 	
 	
@@ -586,7 +586,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;sub_B6D函数最后效果为将name读入到0x02040位置。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025154415885.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025154415885.png&#34;
 	
 	
 	
@@ -596,7 +596,7 @@
 &gt;&lt;/p&gt;
 &lt;h3 id=&#34;sub_9f5&#34;&gt;sub_9F5&lt;/h3&gt;
 &lt;p&gt;sub_9F5函数首先需要输入的a2大于0，即长度大于0，在for循环中i从0开始计数，一步一步读入输入的字符，其中，read()函数的返回值为实际读到的字节数，若每次读到的字节数不为1则退出返回1，然后在sub_B60函数中报错读入失败，若此时写向buf的值为10，退出循环，每次循环中，&lt;code&gt;++buf&lt;/code&gt;buf自增。在该处为循环了32次，当i与a2相等后，跳出循环，buf所指向的位置会赋值为0&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025152645662.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025152645662.png&#34;
 	
 	
 	
@@ -607,7 +607,7 @@
 &lt;h3 id=&#34;sub_a89&#34;&gt;sub_A89&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;sub_9F5即为漏洞函数&lt;/strong&gt;，存在off by one漏洞，当输入数据长度正好为a2时，会向buf中越界写入一个字节&lt;code&gt;&#39;\x00&#39;&lt;/code&gt;，假设a2为32，则通过read读取32个字符后，在++buf后，让第33个字符的位置被&lt;code&gt;&#39;\x00&#39;&lt;/code&gt;覆盖。&lt;/p&gt;
 &lt;p&gt;接着进入while语句条件中的sub_A89函数，效果为打印出菜单并且只允许输入1到6的数字。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025154600040.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025154600040.png&#34;
 	
 	
 	
@@ -619,7 +619,7 @@
 &lt;h3 id=&#34;sub_f55&#34;&gt;sub_F55&lt;/h3&gt;
 &lt;p&gt;该函数主要用于创建书本的结构，首先输入书本名字大小到v2，若v2大于等于0则malloc会分配name buffer(≤32)，若分配成功，ptr指向分配的空间，继续通过sub_9F5读入名字到ptr指向的地址，失败则输出“fail to read name&amp;quot;，成功则进入else；&lt;/p&gt;
 &lt;p&gt;else中v2赋值为0，scanf输入书本描述的大小给v2，此时malloc再一次分配description buffer，此处的大小自定义，v6指向分配的空间，若成功，则继续输入书本的描述，此时v0赋值为v6，sub_9F5读入，成功读入后则进入else；&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025155340205.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025155340205.png&#34;
 	
 	
 	
@@ -629,7 +629,7 @@
 &gt;&lt;/p&gt;
 &lt;h3 id=&#34;sub_b24&#34;&gt;sub_B24&lt;/h3&gt;
 &lt;p&gt;sub_B24函数主要在off_202010到之后的共20的位置查看是否有值，若为0，则说明有空闲位置，返回空闲的位置所代表的i。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025160305683.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025160305683.png&#34;
 	
 	
 	
@@ -677,7 +677,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;//DWORD：unsigned long无符号的
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025155403683.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025155403683.png&#34;
 	
 	
 	
@@ -685,7 +685,7 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025155423752.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025155423752.png&#34;
 	
 	
 	
@@ -695,7 +695,7 @@
 &gt;&lt;/p&gt;
 &lt;h3 id=&#34;sub_bbd&#34;&gt;sub_BBD&lt;/h3&gt;
 &lt;p&gt;输入要删除的id，然后进行free并且赋值为0。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025161124844.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025161124844.png&#34;
 	
 	
 	
@@ -704,7 +704,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;h3 id=&#34;sub_e17&#34;&gt;sub_E17&lt;/h3&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025161226153.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025161226153.png&#34;
 	
 	
 	
@@ -715,7 +715,7 @@
 &lt;p&gt;编辑book description&lt;/p&gt;
 &lt;h3 id=&#34;sub_d1f&#34;&gt;sub_D1F&lt;/h3&gt;
 &lt;p&gt;该函数用于展示书本book，打印id、name、description、author。从off_202010所指向的那一些地址读出数据。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025161344963.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025161344963.png&#34;
 	
 	
 	
@@ -749,7 +749,7 @@
 &lt;p&gt;&lt;strong&gt;0x18-0x1c字节&lt;/strong&gt;：放着description的字符串的额最大长度，意为：若再次修改它，最多能输入多少字符&lt;/p&gt;
 &lt;h3 id=&#34;sub_b6d-1&#34;&gt;sub_B6D&lt;/h3&gt;
 &lt;p&gt;通过sub_9F5重新编辑author name&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025161745008.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025161745008.png&#34;
 	
 	
 	
@@ -766,7 +766,7 @@
 &lt;p&gt;bss中放结构，用off by null来做堆布局，堆布局使得book结构体落在可控制的堆上，结合“查”、“改”可任意地址读写，off-by-one可以基于各种缓冲区：栈、bss、堆等等。&lt;/p&gt;
 &lt;h2 id=&#34;实践exp&#34;&gt;实践exp&lt;/h2&gt;
 &lt;p&gt;此处使用gdb插件peda会更加方便，之前使用的是pwngdb，但是对于查找某个字符peda会使用更方便。切换gdb插件：更改&lt;code&gt;~/.gdbinit&lt;/code&gt;文件，将pwngdb注释掉，取消peda的注释即可。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025164051973.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025164051973.png&#34;
 	
 	
 	
@@ -777,7 +777,7 @@
 &lt;p&gt;其中将off_202010：global_book_struct_array，off_202018：author_name_ptr，两者指向的地址之间正好相差为32个字节(0x20)，当输入author_name长度为32时，会向author_name_ptr中越界写入一个字节&lt;code&gt;\x00&lt;/code&gt;，之后创建book_struct时会将其地址保存在global_book_struct_array中，覆盖之前字符串截断符&lt;code&gt;\x00&lt;/code&gt;，所以可以打印出author_name实现信息泄露。（越界写入一个字节会覆盖global_book_struct_array中的保存的第一个book_struct的地址。&lt;/p&gt;
 &lt;h3 id=&#34;peda的find插件进行分析&#34;&gt;peda的find插件进行分析&lt;/h3&gt;
 &lt;p&gt;gdb运行程序，进入run，输入作者名字：aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabc(32)，选择1，10，aaaaa，10，bbbbb，ctrl+C&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025164827903.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025164827903.png&#34;
 	
 	
 	
@@ -785,7 +785,7 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025164901716.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025164901716.png&#34;
 	
 	
 	
@@ -794,7 +794,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;输入find aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabc找到相应的位置&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025164948519.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025164948519.png&#34;
 	
 	
 	
@@ -802,7 +802,7 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025165159813.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025165159813.png&#34;
 	
 	
 	
@@ -829,7 +829,7 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;strong&gt;其中可以发现，将f0改变为00后，book1指针指向description&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;继续查看book_name和description可以看到aaaaa和bbbbb&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025165920156.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025165920156.png&#34;
 	
 	
 	
@@ -838,7 +838,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;创建两个book：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025170206730.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025170206730.png&#34;
 	
 	
 	
@@ -846,7 +846,7 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025170553060.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025170553060.png&#34;
 	
 	
 	
@@ -989,7 +989,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;gdb&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;attach&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;io&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025193027006.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025193027006.png&#34;
 	
 	
 	
@@ -1015,7 +1015,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;此时0x56180ce02070所指向的空间，由于最后的33位的&lt;code&gt;\x00&lt;/code&gt;被book1的指针覆盖，所以打印author_name时c后面的会被打印出来，即为book1地址，如图得到book1的地址&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025194124258.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025194124258.png&#34;
 	
 	
 	
@@ -1039,7 +1039,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#0x01对应于book1,0xffff为description_size，&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025194929356.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025194929356.png&#34;
 	
 	
 	
@@ -1062,7 +1062,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;gdb&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;attach&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;io&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025200239349.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025200239349.png&#34;
 	
 	
 	
@@ -1091,7 +1091,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;gdb&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;attach&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;io&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025202226764.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025202226764.png&#34;
 	
 	
 	
@@ -1099,7 +1099,7 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025202507871.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025202507871.png&#34;
 	
 	
 	
@@ -1122,7 +1122,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;通过查看vmmap我们可以知道libc基址，由于mmap申请，mmap与libc之间存在固定的偏移，则申请出来的book2_name也有固定的偏移，如图通过计算0x00007f2bba6b0000 - 0x7f2bba68e010 = 0x21FF0，所以将book2_name+0x21ff0得到libc基址。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025203052919.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025203052919.png&#34;
 	
 	
 	
@@ -1130,7 +1130,7 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025203210290.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025203210290.png&#34;
 	
 	
 	
@@ -1139,7 +1139,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;泄露得到libc基址：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025203346725.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025203346725.png&#34;
 	
 	
 	
@@ -1184,7 +1184,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;先将book1的description修改，即修改的是fake_book的description（0x0000556f9aed84a0），修改后该fake_book1的description的内容为一个指向freehook的指针地址，然后的操作是将freehook改为system。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025203755878.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025203755878.png&#34;
 	
 	
 	
@@ -1193,7 +1193,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;此时book2的description为free_hook指针地址&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025204108883.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025204108883.png&#34;
 	
 	
 	
@@ -1202,7 +1202,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;然后修改book2的description，使得free_hook指针地址指向system，&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025204344639.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025204344639.png&#34;
 	
 	
 	
@@ -1211,7 +1211,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;最后deletebook，删除book2时，会调用free函数，即也会调用&lt;code&gt;__free_hook&lt;/code&gt;函数，相当于调用system函数，当构造book2时，其中的book2_name和book2_description均为&lt;code&gt;/bin/sh&lt;/code&gt;，使得进行&lt;code&gt;system(/bin/sh)&lt;/code&gt;获得shell。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/b00ks/image-20221025204924268.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwnti/b00ks/image-20221025204924268.png&#34;
 	
 	
 	
@@ -1398,7 +1398,7 @@
         
         <guid>https://J-shiro.github.io/zh-cn/p/%E8%B5%9B%E5%8D%9A%E6%9C%8B%E5%85%8B-%E8%BE%B9%E7%BC%98%E8%A1%8C%E8%80%85/</guid>
         <description>&lt;img src="https://J-shiro.github.io/zh-cn/p/%E8%B5%9B%E5%8D%9A%E6%9C%8B%E5%85%8B-%E8%BE%B9%E7%BC%98%E8%A1%8C%E8%80%85/Cyber_title.jpg" alt="Featured image of post 赛博朋克-边缘行者" /&gt;&lt;h1 id=&#34;赛博朋克-边缘行者&#34;&gt;赛博朋克-边缘行者&lt;/h1&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/cyberpunk.jpg&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/Cyberpunk/cyberpunk.jpg&#34;
 	
 	
 	
@@ -1408,7 +1408,7 @@
 &gt;&lt;/p&gt;
 &lt;p&gt;​		看完边缘行者之后，整个人都不平静了，在这种混沌的时代，无法捉摸透的大背景与一些极乐思想的人的灵魂碰撞在一起。&lt;/p&gt;
 &lt;p&gt;​		很难相信这种存在，很害怕处于这种环境，David最后的不在乎和Lucy的月球之旅是最终的归宿，这一系列的杀戮也让我想起了荒野大镖客2中亚瑟的死与约翰的生。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/two.jpg&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/Cyberpunk/two.jpg&#34;
 	
 	
 	
@@ -1418,7 +1418,7 @@
 &gt;&lt;/p&gt;
 &lt;p&gt;​		麻木的刺激，纽带的脆弱，身处第五空间的幻想，塑造了所有的赛博朋克。&lt;/p&gt;
 &lt;p&gt;​		在无论是音乐，还是画面细节与分镜，扳机社做的实在是太对味了，色彩上鲜明与昏暗的颜色搭配在一起，明亮时可以激情释放灵魂和肉体，暗淡时可以惆怅到窒息的难受，这种强烈的反差感使我的情绪跌宕起伏。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/David_jsb.jpg&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/Cyberpunk/David_jsb.jpg&#34;
 	
 	
 	
@@ -1427,14 +1427,14 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;​		在准备看之前就明知道会有刀的情况下，仍然还是在点开第一集后一发不可收拾的看了下去，化身赛博精神病的无奈感，大卫在亲身目睹了这种无奈后，仍然为了母亲、曼恩、露西的梦想，踏上了这条不归路，后期曾经认为自己的那一份独特，若没有这些理想的推动也许早在边缘的境地慢慢流失。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/David.jpg&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/Cyberpunk/David.jpg&#34;
 	
 	
 	
 	loading=&#34;lazy&#34;
 	
 	
-&gt;          &lt;img src=&#34;https://J-shiro.github.io/img/Lucy.jpg&#34;
+&gt;          &lt;img src=&#34;https://J-shiro.github.io/img/Cyberpunk/Lucy.jpg&#34;
 	
 	
 	
@@ -1444,7 +1444,7 @@
 &gt;&lt;/p&gt;
 &lt;p&gt;​		成熟的令人钦佩的领袖精神，将一些私人的情感与宣泄都吞入自己的内心，掩盖住自己内心的压抑，在危机四伏的情况下凭借着经验和过人的冷静沉着与胆识，化解困难。每个角色都在述说着自己的故事，整个发展与每一位角色的发展都息息相关，一环扣一环，对于细节的处理也让人无法不去感受到制作者的用心，这个稍不完整却又如此逼真的世界通过十集淋漓尽致的展现了出来。&lt;/p&gt;
 &lt;p&gt;​		这个结局我是能接受的，无论结局如何，他想表达的思想也不止是一个悲剧，这之后的深层在每个人的心中所感悟到的都不一样，这种情感会跟着落幕的歌声停止之后，徘徊脑海多日，无法释怀。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/two.jpg&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/Cyberpunk/two.jpg&#34;
 	
 	
 	

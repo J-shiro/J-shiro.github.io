@@ -338,7 +338,7 @@
     
     <p>这道题是第一次通过一步步调试在本地打通，参考了很多大佬的WP，记录一下。</p>
 <h2 id="分析功能及数据结构">分析功能及数据结构</h2>
-<p><img src="/img/b00ks/image-20221025152027671.png"
+<p><img src="/img/pwnti/b00ks/image-20221025152027671.png"
 	
 	
 	
@@ -348,7 +348,7 @@
 ></p>
 <p>checksec之后可知是amd64的结构，放入IDA64中分析，进入找到main函数按F5键查看伪代码。</p>
 <h3 id="main">main</h3>
-<p><img src="/img/b00ks/image-20221025152231748.png"
+<p><img src="/img/pwnti/b00ks/image-20221025152231748.png"
 	
 	
 	
@@ -358,7 +358,7 @@
 ></p>
 <h3 id="sub_a77">sub_A77</h3>
 <p>首先初始化stdout和stdin，sub_A77函数输出一行文字</p>
-<p><img src="/img/b00ks/image-20221025152349337.png"
+<p><img src="/img/pwnti/b00ks/image-20221025152349337.png"
 	
 	
 	
@@ -368,7 +368,7 @@
 ></p>
 <h3 id="sub_b6d">sub_B6D</h3>
 <p>sub_B6D函数需要输入作者名称，将读入名字author_name，其中<code>32LL</code>为0x20的长度，还需要进一步看sub_9F5函数。</p>
-<p><img src="/img/b00ks/image-20221025152439174.png"
+<p><img src="/img/pwnti/b00ks/image-20221025152439174.png"
 	
 	
 	
@@ -377,7 +377,7 @@
 	
 ></p>
 <p>sub_B6D函数最后效果为将name读入到0x02040位置。</p>
-<p><img src="/img/b00ks/image-20221025154415885.png"
+<p><img src="/img/pwnti/b00ks/image-20221025154415885.png"
 	
 	
 	
@@ -387,7 +387,7 @@
 ></p>
 <h3 id="sub_9f5">sub_9F5</h3>
 <p>sub_9F5函数首先需要输入的a2大于0，即长度大于0，在for循环中i从0开始计数，一步一步读入输入的字符，其中，read()函数的返回值为实际读到的字节数，若每次读到的字节数不为1则退出返回1，然后在sub_B60函数中报错读入失败，若此时写向buf的值为10，退出循环，每次循环中，<code>++buf</code>buf自增。在该处为循环了32次，当i与a2相等后，跳出循环，buf所指向的位置会赋值为0</p>
-<p><img src="/img/b00ks/image-20221025152645662.png"
+<p><img src="/img/pwnti/b00ks/image-20221025152645662.png"
 	
 	
 	
@@ -398,7 +398,7 @@
 <h3 id="sub_a89">sub_A89</h3>
 <p><strong>sub_9F5即为漏洞函数</strong>，存在off by one漏洞，当输入数据长度正好为a2时，会向buf中越界写入一个字节<code>'\x00'</code>，假设a2为32，则通过read读取32个字符后，在++buf后，让第33个字符的位置被<code>'\x00'</code>覆盖。</p>
 <p>接着进入while语句条件中的sub_A89函数，效果为打印出菜单并且只允许输入1到6的数字。</p>
-<p><img src="/img/b00ks/image-20221025154600040.png"
+<p><img src="/img/pwnti/b00ks/image-20221025154600040.png"
 	
 	
 	
@@ -410,7 +410,7 @@
 <h3 id="sub_f55">sub_F55</h3>
 <p>该函数主要用于创建书本的结构，首先输入书本名字大小到v2，若v2大于等于0则malloc会分配name buffer(≤32)，若分配成功，ptr指向分配的空间，继续通过sub_9F5读入名字到ptr指向的地址，失败则输出“fail to read name&quot;，成功则进入else；</p>
 <p>else中v2赋值为0，scanf输入书本描述的大小给v2，此时malloc再一次分配description buffer，此处的大小自定义，v6指向分配的空间，若成功，则继续输入书本的描述，此时v0赋值为v6，sub_9F5读入，成功读入后则进入else；</p>
-<p><img src="/img/b00ks/image-20221025155340205.png"
+<p><img src="/img/pwnti/b00ks/image-20221025155340205.png"
 	
 	
 	
@@ -420,7 +420,7 @@
 ></p>
 <h3 id="sub_b24">sub_B24</h3>
 <p>sub_B24函数主要在off_202010到之后的共20的位置查看是否有值，若为0，则说明有空闲位置，返回空闲的位置所代表的i。</p>
-<p><img src="/img/b00ks/image-20221025160305683.png"
+<p><img src="/img/pwnti/b00ks/image-20221025160305683.png"
 	
 	
 	
@@ -468,7 +468,7 @@
 </span></span><span class="line"><span class="cl"><span class="c1">//DWORD：unsigned long无符号的
 </span></span></span></code></pre></td></tr></table>
 </div>
-</div><p><img src="/img/b00ks/image-20221025155403683.png"
+</div><p><img src="/img/pwnti/b00ks/image-20221025155403683.png"
 	
 	
 	
@@ -476,7 +476,7 @@
 	
 	
 ></p>
-<p><img src="/img/b00ks/image-20221025155423752.png"
+<p><img src="/img/pwnti/b00ks/image-20221025155423752.png"
 	
 	
 	
@@ -486,7 +486,7 @@
 ></p>
 <h3 id="sub_bbd">sub_BBD</h3>
 <p>输入要删除的id，然后进行free并且赋值为0。</p>
-<p><img src="/img/b00ks/image-20221025161124844.png"
+<p><img src="/img/pwnti/b00ks/image-20221025161124844.png"
 	
 	
 	
@@ -495,7 +495,7 @@
 	
 ></p>
 <h3 id="sub_e17">sub_E17</h3>
-<p><img src="/img/b00ks/image-20221025161226153.png"
+<p><img src="/img/pwnti/b00ks/image-20221025161226153.png"
 	
 	
 	
@@ -506,7 +506,7 @@
 <p>编辑book description</p>
 <h3 id="sub_d1f">sub_D1F</h3>
 <p>该函数用于展示书本book，打印id、name、description、author。从off_202010所指向的那一些地址读出数据。</p>
-<p><img src="/img/b00ks/image-20221025161344963.png"
+<p><img src="/img/pwnti/b00ks/image-20221025161344963.png"
 	
 	
 	
@@ -540,7 +540,7 @@
 <p><strong>0x18-0x1c字节</strong>：放着description的字符串的额最大长度，意为：若再次修改它，最多能输入多少字符</p>
 <h3 id="sub_b6d-1">sub_B6D</h3>
 <p>通过sub_9F5重新编辑author name</p>
-<p><img src="/img/b00ks/image-20221025161745008.png"
+<p><img src="/img/pwnti/b00ks/image-20221025161745008.png"
 	
 	
 	
@@ -557,7 +557,7 @@
 <p>bss中放结构，用off by null来做堆布局，堆布局使得book结构体落在可控制的堆上，结合“查”、“改”可任意地址读写，off-by-one可以基于各种缓冲区：栈、bss、堆等等。</p>
 <h2 id="实践exp">实践exp</h2>
 <p>此处使用gdb插件peda会更加方便，之前使用的是pwngdb，但是对于查找某个字符peda会使用更方便。切换gdb插件：更改<code>~/.gdbinit</code>文件，将pwngdb注释掉，取消peda的注释即可。</p>
-<p><img src="/img/b00ks/image-20221025164051973.png"
+<p><img src="/img/pwnti/b00ks/image-20221025164051973.png"
 	
 	
 	
@@ -568,7 +568,7 @@
 <p>其中将off_202010：global_book_struct_array，off_202018：author_name_ptr，两者指向的地址之间正好相差为32个字节(0x20)，当输入author_name长度为32时，会向author_name_ptr中越界写入一个字节<code>\x00</code>，之后创建book_struct时会将其地址保存在global_book_struct_array中，覆盖之前字符串截断符<code>\x00</code>，所以可以打印出author_name实现信息泄露。（越界写入一个字节会覆盖global_book_struct_array中的保存的第一个book_struct的地址。</p>
 <h3 id="peda的find插件进行分析">peda的find插件进行分析</h3>
 <p>gdb运行程序，进入run，输入作者名字：aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabc(32)，选择1，10，aaaaa，10，bbbbb，ctrl+C</p>
-<p><img src="/img/b00ks/image-20221025164827903.png"
+<p><img src="/img/pwnti/b00ks/image-20221025164827903.png"
 	
 	
 	
@@ -576,7 +576,7 @@
 	
 	
 ></p>
-<p><img src="/img/b00ks/image-20221025164901716.png"
+<p><img src="/img/pwnti/b00ks/image-20221025164901716.png"
 	
 	
 	
@@ -585,7 +585,7 @@
 	
 ></p>
 <p>输入find aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabc找到相应的位置</p>
-<p><img src="/img/b00ks/image-20221025164948519.png"
+<p><img src="/img/pwnti/b00ks/image-20221025164948519.png"
 	
 	
 	
@@ -593,7 +593,7 @@
 	
 	
 ></p>
-<p><img src="/img/b00ks/image-20221025165159813.png"
+<p><img src="/img/pwnti/b00ks/image-20221025165159813.png"
 	
 	
 	
@@ -620,7 +620,7 @@
 </div>
 </div><p><strong>其中可以发现，将f0改变为00后，book1指针指向description</strong></p>
 <p>继续查看book_name和description可以看到aaaaa和bbbbb</p>
-<p><img src="/img/b00ks/image-20221025165920156.png"
+<p><img src="/img/pwnti/b00ks/image-20221025165920156.png"
 	
 	
 	
@@ -629,7 +629,7 @@
 	
 ></p>
 <p>创建两个book：</p>
-<p><img src="/img/b00ks/image-20221025170206730.png"
+<p><img src="/img/pwnti/b00ks/image-20221025170206730.png"
 	
 	
 	
@@ -637,7 +637,7 @@
 	
 	
 ></p>
-<p><img src="/img/b00ks/image-20221025170553060.png"
+<p><img src="/img/pwnti/b00ks/image-20221025170553060.png"
 	
 	
 	
@@ -780,7 +780,7 @@
 </span></span><span class="line"><span class="cl"><span class="n">gdb</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">io</span><span class="p">)</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><img src="/img/b00ks/image-20221025193027006.png"
+</div><p><img src="/img/pwnti/b00ks/image-20221025193027006.png"
 	
 	
 	
@@ -806,7 +806,7 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>此时0x56180ce02070所指向的空间，由于最后的33位的<code>\x00</code>被book1的指针覆盖，所以打印author_name时c后面的会被打印出来，即为book1地址，如图得到book1的地址</p>
-<p><img src="/img/b00ks/image-20221025194124258.png"
+<p><img src="/img/pwnti/b00ks/image-20221025194124258.png"
 	
 	
 	
@@ -830,7 +830,7 @@
 </span></span><span class="line"><span class="cl"><span class="c1">#0x01对应于book1,0xffff为description_size，</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><img src="/img/b00ks/image-20221025194929356.png"
+</div><p><img src="/img/pwnti/b00ks/image-20221025194929356.png"
 	
 	
 	
@@ -853,7 +853,7 @@
 </span></span><span class="line"><span class="cl"><span class="n">gdb</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">io</span><span class="p">)</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><img src="/img/b00ks/image-20221025200239349.png"
+</div><p><img src="/img/pwnti/b00ks/image-20221025200239349.png"
 	
 	
 	
@@ -882,7 +882,7 @@
 </span></span><span class="line"><span class="cl"><span class="n">gdb</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">io</span><span class="p">)</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><img src="/img/b00ks/image-20221025202226764.png"
+</div><p><img src="/img/pwnti/b00ks/image-20221025202226764.png"
 	
 	
 	
@@ -890,7 +890,7 @@
 	
 	
 ></p>
-<p><img src="/img/b00ks/image-20221025202507871.png"
+<p><img src="/img/pwnti/b00ks/image-20221025202507871.png"
 	
 	
 	
@@ -913,7 +913,7 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>通过查看vmmap我们可以知道libc基址，由于mmap申请，mmap与libc之间存在固定的偏移，则申请出来的book2_name也有固定的偏移，如图通过计算0x00007f2bba6b0000 - 0x7f2bba68e010 = 0x21FF0，所以将book2_name+0x21ff0得到libc基址。</p>
-<p><img src="/img/b00ks/image-20221025203052919.png"
+<p><img src="/img/pwnti/b00ks/image-20221025203052919.png"
 	
 	
 	
@@ -921,7 +921,7 @@
 	
 	
 ></p>
-<p><img src="/img/b00ks/image-20221025203210290.png"
+<p><img src="/img/pwnti/b00ks/image-20221025203210290.png"
 	
 	
 	
@@ -930,7 +930,7 @@
 	
 ></p>
 <p>泄露得到libc基址：</p>
-<p><img src="/img/b00ks/image-20221025203346725.png"
+<p><img src="/img/pwnti/b00ks/image-20221025203346725.png"
 	
 	
 	
@@ -975,7 +975,7 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>先将book1的description修改，即修改的是fake_book的description（0x0000556f9aed84a0），修改后该fake_book1的description的内容为一个指向freehook的指针地址，然后的操作是将freehook改为system。</p>
-<p><img src="/img/b00ks/image-20221025203755878.png"
+<p><img src="/img/pwnti/b00ks/image-20221025203755878.png"
 	
 	
 	
@@ -984,7 +984,7 @@
 	
 ></p>
 <p>此时book2的description为free_hook指针地址</p>
-<p><img src="/img/b00ks/image-20221025204108883.png"
+<p><img src="/img/pwnti/b00ks/image-20221025204108883.png"
 	
 	
 	
@@ -993,7 +993,7 @@
 	
 ></p>
 <p>然后修改book2的description，使得free_hook指针地址指向system，</p>
-<p><img src="/img/b00ks/image-20221025204344639.png"
+<p><img src="/img/pwnti/b00ks/image-20221025204344639.png"
 	
 	
 	
@@ -1002,7 +1002,7 @@
 	
 ></p>
 <p>最后deletebook，删除book2时，会调用free函数，即也会调用<code>__free_hook</code>函数，相当于调用system函数，当构造book2时，其中的book2_name和book2_description均为<code>/bin/sh</code>，使得进行<code>system(/bin/sh)</code>获得shell。</p>
-<p><img src="/img/b00ks/image-20221025204924268.png"
+<p><img src="/img/pwnti/b00ks/image-20221025204924268.png"
 	
 	
 	

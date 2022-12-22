@@ -6,7 +6,7 @@
         <description>Recent content on J-shiro&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Tue, 29 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://J-shiro.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 22 Dec 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://J-shiro.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Introduction</title>
         <link>https://J-shiro.github.io/p/introduction/</link>
         <pubDate>Wed, 14 Sep 2022 20:22:06 +0800</pubDate>
@@ -19,6 +19,48 @@
 &lt;p&gt;Now I am learning the PWN. I may write some markdown about what I have learnt. &lt;span class=&#34;spoiler&#34; &gt; Actually, I am still a rookie. Hope you like some of my articles.  &lt;/span&gt;
   Peace and love!&lt;/p&gt;
 &lt;p&gt;&lt;span style=&#34;background: #86cce8&#34;&gt;   I am still just an undergraduate student who has been confused, and I may participate in the postgraduate entrance examination in the future.  I will record some content related to life, study and interests here&lt;/span&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>PwnCollege_Note4</title>
+        <link>https://J-shiro.github.io/p/pwncollege_note4/</link>
+        <pubDate>Thu, 22 Dec 2022 00:00:00 +0000</pubDate>
+        
+        <guid>https://J-shiro.github.io/p/pwncollege_note4/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/p/pwncollege_note4/pwncollege.png" alt="Featured image of post PwnCollege_Note4" /&gt;&lt;h1 id=&#34;building-a-web-server&#34;&gt;Building a Web Server&lt;/h1&gt;
+&lt;p&gt;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;&lt;strong&gt;ASU CSE 365&lt;/strong&gt;: Introduction to Cybersecurity&lt;/p&gt;
+&lt;h2 id=&#34;building-a-web-server-introduction&#34;&gt;Building a Web Server: Introduction&lt;/h2&gt;
+&lt;!DOCTYPE HTML&gt;
+&lt;html lang=&#34;en&#34;&gt;
+&lt;head&gt;
+    &lt;style type=&#34;text/css&#34;&gt;
+        #googleslides_shortcodes {
+            padding-bottom: 66%;
+            position: relative;
+            display: block;
+            width: 100%;
+            border-bottom: 5px solid;
+        }
+        #googleslides_shortcodes iframe {
+            position: absolute;
+            top: 0;
+            left: 0
+        }
+    &lt;/style&gt;
+    &lt;title&gt;&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id=&#34;googleslides_shortcodes&#34;&gt;
+    &lt;iframe id=&#34;googleSlideIframe&#34;
+            width=&#34;100%&#34;
+            height=&#34;100%&#34;
+            src=&#34;https://J-shiro.github.io/img/pdf/BaWS1.pdf&#34;
+            frameborder=&#34;0&#34;
+            allowfullscreen=&#34;&#34; &gt;
+    &lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
 </description>
         </item>
         <item>
