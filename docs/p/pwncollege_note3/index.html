@@ -319,7 +319,7 @@
 
 
                 <time class="article-time--reading">
-                    15 minute read
+                    20 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -330,7 +330,7 @@
 
 
                 <time class="article-words">
-                    3032 字
+                    4111 字
                 </time>
             </div>
         
@@ -647,7 +647,7 @@
 </span></span><span class="line"><span class="cl">mov rbx, [rbx]
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>limits: <em><em>reg+reg</em>(2 or 4 or 8)+value</em>*</p>
+</div><p>limits: <strong><code>reg+reg*(2 or 4 or 8)+value</code></strong></p>
 <p>⑥RIP-Relative Addressing</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -679,6 +679,330 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="assembly-crash-course-control-flow">Assembly Crash Course: Control Flow</h2>
+<p>①CPU execute instructions</p>
+<p><img src="/img/pwn_college/lesson/control.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>jmp: eb====&gt;eb 04 :(skip 4 bytes)</p>
+<p><img src="/img/pwn_college/lesson/control2.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>②Conditional Jumps</p>
+<p><img src="/img/pwn_college/lesson/conditionjump.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>conditional jumps check conditions stored in the &ldquo;flags&rdquo; register: <strong>rflags</strong></p>
+<ul>
+<li>Carry Flag: was the 65th bit 1?</li>
+<li>Zero Flag: was the result 0?</li>
+<li>Overflow Flag: did the &ldquo;wrap&rdquo; between positive to negative?</li>
+<li>Signed Flag: was the result&rsquo;s signed bit set (was it negative)?</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">cmp rax, rbx; ja STAY_LEET # unsigned rax &gt; rbx. 0xffffffff &gt;= 0
+</span></span><span class="line"><span class="cl">cmp rax, rbx; jle STAY_LEET # signed rax &lt;= rbx. 0xffffffff = -1 &lt; 0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>③Looping: for, while</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rax, 0
+</span></span><span class="line"><span class="cl">loop:
+</span></span><span class="line"><span class="cl">inc rax
+</span></span><span class="line"><span class="cl">cmp rax, 10
+</span></span><span class="line"><span class="cl">jb loop				;counts to 10
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>④Function calls</p>
+<p><code>call</code> pushes <code>rip</code> and jumps away</p>
+<p><code>ret</code> pops <code>rip</code> and jumps to it</p>
+<p>c:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">check_leet</span><span class="p">(</span><span class="kt">int</span> <span class="n">authed</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span><span class="p">(</span><span class="n">authed</span><span class="p">)</span> <span class="k">return</span> <span class="mi">1337</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">	<span class="n">check_leet</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">check_leet</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">exit</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>assembly:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rdi, 0
+</span></span><span class="line"><span class="cl">call FUNC_CHECK_LEET
+</span></span><span class="line"><span class="cl">mov rdi, 1
+</span></span><span class="line"><span class="cl">call FUNC_CHECK_LEET
+</span></span><span class="line"><span class="cl">call EXIT
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">FUNC_CHECK_LEET:
+</span></span><span class="line"><span class="cl">test rdi, rdi
+</span></span><span class="line"><span class="cl">jnz LEET
+</span></span><span class="line"><span class="cl">mov ax, 0
+</span></span><span class="line"><span class="cl">ret
+</span></span><span class="line"><span class="cl">LEET:
+</span></span><span class="line"><span class="cl">mov ax, 1337
+</span></span><span class="line"><span class="cl">ret
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">EXIT:
+</span></span><span class="line"><span class="cl">...
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>⑤Calling Conventions</p>
+<p>callee and caller functions must agree on argument passing</p>
+<ul>
+<li>
+<p><strong>Linux x86:</strong> push arguments(in reverse order), then call(which pushes return address), return value in eax</p>
+</li>
+<li>
+<p><strong>Linux amd64:</strong> rdi, rsi, rdx, rcx, r8, r9, return value in rax</p>
+</li>
+<li>
+<p><strong>Linux arm:</strong> r0, r1, r2, r3, return value in r0</p>
+</li>
+</ul>
+<p>Registers are shared between functions, so calling conventions should agree on what registers are protected.</p>
+<p><strong>Linux amd64:</strong> rbx, rbp, r12, r13, r14, r15 are &ldquo;callee-saved&rdquo;(the function you call keeps their values safe on the stack)</p>
+<h2 id="assembly-crash-course-system-calls">Assembly Crash Course: System Calls</h2>
+<p>①System calls&mdash;-&gt;jumps to the Operating System</p>
+<p>syscall: arguments in <strong>rdi,rsi,rdx,r10,r8,r9</strong>	return value in <strong>rax</strong></p>
+<p><code>n = read(0, buf, 100);</code>: Reading 100 Bytes from stdin to the stack</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rdi, 0		#the stdin file descriptor
+</span></span><span class="line"><span class="cl">mov rsi, rsp	#read the data onto the stack
+</span></span><span class="line"><span class="cl">mov rdx, 100	#the number of bytes to read
+</span></span><span class="line"><span class="cl">mov rax, 0		#system call number of read()
+</span></span><span class="line"><span class="cl">syscall			#do the system call
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>write(1, buf, n)</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rdi, 1		#the stdout file descriptor
+</span></span><span class="line"><span class="cl">mov rsi, rsp	#write the data from the stack
+</span></span><span class="line"><span class="cl">mov rdx, rax	#the number of bytes to write
+</span></span><span class="line"><span class="cl">mov rax, 1		#system call number of write()
+</span></span><span class="line"><span class="cl">syscall			#do the system call
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>examples</strong></p>
+<p><img src="/img/pwn_college/lesson/syscall.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>②&quot;String&quot; Arguments</p>
+<p>a string is a bunch of contiguous bytes in memory, followed by a 0 byte</p>
+<p><code>build a file path for open() on the stackand open /flag file, return the file descriptor number in rax</code></p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>rsp</th>
+<th>rsp+1</th>
+<th>rsp+2</th>
+<th>rsp+3</th>
+<th>rsp+4</th>
+<th>rsp+5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2f(/)</td>
+<td>66(f)</td>
+<td>6c(l)</td>
+<td>61(a)</td>
+<td>67(g)</td>
+<td>00(\0)</td>
+</tr>
+</tbody>
+</table></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov BYTE PTR [rsp+0], &#39;/&#39;
+</span></span><span class="line"><span class="cl">mov BYTE PTR [rsp+1], &#39;f&#39;
+</span></span><span class="line"><span class="cl">mov BYTE PTR [rsp+2], &#39;l&#39;
+</span></span><span class="line"><span class="cl">mov BYTE PTR [rsp+3], &#39;a&#39;
+</span></span><span class="line"><span class="cl">mov BYTE PTR [rsp+4], &#39;g&#39;
+</span></span><span class="line"><span class="cl">mov BYTE PTR [rsp+5], 0				;terminate the string
+</span></span><span class="line"><span class="cl">mov rdi, rsp						;read data onto stack
+</span></span><span class="line"><span class="cl">mov rsi, 0							;open file readonly
+</span></span><span class="line"><span class="cl">mov rax, 2							;system call number of open()
+</span></span><span class="line"><span class="cl">syscall
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>open() has an argument flag to determine how the file will be opened.</p>
+<ul>
+<li>O_RDONLY(read-only), O_WRONLY(write-only), O_RDWR(read/write)</li>
+</ul>
+<p>③Quitting the Program</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rdi, 42			#our program&#39;s return code(for bash scripts)
+</span></span><span class="line"><span class="cl">mov rax, 60			#system call number of exit()
+</span></span><span class="line"><span class="cl">syscall
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="assembly-crash-course-building-programs">Assembly Crash Course: Building Programs</h2>
+<p>①from assembly to binary</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">.intel_syntax noprefix
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>.intel_syntax tells the assembler that we are using Intel assembly syntax, noprefix tells it that we will not prefix all register names with &ldquo;%&rdquo;</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">.global _start
+</span></span><span class="line"><span class="cl">_start:
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>gcc -nostdlib -o x x.s</code></p>
+<p>②running the program</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">./xx
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="nv">$?</span>	<span class="c1">#check the return code with bash&#39;s special $? variable</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>③reading assembly</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">objdump -M intel -d xx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>④extracting the binary code</p>
+<p>gcc builds assembly into a full ELF program. We can extract just our binary code using :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">objcopy --dump-section .text<span class="o">=</span>xxx xx
+</span></span><span class="line"><span class="cl">hd xxx		<span class="c1">#can view the binary code</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>⑤Debugging(debugger: gdb)</p>
+<p>debuggers use special debug instructions, and the debugged program is interrupted and we can inspect its state.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">int3	;trigger the debugger with a breakpoint
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>GDB / strace(figure out how program is interacting with OS) / Rappel / Documentation of x86</p>
 <h2 id="embryoasm">embryoasm</h2>
 <p>&mdash;&mdash;&mdash;&ndash;send/craft/assemble/pipe raw bytes over stdin to program</p>
 <p><strong>registers</strong></p>
@@ -1569,7 +1893,162 @@ jmp 0x40337c</p>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>level23</p>
-
+<p>rbp: Stack Base Pointer</p>
+<p><strong>example of constructing some list</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rbp, rsp				; setup the base of the stack as the current top
+</span></span><span class="line"><span class="cl">sub rsp, 0x14				; move the stack 0x14 bytes (5 * 4) down	acts as an allocation
+</span></span><span class="line"><span class="cl">mov eax, 1337
+</span></span><span class="line"><span class="cl">mov [rbp-0x8], eax			; assign list[2] = 1337
+</span></span><span class="line"><span class="cl">							; do more operations on the list ...
+</span></span><span class="line"><span class="cl">							; restore the allocated space
+</span></span><span class="line"><span class="cl">mov rsp, rbp
+</span></span><span class="line"><span class="cl">ret
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>we should implements :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">most_common_byte</span><span class="p">(</span><span class="n">src_addr</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">size</span><span class="o">-</span><span class="mi">1</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">curr_byte</span> <span class="o">=</span> <span class="p">[</span><span class="n">src_addr</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="p">[</span><span class="n">stack_base</span> <span class="o">-</span> <span class="n">curr_byte</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="n">max_freq</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="n">max_freq_byte</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">b</span> <span class="o">&lt;=</span> <span class="mh">0xff</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">[</span><span class="n">stack_base</span> <span class="o">-</span> <span class="n">b</span><span class="p">]</span> <span class="o">&gt;</span> <span class="nl">max_freq</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">max_freq</span> <span class="o">=</span> <span class="p">[</span><span class="n">stack_base</span> <span class="o">-</span> <span class="n">b</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">            <span class="n">max_freq_byte</span> <span class="o">=</span> <span class="n">b</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">max_freq_byte</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Constraints:</strong></p>
+<ul>
+<li>You must put the &ldquo;counting list&rdquo; on the stack</li>
+<li>You must restore the stack like in a normal function</li>
+<li>You cannot modify the data at src_addr</li>
+</ul>
+<p>below: the <code>push 0</code>  I consulted the <a class="link" href="https://www.freebuf.com/articles/database/321326.html"  target="_blank" rel="noopener"
+    >the reference</a>. There is data on the top of the stack, not empty. So I pushed a 0 into the top of the stack to take advantage of it</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">.global _start
+</span></span><span class="line"><span class="cl">.intel_syntax noprefix
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">_start:
+</span></span><span class="line"><span class="cl">        push 0				#it is important!! see the reference
+</span></span><span class="line"><span class="cl">        mov rbp, rsp
+</span></span><span class="line"><span class="cl">        xor rbx, rbx    	#b = 0
+</span></span><span class="line"><span class="cl">        xor cx, cx      	#i = 0
+</span></span><span class="line"><span class="cl">        sub rsp, rsi
+</span></span><span class="line"><span class="cl">        xor rdx, rdx
+</span></span><span class="line"><span class="cl">        sub si, 1			#***
+</span></span><span class="line"><span class="cl">loop1:
+</span></span><span class="line"><span class="cl">        cmp cx, si
+</span></span><span class="line"><span class="cl">        jg next
+</span></span><span class="line"><span class="cl">        mov dl, [rdi+rcx]	#1 byte* must pay attention to the size !!
+</span></span><span class="line"><span class="cl">        mov r11, rbp
+</span></span><span class="line"><span class="cl">        sub r11, rdx
+</span></span><span class="line"><span class="cl">        inc byte ptr [r11] 	#it is important!!
+</span></span><span class="line"><span class="cl">        inc cx				#2byte
+</span></span><span class="line"><span class="cl">        jmp loop1
+</span></span><span class="line"><span class="cl">next:
+</span></span><span class="line"><span class="cl">        xor rbx, rbx    	# b
+</span></span><span class="line"><span class="cl">        xor rcx, rcx    	#max_freq
+</span></span><span class="line"><span class="cl">        xor rax, rax    	#max_freq_byte
+</span></span><span class="line"><span class="cl">loop2:
+</span></span><span class="line"><span class="cl">        cmp bx, 0xff
+</span></span><span class="line"><span class="cl">        jg done
+</span></span><span class="line"><span class="cl">        mov r9, rbp
+</span></span><span class="line"><span class="cl">        sub r9, rbx
+</span></span><span class="line"><span class="cl">        mov dl, [r9]
+</span></span><span class="line"><span class="cl">        cmp dl, cl			#***
+</span></span><span class="line"><span class="cl">        jle ifdone
+</span></span><span class="line"><span class="cl">        mov cl, dl			#***
+</span></span><span class="line"><span class="cl">        mov al, bl			#***
+</span></span><span class="line"><span class="cl">ifdone:
+</span></span><span class="line"><span class="cl">        inc bx				#2byte
+</span></span><span class="line"><span class="cl">        jmp loop2
+</span></span><span class="line"><span class="cl">done:
+</span></span><span class="line"><span class="cl">        mov rsp, rbp
+</span></span><span class="line"><span class="cl">        pop rbx
+</span></span><span class="line"><span class="cl">        ret
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 
@@ -1706,7 +2185,7 @@ jmp 0x40337c</p>
         
             
         
-        共 7.92k 字 · 共 5篇文章
+        共 9.00k 字 · 共 5篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -1908,6 +2387,8 @@ jmp 0x40337c</p>
     <li><a href="#assembly-crash-course-registers">Assembly Crash Course: Registers</a></li>
     <li><a href="#assembly-crash-course-memory">Assembly Crash Course: Memory</a></li>
     <li><a href="#assembly-crash-course-control-flow">Assembly Crash Course: Control Flow</a></li>
+    <li><a href="#assembly-crash-course-system-calls">Assembly Crash Course: System Calls</a></li>
+    <li><a href="#assembly-crash-course-building-programs">Assembly Crash Course: Building Programs</a></li>
     <li><a href="#embryoasm">embryoasm</a></li>
   </ol>
 </nav>

@@ -283,7 +283,7 @@ lea rbx, [rsp+rax*8+5] 			;rbx holds the computed address
 mov rbx, [rbx]
 ```
 
-limits: **reg+reg*(2 or 4 or 8)+value**
+limits: **`reg+reg*(2 or 4 or 8)+value`**
 
 ⑥RIP-Relative Addressing
 
@@ -305,7 +305,209 @@ mov DWORD PTR [rax], 0x1337
 
 ## Assembly Crash Course: Control Flow 
 
+①CPU execute instructions
 
+![](img/pwn_college/lesson/control.png)
+
+jmp: eb====>eb 04 :(skip 4 bytes)
+
+![](img/pwn_college/lesson/control2.png)
+
+②Conditional Jumps
+
+![](img/pwn_college/lesson/conditionjump.png)
+
+conditional jumps check conditions stored in the "flags" register: **rflags**
+
+- Carry Flag: was the 65th bit 1?
+- Zero Flag: was the result 0?
+- Overflow Flag: did the "wrap" between positive to negative?
+- Signed Flag: was the result's signed bit set (was it negative)?
+
+```assembly
+cmp rax, rbx; ja STAY_LEET # unsigned rax > rbx. 0xffffffff >= 0
+cmp rax, rbx; jle STAY_LEET # signed rax <= rbx. 0xffffffff = -1 < 0
+```
+
+③Looping: for, while
+
+```assembly
+mov rax, 0
+loop:
+inc rax
+cmp rax, 10
+jb loop				;counts to 10
+```
+
+④Function calls
+
+`call` pushes `rip` and jumps away
+
+`ret` pops `rip` and jumps to it
+
+c: 
+
+```c
+int check_leet(int authed){
+	if(authed) return 1337;
+	else return 0;
+}
+int main(){
+	check_leet(0);
+	check_leet(1);
+	exit();
+}
+```
+
+assembly:
+
+```assembly
+mov rdi, 0
+call FUNC_CHECK_LEET
+mov rdi, 1
+call FUNC_CHECK_LEET
+call EXIT
+
+FUNC_CHECK_LEET:
+test rdi, rdi
+jnz LEET
+mov ax, 0
+ret
+LEET:
+mov ax, 1337
+ret
+
+EXIT:
+...
+```
+
+⑤Calling Conventions
+
+callee and caller functions must agree on argument passing
+
+- **Linux x86:** push arguments(in reverse order), then call(which pushes return address), return value in eax
+
+- **Linux amd64:** rdi, rsi, rdx, rcx, r8, r9, return value in rax
+
+- **Linux arm:** r0, r1, r2, r3, return value in r0
+
+Registers are shared between functions, so calling conventions should agree on what registers are protected.
+
+**Linux amd64:** rbx, rbp, r12, r13, r14, r15 are "callee-saved"(the function you call keeps their values safe on the stack)
+
+##  Assembly Crash Course: System Calls
+
+①System calls---->jumps to the Operating System
+
+syscall: arguments in **rdi,rsi,rdx,r10,r8,r9**	return value in **rax**
+
+`n = read(0, buf, 100);`: Reading 100 Bytes from stdin to the stack
+
+```assembly
+mov rdi, 0		#the stdin file descriptor
+mov rsi, rsp	#read the data onto the stack
+mov rdx, 100	#the number of bytes to read
+mov rax, 0		#system call number of read()
+syscall			#do the system call
+```
+
+`write(1, buf, n)`
+
+```assembly
+mov rdi, 1		#the stdout file descriptor
+mov rsi, rsp	#write the data from the stack
+mov rdx, rax	#the number of bytes to write
+mov rax, 1		#system call number of write()
+syscall			#do the system call
+```
+
+**examples**
+
+![](img/pwn_college/lesson/syscall.png)
+
+②"String" Arguments
+
+a string is a bunch of contiguous bytes in memory, followed by a 0 byte
+
+`build a file path for open() on the stackand open /flag file, return the file descriptor number in rax`
+
+| rsp   | rsp+1 | rsp+2 | rsp+3 | rsp+4 | rsp+5  |
+| ----- | ----- | ----- | ----- | ----- | ------ |
+| 2f(/) | 66(f) | 6c(l) | 61(a) | 67(g) | 00(\0) |
+
+```assembly
+mov BYTE PTR [rsp+0], '/'
+mov BYTE PTR [rsp+1], 'f'
+mov BYTE PTR [rsp+2], 'l'
+mov BYTE PTR [rsp+3], 'a'
+mov BYTE PTR [rsp+4], 'g'
+mov BYTE PTR [rsp+5], 0				;terminate the string
+mov rdi, rsp						;read data onto stack
+mov rsi, 0							;open file readonly
+mov rax, 2							;system call number of open()
+syscall
+```
+
+open() has an argument flag to determine how the file will be opened.
+
+- O_RDONLY(read-only), O_WRONLY(write-only), O_RDWR(read/write)
+
+③Quitting the Program
+
+```assembly
+mov rdi, 42			#our program's return code(for bash scripts)
+mov rax, 60			#system call number of exit()
+syscall
+```
+
+##  Assembly Crash Course: Building Programs
+
+①from assembly to binary
+
+```assembly
+.intel_syntax noprefix
+```
+
+**.intel_syntax tells the assembler that we are using Intel assembly syntax, noprefix tells it that we will not prefix all register names with "%"**
+
+```assembly
+.global _start
+_start:
+```
+
+`gcc -nostdlib -o x x.s`
+
+②running the program
+
+```shell
+./xx
+echo $?	#check the return code with bash's special $? variable
+```
+
+③reading assembly
+
+```shell
+objdump -M intel -d xx
+```
+
+④extracting the binary code
+
+gcc builds assembly into a full ELF program. We can extract just our binary code using :
+
+```shell
+objcopy --dump-section .text=xxx xx
+hd xxx		#can view the binary code
+```
+
+⑤Debugging(debugger: gdb)
+
+debuggers use special debug instructions, and the debugged program is interrupted and we can inspect its state.
+
+```assembly
+int3	;trigger the debugger with a breakpoint
+```
+
+GDB / strace(figure out how program is interacting with OS) / Rappel / Documentation of x86
 
 ## embryoasm
 
@@ -875,4 +1077,90 @@ done:
 ```
 
 level23
+
+rbp: Stack Base Pointer
+
+**example of constructing some list**
+
+```assembly
+mov rbp, rsp				; setup the base of the stack as the current top
+sub rsp, 0x14				; move the stack 0x14 bytes (5 * 4) down	acts as an allocation
+mov eax, 1337
+mov [rbp-0x8], eax			; assign list[2] = 1337
+							; do more operations on the list ...
+							; restore the allocated space
+mov rsp, rbp
+ret
+```
+
+we should implements :
+
+```c
+most_common_byte(src_addr, size):
+    b = 0
+    i = 0
+    for i <= size-1:
+        curr_byte = [src_addr + i]
+        [stack_base - curr_byte] += 1
+    b = 0
+    max_freq = 0
+    max_freq_byte = 0
+    for b <= 0xff:
+        if [stack_base - b] > max_freq:
+            max_freq = [stack_base - b]
+            max_freq_byte = b
+    return max_freq_byte
+```
+
+**Constraints:**
+
+- You must put the "counting list" on the stack
+- You must restore the stack like in a normal function
+- You cannot modify the data at src_addr
+
+below: the `push 0`  I consulted the [the reference](https://www.freebuf.com/articles/database/321326.html). There is data on the top of the stack, not empty. So I pushed a 0 into the top of the stack to take advantage of it
+
+```assembly
+.global _start
+.intel_syntax noprefix
+
+_start:
+        push 0				#it is important!! see the reference
+        mov rbp, rsp
+        xor rbx, rbx    	#b = 0
+        xor cx, cx      	#i = 0
+        sub rsp, rsi
+        xor rdx, rdx
+        sub si, 1			#***
+loop1:
+        cmp cx, si
+        jg next
+        mov dl, [rdi+rcx]	#1 byte* must pay attention to the size !!
+        mov r11, rbp
+        sub r11, rdx
+        inc byte ptr [r11] 	#it is important!!
+        inc cx				#2byte
+        jmp loop1
+next:
+        xor rbx, rbx    	# b
+        xor rcx, rcx    	#max_freq
+        xor rax, rax    	#max_freq_byte
+loop2:
+        cmp bx, 0xff
+        jg done
+        mov r9, rbp
+        sub r9, rbx
+        mov dl, [r9]
+        cmp dl, cl			#***
+        jle ifdone
+        mov cl, dl			#***
+        mov al, bl			#***
+ifdone:
+        inc bx				#2byte
+        jmp loop2
+done:
+        mov rsp, rbp
+        pop rbx
+        ret
+```
 
