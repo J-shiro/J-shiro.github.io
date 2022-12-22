@@ -319,7 +319,7 @@
 
 
                 <time class="article-time--reading">
-                    1 minute read
+                    4 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -330,7 +330,7 @@
 
 
                 <time class="article-words">
-                    17 字
+                    688 字
                 </time>
             </div>
         
@@ -347,6 +347,7 @@
     <h1 id="building-a-web-server">Building a Web Server</h1>
 <p>&mdash;&mdash;&mdash;&ndash;<strong>ASU CSE 365</strong>: Introduction to Cybersecurity</p>
 <h2 id="building-a-web-server-introduction">Building a Web Server: Introduction</h2>
+<p>①Computation</p>
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
@@ -378,7 +379,333 @@
 </div>
 </body>
 </html>
-
+<p>②accessing hardware</p>
+<p>instructions should first talk to the OS with the systemcall( <strong>syscall</strong>  like <code>mov rax, 42; syscall</code>) and then OS will operate with the hardware in Kernel</p>
+<h2 id="building-a-web-server-linux-processes">Building a Web Server: Linux Processes</h2>
+<p>①syscall</p>
+<p><strong>read(int fd, void <code>*</code>buf, size_t count)</strong>  attempts to read up to count bytes from file descriptor fd into the buffer starting at buf.</p>
+<p><strong>write(int fd, void <code>*</code>buf, size_t count)</strong> writes up to count bytes from the buffer starting at buf to the file referred to by the file descriptor fd.</p>
+<p><strong>open(char <code>*</code>pathname, int flags, mode_t mode)</strong> opens the file specified by pathname. If the specified file doesn&rsquo;t exist, it may optionally be created(if O_CREAT is specified in flags), the return value of it is a file descriptor that used in subsequent system calls(read(2),write(2),lseek(2),fcntl(2)) to refer to the open file.</p>
+<p>②Linux process</p>
+<p>struct task_struct *current</p>
+<p><img src="/img/pwn_college/lesson/struct.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>this blob of data is living in kernel memory</p>
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <style type="text/css">
+        #googleslides_shortcodes {
+            padding-bottom: 66%;
+            position: relative;
+            display: block;
+            width: 100%;
+            border-bottom: 5px solid;
+        }
+        #googleslides_shortcodes iframe {
+            position: absolute;
+            top: 0;
+            left: 0
+        }
+    </style>
+    <title></title>
+</head>
+<body>
+<div id="googleslides_shortcodes">
+    <iframe id="googleSlideIframe"
+            width="100%"
+            height="100%"
+            src="/img/pdf/BaWS2.pdf"
+            frameborder="0"
+            allowfullscreen="" >
+    </iframe>
+</div>
+</body>
+</html>
+<p>In the end, the file descriptor is 3 for &lsquo;/flag&rsquo; and the RAX is set to 3 as the result of <code>open() syscall</code> . It saved the data into the kernel memory.</p>
+<p>③system calls</p>
+<p><img src="/img/pwn_college/lesson/systemcall.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>for more system call can see <a class="link" href="https://x64.syscall.sh/"  target="_blank" rel="noopener"
+    >this</a></p>
+<h2 id="babyserver">babyserver</h2>
+<p>In this series of challenges, we should writing assembly to interact with the environment, and ultimately build a web server</p>
+<p>Usage: <code>/challenge/babyserver &lt;path_to_web_server&gt;</code></p>
+<p>level1: <strong>exit a program</strong></p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>NR</th>
+<th>SYSCALL NAME</th>
+<th>references</th>
+<th>RAX</th>
+<th>ARG0(rdi)</th>
+<th>ARG1(rsi)</th>
+<th>ARG2(rdx)</th>
+<th>ARG3(r10)</th>
+<th>ARG4(r8)</th>
+<th>ARG5(r9)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>60</td>
+<td>exit</td>
+<td>man/ cs/</td>
+<td>3C</td>
+<td>int error_code</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table></div>
+<p>exit (0) : run the program normally and exit the program</p>
+<p>exit (1) : abnormal operation causes the program to exit</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">.global _start
+</span></span><span class="line"><span class="cl">.intel_syntax noprefix
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">.section .text
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">_start:
+</span></span><span class="line"><span class="cl">	mov rdi, 0
+</span></span><span class="line"><span class="cl">	mov rax, 60			# SYS_exit
+</span></span><span class="line"><span class="cl">	syscall
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">.section .data
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>then use the <code>as</code> (compiler) to generates an object file from the assembly file and use the <code>ld</code> (linker) to link the object file to the library as an executable or library file</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">as -o server.o server.s <span class="o">&amp;&amp;</span> ld -o server server.o
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>strace</strong> : tracks system calls and received signals as a process executes</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">hacker@babyserver_level1:~/module4/1$ strace ./server
+</span></span><span class="line"><span class="cl">execve<span class="o">(</span><span class="s2">&#34;./server&#34;</span>, <span class="o">[</span><span class="s2">&#34;./server&#34;</span><span class="o">]</span>, 0x7ffc21a0ed30 /* <span class="m">29</span> vars */<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl">exit<span class="o">(</span>0<span class="o">)</span>                                 <span class="o">=</span> ?
+</span></span><span class="line"><span class="cl">+++ exited with <span class="m">0</span> +++
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>get flag:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">/challenge/babyserver ./server
+</span></span><span class="line"><span class="cl"><span class="o">=====</span> Expected: Parent <span class="nv">Process</span> <span class="o">=====</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> execve<span class="o">(</span>&lt;execve_args&gt;<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> exit<span class="o">(</span>0<span class="o">)</span> <span class="o">=</span> ?
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">=====</span> Trace: Parent <span class="nv">Process</span> <span class="o">=====</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> execve<span class="o">(</span><span class="s2">&#34;/proc/self/fd/3&#34;</span>, <span class="o">[</span><span class="s2">&#34;/proc/self/fd/3&#34;</span><span class="o">]</span>, 0x7f9ad0f54a80 /* <span class="m">0</span> vars */<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> exit<span class="o">(</span>0<span class="o">)</span>                                 <span class="o">=</span> ?
+</span></span><span class="line"><span class="cl"><span class="o">[</span>?<span class="o">]</span> +++ exited with <span class="m">0</span> +++
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">=====</span> <span class="nv">Result</span> <span class="o">=====</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> Success
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level2: <strong>create a socket</strong></p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>NR</th>
+<th>SYSCALL NAME</th>
+<th>references</th>
+<th>RAX</th>
+<th>ARG0(rdi)</th>
+<th>ARG1(rsi)</th>
+<th>ARG2(rdx)</th>
+<th>ARG3(r10)</th>
+<th>ARG4(r8)</th>
+<th>ARG5(r9)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>41</td>
+<td>socket</td>
+<td>man/ cs/</td>
+<td>29</td>
+<td>int</td>
+<td>int</td>
+<td>int</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">=====</span> Expected: Parent <span class="nv">Process</span> <span class="o">=====</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> execve<span class="o">(</span>&lt;execve_args&gt;<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> socket<span class="o">(</span>AF_INET, SOCK_STREAM, IPPROTO_IP<span class="o">)</span> <span class="o">=</span> <span class="m">3</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> exit<span class="o">(</span>0<span class="o">)</span> <span class="o">=</span> ?
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p><strong>int socket(int domain, int type, int protocol)</strong></p>
+<p>need: <strong>socket(AF_INET, SOCK_STREAM, IPPROTO_IP)</strong></p>
+</blockquote>
+<ul>
+<li>
+<p>First, we can write it in a c program and look at the errors so that we can put the header files(.h) to c program, seeing each argument</p>
+</li>
+<li>
+<p>then, use the <code>find /usr/include | grep xxx.h</code>  and then <code>cat</code> it to find the <code>define</code> things. Strace the c program can find out some syscalls</p>
+</li>
+<li>
+<p>finally, use the <code>objdump -D -M intel xx.out</code> to see the assembly program</p>
+</li>
+</ul>
+<p>(such as the IPPROTO_IP in netinet/in.h is 0)</p>
+<p><img src="/img/pwn_college/level2/cpro.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/img/pwn_college/level2/ctoas.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1">#some useful tool</span>
+</span></span><span class="line"><span class="cl">grep -r <span class="s1">&#39;IPPROTO_IP&#39;</span> /usr/include <span class="p">|</span> grep define
+</span></span><span class="line"><span class="cl">grep -r <span class="s1">&#39;define AF_INET&#39;</span> /usr/include
+</span></span><span class="line"><span class="cl"><span class="c1">#define AF_INET PF_INET</span>
+</span></span><span class="line"><span class="cl">grep -r <span class="s1">&#39;define PF_INET&#39;</span> /usr/include
+</span></span><span class="line"><span class="cl"><span class="c1">#define PF_INET 2</span>
+</span></span><span class="line"><span class="cl">----------------------------------
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">pwn</span>
+</span></span><span class="line"><span class="cl"><span class="n">pwn</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">AF_INET</span>	<span class="c1">#get the constant of AF_INET</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">pwn</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>so we can get the solution:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">.global _start
+</span></span><span class="line"><span class="cl">.intel_syntax noprefix
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">.section .text
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">_start:
+</span></span><span class="line"><span class="cl">        mov rdi, 2			;domain:AF_INET
+</span></span><span class="line"><span class="cl">        mov rsi, 1			;type:SOCK_STREAM
+</span></span><span class="line"><span class="cl">        mov rdx, 0 			;protocol:IPPROTO_IP
+</span></span><span class="line"><span class="cl">        mov rax, 41
+</span></span><span class="line"><span class="cl">        syscall				;socket
+</span></span><span class="line"><span class="cl">        mov rdi, 0
+</span></span><span class="line"><span class="cl">        mov rax, 60
+</span></span><span class="line"><span class="cl">        syscall
+</span></span><span class="line"><span class="cl">.section .data
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 
@@ -541,7 +868,7 @@
         
             
         
-        共 9.02k 字 · 共 6篇文章
+        共 9.69k 字 · 共 6篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -738,6 +1065,8 @@
             <nav id="TableOfContents">
   <ol>
     <li><a href="#building-a-web-server-introduction">Building a Web Server: Introduction</a></li>
+    <li><a href="#building-a-web-server-linux-processes">Building a Web Server: Linux Processes</a></li>
+    <li><a href="#babyserver">babyserver</a></li>
   </ol>
 </nav>
         </div>
