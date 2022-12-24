@@ -319,7 +319,7 @@
 
 
                 <time class="article-time--reading">
-                    4 minute read
+                    7 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -330,7 +330,7 @@
 
 
                 <time class="article-words">
-                    688 字
+                    1343 字
                 </time>
             </div>
         
@@ -440,6 +440,143 @@
 ></p>
 <p>for more system call can see <a class="link" href="https://x64.syscall.sh/"  target="_blank" rel="noopener"
     >this</a></p>
+<h2 id="building-a-web-server-network-system-calls">Building a Web Server: Network System Calls</h2>
+<p>①socket</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">socket</span><span class="p">(</span><span class="n">in</span> <span class="n">domain</span><span class="p">,</span> <span class="kt">int</span> <span class="n">type</span><span class="p">,</span> <span class="kt">int</span> <span class="n">protocol</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//socket() creates an endpoint for communication and returns a file descriptor that refers to that endpoint
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>②bind</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">bind</span><span class="p">(</span><span class="kt">int</span> <span class="n">sockfd</span><span class="p">,</span> <span class="k">struct</span> <span class="n">sockaddr</span> <span class="o">*</span><span class="n">addr</span><span class="p">,</span> <span class="n">socklen_t</span> <span class="n">addrlen</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//when a socket(2) is created with socket, it exits in a name space but has no address assigned to it.bind() assigns the address specified by addr to the socket referred to by the file descriptor sockfd.
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>③struct sockaddr_in</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">sockaddr</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">uint16_t</span> <span class="n">sa_family</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">uint8_t</span> <span class="n">sa_data</span><span class="p">[</span><span class="mi">14</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">sockaddr_in</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">uint16_t</span> <span class="n">sin_family</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">uint16_t</span> <span class="n">sin_port</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">uint32_t</span> <span class="n">sin_addr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">uint8_t</span> <span class="n">__pad</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/img/pwn_college/lesson/structlesson.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>AF_INET is 2; htons() function used to convert the number from little endian to big endian for networking work on big ending integers; ipv4 address of 4 bytes is also big endian, the inet_addr() function converts an unsigned integer IP from a host end-order to a network end-order</p>
+<p>④listen</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">listen</span><span class="p">(</span><span class="kt">int</span> <span class="n">sockfd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">backlog</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//listen() marks the socket referred to by sockfd as a passive socket that will be used to accept incoming connection requests using accept(2)
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>⑤accept</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">accept</span><span class="p">(</span><span class="kt">int</span> <span class="n">sockfd</span><span class="p">,</span> <span class="k">struct</span> <span class="n">sockaddr</span> <span class="o">*</span><span class="n">addr</span><span class="p">,</span> <span class="n">socklen_t</span> <span class="o">*</span><span class="n">addrlen</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//it&#39;s used with connection-based socket types(SOCK_STREAM,SOCK_SEQPACKET).It extracts the first connection request on the queue of pending connections for the listening socket, sockfd, creates a new connected socket, and returns a new file descriptor referring to that socket.
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>⑥accept TCP/IP network connections</p>
+<p><img src="/img/pwn_college/lesson/acceptTCP.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<h2 id="building-a-web-server-http">Building a Web Server: HTTP</h2>
+<p><img src="/img/pwn_college/lesson/Uhttp.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<h2 id="building-a-web-server-multiprocessing">Building a Web Server: Multiprocessing</h2>
+<p>if there&rsquo;re lots of http requests, we should another system call.</p>
+<p>①fork()</p>
+<p>creates a new process by duplicating the calling process. The new process is referred to as the child process. The calling process is referred to as the parent process.</p>
+<p>On success, the PID of the child process is returned to the parent, and 0 is returned in the child.</p>
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <style type="text/css">
+        #googleslides_shortcodes {
+            padding-bottom: 66%;
+            position: relative;
+            display: block;
+            width: 100%;
+            border-bottom: 5px solid;
+        }
+        #googleslides_shortcodes iframe {
+            position: absolute;
+            top: 0;
+            left: 0
+        }
+    </style>
+    <title></title>
+</head>
+<body>
+<div id="googleslides_shortcodes">
+    <iframe id="googleSlideIframe"
+            width="100%"
+            height="100%"
+            src="/img/pdf/BaWS5.pdf"
+            frameborder="0"
+            allowfullscreen="" >
+    </iframe>
+</div>
+</body>
+</html>
 <h2 id="babyserver">babyserver</h2>
 <p>In this series of challenges, we should writing assembly to interact with the environment, and ultimately build a web server</p>
 <p>Usage: <code>/challenge/babyserver &lt;path_to_web_server&gt;</code></p>
@@ -705,6 +842,195 @@
 </span></span><span class="line"><span class="cl">.section .data
 </span></span></code></pre></td></tr></table>
 </div>
+</div><p>level3: <strong>bind an address to a socket</strong></p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>NR</th>
+<th>SYSCALL NAME</th>
+<th>references</th>
+<th>RAX</th>
+<th>ARG0(rdi)</th>
+<th>ARG1(rsi)</th>
+<th>ARG2(rdx)</th>
+<th>ARG3(r10)</th>
+<th>ARG4(r8)</th>
+<th>ARG5(r9)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>49</td>
+<td>bind</td>
+<td>man/ cs/</td>
+<td>31</td>
+<td>struct sockaddr*</td>
+<td>int</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>*<em>int bind(int sockfd, const struct sockaddr <em>addr, socklen_t addrlen)</em></em></p>
+<p>func: Bind a socket file that specifies the communication protocol to the IP and port</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">=====</span> Expected: Parent <span class="nv">Process</span> <span class="o">=====</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> execve<span class="o">(</span>&lt;execve_args&gt;<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> socket<span class="o">(</span>AF_INET, SOCK_STREAM, IPPROTO_IP<span class="o">)</span> <span class="o">=</span> <span class="m">3</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> bind<span class="o">(</span>3, <span class="o">{</span> <span class="nv">sa_family</span><span class="o">=</span>AF_INET, <span class="nv">sin_port</span><span class="o">=</span>htons<span class="o">(</span>&lt;bind_port&gt;<span class="o">)</span>, <span class="nv">sin_addr</span><span class="o">=</span>inet_addr<span class="o">(</span><span class="s2">&#34;&lt;bind_address&gt;&#34;</span><span class="o">)}</span>, 16<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl">    - Bind to port <span class="m">80</span>
+</span></span><span class="line"><span class="cl">    - Bind to address 0.0.0.0
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> exit<span class="o">(</span>0<span class="o">)</span> <span class="o">=</span> ?
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>we can use the pwntools to set the little ending data(port):</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">pwn</span>
+</span></span><span class="line"><span class="cl"><span class="n">pwn</span><span class="o">.</span><span class="n">p16</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span><span class="n">endian</span><span class="o">=</span><span class="s2">&#34;little&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">hex</span><span class="p">()</span> <span class="c1">#port</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>the solution:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">.global _start
+</span></span><span class="line"><span class="cl">.intel_syntax noprefix
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">.section .text
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">_start:
+</span></span><span class="line"><span class="cl">        mov rdi, 2
+</span></span><span class="line"><span class="cl">        mov rsi, 1
+</span></span><span class="line"><span class="cl">        mov rdx, 0 
+</span></span><span class="line"><span class="cl">        mov rax, 41 		#socket
+</span></span><span class="line"><span class="cl">        syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        mov rdi, 3
+</span></span><span class="line"><span class="cl">        lea rsi, [rip+sockaddr]			#lea(load effective address)Take the source&#39;s offset address
+</span></span><span class="line"><span class="cl">        mov rdx, 16
+</span></span><span class="line"><span class="cl">        mov rax, 49 		#bind
+</span></span><span class="line"><span class="cl">        syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        mov rdi, 0
+</span></span><span class="line"><span class="cl">        mov rax, 60 		#exit
+</span></span><span class="line"><span class="cl">        syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">.section .data
+</span></span><span class="line"><span class="cl">sockaddr:
+</span></span><span class="line"><span class="cl">        .2byte 2			#AF_INET
+</span></span><span class="line"><span class="cl">        .2byte 0x5000		#port:80---&gt;little ending 50 00
+</span></span><span class="line"><span class="cl">        .4byte 0			#addr:0.0.0.0
+</span></span><span class="line"><span class="cl">        .8byte 0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>we first find the file <code>/usr/include/netinet/in.h</code> and find out the sockaddr_in struct</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">sockaddr_in</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">__SOCKADDR_COMMON</span> <span class="p">(</span><span class="n">sin_</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">in_port_t</span> <span class="n">sin_port</span><span class="p">;</span>                 <span class="cm">/* Port number.  */</span>
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">in_addr</span> <span class="n">sin_addr</span><span class="p">;</span>            <span class="cm">/* Internet address.  */</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="cm">/* Pad to size of `struct sockaddr&#39;.  */</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">sin_zero</span><span class="p">[</span><span class="k">sizeof</span> <span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                           <span class="o">-</span> <span class="n">__SOCKADDR_COMMON_SIZE</span>
+</span></span><span class="line"><span class="cl">                           <span class="o">-</span> <span class="k">sizeof</span> <span class="p">(</span><span class="n">in_port_t</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                           <span class="o">-</span> <span class="k">sizeof</span> <span class="p">(</span><span class="k">struct</span> <span class="n">in_addr</span><span class="p">)];</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>and then we step by step find out the size of every type of data.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#define __SOCKADDR_COMMON_SIZE        (sizeof (unsigned short int))		</span><span class="c1">//2bytes
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="cm">/* Type to represent a port.  */</span>
+</span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="kt">uint16_t</span> <span class="n">in_port_t</span><span class="p">;</span>		<span class="c1">//2bytes
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="cm">/* Internet address.  */</span>
+</span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="kt">uint32_t</span> <span class="n">in_addr_t</span><span class="p">;</span>		<span class="c1">//4bytes
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">struct</span> <span class="n">in_addr</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">in_addr_t</span> <span class="n">s_addr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
 </div>
 </section>
 
@@ -868,7 +1194,7 @@
         
             
         
-        共 9.69k 字 · 共 6篇文章
+        共 10.34k 字 · 共 6篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -1066,6 +1392,9 @@
   <ol>
     <li><a href="#building-a-web-server-introduction">Building a Web Server: Introduction</a></li>
     <li><a href="#building-a-web-server-linux-processes">Building a Web Server: Linux Processes</a></li>
+    <li><a href="#building-a-web-server-network-system-calls">Building a Web Server: Network System Calls</a></li>
+    <li><a href="#building-a-web-server-http">Building a Web Server: HTTP</a></li>
+    <li><a href="#building-a-web-server-multiprocessing">Building a Web Server: Multiprocessing</a></li>
     <li><a href="#babyserver">babyserver</a></li>
   </ol>
 </nav>

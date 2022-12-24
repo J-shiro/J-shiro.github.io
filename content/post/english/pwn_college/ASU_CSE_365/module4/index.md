@@ -60,7 +60,75 @@ In the end, the file descriptor is 3 for '/flag' and the RAX is set to 3 as the 
 
 for more system call can see [this](https://x64.syscall.sh/)
 
+## Building a Web Server: Network System Calls
 
+①socket
+
+```c
+int socket(in domain, int type, int protocol)
+//socket() creates an endpoint for communication and returns a file descriptor that refers to that endpoint
+```
+
+②bind
+
+```c
+int bind(int sockfd, struct sockaddr *addr, socklen_t addrlen)
+//when a socket(2) is created with socket, it exits in a name space but has no address assigned to it.bind() assigns the address specified by addr to the socket referred to by the file descriptor sockfd.
+```
+
+③struct sockaddr_in
+
+```c
+struct sockaddr{
+	uint16_t sa_family;
+	uint8_t sa_data[14];
+};
+
+struct sockaddr_in{
+	uint16_t sin_family;
+	uint16_t sin_port;
+	uint32_t sin_addr;
+	uint8_t __pad[8];
+}
+```
+
+![](img/pwn_college/lesson/structlesson.png)
+
+AF_INET is 2; htons() function used to convert the number from little endian to big endian for networking work on big ending integers; ipv4 address of 4 bytes is also big endian, the inet_addr() function converts an unsigned integer IP from a host end-order to a network end-order
+
+④listen
+
+```c
+int listen(int sockfd, int backlog)
+//listen() marks the socket referred to by sockfd as a passive socket that will be used to accept incoming connection requests using accept(2)
+```
+
+⑤accept
+
+```c
+int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen)
+//it's used with connection-based socket types(SOCK_STREAM,SOCK_SEQPACKET).It extracts the first connection request on the queue of pending connections for the listening socket, sockfd, creates a new connected socket, and returns a new file descriptor referring to that socket.
+```
+
+⑥accept TCP/IP network connections
+
+![](img/pwn_college/lesson/acceptTCP.png)
+
+## Building a Web Server: HTTP
+
+![](img/pwn_college/lesson/Uhttp.png)
+
+## Building a Web Server: Multiprocessing
+
+if there're lots of http requests, we should another system call.
+
+①fork()
+
+creates a new process by duplicating the calling process. The new process is referred to as the child process. The calling process is referred to as the parent process.
+
+On success, the PID of the child process is returned to the parent, and 0 is returned in the child.
+
+{{<ppt src="/img/pdf/BaWS5.pdf" >}}
 
 ## babyserver
 
@@ -187,5 +255,98 @@ _start:
         mov rax, 60
         syscall
 .section .data
+```
+
+level3: **bind an address to a socket**
+
+| NR   | SYSCALL NAME | references | RAX  | ARG0(rdi)        | ARG1(rsi) | ARG2(rdx) | ARG3(r10) | ARG4(r8) | ARG5(r9) |
+| ---- | ------------ | ---------- | ---- | ---------------- | --------- | --------- | --------- | -------- | -------- |
+| 49   | bind         | man/ cs/   | 31   | struct sockaddr* | int       | -         | -         | -        | -        |
+
+> **int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen)**
+>
+> func: Bind a socket file that specifies the communication protocol to the IP and port
+
+```shell
+===== Expected: Parent Process =====
+[ ] execve(<execve_args>) = 0
+[ ] socket(AF_INET, SOCK_STREAM, IPPROTO_IP) = 3
+[ ] bind(3, { sa_family=AF_INET, sin_port=htons(<bind_port>), sin_addr=inet_addr("<bind_address>")}, 16) = 0
+    - Bind to port 80
+    - Bind to address 0.0.0.0
+[ ] exit(0) = ?
+```
+
+we can use the pwntools to set the little ending data(port):
+
+```python
+import pwn
+pwn.p16(80,endian="little").hex() #port
+```
+
+the solution:
+
+```assembly
+.global _start
+.intel_syntax noprefix
+
+.section .text
+
+_start:
+        mov rdi, 2
+        mov rsi, 1
+        mov rdx, 0 
+        mov rax, 41 		#socket
+        syscall
+
+        mov rdi, 3
+        lea rsi, [rip+sockaddr]			#lea(load effective address)Take the source's offset address
+        mov rdx, 16
+        mov rax, 49 		#bind
+        syscall
+
+        mov rdi, 0
+        mov rax, 60 		#exit
+        syscall
+
+.section .data
+sockaddr:
+        .2byte 2			#AF_INET
+        .2byte 0x5000		#port:80--->little ending 50 00
+        .4byte 0			#addr:0.0.0.0
+        .8byte 0
+```
+
+we first find the file `/usr/include/netinet/in.h` and find out the sockaddr_in struct
+
+```c
+struct sockaddr_in
+{
+	__SOCKADDR_COMMON (sin_);
+    in_port_t sin_port;                 /* Port number.  */
+    struct in_addr sin_addr;            /* Internet address.  */
+
+    /* Pad to size of `struct sockaddr'.  */
+    unsigned char sin_zero[sizeof (struct sockaddr)
+                           - __SOCKADDR_COMMON_SIZE
+                           - sizeof (in_port_t)
+                           - sizeof (struct in_addr)];
+};
+```
+
+and then we step by step find out the size of every type of data.
+
+```c
+#define __SOCKADDR_COMMON_SIZE        (sizeof (unsigned short int))		//2bytes
+
+/* Type to represent a port.  */
+typedef uint16_t in_port_t;		//2bytes
+
+/* Internet address.  */
+typedef uint32_t in_addr_t;		//4bytes
+struct in_addr
+{
+    in_addr_t s_addr;
+};
 ```
 
