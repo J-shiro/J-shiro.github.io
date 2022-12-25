@@ -350,3 +350,60 @@ struct in_addr
 };
 ```
 
+level4: **listen on a socket**
+
+```shell
+===== Expected: Parent Process =====
+[ ] execve(<execve_args>) = 0
+[ ] socket(AF_INET, SOCK_STREAM, IPPROTO_IP) = 3
+[ ] bind(3, {sa_family=AF_INET, sin_port=htons(<bind_port>), sin_addr=inet_addr("<bind_address>")}, 16) = 0
+    - Bind to port 80
+    - Bind to address 0.0.0.0
+[ ] listen(3, 0) = 0
+[ ] exit(0) = ?
+```
+
+| NR   | SYSCALL NAME | references | RAX  | ARG0(rdi) | ARG1(rsi) | ARG2(rdx) | ARG3(r10) | ARG4(r8) | ARG5(r9) |
+| ---- | ------------ | ---------- | ---- | --------- | --------- | --------- | --------- | -------- | -------- |
+| 50   | listen       | man/ cs/   | 32   | int       | int       | -         | -         | -        | -        |
+
+> **int listen(int sockfd, int backlog)**
+
+```assembly
+mov rdi, 3
+mov rsi, 0
+mov rax, 50
+syscall
+```
+
+level4: **accept a connection**
+
+```shell
+===== Expected: Parent Process =====
+[ ] execve(<execve_args>) = 0
+[ ] socket(AF_INET, SOCK_STREAM, IPPROTO_IP) = 3
+[ ] bind(3, {sa_family=AF_INET, sin_port=htons(<bind_port>), sin_addr=inet_addr("<bind_address>")}, 16) = 0
+    - Bind to port 80
+    - Bind to address 0.0.0.0
+[ ] listen(3, 0) = 0
+[ ] accept(3, NULL, NULL) = 4
+[ ] exit(0) = ?
+```
+
+| NR   | SYSCALL NAME | references | RAX  | ARG0(rdi) | ARG1(rsi)         | ARG2(rdx) | ARG3(r10) | ARG4(r8) | ARG5(r9) |
+| ---- | ------------ | ---------- | ---- | --------- | ----------------- | --------- | --------- | -------- | -------- |
+| 43   | accept       | man/ cs/   | 2B   | int       | struct sockaddr * | int *     | -         | -        | -        |
+
+> **int accept(int sockfd, struct sockaddr `*`addr, socklen_t *addrlen)**
+
+I write a c program about the accept and `objdump` it, then I find that the `NULL` should only set to the `0x0` to the register. It works.
+
+```assembly
+mov rdi, 3
+mov rsi, 0x0
+mov rdx, 0x0
+mov rax, 43 #accept
+syscall
+```
+
+level6: 

@@ -319,7 +319,7 @@
 
 
                 <time class="article-time--reading">
-                    7 minute read
+                    8 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -330,7 +330,7 @@
 
 
                 <time class="article-words">
-                    1343 字
+                    1592 字
                 </time>
             </div>
         
@@ -1031,7 +1031,153 @@
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span></code></pre></td></tr></table>
 </div>
+</div><p>level4: <strong>listen on a socket</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">=====</span> Expected: Parent <span class="nv">Process</span> <span class="o">=====</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> execve<span class="o">(</span>&lt;execve_args&gt;<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> socket<span class="o">(</span>AF_INET, SOCK_STREAM, IPPROTO_IP<span class="o">)</span> <span class="o">=</span> <span class="m">3</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> bind<span class="o">(</span>3, <span class="o">{</span><span class="nv">sa_family</span><span class="o">=</span>AF_INET, <span class="nv">sin_port</span><span class="o">=</span>htons<span class="o">(</span>&lt;bind_port&gt;<span class="o">)</span>, <span class="nv">sin_addr</span><span class="o">=</span>inet_addr<span class="o">(</span><span class="s2">&#34;&lt;bind_address&gt;&#34;</span><span class="o">)}</span>, 16<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl">    - Bind to port <span class="m">80</span>
+</span></span><span class="line"><span class="cl">    - Bind to address 0.0.0.0
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> listen<span class="o">(</span>3, 0<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> exit<span class="o">(</span>0<span class="o">)</span> <span class="o">=</span> ?
+</span></span></code></pre></td></tr></table>
 </div>
+</div><div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>NR</th>
+<th>SYSCALL NAME</th>
+<th>references</th>
+<th>RAX</th>
+<th>ARG0(rdi)</th>
+<th>ARG1(rsi)</th>
+<th>ARG2(rdx)</th>
+<th>ARG3(r10)</th>
+<th>ARG4(r8)</th>
+<th>ARG5(r9)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>50</td>
+<td>listen</td>
+<td>man/ cs/</td>
+<td>32</td>
+<td>int</td>
+<td>int</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p><strong>int listen(int sockfd, int backlog)</strong></p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rdi, 3
+</span></span><span class="line"><span class="cl">mov rsi, 0
+</span></span><span class="line"><span class="cl">mov rax, 50
+</span></span><span class="line"><span class="cl">syscall
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level4: <strong>accept a connection</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">=====</span> Expected: Parent <span class="nv">Process</span> <span class="o">=====</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> execve<span class="o">(</span>&lt;execve_args&gt;<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> socket<span class="o">(</span>AF_INET, SOCK_STREAM, IPPROTO_IP<span class="o">)</span> <span class="o">=</span> <span class="m">3</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> bind<span class="o">(</span>3, <span class="o">{</span><span class="nv">sa_family</span><span class="o">=</span>AF_INET, <span class="nv">sin_port</span><span class="o">=</span>htons<span class="o">(</span>&lt;bind_port&gt;<span class="o">)</span>, <span class="nv">sin_addr</span><span class="o">=</span>inet_addr<span class="o">(</span><span class="s2">&#34;&lt;bind_address&gt;&#34;</span><span class="o">)}</span>, 16<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl">    - Bind to port <span class="m">80</span>
+</span></span><span class="line"><span class="cl">    - Bind to address 0.0.0.0
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> listen<span class="o">(</span>3, 0<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> accept<span class="o">(</span>3, NULL, NULL<span class="o">)</span> <span class="o">=</span> <span class="m">4</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> exit<span class="o">(</span>0<span class="o">)</span> <span class="o">=</span> ?
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>NR</th>
+<th>SYSCALL NAME</th>
+<th>references</th>
+<th>RAX</th>
+<th>ARG0(rdi)</th>
+<th>ARG1(rsi)</th>
+<th>ARG2(rdx)</th>
+<th>ARG3(r10)</th>
+<th>ARG4(r8)</th>
+<th>ARG5(r9)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>43</td>
+<td>accept</td>
+<td>man/ cs/</td>
+<td>2B</td>
+<td>int</td>
+<td>struct sockaddr *</td>
+<td>int *</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>*<em>int accept(int sockfd, struct sockaddr <code>*</code>addr, socklen_t <em>addrlen)</em></em></p>
+</blockquote>
+<p>I write a c program about the accept and <code>objdump</code> it, then I find that the <code>NULL</code> should only set to the <code>0x0</code> to the register. It works.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rdi, 3
+</span></span><span class="line"><span class="cl">mov rsi, 0x0
+</span></span><span class="line"><span class="cl">mov rdx, 0x0
+</span></span><span class="line"><span class="cl">mov rax, 43 #accept
+</span></span><span class="line"><span class="cl">syscall
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level6:</p>
+
 </section>
 
 
@@ -1194,7 +1340,7 @@
         
             
         
-        共 10.34k 字 · 共 6篇文章
+        共 10.59k 字 · 共 6篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
