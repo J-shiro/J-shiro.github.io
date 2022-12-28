@@ -319,7 +319,7 @@
 
 
                 <time class="article-time--reading">
-                    8 minute read
+                    13 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -330,7 +330,7 @@
 
 
                 <time class="article-words">
-                    1592 字
+                    2565 字
                 </time>
             </div>
         
@@ -1176,7 +1176,492 @@
 </span></span><span class="line"><span class="cl">syscall
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>level6:</p>
+</div><p>level6: <strong>respond to an http request</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">=====</span> Expected: Parent <span class="nv">Process</span> <span class="o">=====</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> execve<span class="o">(</span>&lt;execve_args&gt;<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> socket<span class="o">(</span>AF_INET, SOCK_STREAM, IPPROTO_IP<span class="o">)</span> <span class="o">=</span> <span class="m">3</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> bind<span class="o">(</span>3, <span class="o">{</span><span class="nv">sa_family</span><span class="o">=</span>AF_INET, <span class="nv">sin_port</span><span class="o">=</span>htons<span class="o">(</span>&lt;bind_port&gt;<span class="o">)</span>, <span class="nv">sin_addr</span><span class="o">=</span>inet_addr<span class="o">(</span><span class="s2">&#34;&lt;bind_address&gt;&#34;</span><span class="o">)}</span>, 16<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl">    - Bind to port <span class="m">80</span>
+</span></span><span class="line"><span class="cl">    - Bind to address 0.0.0.0
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> listen<span class="o">(</span>3, 0<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> accept<span class="o">(</span>3, NULL, NULL<span class="o">)</span> <span class="o">=</span> <span class="m">4</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> read<span class="o">(</span>4, &lt;read_request&gt;, &lt;read_request_count&gt;<span class="o">)</span> <span class="o">=</span> &lt;read_request_result&gt;
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> write<span class="o">(</span>4, <span class="s2">&#34;HTTP/1.0 200 OK\r\n\r\n&#34;</span>, 19<span class="o">)</span> <span class="o">=</span> <span class="m">19</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> close<span class="o">(</span>4<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> exit<span class="o">(</span>0<span class="o">)</span> <span class="o">=</span> ?
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>NR</th>
+<th>SYSCALL NAME</th>
+<th>references</th>
+<th>RAX</th>
+<th>ARG0(rdi)</th>
+<th>ARG1(rsi)</th>
+<th>ARG2(rdx)</th>
+<th>ARG3(r10)</th>
+<th>ARG4(r8)</th>
+<th>ARG5(r9)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>read</td>
+<td>man/ cs/</td>
+<td>0</td>
+<td>unsigned int fd</td>
+<td>char *buf</td>
+<td>size_t count</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>1</td>
+<td>write</td>
+<td>man/ cs/</td>
+<td>1</td>
+<td>unsigned int fd</td>
+<td>const char *buf</td>
+<td>size_t count</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>3</td>
+<td>close</td>
+<td>man/ cs/</td>
+<td>3</td>
+<td>unsigned int fd</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p><strong>ssize_t read(int fd, void <code>*</code>buf, size_t count);</strong></p>
+<p><strong>ssize_t write (int filedes, void <code>*</code> buf, size_t nbytes);</strong></p>
+<p><strong>int close(int fd);</strong></p>
+</blockquote>
+<p>Only show the newly added code:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">		mov rdi, 4
+</span></span><span class="line"><span class="cl">        mov rsi, rsp
+</span></span><span class="line"><span class="cl">        mov rdx, 256
+</span></span><span class="line"><span class="cl">        mov rax, 0 #read
+</span></span><span class="line"><span class="cl">        syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        mov rdi, 4
+</span></span><span class="line"><span class="cl">        lea rsi, [rip+msg]
+</span></span><span class="line"><span class="cl">        mov rdx, 19
+</span></span><span class="line"><span class="cl">        mov rax, 1 #write
+</span></span><span class="line"><span class="cl">        syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        mov rdi, 4
+</span></span><span class="line"><span class="cl">        mov rax, 3 #close
+</span></span><span class="line"><span class="cl">        syscall
+</span></span><span class="line"><span class="cl">.section .data
+</span></span><span class="line"><span class="cl">msg:
+</span></span><span class="line"><span class="cl">        .ascii &#34;HTTP/1.0 200 OK\r\n\r\n&#34;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level7: <strong>respond to a GET request for the contents of a specified file</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">=====</span> Expected: Parent <span class="nv">Process</span> <span class="o">=====</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> execve<span class="o">(</span>&lt;execve_args&gt;<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> socket<span class="o">(</span>AF_INET, SOCK_STREAM, IPPROTO_IP<span class="o">)</span> <span class="o">=</span> <span class="m">3</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> bind<span class="o">(</span>3, <span class="o">{</span><span class="nv">sa_family</span><span class="o">=</span>AF_INET, <span class="nv">sin_port</span><span class="o">=</span>htons<span class="o">(</span>&lt;bind_port&gt;<span class="o">)</span>, <span class="nv">sin_addr</span><span class="o">=</span>inet_addr<span class="o">(</span><span class="s2">&#34;&lt;bind_address&gt;&#34;</span><span class="o">)}</span>, 16<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl">    - Bind to port <span class="m">80</span>
+</span></span><span class="line"><span class="cl">    - Bind to address 0.0.0.0
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> listen<span class="o">(</span>3, 0<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> accept<span class="o">(</span>3, NULL, NULL<span class="o">)</span> <span class="o">=</span> <span class="m">4</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> read<span class="o">(</span>4, &lt;read_request&gt;, &lt;read_request_count&gt;<span class="o">)</span> <span class="o">=</span> &lt;read_request_result&gt;
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> open<span class="o">(</span><span class="s2">&#34;&lt;open_path&gt;&#34;</span>, O_RDONLY<span class="o">)</span> <span class="o">=</span> <span class="m">5</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> read<span class="o">(</span>5, &lt;read_file&gt;, &lt;read_file_count&gt;<span class="o">)</span> <span class="o">=</span> &lt;read_file_result&gt;
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> close<span class="o">(</span>5<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> write<span class="o">(</span>4, <span class="s2">&#34;HTTP/1.0 200 OK\r\n\r\n&#34;</span>, 19<span class="o">)</span> <span class="o">=</span> <span class="m">19</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> write<span class="o">(</span>4, &lt;write_file&gt;, &lt;write_file_count&gt; <span class="o">=</span> &lt;write_file_result&gt;
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> close<span class="o">(</span>4<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> exit<span class="o">(</span>0<span class="o">)</span> <span class="o">=</span> ?
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>find out the definition of the <code>O_RDONLY</code>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">hacker@babyserver_level7:~/module4/7$ grep -r <span class="s2">&#34;O_RDONLY&#34;</span> /usr/include/
+</span></span><span class="line"><span class="cl">/usr/include/x86_64-linux-gnu/bits/fcntl-linux.h:#define O_RDONLY            <span class="m">00</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>There&rsquo;re something to mention: the <code>&lt;open_path&gt;</code> should be the file that accept from the client and it is automatic, so we can&rsquo;t put a casual path to the open(). The second thing is that we must get the right content of the file so we should save the count after reading from the file.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">.global _start
+</span></span><span class="line"><span class="cl">.intel_syntax noprefix
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">.section .text
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">_start:
+</span></span><span class="line"><span class="cl">        mov rdi, 2
+</span></span><span class="line"><span class="cl">        mov rsi, 1
+</span></span><span class="line"><span class="cl">        mov rdx, 0 
+</span></span><span class="line"><span class="cl">        mov rax, 41 #socket
+</span></span><span class="line"><span class="cl">        syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        mov rdi, 3
+</span></span><span class="line"><span class="cl">        lea rsi, [rip+sockaddr]
+</span></span><span class="line"><span class="cl">        mov rdx, 16
+</span></span><span class="line"><span class="cl">        mov rax, 49 #bind
+</span></span><span class="line"><span class="cl">        syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        mov rdi, 3
+</span></span><span class="line"><span class="cl">        mov rsi, 0
+</span></span><span class="line"><span class="cl">        mov rax, 50 #listen
+</span></span><span class="line"><span class="cl">        syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        mov rdi, 3
+</span></span><span class="line"><span class="cl">        mov rsi, 0x0
+</span></span><span class="line"><span class="cl">                mov rdx, 0x0
+</span></span><span class="line"><span class="cl">        mov rax, 43 #accept
+</span></span><span class="line"><span class="cl">        syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        mov rdi, 4
+</span></span><span class="line"><span class="cl">        mov rsi, rsp
+</span></span><span class="line"><span class="cl">        mov rdx, 0x1000
+</span></span><span class="line"><span class="cl">        mov rax, 0 #read
+</span></span><span class="line"><span class="cl">        syscall
+</span></span><span class="line"><span class="cl">#GET /temp/xxxx HTTP/1.0
+</span></span><span class="line"><span class="cl">#      		   ^
+</span></span><span class="line"><span class="cl"># r10		   \0
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">#got the /temp/xxxx&lt;----automatic
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">loop:
+</span></span><span class="line"><span class="cl">        mov al, [rsp]
+</span></span><span class="line"><span class="cl">        cmp al, &#39; &#39;
+</span></span><span class="line"><span class="cl">        je next
+</span></span><span class="line"><span class="cl">        inc rsp
+</span></span><span class="line"><span class="cl">        jmp loop
+</span></span><span class="line"><span class="cl">next:
+</span></span><span class="line"><span class="cl">        inc rsp
+</span></span><span class="line"><span class="cl">        mov r10, rsp
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">loop2:
+</span></span><span class="line"><span class="cl">        mov al, [rsp]
+</span></span><span class="line"><span class="cl">        cmp al, &#39; &#39;
+</span></span><span class="line"><span class="cl">        je next2
+</span></span><span class="line"><span class="cl">        inc rsp
+</span></span><span class="line"><span class="cl">        jmp loop2
+</span></span><span class="line"><span class="cl">next2:
+</span></span><span class="line"><span class="cl">        mov byte ptr [rsp], 0
+</span></span><span class="line"><span class="cl">        mov rdi, r10
+</span></span><span class="line"><span class="cl">        #lea rdi, [rip+filepath]
+</span></span><span class="line"><span class="cl">        mov rsi, 0
+</span></span><span class="line"><span class="cl">        mov rax, 2 #open
+</span></span><span class="line"><span class="cl">        syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        mov rdi, 5
+</span></span><span class="line"><span class="cl">        mov rsi, rsp
+</span></span><span class="line"><span class="cl">        mov rdx, 0x1000
+</span></span><span class="line"><span class="cl">        mov rax, 0 #read
+</span></span><span class="line"><span class="cl">        syscall
+</span></span><span class="line"><span class="cl">        mov r12, rax		#tried the r11 will have errors so change to the r12
+</span></span><span class="line"><span class="cl">        					#save the size returning from the read func
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        mov rdi, 5
+</span></span><span class="line"><span class="cl">        mov rax, 3
+</span></span><span class="line"><span class="cl">        syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        mov rdi, 4
+</span></span><span class="line"><span class="cl">        lea rsi, [rip+msg]
+</span></span><span class="line"><span class="cl">        mov rdx, 19
+</span></span><span class="line"><span class="cl">        mov rax, 1 #write
+</span></span><span class="line"><span class="cl">        syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        mov rdi, 4
+</span></span><span class="line"><span class="cl">        mov rsi, rsp
+</span></span><span class="line"><span class="cl">        mov rdx, r12
+</span></span><span class="line"><span class="cl">        mov rax, 1
+</span></span><span class="line"><span class="cl">        syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        mov rdi, 4
+</span></span><span class="line"><span class="cl">        mov rax, 3 #close
+</span></span><span class="line"><span class="cl">        syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        mov rdi, 0
+</span></span><span class="line"><span class="cl">        mov rax, 60 #exit
+</span></span><span class="line"><span class="cl">        syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">.section .data
+</span></span><span class="line"><span class="cl">sockaddr:
+</span></span><span class="line"><span class="cl">        .2byte 2
+</span></span><span class="line"><span class="cl">        .2byte 0x5000
+</span></span><span class="line"><span class="cl">        .4byte 0
+</span></span><span class="line"><span class="cl">        .8byte 0
+</span></span><span class="line"><span class="cl">msg:
+</span></span><span class="line"><span class="cl">        .ascii &#34;HTTP/1.0 200 OK\r\n\r\n&#34;
+</span></span><span class="line"><span class="cl">filepath:
+</span></span><span class="line"><span class="cl">        .ascii &#34;/tmp/&#34;		#didn&#39;t use
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level8: <strong>accept multiple requests</strong></p>
+<p>Compare with the level7, delete the <code>exit</code> and add the <code>accept</code> again</p>
+<p>level9: <strong>concurrently accept multiple requests</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">=====</span> Expected: Parent <span class="nv">Process</span> <span class="o">=====</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> execve<span class="o">(</span>&lt;execve_args&gt;<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> socket<span class="o">(</span>AF_INET, SOCK_STREAM, IPPROTO_IP<span class="o">)</span> <span class="o">=</span> <span class="m">3</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> bind<span class="o">(</span>3, <span class="o">{</span><span class="nv">sa_family</span><span class="o">=</span>AF_INET, <span class="nv">sin_port</span><span class="o">=</span>htons<span class="o">(</span>&lt;bind_port&gt;<span class="o">)</span>, <span class="nv">sin_addr</span><span class="o">=</span>inet_addr<span class="o">(</span><span class="s2">&#34;&lt;bind_address&gt;&#34;</span><span class="o">)}</span>, 16<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl">    - Bind to port <span class="m">80</span>
+</span></span><span class="line"><span class="cl">    - Bind to address 0.0.0.0
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> listen<span class="o">(</span>3, 0<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> accept<span class="o">(</span>3, NULL, NULL<span class="o">)</span> <span class="o">=</span> <span class="m">4</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> fork<span class="o">()</span> <span class="o">=</span> &lt;fork_result&gt;
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> close<span class="o">(</span>4<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> accept<span class="o">(</span>3, NULL, NULL<span class="o">)</span> <span class="o">=</span> ?
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">=====</span> Expected: Child <span class="nv">Process</span> <span class="o">=====</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> close<span class="o">(</span>3<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> read<span class="o">(</span>4, &lt;read_request&gt;, &lt;read_request_count&gt;<span class="o">)</span> <span class="o">=</span> &lt;read_request_result&gt;
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> open<span class="o">(</span><span class="s2">&#34;&lt;open_path&gt;&#34;</span>, O_RDONLY<span class="o">)</span> <span class="o">=</span> <span class="m">3</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> read<span class="o">(</span>3, &lt;read_file&gt;, &lt;read_file_count&gt;<span class="o">)</span> <span class="o">=</span> &lt;read_file_result&gt;
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> close<span class="o">(</span>3<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> write<span class="o">(</span>4, <span class="s2">&#34;HTTP/1.0 200 OK\r\n\r\n&#34;</span>, 19<span class="o">)</span> <span class="o">=</span> <span class="m">19</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> write<span class="o">(</span>4, &lt;write_file&gt;, &lt;write_file_count&gt; <span class="o">=</span> &lt;write_file_result&gt;
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="o">]</span> exit<span class="o">(</span>0<span class="o">)</span> <span class="o">=</span> ?
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>NR</th>
+<th>SYSCALL NAME</th>
+<th>references</th>
+<th>RAX</th>
+<th>ARG0(rdi)</th>
+<th>ARG1(rsi)</th>
+<th>ARG2(rdx)</th>
+<th>ARG3(r10)</th>
+<th>ARG4(r8)</th>
+<th>ARG5(r9)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>57</td>
+<td>fork</td>
+<td>man/ cs/</td>
+<td>39</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p><strong>pid_t fork(void);</strong></p>
+</blockquote>
 
 </section>
 
@@ -1340,7 +1825,7 @@
         
             
         
-        共 10.59k 字 · 共 6篇文章
+        共 11.56k 字 · 共 6篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---

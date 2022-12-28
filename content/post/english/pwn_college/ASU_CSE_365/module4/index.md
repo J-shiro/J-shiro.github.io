@@ -406,4 +406,230 @@ mov rax, 43 #accept
 syscall
 ```
 
-level6: 
+level6: **respond to an http request**
+
+```shell
+===== Expected: Parent Process =====
+[ ] execve(<execve_args>) = 0
+[ ] socket(AF_INET, SOCK_STREAM, IPPROTO_IP) = 3
+[ ] bind(3, {sa_family=AF_INET, sin_port=htons(<bind_port>), sin_addr=inet_addr("<bind_address>")}, 16) = 0
+    - Bind to port 80
+    - Bind to address 0.0.0.0
+[ ] listen(3, 0) = 0
+[ ] accept(3, NULL, NULL) = 4
+[ ] read(4, <read_request>, <read_request_count>) = <read_request_result>
+[ ] write(4, "HTTP/1.0 200 OK\r\n\r\n", 19) = 19
+[ ] close(4) = 0
+[ ] exit(0) = ?
+```
+
+| NR   | SYSCALL NAME | references | RAX  | ARG0(rdi)       | ARG1(rsi)       | ARG2(rdx)    | ARG3(r10) | ARG4(r8) | ARG5(r9) |
+| ---- | ------------ | ---------- | ---- | --------------- | --------------- | ------------ | --------- | -------- | -------- |
+| 0    | read         | man/ cs/   | 0    | unsigned int fd | char *buf       | size_t count | -         | -        | -        |
+| 1    | write        | man/ cs/   | 1    | unsigned int fd | const char *buf | size_t count | -         | -        | -        |
+| 3    | close        | man/ cs/   | 3    | unsigned int fd | -               | -            | -         | -        | -        |
+
+> **ssize_t read(int fd, void `*`buf, size_t count);**
+>
+> **ssize_t write (int filedes, void `*` buf, size_t nbytes);** 
+>
+> **int close(int fd);**
+
+Only show the newly added code: 
+
+```assembly
+		mov rdi, 4
+        mov rsi, rsp
+        mov rdx, 256
+        mov rax, 0 #read
+        syscall
+
+        mov rdi, 4
+        lea rsi, [rip+msg]
+        mov rdx, 19
+        mov rax, 1 #write
+        syscall
+
+        mov rdi, 4
+        mov rax, 3 #close
+        syscall
+.section .data
+msg:
+        .ascii "HTTP/1.0 200 OK\r\n\r\n"
+```
+
+level7: **respond to a GET request for the contents of a specified file**
+
+```shell
+===== Expected: Parent Process =====
+[ ] execve(<execve_args>) = 0
+[ ] socket(AF_INET, SOCK_STREAM, IPPROTO_IP) = 3
+[ ] bind(3, {sa_family=AF_INET, sin_port=htons(<bind_port>), sin_addr=inet_addr("<bind_address>")}, 16) = 0
+    - Bind to port 80
+    - Bind to address 0.0.0.0
+[ ] listen(3, 0) = 0
+[ ] accept(3, NULL, NULL) = 4
+[ ] read(4, <read_request>, <read_request_count>) = <read_request_result>
+[ ] open("<open_path>", O_RDONLY) = 5
+[ ] read(5, <read_file>, <read_file_count>) = <read_file_result>
+[ ] close(5) = 0
+[ ] write(4, "HTTP/1.0 200 OK\r\n\r\n", 19) = 19
+[ ] write(4, <write_file>, <write_file_count> = <write_file_result>
+[ ] close(4) = 0
+[ ] exit(0) = ?
+```
+
+find out the definition of the `O_RDONLY`: 
+
+```shell
+hacker@babyserver_level7:~/module4/7$ grep -r "O_RDONLY" /usr/include/
+/usr/include/x86_64-linux-gnu/bits/fcntl-linux.h:#define O_RDONLY            00
+```
+
+There're something to mention: the `<open_path>` should be the file that accept from the client and it is automatic, so we can't put a casual path to the open(). The second thing is that we must get the right content of the file so we should save the count after reading from the file.
+
+```assembly
+.global _start
+.intel_syntax noprefix
+
+.section .text
+
+_start:
+        mov rdi, 2
+        mov rsi, 1
+        mov rdx, 0 
+        mov rax, 41 #socket
+        syscall
+
+        mov rdi, 3
+        lea rsi, [rip+sockaddr]
+        mov rdx, 16
+        mov rax, 49 #bind
+        syscall
+
+        mov rdi, 3
+        mov rsi, 0
+        mov rax, 50 #listen
+        syscall
+
+        mov rdi, 3
+        mov rsi, 0x0
+                mov rdx, 0x0
+        mov rax, 43 #accept
+        syscall
+
+        mov rdi, 4
+        mov rsi, rsp
+        mov rdx, 0x1000
+        mov rax, 0 #read
+        syscall
+#GET /temp/xxxx HTTP/1.0
+#      		   ^
+# r10		   \0
+
+#got the /temp/xxxx<----automatic
+
+loop:
+        mov al, [rsp]
+        cmp al, ' '
+        je next
+        inc rsp
+        jmp loop
+next:
+        inc rsp
+        mov r10, rsp
+
+loop2:
+        mov al, [rsp]
+        cmp al, ' '
+        je next2
+        inc rsp
+        jmp loop2
+next2:
+        mov byte ptr [rsp], 0
+        mov rdi, r10
+        #lea rdi, [rip+filepath]
+        mov rsi, 0
+        mov rax, 2 #open
+        syscall
+
+        mov rdi, 5
+        mov rsi, rsp
+        mov rdx, 0x1000
+        mov rax, 0 #read
+        syscall
+        mov r12, rax		#tried the r11 will have errors so change to the r12
+        					#save the size returning from the read func
+
+        mov rdi, 5
+        mov rax, 3
+        syscall
+
+        mov rdi, 4
+        lea rsi, [rip+msg]
+        mov rdx, 19
+        mov rax, 1 #write
+        syscall
+
+        mov rdi, 4
+        mov rsi, rsp
+        mov rdx, r12
+        mov rax, 1
+        syscall
+
+        mov rdi, 4
+        mov rax, 3 #close
+        syscall
+
+        mov rdi, 0
+        mov rax, 60 #exit
+        syscall
+
+.section .data
+sockaddr:
+        .2byte 2
+        .2byte 0x5000
+        .4byte 0
+        .8byte 0
+msg:
+        .ascii "HTTP/1.0 200 OK\r\n\r\n"
+filepath:
+        .ascii "/tmp/"		#didn't use
+```
+
+level8: **accept multiple requests**
+
+Compare with the level7, delete the `exit` and add the `accept` again
+
+level9: **concurrently accept multiple requests**
+
+```shell
+===== Expected: Parent Process =====
+[ ] execve(<execve_args>) = 0
+[ ] socket(AF_INET, SOCK_STREAM, IPPROTO_IP) = 3
+[ ] bind(3, {sa_family=AF_INET, sin_port=htons(<bind_port>), sin_addr=inet_addr("<bind_address>")}, 16) = 0
+    - Bind to port 80
+    - Bind to address 0.0.0.0
+[ ] listen(3, 0) = 0
+[ ] accept(3, NULL, NULL) = 4
+[ ] fork() = <fork_result>
+[ ] close(4) = 0
+[ ] accept(3, NULL, NULL) = ?
+
+===== Expected: Child Process =====
+[ ] close(3) = 0
+[ ] read(4, <read_request>, <read_request_count>) = <read_request_result>
+[ ] open("<open_path>", O_RDONLY) = 3
+[ ] read(3, <read_file>, <read_file_count>) = <read_file_result>
+[ ] close(3) = 0
+[ ] write(4, "HTTP/1.0 200 OK\r\n\r\n", 19) = 19
+[ ] write(4, <write_file>, <write_file_count> = <write_file_result>
+[ ] exit(0) = ?
+```
+
+| NR   | SYSCALL NAME | references | RAX  | ARG0(rdi) | ARG1(rsi) | ARG2(rdx) | ARG3(r10) | ARG4(r8) | ARG5(r9) |
+| ---- | ------------ | ---------- | ---- | --------- | --------- | --------- | --------- | -------- | -------- |
+| 57   | fork         | man/ cs/   | 39   | -         | -         | -         | -         | -        | -        |
+
+> **pid_t fork(void);**
+
