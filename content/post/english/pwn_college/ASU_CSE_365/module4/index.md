@@ -438,7 +438,7 @@ level6: **respond to an http request**
 Only show the newly added code: 
 
 ```assembly
-		mov rdi, 4
+        mov rdi, 4
         mov rsi, rsp
         mov rdx, 256
         mov rax, 0 #read
@@ -646,6 +646,33 @@ cmp r8, 0
 je child
 ```
 
+```shell
+===== Trace: Parent Process =====
+[✓] execve("/proc/self/fd/3", ["/proc/self/fd/3"], 0x7f6c58e3aaa0 /* 0 vars */) = 0
+[✓] socket(AF_INET, SOCK_STREAM, IPPROTO_IP) = 3
+[✓] bind(3, {sa_family=AF_INET, sin_port=htons(80), sin_addr=inet_addr("0.0.0.0")}, 16) = 0
+[✓] listen(3, 0)                            = 0
+[✓] accept(3, NULL, NULL)                   = 4
+[✓] fork()                                  = 7
+[✓] close(4)                                = 0
+[✓] accept(3, NULL, NULL)                   = ?
+[?] +++ killed by SIGKILL +++
+
+===== Trace: Child Process =====
+[✓] close(3)                                = 0
+[✓] read(4, "GET /tmp/tmpq9rbaedq HTTP/1.1\r\nHost: localhost\r\nUser-Agent: python-requests/2.28.1\r\nAccept-Encoding: gzip, deflate\r\nAccept: */*\r\nConnection: keep-alive\r\n\r\n", 4096) = 155
+[✓] open("/tmp/tmpq9rbaedq", O_RDONLY)      = 3
+[✓] read(3, "ppNPPIPL1y3rs5lyygp2Odm7P8TiMzFLKR1UyCySEFsG4uIHLByLEXMHsblOhc3kJOtwK30IGN6RUOt1JnTTVTiDXI4Db7ormkmN3up7rwCcLqhJk74J4rr4cYRbWta7RlJNciFqocdfIuTNMe4mIkg3XtItfDI2LZV5KN93", 4096) = 168
+[✓] close(3)                                = 0
+[✓] write(4, "HTTP/1.0 200 OK\r\n\r\n", 19) = 19
+[✓] write(4, "ppNPPIPL1y3rs5lyygp2Odm7P8TiMzFLKR1UyCySEFsG4uIHLByLEXMHsblOhc3kJOtwK30IGN6RUOt1JnTTVTiDXI4Db7ormkmN3up7rwCcLqhJk74J4rr4cYRbWta7RlJNciFqocdfIuTNMe4mIkg3XtItfDI2LZV5KN93", 168) = 168
+[✓] exit(0)                                 = ?
+[?] +++ exited with 0 +++
+
+===== Result =====
+[✓] Success
+```
+
 level10: **respond to a POST request with a specified file and update its contents**
 
 ```shell
@@ -687,14 +714,14 @@ and we should do in level10 is :
 .section .text
 
 _start:
-		mov rdi, 2
-		mov rsi, 1
-		mov rdx, 0 
-		mov rax, 41 #socket
-		syscall
+        mov rdi, 2
+        mov rsi, 1
+        mov rdx, 0 
+        mov rax, 41 #socket
+        syscall
 	
-		mov rdi, 3
-		lea rsi, [rip+sockaddr]
+        mov rdi, 3
+        lea rsi, [rip+sockaddr]
         mov rdx, 16	
         mov rax, 49 #bind
         syscall
@@ -719,27 +746,27 @@ _start:
         cmp r8, 0
         je child
 parent:
-		mov rdi, 4
+        mov rdi, 4
         mov rax, 3 #close
         syscall
 
-		mov rdi, 3
+        mov rdi, 3
         mov rsi, 0x0
         mov rdx, 0x0
         mov rax, 43 #accept
         syscall	
 child:
-		mov rdi, 3
+        mov rdi, 3
         mov rax, 3 #close
         syscall
 	
-		mov rdi, 4
+        mov rdi, 4
         mov rsi, rsp
         mov rdx, 0x1000
         mov rax, 0 #read
         syscall
-		mov r14, rax	
-		sub r14, 177		#calculate the size
+        mov r14, rax	
+        sub r14, 177		#calculate the size
 loop:
         mov al, [rsp]
         cmp al, ' '
@@ -760,18 +787,18 @@ next2:
         mov byte ptr [rsp], 0
         mov rdi, r10
         mov rsi, 0100|01		#O_WRONLY|O_CREAT
-		mov rdx, 0x1ff
+        mov rdx, 0x1ff
         mov rax, 2 #open
         syscall
 	
 loop3:
-		mov al, [rsp]	#must in the loop
+        mov al, [rsp]	#must in the loop
         cmp al, 'H'
         je next3
         inc rsp
         jmp loop3
 next3:
-		inc rsp
+        inc rsp
 loop4:
         mov al, [rsp]
         cmp al, 'L'
@@ -779,26 +806,26 @@ loop4:
         inc rsp
         jmp loop4
 next4:
-		add rsp, 15		#calculate the size
+        add rsp, 15		#calculate the size
         mov r8, rsp
 
-		mov rdi, 3
+        mov rdi, 3
         mov rsi, r8
         mov rdx, r14
         mov rax, 1 #write
         syscall
 
-		mov rdi, 3
+        mov rdi, 3
         mov rax, 3 #close
         syscall
 
-		mov rdi, 4
+        mov rdi, 4
         lea rsi, [rip+msg]
         mov rdx, 19
         mov rax, 1 #write
         syscall
 
-		mov rdi, 0
+        mov rdi, 0
         mov rax, 60 #exit
         syscall
 .section .data
@@ -808,14 +835,495 @@ sockaddr:
         .4byte 0
         .8byte 0
 msg:
-		.ascii "HTTP/1.0 200 OK\r\n\r\n"
+        .ascii "HTTP/1.0 200 OK\r\n\r\n"
 ```
 
-emmmm, I feel like I'm using a little trick.....
+emmmm, I feel like I'm using a little trick.....Sometimes it is wrong according to the counts.
+
+```shell
+===== Trace: Parent Process =====
+[✓] execve("/proc/self/fd/3", ["/proc/self/fd/3"], 0x7fbd50e91aa0 /* 0 vars */) = 0
+[✓] socket(AF_INET, SOCK_STREAM, IPPROTO_IP) = 3
+[✓] bind(3, {sa_family=AF_INET, sin_port=htons(80), sin_addr=inet_addr("0.0.0.0")}, 16) = 0
+[✓] listen(3, 0)                            = 0
+[✓] accept(3, NULL, NULL)                   = 4
+[✓] fork()                                  = 7
+[✓] close(4)                                = 0
+[✓] accept(3, NULL, NULL)                   = ?
+[?] +++ killed by SIGKILL +++
+
+===== Trace: Child Process =====
+[✓] close(3)                                = 0
+[✓] read(4, "POST /tmp/tmpvx_ye4_7 HTTP/1.1\r\nHost: localhost\r\nUser-Agent: python-requests/2.28.1\r\nAccept-Encoding: gzip, deflate\r\nAccept: */*\r\nConnection: keep-alive\r\nContent-Length: 212\r\n\r\nz7sUJ0m2d9IkQeghmuUTlpCXBPRbQGKpmILxptSYl9aJhMwGgC7PQpSTMR8qTr2q8uAfzsro0y9fSbM8anzW7BsK10vsfaOThRBw4B6R5y38IOedthK0iOoX5ymIWbuBnOBPgsCNh5C45wcMDNR9LFEfUGTz7bvFCHRQlFg4LXZNazadwka8pN7A0QsBhgmRHQ4VOg5iPqBiGeMpX2gD", 4096) = 389
+[✓] open("/tmp/tmpvx_ye4_7", O_WRONLY|O_CREAT, 0777) = 3
+[✓] write(3, "z7sUJ0m2d9IkQeghmuUTlpCXBPRbQGKpmILxptSYl9aJhMwGgC7PQpSTMR8qTr2q8uAfzsro0y9fSbM8anzW7BsK10vsfaOThRBw4B6R5y38IOedthK0iOoX5ymIWbuBnOBPgsCNh5C45wcMDNR9LFEfUGTz7bvFCHRQlFg4LXZNazadwka8pN7A0QsBhgmRHQ4VOg5iPqBiGeMpX2gD", 212) = 212
+[✓] close(3)                                = 0
+[✓] write(4, "HTTP/1.0 200 OK\r\n\r\n", 19) = 19
+[✓] exit(0)                                 = ?
+[?] +++ exited with 0 +++
+
+===== Result =====
+[✓] Success
+```
+
+OK, fine...It turns out that we cannot be opportunistic. I modified the code to make it possible to judge three-digit numbers as well as two-digit numbers so that it won't have errors several times. And this is good for editing the level11.
+
+```assembly
+.global _start
+.intel_syntax noprefix
+
+.section .text
+
+_start:
+	mov rdi, 2
+	mov rsi, 1
+	mov rdx, 0 
+	mov rax, 41 #socket
+	syscall
+	
+	mov rdi, 3
+	lea rsi, [rip+sockaddr]
+	mov rdx, 16	
+	mov rax, 49 #bind
+	syscall
+
+	mov rdi, 3
+	mov rsi, 0
+	mov rax, 50 #listen
+	syscall
+	
+	mov rdi, 3
+	mov rsi, 0x0
+	mov rdx, 0x0
+	mov rax, 43 #accept
+	syscall	
+
+	mov rax, 57 #fork
+	syscall
+	
+	mov r8, rax
+	cmp r8, 7
+	je parent
+	cmp r8, 0
+	je child
+parent:
+	mov rdi, 4
+	mov rax, 3 #close
+	syscall
+
+	mov rdi, 3
+	mov rsi, 0x0
+	mov rdx, 0x0
+	mov rax, 43 #accept
+	syscall	
+child:
+	mov rdi, 3
+	mov rax, 3 #close
+	syscall
+	
+	mov rdi, 4
+	mov rsi, rsp
+	mov rdx, 0x1000
+	mov rax, 0 #read
+	syscall
+	xor r12, r12
+	mov r12, rax	
+	
+loop:
+	mov al, [rsp]
+	cmp al, ' '
+	je next
+	inc rsp
+	jmp loop
+next:
+	inc rsp
+	mov r10, rsp
+
+loop2:
+	mov al, [rsp]
+	cmp al, ' '
+	je next2
+	inc rsp
+	jmp loop2
+next2:
+	mov byte ptr [rsp], 0
+	mov rdi, r10
+	mov rsi, 0100|01
+	mov rdx, 0x1ff
+	mov rax, 2 #open
+	syscall
+	
+loop3:
+	mov al, [rsp]
+	cmp al, 'H'
+	je next3
+	inc rsp
+	jmp loop3
+next3:
+	inc rsp
+loop4:
+	mov al, [rsp]
+	cmp al, 'L'
+	je next4
+	inc rsp
+	jmp loop4
+next4:
+loop5:
+	mov al, [rsp]
+	cmp al, ' '
+	je next5
+	inc rsp
+	jmp loop5
+next5:
+	xor r15, r15 #at the beginning it is in loop6 so r15 is always 0...
+	mov r15, 0
+loop6:
+	mov al, [rsp]
+	cmp al, '\r'
+	je next6
+	inc rsp
+	add r15, 1
+	jmp loop6
+next6:
+	add rsp, 4
+	mov r8, rsp	
+	cmp r15, 3 #two is 3 and three is 4!!
+	jne three
+
+two:#two-digit
+	xor rdx, rdx
+	sub r12, 176
+	mov rdi, 3
+	mov rsi, r8
+	mov rdx, r12
+	mov rax, 1 #write
+	syscall
+
+	mov rdi, 3
+	mov rax, 3 #close
+	syscall
+
+	mov rdi, 4
+	lea rsi, [rip+msg]
+	mov rdx, 19
+	mov rax, 1 #write
+	syscall
+
+	mov rdi, 0
+	mov rax, 60 #exit
+	syscall
+
+	jmp done
+
+three:#three-digit
+	xor rdx, rdx
+	sub r12, 177
+	mov rdi, 3
+	mov rsi, r8
+	mov rdx, r12
+	mov rax, 1 #write
+	syscall
+
+	mov rdi, 3
+	mov rax, 3 #close
+	syscall
+
+	mov rdi, 4
+	lea rsi, [rip+msg]
+	mov rdx, 19
+	mov rax, 1 #write
+	syscall
+
+done:
+	mov rdi, 0
+	mov rax, 60 #exit
+	syscall
+
+
+.section .data
+sockaddr:
+	.2byte 2
+	.2byte 0x5000
+	.4byte 0
+	.8byte 0
+msg:
+	.ascii "HTTP/1.0 200 OK\r\n\r\n"
+```
 
 level11: **respond to multiple concurrent GET and POST requests**
 
 ![](img/pwn_college/level11/PG.png)
 
-(still trying...)
+(still trying...) (x)
+
+(figure out!)   (√)
+
+The post was wrong at first. So I spent some time revising it. And then get is right. To understand the whole process and continue programming, it will be more effective with less effort.
+
+```assembly
+.global _start
+.intel_syntax noprefix
+
+.section .text
+
+_start:
+		mov rdi, 2
+		mov rsi, 1
+		mov rdx, 0 
+		mov rax, 41 #socket
+		syscall
+		
+		mov rdi, 3
+		lea rsi, [rip+sockaddr]
+		mov rdx, 16	
+		mov rax, 49 #bind
+		syscall
+
+		mov rdi, 3
+		mov rsi, 0
+		mov rax, 50 #listen
+		syscall
+		#xor r14, r14
+		#mov r14, 10
+loopp:	#this is important!! after socket,bind,listen should loop in accept and fork,continue forking to accept multiple requests of post and get
+		mov rdi, 3
+		mov rsi, 0x0
+		mov rdx, 0x0
+		mov rax, 43 #accept
+		syscall
+                
+		mov rax, 57 #fork
+		syscall
+		
+		mov r8, rax
+		cmp r8, 0
+		jne parent
+		cmp r8, 0
+		je child
+
+child:
+		mov rdi, 3
+		mov rax, 3 #close
+		syscall
+	
+		mov rdi, 4
+		mov rsi, rsp
+		mov rdx, 0x1000
+		mov rax, 0 #read
+		syscall
+		
+		mov cl, [rsp] #post or get
+		cmp cl, 'P'
+		je post
+		cmp cl, 'G'
+		je get
+
+get:
+
+getloop:
+		mov al, [rsp]
+		cmp al, ' '
+		je getnext
+		inc rsp
+		jmp getloop
+getnext:
+		inc rsp
+		mov r10, rsp
+
+getloop2:
+		mov al, [rsp]
+		cmp al, ' '
+		je getnext2
+		inc rsp
+		jmp getloop2
+getnext2:
+		mov byte ptr [rsp], 0
+		mov rdi, r10
+		#lea rdi, [rip+filepath]
+		mov rsi, 0
+		mov rax, 2 #open
+		syscall
+
+		mov rdi, 3
+		mov rsi, rsp
+		mov rdx, 0x1000
+		mov rax, 0 #read
+		syscall
+		mov r12, rax
+
+		mov rdi, 3
+		mov rax, 3
+		syscall
+
+		mov rdi, 4
+		lea rsi, [rip+msg]
+		mov rdx, 19
+		mov rax, 1 #write
+		syscall
+
+		mov rdi, 4
+		mov rsi, rsp
+		mov rdx, r12
+		mov rax, 1
+		syscall	
+
+		mov rdi, 0
+		mov rax, 60 #exit
+		syscall
+
+
+post:
+		xor r12, r12
+		mov r12, rax	
+	
+loop:
+		mov al, [rsp]
+		cmp al, ' '
+		je next
+		inc rsp
+		jmp loop
+next:
+		inc rsp
+		mov r10, rsp
+
+loop2:
+		mov al, [rsp]
+		cmp al, ' '
+		je next2
+		inc rsp
+		jmp loop2
+next2:
+		mov byte ptr [rsp], 0
+		mov rdi, r10
+		mov rsi, 0100|01
+		mov rdx, 0x1ff
+		mov rax, 2 #open
+		syscall
+	
+loop3:
+		mov al, [rsp]
+		cmp al, 'H'
+		je next3
+		inc rsp
+		jmp loop3
+next3:
+		inc rsp
+loop4:
+		mov al, [rsp]
+		cmp al, 'L'
+		je next4
+		inc rsp
+		jmp loop4
+next4:
+loop5:
+		mov al, [rsp]
+		cmp al, ' '
+		je next5
+		inc rsp
+		jmp loop5
+next5:
+		xor r15, r15
+		mov r15, 0
+loop6:
+                
+		mov al, [rsp]
+		cmp al, '\r'
+		je next6
+		inc rsp
+		add r15, 1
+		jmp loop6
+next6:
+		add rsp, 4
+		mov r8, rsp	
+		cmp r15, 3
+		jne three
+two:
+		xor rdx, rdx
+		sub r12, 176
+		mov rdi, 3
+		mov rsi, r8
+		mov rdx, r12
+		mov rax, 1 #write
+		syscall
+
+		mov rdi, 3
+		mov rax, 3 #close
+		syscall
+
+		mov rdi, 4
+		lea rsi, [rip+msg]
+		mov rdx, 19
+		mov rax, 1 #write
+		syscall
+
+		mov rdi, 0
+		mov rax, 60 #exit
+		syscall
+
+		jmp done
+
+three:
+		xor rdx, rdx
+		mov rdi, 3
+		mov rsi, r8
+		mov rdx, r12
+		sub rdx, 177
+		mov rax, 1 #write
+		syscall
+
+		mov rdi, 3
+		mov rax, 3 #close
+		syscall
+
+		mov rdi, 4
+		lea rsi, [rip+msg]
+		mov rdx, 19
+		mov rax, 1 #write
+		syscall
+
+done:
+		mov rdi, 0
+		mov rax, 60 #exit
+		syscall
+
+		jmp donex
+
+parent:
+		mov rdi, 4			#The 2nd error is that parent needn't accept but jump to loop accept
+		mov rax, 3 #close
+		syscall
+
+		#mov rdi, 3
+		#mov rsi, 0x0
+		#mov rdx, 0x0
+		#mov rax, 43 #accept
+		#syscall	
+
+		#sub r14, 1
+		#cmp r14, 0
+		jmp loopp
+
+donex:
+
+.section .data
+sockaddr:
+		.2byte 2
+		.2byte 0x5000
+		.4byte 0
+		.8byte 0
+msg:
+		.ascii "HTTP/1.0 200 OK\r\n\r\n"
+
+```
+
+**for debugging: **
+
+```shell
+#in the first terminal:
+strace -f(child process) ./server
+#in the second terminal:
+nc 127.0.0.1 80
+GET /tmp/abc 
+POST /tmp/abc ...
+```
 

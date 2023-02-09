@@ -319,7 +319,7 @@
 
 
                 <time class="article-time--reading">
-                    16 minute read
+                    24 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -330,7 +330,7 @@
 
 
                 <time class="article-words">
-                    3212 字
+                    5025 字
                 </time>
             </div>
         
@@ -1289,7 +1289,7 @@
 </span><span class="lnt">18
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">		mov rdi, 4
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">        mov rdi, 4
 </span></span><span class="line"><span class="cl">        mov rsi, rsp
 </span></span><span class="line"><span class="cl">        mov rdx, 256
 </span></span><span class="line"><span class="cl">        mov rax, 0 #read
@@ -1685,6 +1685,60 @@
 </span></span><span class="line"><span class="cl">je child
 </span></span></code></pre></td></tr></table>
 </div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">=====</span> Trace: Parent <span class="nv">Process</span> <span class="o">=====</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> execve<span class="o">(</span><span class="s2">&#34;/proc/self/fd/3&#34;</span>, <span class="o">[</span><span class="s2">&#34;/proc/self/fd/3&#34;</span><span class="o">]</span>, 0x7f6c58e3aaa0 /* <span class="m">0</span> vars */<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> socket<span class="o">(</span>AF_INET, SOCK_STREAM, IPPROTO_IP<span class="o">)</span> <span class="o">=</span> <span class="m">3</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> bind<span class="o">(</span>3, <span class="o">{</span><span class="nv">sa_family</span><span class="o">=</span>AF_INET, <span class="nv">sin_port</span><span class="o">=</span>htons<span class="o">(</span>80<span class="o">)</span>, <span class="nv">sin_addr</span><span class="o">=</span>inet_addr<span class="o">(</span><span class="s2">&#34;0.0.0.0&#34;</span><span class="o">)}</span>, 16<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> listen<span class="o">(</span>3, 0<span class="o">)</span>                            <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> accept<span class="o">(</span>3, NULL, NULL<span class="o">)</span>                   <span class="o">=</span> <span class="m">4</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> fork<span class="o">()</span>                                  <span class="o">=</span> <span class="m">7</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> close<span class="o">(</span>4<span class="o">)</span>                                <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> accept<span class="o">(</span>3, NULL, NULL<span class="o">)</span>                   <span class="o">=</span> ?
+</span></span><span class="line"><span class="cl"><span class="o">[</span>?<span class="o">]</span> +++ killed by SIGKILL +++
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">=====</span> Trace: Child <span class="nv">Process</span> <span class="o">=====</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> close<span class="o">(</span>3<span class="o">)</span>                                <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> read<span class="o">(</span>4, <span class="s2">&#34;GET /tmp/tmpq9rbaedq HTTP/1.1\r\nHost: localhost\r\nUser-Agent: python-requests/2.28.1\r\nAccept-Encoding: gzip, deflate\r\nAccept: */*\r\nConnection: keep-alive\r\n\r\n&#34;</span>, 4096<span class="o">)</span> <span class="o">=</span> <span class="m">155</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> open<span class="o">(</span><span class="s2">&#34;/tmp/tmpq9rbaedq&#34;</span>, O_RDONLY<span class="o">)</span>      <span class="o">=</span> <span class="m">3</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> read<span class="o">(</span>3, <span class="s2">&#34;ppNPPIPL1y3rs5lyygp2Odm7P8TiMzFLKR1UyCySEFsG4uIHLByLEXMHsblOhc3kJOtwK30IGN6RUOt1JnTTVTiDXI4Db7ormkmN3up7rwCcLqhJk74J4rr4cYRbWta7RlJNciFqocdfIuTNMe4mIkg3XtItfDI2LZV5KN93&#34;</span>, 4096<span class="o">)</span> <span class="o">=</span> <span class="m">168</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> close<span class="o">(</span>3<span class="o">)</span>                                <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> write<span class="o">(</span>4, <span class="s2">&#34;HTTP/1.0 200 OK\r\n\r\n&#34;</span>, 19<span class="o">)</span> <span class="o">=</span> <span class="m">19</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> write<span class="o">(</span>4, <span class="s2">&#34;ppNPPIPL1y3rs5lyygp2Odm7P8TiMzFLKR1UyCySEFsG4uIHLByLEXMHsblOhc3kJOtwK30IGN6RUOt1JnTTVTiDXI4Db7ormkmN3up7rwCcLqhJk74J4rr4cYRbWta7RlJNciFqocdfIuTNMe4mIkg3XtItfDI2LZV5KN93&#34;</span>, 168<span class="o">)</span> <span class="o">=</span> <span class="m">168</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> exit<span class="o">(</span>0<span class="o">)</span>                                 <span class="o">=</span> ?
+</span></span><span class="line"><span class="cl"><span class="o">[</span>?<span class="o">]</span> +++ exited with <span class="m">0</span> +++
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">=====</span> <span class="nv">Result</span> <span class="o">=====</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> Success
+</span></span></code></pre></td></tr></table>
+</div>
 </div><p>level10: <strong>respond to a POST request with a specified file and update its contents</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -1908,14 +1962,14 @@
 </span></span><span class="line"><span class="cl">.section .text
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">_start:
-</span></span><span class="line"><span class="cl">		mov rdi, 2
-</span></span><span class="line"><span class="cl">		mov rsi, 1
-</span></span><span class="line"><span class="cl">		mov rdx, 0 
-</span></span><span class="line"><span class="cl">		mov rax, 41 #socket
-</span></span><span class="line"><span class="cl">		syscall
+</span></span><span class="line"><span class="cl">        mov rdi, 2
+</span></span><span class="line"><span class="cl">        mov rsi, 1
+</span></span><span class="line"><span class="cl">        mov rdx, 0 
+</span></span><span class="line"><span class="cl">        mov rax, 41 #socket
+</span></span><span class="line"><span class="cl">        syscall
 </span></span><span class="line"><span class="cl">	
-</span></span><span class="line"><span class="cl">		mov rdi, 3
-</span></span><span class="line"><span class="cl">		lea rsi, [rip+sockaddr]
+</span></span><span class="line"><span class="cl">        mov rdi, 3
+</span></span><span class="line"><span class="cl">        lea rsi, [rip+sockaddr]
 </span></span><span class="line"><span class="cl">        mov rdx, 16	
 </span></span><span class="line"><span class="cl">        mov rax, 49 #bind
 </span></span><span class="line"><span class="cl">        syscall
@@ -1940,27 +1994,27 @@
 </span></span><span class="line"><span class="cl">        cmp r8, 0
 </span></span><span class="line"><span class="cl">        je child
 </span></span><span class="line"><span class="cl">parent:
-</span></span><span class="line"><span class="cl">		mov rdi, 4
+</span></span><span class="line"><span class="cl">        mov rdi, 4
 </span></span><span class="line"><span class="cl">        mov rax, 3 #close
 </span></span><span class="line"><span class="cl">        syscall
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">		mov rdi, 3
+</span></span><span class="line"><span class="cl">        mov rdi, 3
 </span></span><span class="line"><span class="cl">        mov rsi, 0x0
 </span></span><span class="line"><span class="cl">        mov rdx, 0x0
 </span></span><span class="line"><span class="cl">        mov rax, 43 #accept
 </span></span><span class="line"><span class="cl">        syscall	
 </span></span><span class="line"><span class="cl">child:
-</span></span><span class="line"><span class="cl">		mov rdi, 3
+</span></span><span class="line"><span class="cl">        mov rdi, 3
 </span></span><span class="line"><span class="cl">        mov rax, 3 #close
 </span></span><span class="line"><span class="cl">        syscall
 </span></span><span class="line"><span class="cl">	
-</span></span><span class="line"><span class="cl">		mov rdi, 4
+</span></span><span class="line"><span class="cl">        mov rdi, 4
 </span></span><span class="line"><span class="cl">        mov rsi, rsp
 </span></span><span class="line"><span class="cl">        mov rdx, 0x1000
 </span></span><span class="line"><span class="cl">        mov rax, 0 #read
 </span></span><span class="line"><span class="cl">        syscall
-</span></span><span class="line"><span class="cl">		mov r14, rax	
-</span></span><span class="line"><span class="cl">		sub r14, 177		#calculate the size
+</span></span><span class="line"><span class="cl">        mov r14, rax	
+</span></span><span class="line"><span class="cl">        sub r14, 177		#calculate the size
 </span></span><span class="line"><span class="cl">loop:
 </span></span><span class="line"><span class="cl">        mov al, [rsp]
 </span></span><span class="line"><span class="cl">        cmp al, &#39; &#39;
@@ -1981,18 +2035,18 @@
 </span></span><span class="line"><span class="cl">        mov byte ptr [rsp], 0
 </span></span><span class="line"><span class="cl">        mov rdi, r10
 </span></span><span class="line"><span class="cl">        mov rsi, 0100|01		#O_WRONLY|O_CREAT
-</span></span><span class="line"><span class="cl">		mov rdx, 0x1ff
+</span></span><span class="line"><span class="cl">        mov rdx, 0x1ff
 </span></span><span class="line"><span class="cl">        mov rax, 2 #open
 </span></span><span class="line"><span class="cl">        syscall
 </span></span><span class="line"><span class="cl">	
 </span></span><span class="line"><span class="cl">loop3:
-</span></span><span class="line"><span class="cl">		mov al, [rsp]	#must in the loop
+</span></span><span class="line"><span class="cl">        mov al, [rsp]	#must in the loop
 </span></span><span class="line"><span class="cl">        cmp al, &#39;H&#39;
 </span></span><span class="line"><span class="cl">        je next3
 </span></span><span class="line"><span class="cl">        inc rsp
 </span></span><span class="line"><span class="cl">        jmp loop3
 </span></span><span class="line"><span class="cl">next3:
-</span></span><span class="line"><span class="cl">		inc rsp
+</span></span><span class="line"><span class="cl">        inc rsp
 </span></span><span class="line"><span class="cl">loop4:
 </span></span><span class="line"><span class="cl">        mov al, [rsp]
 </span></span><span class="line"><span class="cl">        cmp al, &#39;L&#39;
@@ -2000,26 +2054,26 @@
 </span></span><span class="line"><span class="cl">        inc rsp
 </span></span><span class="line"><span class="cl">        jmp loop4
 </span></span><span class="line"><span class="cl">next4:
-</span></span><span class="line"><span class="cl">		add rsp, 15		#calculate the size
+</span></span><span class="line"><span class="cl">        add rsp, 15		#calculate the size
 </span></span><span class="line"><span class="cl">        mov r8, rsp
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">		mov rdi, 3
+</span></span><span class="line"><span class="cl">        mov rdi, 3
 </span></span><span class="line"><span class="cl">        mov rsi, r8
 </span></span><span class="line"><span class="cl">        mov rdx, r14
 </span></span><span class="line"><span class="cl">        mov rax, 1 #write
 </span></span><span class="line"><span class="cl">        syscall
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">		mov rdi, 3
+</span></span><span class="line"><span class="cl">        mov rdi, 3
 </span></span><span class="line"><span class="cl">        mov rax, 3 #close
 </span></span><span class="line"><span class="cl">        syscall
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">		mov rdi, 4
+</span></span><span class="line"><span class="cl">        mov rdi, 4
 </span></span><span class="line"><span class="cl">        lea rsi, [rip+msg]
 </span></span><span class="line"><span class="cl">        mov rdx, 19
 </span></span><span class="line"><span class="cl">        mov rax, 1 #write
 </span></span><span class="line"><span class="cl">        syscall
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">		mov rdi, 0
+</span></span><span class="line"><span class="cl">        mov rdi, 0
 </span></span><span class="line"><span class="cl">        mov rax, 60 #exit
 </span></span><span class="line"><span class="cl">        syscall
 </span></span><span class="line"><span class="cl">.section .data
@@ -2029,11 +2083,428 @@
 </span></span><span class="line"><span class="cl">        .4byte 0
 </span></span><span class="line"><span class="cl">        .8byte 0
 </span></span><span class="line"><span class="cl">msg:
-</span></span><span class="line"><span class="cl">		.ascii &#34;HTTP/1.0 200 OK\r\n\r\n&#34;
+</span></span><span class="line"><span class="cl">        .ascii &#34;HTTP/1.0 200 OK\r\n\r\n&#34;
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>emmmm, I feel like I&rsquo;m using a little trick&hellip;..</p>
-<p>level11: <strong>respond to multiple concurrent GET and POST requests</strong></p>
+</div><p>emmmm, I feel like I&rsquo;m using a little trick&hellip;..Sometimes it is wrong according to the counts.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">=====</span> Trace: Parent <span class="nv">Process</span> <span class="o">=====</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> execve<span class="o">(</span><span class="s2">&#34;/proc/self/fd/3&#34;</span>, <span class="o">[</span><span class="s2">&#34;/proc/self/fd/3&#34;</span><span class="o">]</span>, 0x7fbd50e91aa0 /* <span class="m">0</span> vars */<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> socket<span class="o">(</span>AF_INET, SOCK_STREAM, IPPROTO_IP<span class="o">)</span> <span class="o">=</span> <span class="m">3</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> bind<span class="o">(</span>3, <span class="o">{</span><span class="nv">sa_family</span><span class="o">=</span>AF_INET, <span class="nv">sin_port</span><span class="o">=</span>htons<span class="o">(</span>80<span class="o">)</span>, <span class="nv">sin_addr</span><span class="o">=</span>inet_addr<span class="o">(</span><span class="s2">&#34;0.0.0.0&#34;</span><span class="o">)}</span>, 16<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> listen<span class="o">(</span>3, 0<span class="o">)</span>                            <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> accept<span class="o">(</span>3, NULL, NULL<span class="o">)</span>                   <span class="o">=</span> <span class="m">4</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> fork<span class="o">()</span>                                  <span class="o">=</span> <span class="m">7</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> close<span class="o">(</span>4<span class="o">)</span>                                <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> accept<span class="o">(</span>3, NULL, NULL<span class="o">)</span>                   <span class="o">=</span> ?
+</span></span><span class="line"><span class="cl"><span class="o">[</span>?<span class="o">]</span> +++ killed by SIGKILL +++
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">=====</span> Trace: Child <span class="nv">Process</span> <span class="o">=====</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> close<span class="o">(</span>3<span class="o">)</span>                                <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> read<span class="o">(</span>4, <span class="s2">&#34;POST /tmp/tmpvx_ye4_7 HTTP/1.1\r\nHost: localhost\r\nUser-Agent: python-requests/2.28.1\r\nAccept-Encoding: gzip, deflate\r\nAccept: */*\r\nConnection: keep-alive\r\nContent-Length: 212\r\n\r\nz7sUJ0m2d9IkQeghmuUTlpCXBPRbQGKpmILxptSYl9aJhMwGgC7PQpSTMR8qTr2q8uAfzsro0y9fSbM8anzW7BsK10vsfaOThRBw4B6R5y38IOedthK0iOoX5ymIWbuBnOBPgsCNh5C45wcMDNR9LFEfUGTz7bvFCHRQlFg4LXZNazadwka8pN7A0QsBhgmRHQ4VOg5iPqBiGeMpX2gD&#34;</span>, 4096<span class="o">)</span> <span class="o">=</span> <span class="m">389</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> open<span class="o">(</span><span class="s2">&#34;/tmp/tmpvx_ye4_7&#34;</span>, O_WRONLY<span class="p">|</span>O_CREAT, 0777<span class="o">)</span> <span class="o">=</span> <span class="m">3</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> write<span class="o">(</span>3, <span class="s2">&#34;z7sUJ0m2d9IkQeghmuUTlpCXBPRbQGKpmILxptSYl9aJhMwGgC7PQpSTMR8qTr2q8uAfzsro0y9fSbM8anzW7BsK10vsfaOThRBw4B6R5y38IOedthK0iOoX5ymIWbuBnOBPgsCNh5C45wcMDNR9LFEfUGTz7bvFCHRQlFg4LXZNazadwka8pN7A0QsBhgmRHQ4VOg5iPqBiGeMpX2gD&#34;</span>, 212<span class="o">)</span> <span class="o">=</span> <span class="m">212</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> close<span class="o">(</span>3<span class="o">)</span>                                <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> write<span class="o">(</span>4, <span class="s2">&#34;HTTP/1.0 200 OK\r\n\r\n&#34;</span>, 19<span class="o">)</span> <span class="o">=</span> <span class="m">19</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> exit<span class="o">(</span>0<span class="o">)</span>                                 <span class="o">=</span> ?
+</span></span><span class="line"><span class="cl"><span class="o">[</span>?<span class="o">]</span> +++ exited with <span class="m">0</span> +++
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">=====</span> <span class="nv">Result</span> <span class="o">=====</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>✓<span class="o">]</span> Success
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>OK, fine&hellip;It turns out that we cannot be opportunistic. I modified the code to make it possible to judge three-digit numbers as well as two-digit numbers so that it won&rsquo;t have errors several times. And this is good for editing the level11.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span><span class="lnt">174
+</span><span class="lnt">175
+</span><span class="lnt">176
+</span><span class="lnt">177
+</span><span class="lnt">178
+</span><span class="lnt">179
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">.global _start
+</span></span><span class="line"><span class="cl">.intel_syntax noprefix
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">.section .text
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">_start:
+</span></span><span class="line"><span class="cl">	mov rdi, 2
+</span></span><span class="line"><span class="cl">	mov rsi, 1
+</span></span><span class="line"><span class="cl">	mov rdx, 0 
+</span></span><span class="line"><span class="cl">	mov rax, 41 #socket
+</span></span><span class="line"><span class="cl">	syscall
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	mov rdi, 3
+</span></span><span class="line"><span class="cl">	lea rsi, [rip+sockaddr]
+</span></span><span class="line"><span class="cl">	mov rdx, 16	
+</span></span><span class="line"><span class="cl">	mov rax, 49 #bind
+</span></span><span class="line"><span class="cl">	syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	mov rdi, 3
+</span></span><span class="line"><span class="cl">	mov rsi, 0
+</span></span><span class="line"><span class="cl">	mov rax, 50 #listen
+</span></span><span class="line"><span class="cl">	syscall
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	mov rdi, 3
+</span></span><span class="line"><span class="cl">	mov rsi, 0x0
+</span></span><span class="line"><span class="cl">	mov rdx, 0x0
+</span></span><span class="line"><span class="cl">	mov rax, 43 #accept
+</span></span><span class="line"><span class="cl">	syscall	
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	mov rax, 57 #fork
+</span></span><span class="line"><span class="cl">	syscall
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	mov r8, rax
+</span></span><span class="line"><span class="cl">	cmp r8, 7
+</span></span><span class="line"><span class="cl">	je parent
+</span></span><span class="line"><span class="cl">	cmp r8, 0
+</span></span><span class="line"><span class="cl">	je child
+</span></span><span class="line"><span class="cl">parent:
+</span></span><span class="line"><span class="cl">	mov rdi, 4
+</span></span><span class="line"><span class="cl">	mov rax, 3 #close
+</span></span><span class="line"><span class="cl">	syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	mov rdi, 3
+</span></span><span class="line"><span class="cl">	mov rsi, 0x0
+</span></span><span class="line"><span class="cl">	mov rdx, 0x0
+</span></span><span class="line"><span class="cl">	mov rax, 43 #accept
+</span></span><span class="line"><span class="cl">	syscall	
+</span></span><span class="line"><span class="cl">child:
+</span></span><span class="line"><span class="cl">	mov rdi, 3
+</span></span><span class="line"><span class="cl">	mov rax, 3 #close
+</span></span><span class="line"><span class="cl">	syscall
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	mov rdi, 4
+</span></span><span class="line"><span class="cl">	mov rsi, rsp
+</span></span><span class="line"><span class="cl">	mov rdx, 0x1000
+</span></span><span class="line"><span class="cl">	mov rax, 0 #read
+</span></span><span class="line"><span class="cl">	syscall
+</span></span><span class="line"><span class="cl">	xor r12, r12
+</span></span><span class="line"><span class="cl">	mov r12, rax	
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">loop:
+</span></span><span class="line"><span class="cl">	mov al, [rsp]
+</span></span><span class="line"><span class="cl">	cmp al, &#39; &#39;
+</span></span><span class="line"><span class="cl">	je next
+</span></span><span class="line"><span class="cl">	inc rsp
+</span></span><span class="line"><span class="cl">	jmp loop
+</span></span><span class="line"><span class="cl">next:
+</span></span><span class="line"><span class="cl">	inc rsp
+</span></span><span class="line"><span class="cl">	mov r10, rsp
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">loop2:
+</span></span><span class="line"><span class="cl">	mov al, [rsp]
+</span></span><span class="line"><span class="cl">	cmp al, &#39; &#39;
+</span></span><span class="line"><span class="cl">	je next2
+</span></span><span class="line"><span class="cl">	inc rsp
+</span></span><span class="line"><span class="cl">	jmp loop2
+</span></span><span class="line"><span class="cl">next2:
+</span></span><span class="line"><span class="cl">	mov byte ptr [rsp], 0
+</span></span><span class="line"><span class="cl">	mov rdi, r10
+</span></span><span class="line"><span class="cl">	mov rsi, 0100|01
+</span></span><span class="line"><span class="cl">	mov rdx, 0x1ff
+</span></span><span class="line"><span class="cl">	mov rax, 2 #open
+</span></span><span class="line"><span class="cl">	syscall
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">loop3:
+</span></span><span class="line"><span class="cl">	mov al, [rsp]
+</span></span><span class="line"><span class="cl">	cmp al, &#39;H&#39;
+</span></span><span class="line"><span class="cl">	je next3
+</span></span><span class="line"><span class="cl">	inc rsp
+</span></span><span class="line"><span class="cl">	jmp loop3
+</span></span><span class="line"><span class="cl">next3:
+</span></span><span class="line"><span class="cl">	inc rsp
+</span></span><span class="line"><span class="cl">loop4:
+</span></span><span class="line"><span class="cl">	mov al, [rsp]
+</span></span><span class="line"><span class="cl">	cmp al, &#39;L&#39;
+</span></span><span class="line"><span class="cl">	je next4
+</span></span><span class="line"><span class="cl">	inc rsp
+</span></span><span class="line"><span class="cl">	jmp loop4
+</span></span><span class="line"><span class="cl">next4:
+</span></span><span class="line"><span class="cl">loop5:
+</span></span><span class="line"><span class="cl">	mov al, [rsp]
+</span></span><span class="line"><span class="cl">	cmp al, &#39; &#39;
+</span></span><span class="line"><span class="cl">	je next5
+</span></span><span class="line"><span class="cl">	inc rsp
+</span></span><span class="line"><span class="cl">	jmp loop5
+</span></span><span class="line"><span class="cl">next5:
+</span></span><span class="line"><span class="cl">	xor r15, r15 #at the beginning it is in loop6 so r15 is always 0...
+</span></span><span class="line"><span class="cl">	mov r15, 0
+</span></span><span class="line"><span class="cl">loop6:
+</span></span><span class="line"><span class="cl">	mov al, [rsp]
+</span></span><span class="line"><span class="cl">	cmp al, &#39;\r&#39;
+</span></span><span class="line"><span class="cl">	je next6
+</span></span><span class="line"><span class="cl">	inc rsp
+</span></span><span class="line"><span class="cl">	add r15, 1
+</span></span><span class="line"><span class="cl">	jmp loop6
+</span></span><span class="line"><span class="cl">next6:
+</span></span><span class="line"><span class="cl">	add rsp, 4
+</span></span><span class="line"><span class="cl">	mov r8, rsp	
+</span></span><span class="line"><span class="cl">	cmp r15, 3 #two is 3 and three is 4!!
+</span></span><span class="line"><span class="cl">	jne three
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">two:#two-digit
+</span></span><span class="line"><span class="cl">	xor rdx, rdx
+</span></span><span class="line"><span class="cl">	sub r12, 176
+</span></span><span class="line"><span class="cl">	mov rdi, 3
+</span></span><span class="line"><span class="cl">	mov rsi, r8
+</span></span><span class="line"><span class="cl">	mov rdx, r12
+</span></span><span class="line"><span class="cl">	mov rax, 1 #write
+</span></span><span class="line"><span class="cl">	syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	mov rdi, 3
+</span></span><span class="line"><span class="cl">	mov rax, 3 #close
+</span></span><span class="line"><span class="cl">	syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	mov rdi, 4
+</span></span><span class="line"><span class="cl">	lea rsi, [rip+msg]
+</span></span><span class="line"><span class="cl">	mov rdx, 19
+</span></span><span class="line"><span class="cl">	mov rax, 1 #write
+</span></span><span class="line"><span class="cl">	syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	mov rdi, 0
+</span></span><span class="line"><span class="cl">	mov rax, 60 #exit
+</span></span><span class="line"><span class="cl">	syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	jmp done
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">three:#three-digit
+</span></span><span class="line"><span class="cl">	xor rdx, rdx
+</span></span><span class="line"><span class="cl">	sub r12, 177
+</span></span><span class="line"><span class="cl">	mov rdi, 3
+</span></span><span class="line"><span class="cl">	mov rsi, r8
+</span></span><span class="line"><span class="cl">	mov rdx, r12
+</span></span><span class="line"><span class="cl">	mov rax, 1 #write
+</span></span><span class="line"><span class="cl">	syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	mov rdi, 3
+</span></span><span class="line"><span class="cl">	mov rax, 3 #close
+</span></span><span class="line"><span class="cl">	syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	mov rdi, 4
+</span></span><span class="line"><span class="cl">	lea rsi, [rip+msg]
+</span></span><span class="line"><span class="cl">	mov rdx, 19
+</span></span><span class="line"><span class="cl">	mov rax, 1 #write
+</span></span><span class="line"><span class="cl">	syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">done:
+</span></span><span class="line"><span class="cl">	mov rdi, 0
+</span></span><span class="line"><span class="cl">	mov rax, 60 #exit
+</span></span><span class="line"><span class="cl">	syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">.section .data
+</span></span><span class="line"><span class="cl">sockaddr:
+</span></span><span class="line"><span class="cl">	.2byte 2
+</span></span><span class="line"><span class="cl">	.2byte 0x5000
+</span></span><span class="line"><span class="cl">	.4byte 0
+</span></span><span class="line"><span class="cl">	.8byte 0
+</span></span><span class="line"><span class="cl">msg:
+</span></span><span class="line"><span class="cl">	.ascii &#34;HTTP/1.0 200 OK\r\n\r\n&#34;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level11: <strong>respond to multiple concurrent GET and POST requests</strong></p>
 <p><img src="/img/pwn_college/level11/PG.png"
 	
 	
@@ -2042,8 +2513,539 @@
 	
 	
 ></p>
-<p>(still trying&hellip;)</p>
-
+<p>(still trying&hellip;) (x)</p>
+<p>(figure out!)   (√)</p>
+<p>The post was wrong at first. So I spent some time revising it. And then get is right. To understand the whole process and continue programming, it will be more effective with less effort.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span><span class="lnt">174
+</span><span class="lnt">175
+</span><span class="lnt">176
+</span><span class="lnt">177
+</span><span class="lnt">178
+</span><span class="lnt">179
+</span><span class="lnt">180
+</span><span class="lnt">181
+</span><span class="lnt">182
+</span><span class="lnt">183
+</span><span class="lnt">184
+</span><span class="lnt">185
+</span><span class="lnt">186
+</span><span class="lnt">187
+</span><span class="lnt">188
+</span><span class="lnt">189
+</span><span class="lnt">190
+</span><span class="lnt">191
+</span><span class="lnt">192
+</span><span class="lnt">193
+</span><span class="lnt">194
+</span><span class="lnt">195
+</span><span class="lnt">196
+</span><span class="lnt">197
+</span><span class="lnt">198
+</span><span class="lnt">199
+</span><span class="lnt">200
+</span><span class="lnt">201
+</span><span class="lnt">202
+</span><span class="lnt">203
+</span><span class="lnt">204
+</span><span class="lnt">205
+</span><span class="lnt">206
+</span><span class="lnt">207
+</span><span class="lnt">208
+</span><span class="lnt">209
+</span><span class="lnt">210
+</span><span class="lnt">211
+</span><span class="lnt">212
+</span><span class="lnt">213
+</span><span class="lnt">214
+</span><span class="lnt">215
+</span><span class="lnt">216
+</span><span class="lnt">217
+</span><span class="lnt">218
+</span><span class="lnt">219
+</span><span class="lnt">220
+</span><span class="lnt">221
+</span><span class="lnt">222
+</span><span class="lnt">223
+</span><span class="lnt">224
+</span><span class="lnt">225
+</span><span class="lnt">226
+</span><span class="lnt">227
+</span><span class="lnt">228
+</span><span class="lnt">229
+</span><span class="lnt">230
+</span><span class="lnt">231
+</span><span class="lnt">232
+</span><span class="lnt">233
+</span><span class="lnt">234
+</span><span class="lnt">235
+</span><span class="lnt">236
+</span><span class="lnt">237
+</span><span class="lnt">238
+</span><span class="lnt">239
+</span><span class="lnt">240
+</span><span class="lnt">241
+</span><span class="lnt">242
+</span><span class="lnt">243
+</span><span class="lnt">244
+</span><span class="lnt">245
+</span><span class="lnt">246
+</span><span class="lnt">247
+</span><span class="lnt">248
+</span><span class="lnt">249
+</span><span class="lnt">250
+</span><span class="lnt">251
+</span><span class="lnt">252
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">.global _start
+</span></span><span class="line"><span class="cl">.intel_syntax noprefix
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">.section .text
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">_start:
+</span></span><span class="line"><span class="cl">		mov rdi, 2
+</span></span><span class="line"><span class="cl">		mov rsi, 1
+</span></span><span class="line"><span class="cl">		mov rdx, 0 
+</span></span><span class="line"><span class="cl">		mov rax, 41 #socket
+</span></span><span class="line"><span class="cl">		syscall
+</span></span><span class="line"><span class="cl">		
+</span></span><span class="line"><span class="cl">		mov rdi, 3
+</span></span><span class="line"><span class="cl">		lea rsi, [rip+sockaddr]
+</span></span><span class="line"><span class="cl">		mov rdx, 16	
+</span></span><span class="line"><span class="cl">		mov rax, 49 #bind
+</span></span><span class="line"><span class="cl">		syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		mov rdi, 3
+</span></span><span class="line"><span class="cl">		mov rsi, 0
+</span></span><span class="line"><span class="cl">		mov rax, 50 #listen
+</span></span><span class="line"><span class="cl">		syscall
+</span></span><span class="line"><span class="cl">		#xor r14, r14
+</span></span><span class="line"><span class="cl">		#mov r14, 10
+</span></span><span class="line"><span class="cl">loopp:	#this is important!! after socket,bind,listen should loop in accept and fork,continue forking to accept multiple requests of post and get
+</span></span><span class="line"><span class="cl">		mov rdi, 3
+</span></span><span class="line"><span class="cl">		mov rsi, 0x0
+</span></span><span class="line"><span class="cl">		mov rdx, 0x0
+</span></span><span class="line"><span class="cl">		mov rax, 43 #accept
+</span></span><span class="line"><span class="cl">		syscall
+</span></span><span class="line"><span class="cl">                
+</span></span><span class="line"><span class="cl">		mov rax, 57 #fork
+</span></span><span class="line"><span class="cl">		syscall
+</span></span><span class="line"><span class="cl">		
+</span></span><span class="line"><span class="cl">		mov r8, rax
+</span></span><span class="line"><span class="cl">		cmp r8, 0
+</span></span><span class="line"><span class="cl">		jne parent
+</span></span><span class="line"><span class="cl">		cmp r8, 0
+</span></span><span class="line"><span class="cl">		je child
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">child:
+</span></span><span class="line"><span class="cl">		mov rdi, 3
+</span></span><span class="line"><span class="cl">		mov rax, 3 #close
+</span></span><span class="line"><span class="cl">		syscall
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">		mov rdi, 4
+</span></span><span class="line"><span class="cl">		mov rsi, rsp
+</span></span><span class="line"><span class="cl">		mov rdx, 0x1000
+</span></span><span class="line"><span class="cl">		mov rax, 0 #read
+</span></span><span class="line"><span class="cl">		syscall
+</span></span><span class="line"><span class="cl">		
+</span></span><span class="line"><span class="cl">		mov cl, [rsp] #post or get
+</span></span><span class="line"><span class="cl">		cmp cl, &#39;P&#39;
+</span></span><span class="line"><span class="cl">		je post
+</span></span><span class="line"><span class="cl">		cmp cl, &#39;G&#39;
+</span></span><span class="line"><span class="cl">		je get
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">get:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">getloop:
+</span></span><span class="line"><span class="cl">		mov al, [rsp]
+</span></span><span class="line"><span class="cl">		cmp al, &#39; &#39;
+</span></span><span class="line"><span class="cl">		je getnext
+</span></span><span class="line"><span class="cl">		inc rsp
+</span></span><span class="line"><span class="cl">		jmp getloop
+</span></span><span class="line"><span class="cl">getnext:
+</span></span><span class="line"><span class="cl">		inc rsp
+</span></span><span class="line"><span class="cl">		mov r10, rsp
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">getloop2:
+</span></span><span class="line"><span class="cl">		mov al, [rsp]
+</span></span><span class="line"><span class="cl">		cmp al, &#39; &#39;
+</span></span><span class="line"><span class="cl">		je getnext2
+</span></span><span class="line"><span class="cl">		inc rsp
+</span></span><span class="line"><span class="cl">		jmp getloop2
+</span></span><span class="line"><span class="cl">getnext2:
+</span></span><span class="line"><span class="cl">		mov byte ptr [rsp], 0
+</span></span><span class="line"><span class="cl">		mov rdi, r10
+</span></span><span class="line"><span class="cl">		#lea rdi, [rip+filepath]
+</span></span><span class="line"><span class="cl">		mov rsi, 0
+</span></span><span class="line"><span class="cl">		mov rax, 2 #open
+</span></span><span class="line"><span class="cl">		syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		mov rdi, 3
+</span></span><span class="line"><span class="cl">		mov rsi, rsp
+</span></span><span class="line"><span class="cl">		mov rdx, 0x1000
+</span></span><span class="line"><span class="cl">		mov rax, 0 #read
+</span></span><span class="line"><span class="cl">		syscall
+</span></span><span class="line"><span class="cl">		mov r12, rax
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		mov rdi, 3
+</span></span><span class="line"><span class="cl">		mov rax, 3
+</span></span><span class="line"><span class="cl">		syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		mov rdi, 4
+</span></span><span class="line"><span class="cl">		lea rsi, [rip+msg]
+</span></span><span class="line"><span class="cl">		mov rdx, 19
+</span></span><span class="line"><span class="cl">		mov rax, 1 #write
+</span></span><span class="line"><span class="cl">		syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		mov rdi, 4
+</span></span><span class="line"><span class="cl">		mov rsi, rsp
+</span></span><span class="line"><span class="cl">		mov rdx, r12
+</span></span><span class="line"><span class="cl">		mov rax, 1
+</span></span><span class="line"><span class="cl">		syscall	
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		mov rdi, 0
+</span></span><span class="line"><span class="cl">		mov rax, 60 #exit
+</span></span><span class="line"><span class="cl">		syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">post:
+</span></span><span class="line"><span class="cl">		xor r12, r12
+</span></span><span class="line"><span class="cl">		mov r12, rax	
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">loop:
+</span></span><span class="line"><span class="cl">		mov al, [rsp]
+</span></span><span class="line"><span class="cl">		cmp al, &#39; &#39;
+</span></span><span class="line"><span class="cl">		je next
+</span></span><span class="line"><span class="cl">		inc rsp
+</span></span><span class="line"><span class="cl">		jmp loop
+</span></span><span class="line"><span class="cl">next:
+</span></span><span class="line"><span class="cl">		inc rsp
+</span></span><span class="line"><span class="cl">		mov r10, rsp
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">loop2:
+</span></span><span class="line"><span class="cl">		mov al, [rsp]
+</span></span><span class="line"><span class="cl">		cmp al, &#39; &#39;
+</span></span><span class="line"><span class="cl">		je next2
+</span></span><span class="line"><span class="cl">		inc rsp
+</span></span><span class="line"><span class="cl">		jmp loop2
+</span></span><span class="line"><span class="cl">next2:
+</span></span><span class="line"><span class="cl">		mov byte ptr [rsp], 0
+</span></span><span class="line"><span class="cl">		mov rdi, r10
+</span></span><span class="line"><span class="cl">		mov rsi, 0100|01
+</span></span><span class="line"><span class="cl">		mov rdx, 0x1ff
+</span></span><span class="line"><span class="cl">		mov rax, 2 #open
+</span></span><span class="line"><span class="cl">		syscall
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">loop3:
+</span></span><span class="line"><span class="cl">		mov al, [rsp]
+</span></span><span class="line"><span class="cl">		cmp al, &#39;H&#39;
+</span></span><span class="line"><span class="cl">		je next3
+</span></span><span class="line"><span class="cl">		inc rsp
+</span></span><span class="line"><span class="cl">		jmp loop3
+</span></span><span class="line"><span class="cl">next3:
+</span></span><span class="line"><span class="cl">		inc rsp
+</span></span><span class="line"><span class="cl">loop4:
+</span></span><span class="line"><span class="cl">		mov al, [rsp]
+</span></span><span class="line"><span class="cl">		cmp al, &#39;L&#39;
+</span></span><span class="line"><span class="cl">		je next4
+</span></span><span class="line"><span class="cl">		inc rsp
+</span></span><span class="line"><span class="cl">		jmp loop4
+</span></span><span class="line"><span class="cl">next4:
+</span></span><span class="line"><span class="cl">loop5:
+</span></span><span class="line"><span class="cl">		mov al, [rsp]
+</span></span><span class="line"><span class="cl">		cmp al, &#39; &#39;
+</span></span><span class="line"><span class="cl">		je next5
+</span></span><span class="line"><span class="cl">		inc rsp
+</span></span><span class="line"><span class="cl">		jmp loop5
+</span></span><span class="line"><span class="cl">next5:
+</span></span><span class="line"><span class="cl">		xor r15, r15
+</span></span><span class="line"><span class="cl">		mov r15, 0
+</span></span><span class="line"><span class="cl">loop6:
+</span></span><span class="line"><span class="cl">                
+</span></span><span class="line"><span class="cl">		mov al, [rsp]
+</span></span><span class="line"><span class="cl">		cmp al, &#39;\r&#39;
+</span></span><span class="line"><span class="cl">		je next6
+</span></span><span class="line"><span class="cl">		inc rsp
+</span></span><span class="line"><span class="cl">		add r15, 1
+</span></span><span class="line"><span class="cl">		jmp loop6
+</span></span><span class="line"><span class="cl">next6:
+</span></span><span class="line"><span class="cl">		add rsp, 4
+</span></span><span class="line"><span class="cl">		mov r8, rsp	
+</span></span><span class="line"><span class="cl">		cmp r15, 3
+</span></span><span class="line"><span class="cl">		jne three
+</span></span><span class="line"><span class="cl">two:
+</span></span><span class="line"><span class="cl">		xor rdx, rdx
+</span></span><span class="line"><span class="cl">		sub r12, 176
+</span></span><span class="line"><span class="cl">		mov rdi, 3
+</span></span><span class="line"><span class="cl">		mov rsi, r8
+</span></span><span class="line"><span class="cl">		mov rdx, r12
+</span></span><span class="line"><span class="cl">		mov rax, 1 #write
+</span></span><span class="line"><span class="cl">		syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		mov rdi, 3
+</span></span><span class="line"><span class="cl">		mov rax, 3 #close
+</span></span><span class="line"><span class="cl">		syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		mov rdi, 4
+</span></span><span class="line"><span class="cl">		lea rsi, [rip+msg]
+</span></span><span class="line"><span class="cl">		mov rdx, 19
+</span></span><span class="line"><span class="cl">		mov rax, 1 #write
+</span></span><span class="line"><span class="cl">		syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		mov rdi, 0
+</span></span><span class="line"><span class="cl">		mov rax, 60 #exit
+</span></span><span class="line"><span class="cl">		syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		jmp done
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">three:
+</span></span><span class="line"><span class="cl">		xor rdx, rdx
+</span></span><span class="line"><span class="cl">		mov rdi, 3
+</span></span><span class="line"><span class="cl">		mov rsi, r8
+</span></span><span class="line"><span class="cl">		mov rdx, r12
+</span></span><span class="line"><span class="cl">		sub rdx, 177
+</span></span><span class="line"><span class="cl">		mov rax, 1 #write
+</span></span><span class="line"><span class="cl">		syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		mov rdi, 3
+</span></span><span class="line"><span class="cl">		mov rax, 3 #close
+</span></span><span class="line"><span class="cl">		syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		mov rdi, 4
+</span></span><span class="line"><span class="cl">		lea rsi, [rip+msg]
+</span></span><span class="line"><span class="cl">		mov rdx, 19
+</span></span><span class="line"><span class="cl">		mov rax, 1 #write
+</span></span><span class="line"><span class="cl">		syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">done:
+</span></span><span class="line"><span class="cl">		mov rdi, 0
+</span></span><span class="line"><span class="cl">		mov rax, 60 #exit
+</span></span><span class="line"><span class="cl">		syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		jmp donex
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">parent:
+</span></span><span class="line"><span class="cl">		mov rdi, 4			#The 2nd error is that parent needn&#39;t accept but jump to loop accept
+</span></span><span class="line"><span class="cl">		mov rax, 3 #close
+</span></span><span class="line"><span class="cl">		syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		#mov rdi, 3
+</span></span><span class="line"><span class="cl">		#mov rsi, 0x0
+</span></span><span class="line"><span class="cl">		#mov rdx, 0x0
+</span></span><span class="line"><span class="cl">		#mov rax, 43 #accept
+</span></span><span class="line"><span class="cl">		#syscall	
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		#sub r14, 1
+</span></span><span class="line"><span class="cl">		#cmp r14, 0
+</span></span><span class="line"><span class="cl">		jmp loopp
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">donex:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">.section .data
+</span></span><span class="line"><span class="cl">sockaddr:
+</span></span><span class="line"><span class="cl">		.2byte 2
+</span></span><span class="line"><span class="cl">		.2byte 0x5000
+</span></span><span class="line"><span class="cl">		.4byte 0
+</span></span><span class="line"><span class="cl">		.8byte 0
+</span></span><span class="line"><span class="cl">msg:
+</span></span><span class="line"><span class="cl">		.ascii &#34;HTTP/1.0 200 OK\r\n\r\n&#34;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>**for debugging: **</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1">#in the first terminal:</span>
+</span></span><span class="line"><span class="cl">strace -f<span class="o">(</span>child process<span class="o">)</span> ./server
+</span></span><span class="line"><span class="cl"><span class="c1">#in the second terminal:</span>
+</span></span><span class="line"><span class="cl">nc 127.0.0.1 <span class="m">80</span>
+</span></span><span class="line"><span class="cl">GET /tmp/abc 
+</span></span><span class="line"><span class="cl">POST /tmp/abc ...
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 
@@ -2206,7 +3208,7 @@
         
             
         
-        共 12.21k 字 · 共 6篇文章
+        共 14.02k 字 · 共 6篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
