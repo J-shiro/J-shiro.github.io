@@ -633,3 +633,189 @@ level9: **concurrently accept multiple requests**
 
 > **pid_t fork(void);**
 
+For the parent process it will get the ID or return Number of the new created child processes and the child process get the `0` ID so we need to use conditional jumps to distinguish between them.
+
+```assembly
+mov rax, 57 #fork
+syscall
+
+mov r8, rax
+cmp r8, 7
+je parent
+cmp r8, 0
+je child
+```
+
+level10: **respond to a POST request with a specified file and update its contents**
+
+```shell
+===== Expected: Child Process =====
+[ ] close(3) = 0
+[ ] read(4, <read_request>, <read_request_count>) = <read_request_result>
+[ ] open("<open_path>", O_WRONLY|O_CREAT, 0777) = 3
+[ ] write(3, <write_file>, <write_file_count> = <write_file_result>
+[ ] close(3) = 0
+[ ] write(4, "HTTP/1.0 200 OK\r\n\r\n", 19) = 19
+[ ] exit(0) = ?
+```
+
+| NR   | SYSCALL NAME | references | RAX  | ARG0(rdi)            | ARG1(rsi) | ARG2(rdx)    | ARG3(r10) | ARG4(r8) | ARG5(r9) |
+| ---- | ------------ | ---------- | ---- | -------------------- | --------- | ------------ | --------- | -------- | -------- |
+| 2    | open         | man/ cs/   | 2    | const char *filename | int flags | umode_t mode | -         | -        | -        |
+
+> **int open(const char `*`pathname, int flags, mode_t mode);**
+
+```shell
+/usr/include/x86_64-linux-gnu/bits/fcntl-linux.h:# define O_CREAT          0100 /* Not fcntl.  */
+/usr/include/x86_64-linux-gnu/bits/fcntl-linux.h:#define O_WRONLY            01
+```
+
+the 3rd argument of `0777` is OCT so we need to change it to the HEX `1FF`.
+
+`POST`:
+
+![](img/pwn_college/level10/POST.png)
+
+and we should do in level10 is :
+
+![](img/pwn_college/level10/TODO.png)
+
+```assembly
+.global _start
+.intel_syntax noprefix
+
+.section .text
+
+_start:
+		mov rdi, 2
+		mov rsi, 1
+		mov rdx, 0 
+		mov rax, 41 #socket
+		syscall
+	
+		mov rdi, 3
+		lea rsi, [rip+sockaddr]
+        mov rdx, 16	
+        mov rax, 49 #bind
+        syscall
+
+        mov rdi, 3
+        mov rsi, 0
+        mov rax, 50 #listen
+        syscall
+
+        mov rdi, 3
+        mov rsi, 0x0
+        mov rdx, 0x0
+        mov rax, 43 #accept
+        syscall	
+
+        mov rax, 57 #fork
+        syscall
+
+        mov r8, rax
+        cmp r8, 7
+        je parent
+        cmp r8, 0
+        je child
+parent:
+		mov rdi, 4
+        mov rax, 3 #close
+        syscall
+
+		mov rdi, 3
+        mov rsi, 0x0
+        mov rdx, 0x0
+        mov rax, 43 #accept
+        syscall	
+child:
+		mov rdi, 3
+        mov rax, 3 #close
+        syscall
+	
+		mov rdi, 4
+        mov rsi, rsp
+        mov rdx, 0x1000
+        mov rax, 0 #read
+        syscall
+		mov r14, rax	
+		sub r14, 177		#calculate the size
+loop:
+        mov al, [rsp]
+        cmp al, ' '
+        je next
+        inc rsp
+        jmp loop
+next:
+        inc rsp
+        mov r10, rsp
+
+loop2:
+        mov al, [rsp]
+        cmp al, ' '
+        je next2
+        inc rsp
+        jmp loop2
+next2:
+        mov byte ptr [rsp], 0
+        mov rdi, r10
+        mov rsi, 0100|01		#O_WRONLY|O_CREAT
+		mov rdx, 0x1ff
+        mov rax, 2 #open
+        syscall
+	
+loop3:
+		mov al, [rsp]	#must in the loop
+        cmp al, 'H'
+        je next3
+        inc rsp
+        jmp loop3
+next3:
+		inc rsp
+loop4:
+        mov al, [rsp]
+        cmp al, 'L'
+        je next4
+        inc rsp
+        jmp loop4
+next4:
+		add rsp, 15		#calculate the size
+        mov r8, rsp
+
+		mov rdi, 3
+        mov rsi, r8
+        mov rdx, r14
+        mov rax, 1 #write
+        syscall
+
+		mov rdi, 3
+        mov rax, 3 #close
+        syscall
+
+		mov rdi, 4
+        lea rsi, [rip+msg]
+        mov rdx, 19
+        mov rax, 1 #write
+        syscall
+
+		mov rdi, 0
+        mov rax, 60 #exit
+        syscall
+.section .data
+sockaddr:
+        .2byte 2
+        .2byte 0x5000
+        .4byte 0
+        .8byte 0
+msg:
+		.ascii "HTTP/1.0 200 OK\r\n\r\n"
+```
+
+emmmm, I feel like I'm using a little trick.....
+
+level11: **respond to multiple concurrent GET and POST requests**
+
+![](img/pwn_college/level11/PG.png)
+
+(still trying...)
+
