@@ -319,7 +319,7 @@
 
 
                 <time class="article-time--reading">
-                    1 minute read
+                    3 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -330,7 +330,7 @@
 
 
                 <time class="article-words">
-                    212 字
+                    474 字
                 </time>
             </div>
         
@@ -347,6 +347,100 @@
     <h1 id="intercepting-communication">Intercepting Communication</h1>
 <p>&mdash;&mdash;&mdash;&ndash;<strong>ASU CSE 365</strong>: Introduction to Cybersecurity</p>
 <h2 id="intercepting-communication-introduction">Intercepting Communication: Introduction</h2>
+<p>①network communication</p>
+<blockquote>
+<p>A&mdash;-email&mdash;&ndash;&gt;B</p>
+<p>A&mdash;-email&ndash;&gt;postal service box&mdash;&mdash;&gt;B</p>
+<p>##mailingprotocol is important!!</p>
+<p>A&mdash;-email&ndash;&gt;postal service box&mdash;&mdash;&gt;C (not B)</p>
+</blockquote>
+<p>②Dynamic network</p>
+<p>physically linked</p>
+<p><img src="/img/pwn_college/lesson/dnetwork.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<h2 id="intercepting-communication-ethernet">Intercepting Communication: Ethernet</h2>
+<p>①<strong>Ethernet:</strong> a link layer protocol used for sending directly linked networked hosts packets of data between one and another</p>
+<p><strong>mac addresses:</strong> describe the physical location of hosts like (<code>hostA: 11:22:33:44:55:66</code>)</p>
+<p><strong>interface:</strong> <code>hostA: eth0</code></p>
+<p>Host A to Host B : eth0 &mdash;&gt;vethA &mdash;&gt;bridge0 &mdash;&gt;vethB &mdash;&gt;eth0</p>
+<p>②Ethernet packet structure</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Destination Mac Address</th>
+<th>Source Mac Address</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6 bytes</td>
+<td>6 bytes</td>
+<td>2 bytes</td>
+</tr>
+</tbody>
+</table></div>
+<p><img src="/img/pwn_college/lesson/Estruct.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>③Network Broadcast Transmission</p>
+<p>TO EVERYONE. We convert the <strong>Destination Mac Address</strong> to <code>ff ff ff ff ff ff</code> and this is the Broadcast Mac Address.</p>
+<h2 id="intercepting-communication-internet-protocol">Intercepting Communication: Internet Protocol</h2>
+<p><strong>IP layer</strong> Type: 08 00 (two bytes) for the Internet Protocol</p>
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <style type="text/css">
+        #googleslides_shortcodes {
+            padding-bottom: 66%;
+            position: relative;
+            display: block;
+            width: 100%;
+            border-bottom: 5px solid;
+        }
+        #googleslides_shortcodes iframe {
+            position: absolute;
+            top: 0;
+            left: 0
+        }
+    </style>
+    <title></title>
+</head>
+<body>
+<div id="googleslides_shortcodes">
+    <iframe id="googleSlideIframe"
+            width="100%"
+            height="100%"
+            src="/img/pdf/IP1.pdf"
+            frameborder="0"
+            allowfullscreen="" >
+    </iframe>
+</div>
+</body>
+</html>
+<ul>
+<li>Version: if it&rsquo;s 4, it indicates the Ipv4</li>
+<li>Internet Header Length: multiply it by four so 5*4 = 20 and the header is 20 bytes long.</li>
+<li>Differentiated Serviced Field: used in some applications</li>
+<li>Total Length: hex 0x14 is 20 in decimal and is equal to header length so in this case we&rsquo;re not stacking extra data on top</li>
+<li>identification: fragment the packet apart into a bunch of little small chunks. Identification is used for labeling 1,2,3&hellip;</li>
+<li>flags: bit0 is 0. bit1(DF) 1 for don&rsquo;t fragment. bit2(MF) 1for there&rsquo;re more fragments</li>
+<li>Fragment Offset: identify which piece of the fragment it is</li>
+<li>Time To Live: Have 64 hops before the packets get dropped. Preventing loops</li>
+<li>Protocol: declare what the follow-on contents protocol is</li>
+<li>Header Checksum: doing some sort of mathematical operation on the header, we can see if data was corrupted</li>
+</ul>
 <h2 id="babyintercept">babyintercept</h2>
 <p><strong>working within a virtual network in order to intercept networked traffic.</strong></p>
 <p>level1: <strong>connect to a remote host(The remote host at <code>x.x.x.x</code> is listening on port <code>123</code>)</strong></p>
@@ -590,7 +684,7 @@
         
             
         
-        共 14.23k 字 · 共 7篇文章
+        共 14.50k 字 · 共 7篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -787,6 +881,8 @@
             <nav id="TableOfContents">
   <ol>
     <li><a href="#intercepting-communication-introduction">Intercepting Communication: Introduction</a></li>
+    <li><a href="#intercepting-communication-ethernet">Intercepting Communication: Ethernet</a></li>
+    <li><a href="#intercepting-communication-internet-protocol">Intercepting Communication: Internet Protocol</a></li>
     <li><a href="#babyintercept">babyintercept</a></li>
   </ol>
 </nav>

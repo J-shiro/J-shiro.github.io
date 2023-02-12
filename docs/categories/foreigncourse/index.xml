@@ -15,6 +15,100 @@
         <description>&lt;img src="https://J-shiro.github.io/p/pwncollege_note5/pwncollege.png" alt="Featured image of post PwnCollege_Note5" /&gt;&lt;h1 id=&#34;intercepting-communication&#34;&gt;Intercepting Communication&lt;/h1&gt;
 &lt;p&gt;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;&lt;strong&gt;ASU CSE 365&lt;/strong&gt;: Introduction to Cybersecurity&lt;/p&gt;
 &lt;h2 id=&#34;intercepting-communication-introduction&#34;&gt;Intercepting Communication: Introduction&lt;/h2&gt;
+&lt;p&gt;①network communication&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;A&amp;mdash;-email&amp;mdash;&amp;ndash;&amp;gt;B&lt;/p&gt;
+&lt;p&gt;A&amp;mdash;-email&amp;ndash;&amp;gt;postal service box&amp;mdash;&amp;mdash;&amp;gt;B&lt;/p&gt;
+&lt;p&gt;##mailingprotocol is important!!&lt;/p&gt;
+&lt;p&gt;A&amp;mdash;-email&amp;ndash;&amp;gt;postal service box&amp;mdash;&amp;mdash;&amp;gt;C (not B)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;②Dynamic network&lt;/p&gt;
+&lt;p&gt;physically linked&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/dnetwork.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;intercepting-communication-ethernet&#34;&gt;Intercepting Communication: Ethernet&lt;/h2&gt;
+&lt;p&gt;①&lt;strong&gt;Ethernet:&lt;/strong&gt; a link layer protocol used for sending directly linked networked hosts packets of data between one and another&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;mac addresses:&lt;/strong&gt; describe the physical location of hosts like (&lt;code&gt;hostA: 11:22:33:44:55:66&lt;/code&gt;)&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;interface:&lt;/strong&gt; &lt;code&gt;hostA: eth0&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Host A to Host B : eth0 &amp;mdash;&amp;gt;vethA &amp;mdash;&amp;gt;bridge0 &amp;mdash;&amp;gt;vethB &amp;mdash;&amp;gt;eth0&lt;/p&gt;
+&lt;p&gt;②Ethernet packet structure&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Destination Mac Address&lt;/th&gt;
+&lt;th&gt;Source Mac Address&lt;/th&gt;
+&lt;th&gt;Type&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;6 bytes&lt;/td&gt;
+&lt;td&gt;6 bytes&lt;/td&gt;
+&lt;td&gt;2 bytes&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/Estruct.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;③Network Broadcast Transmission&lt;/p&gt;
+&lt;p&gt;TO EVERYONE. We convert the &lt;strong&gt;Destination Mac Address&lt;/strong&gt; to &lt;code&gt;ff ff ff ff ff ff&lt;/code&gt; and this is the Broadcast Mac Address.&lt;/p&gt;
+&lt;h2 id=&#34;intercepting-communication-internet-protocol&#34;&gt;Intercepting Communication: Internet Protocol&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;IP layer&lt;/strong&gt; Type: 08 00 (two bytes) for the Internet Protocol&lt;/p&gt;
+&lt;!DOCTYPE HTML&gt;
+&lt;html lang=&#34;en&#34;&gt;
+&lt;head&gt;
+    &lt;style type=&#34;text/css&#34;&gt;
+        #googleslides_shortcodes {
+            padding-bottom: 66%;
+            position: relative;
+            display: block;
+            width: 100%;
+            border-bottom: 5px solid;
+        }
+        #googleslides_shortcodes iframe {
+            position: absolute;
+            top: 0;
+            left: 0
+        }
+    &lt;/style&gt;
+    &lt;title&gt;&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id=&#34;googleslides_shortcodes&#34;&gt;
+    &lt;iframe id=&#34;googleSlideIframe&#34;
+            width=&#34;100%&#34;
+            height=&#34;100%&#34;
+            src=&#34;https://J-shiro.github.io/img/pdf/IP1.pdf&#34;
+            frameborder=&#34;0&#34;
+            allowfullscreen=&#34;&#34; &gt;
+    &lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&lt;ul&gt;
+&lt;li&gt;Version: if it&amp;rsquo;s 4, it indicates the Ipv4&lt;/li&gt;
+&lt;li&gt;Internet Header Length: multiply it by four so 5*4 = 20 and the header is 20 bytes long.&lt;/li&gt;
+&lt;li&gt;Differentiated Serviced Field: used in some applications&lt;/li&gt;
+&lt;li&gt;Total Length: hex 0x14 is 20 in decimal and is equal to header length so in this case we&amp;rsquo;re not stacking extra data on top&lt;/li&gt;
+&lt;li&gt;identification: fragment the packet apart into a bunch of little small chunks. Identification is used for labeling 1,2,3&amp;hellip;&lt;/li&gt;
+&lt;li&gt;flags: bit0 is 0. bit1(DF) 1 for don&amp;rsquo;t fragment. bit2(MF) 1for there&amp;rsquo;re more fragments&lt;/li&gt;
+&lt;li&gt;Fragment Offset: identify which piece of the fragment it is&lt;/li&gt;
+&lt;li&gt;Time To Live: Have 64 hops before the packets get dropped. Preventing loops&lt;/li&gt;
+&lt;li&gt;Protocol: declare what the follow-on contents protocol is&lt;/li&gt;
+&lt;li&gt;Header Checksum: doing some sort of mathematical operation on the header, we can see if data was corrupted&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h2 id=&#34;babyintercept&#34;&gt;babyintercept&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;working within a virtual network in order to intercept networked traffic.&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;level1: &lt;strong&gt;connect to a remote host(The remote host at &lt;code&gt;x.x.x.x&lt;/code&gt; is listening on port &lt;code&gt;123&lt;/code&gt;)&lt;/strong&gt;&lt;/p&gt;
