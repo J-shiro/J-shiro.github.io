@@ -319,7 +319,7 @@
 
 
                 <time class="article-time--reading">
-                    3 minute read
+                    7 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -330,7 +330,7 @@
 
 
                 <time class="article-words">
-                    474 字
+                    1379 字
                 </time>
             </div>
         
@@ -438,8 +438,106 @@
 <li>flags: bit0 is 0. bit1(DF) 1 for don&rsquo;t fragment. bit2(MF) 1for there&rsquo;re more fragments</li>
 <li>Fragment Offset: identify which piece of the fragment it is</li>
 <li>Time To Live: Have 64 hops before the packets get dropped. Preventing loops</li>
-<li>Protocol: declare what the follow-on contents protocol is</li>
+<li>Protocol: declare what the follow-on contents protocol is (such as TCP, 06 means the TCP)</li>
 <li>Header Checksum: doing some sort of mathematical operation on the header, we can see if data was corrupted</li>
+</ul>
+<h2 id="intercepting-communication-transmission-control-protocol">Intercepting Communication: Transmission Control Protocol</h2>
+<p>TCP: enable the stateful conversation between two hosts.</p>
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <style type="text/css">
+        #googleslides_shortcodes {
+            padding-bottom: 66%;
+            position: relative;
+            display: block;
+            width: 100%;
+            border-bottom: 5px solid;
+        }
+        #googleslides_shortcodes iframe {
+            position: absolute;
+            top: 0;
+            left: 0
+        }
+    </style>
+    <title></title>
+</head>
+<body>
+<div id="googleslides_shortcodes">
+    <iframe id="googleSlideIframe"
+            width="100%"
+            height="100%"
+            src="/img/pdf/TCP1.pdf"
+            frameborder="0"
+            allowfullscreen="" >
+    </iframe>
+</div>
+</body>
+</html>
+<ul>
+<li>Sequence Number: random initialized value(32bits)</li>
+<li>Acknowledgment Number: relative ACK number</li>
+<li>Data Offset: 5*4 = 20, after 20bytes is where the data starts</li>
+<li>Reserved: now we didn&rsquo;t need the 3bits</li>
+<li>Flags: declare operations</li>
+<li>Window Size: sending data should be shorter than this size at once</li>
+</ul>
+<p><strong>TCP flags</strong> (6 of 9)</p>
+<p><img src="/img/pwn_college/lesson/TCPflags.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><strong>TCP Transmission</strong></p>
+<p><img src="/img/pwn_college/lesson/TCPt.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>In the penultimate packet, seq may be (B+N)</p>
+<h2 id="intercepting-communication-address-resolution-protocol">Intercepting Communication: Address Resolution Protocol</h2>
+<p>we can set the TYPE in Ethernet Structure to <code>08 06</code> and destination to the <code>all-f</code>which means it is ARP. The ARP is used to convert the IP to MAC address.</p>
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <style type="text/css">
+        #googleslides_shortcodes {
+            padding-bottom: 66%;
+            position: relative;
+            display: block;
+            width: 100%;
+            border-bottom: 5px solid;
+        }
+        #googleslides_shortcodes iframe {
+            position: absolute;
+            top: 0;
+            left: 0
+        }
+    </style>
+    <title></title>
+</head>
+<body>
+<div id="googleslides_shortcodes">
+    <iframe id="googleSlideIframe"
+            width="100%"
+            height="100%"
+            src="/img/pdf/ARP1.pdf"
+            frameborder="0"
+            allowfullscreen="" >
+    </iframe>
+</div>
+</body>
+</html>
+<ul>
+<li>Hardware Type: the network type. For example, 00 01 is Ethernet address</li>
+<li>Protocol Type: 08 00 is IP</li>
+<li>Operation: 00 01: request, 00 10: reply</li>
 </ul>
 <h2 id="babyintercept">babyintercept</h2>
 <p><strong>working within a virtual network in order to intercept networked traffic.</strong></p>
@@ -495,7 +593,277 @@
 </span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.000045s latency<span class="o">)</span>.
 </span></span></code></pre></td></tr></table>
 </div>
+</div><p>level4: <strong>The remote host is somewhere on the <code>x.0.0.0/16</code> subnetwork, listening on port <code>123</code></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">nmap -v x.x.x.0/16 -p <span class="m">123</span> --min-rate <span class="m">4096</span> <span class="c1">#--min-rate: &gt;=4096</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#x.0.0.0/16 (4096 = 256*16)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#so x.0.0.0-&gt;x.0.16.0-&gt;x.0.32.0-&gt;x.0.48.0-&gt;x.0.64.0-&gt;x.0.80.0-&gt;x.0.96.0-&gt;x.0.112.0-&gt;x.0.128.0-&gt;x.0.144.0-&gt;x.0.160.0-&gt;x.0.176.0-&gt;x.0.192.0-&gt;x.0.208.0-&gt;x.0.224.0-&gt;x.0.240.0-&gt;x.0.255.255</span>
+</span></span><span class="line"><span class="cl">++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+</span></span><span class="line"><span class="cl"><span class="c1">#Initiating SYN Stealth Scan at 06:27</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#Scanning x.0.1.2 [1 port]</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#Discovered open port 123/tcp on 10.0.125.87</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#Completed SYN Stealth Scan at 06:27, 0.05s elapsed (1 total ports)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#Nmap scan report for 10.0.125.87</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#Host is up (0.000053s latency).</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#Nmap done: 65536 IP addresses (2 hosts up) scanned in 537.67 seconds</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#           Raw packets sent: 131079 (3.670MB) | Rcvd: 12 (380B)</span>
+</span></span><span class="line"><span class="cl">++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+</span></span><span class="line"><span class="cl">nc x.0.1.2 <span class="m">123</span>
+</span></span></code></pre></td></tr></table>
 </div>
+</div><p>level5: <strong>monitor traffic from a remote host.Your host is already receiving traffic on port <code>123</code></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">nc -l <span class="m">123</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#nc: Address already in use</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>we can use the <code>tcpdump</code> here or use the <code>wireshark</code>!</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">tcpdump -i eth0 <span class="s1">&#39;port 123&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># using this command we can see the traffic in the eth0 on port 123 and if we want to check the specified content, use the command below:</span>
+</span></span><span class="line"><span class="cl">tcpdump -X -i eth0 <span class="s1">&#39;port 123&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#When parsing and printing, in addition to printing the headers of each packet, print the data of each  packet in hex and ASCII.</span>
+</span></span><span class="line"><span class="cl">tcpdump -A -i eth0 <span class="s1">&#39;port 123&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-A: Print each packet (minus its link level header) in ASCII.  Handy for capturing web pages.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-i: interface</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level6: <strong>monitor slow traffic from a remote host</strong></p>
+<p>we use the wireshark to monitor the traffic in eth0, and click the <code>Follow-TCP Stream</code></p>
+<p><img src="/img/pwn_college/level6/Wireshark1.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/img/pwn_college/level6/Wireshark2.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>we can get the flag here.</p>
+<p>level7: <strong>hijack traffic from a remote host.The remote host at <code>x.0.0.4</code> is communicating with the remote host at <code>x.0.0.2</code> on port <code>123</code>.</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">ip link <span class="nb">set</span> eth0 up		<span class="c1">#Open the network card</span>
+</span></span><span class="line"><span class="cl">ip link <span class="nb">set</span> eth0 down	<span class="c1">#Close the network card</span>
+</span></span><span class="line"><span class="cl">ip addr add 192.168.0.1/24 dev eth0
+</span></span><span class="line"><span class="cl">ip addr del 192.168.0.1/24 dev eth0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">ip addr
+</span></span><span class="line"><span class="cl"><span class="c1">#link/ether aa:c5:28:34:89:ec brd ff:ff:ff:ff:ff:ff link-netnsid 0</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#    inet 10.0.0.3/16 scope global eth0</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#       valid_lft forever preferred_lft forever</span>
+</span></span><span class="line"><span class="cl">tcpdump -i any
+</span></span><span class="line"><span class="cl"><span class="c1">#08:03:00.690459 eth0  B   ARP, Request who-has 10.0.0.2 tell 10.0.0.4, length 28</span>
+</span></span><span class="line"><span class="cl">ip addr add 10.0.0.2/16 dev eth0
+</span></span><span class="line"><span class="cl">tcpdump -i any
+</span></span><span class="line"><span class="cl"><span class="c1">#08:04:22.102786 eth0  In  ARP, Reply 10.0.0.4 is-at e6:74:f8:9d:dc:53 (oui Unknown), length 28</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#08:04:23.034965 eth0  Out ARP, Reply 10.0.0.2 is-at aa:c5:28:34:89:ec (oui Unknown), length 28</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#08:04:23.034996 eth0  In  IP 10.0.0.4.56058 &gt; 10.0.0.2.31337: Flags [S], seq 3053028927, win 64240, options [mss 1460,sackOK,TS val 1627029525 ecr 0,nop,wscale 7], length 0</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#08:04:23.035009 eth0  Out IP 10.0.0.2.31337 &gt; 10.0.0.4.56058: Flags [R.], seq 0, ack 3053028928, win 0, length 0</span>
+</span></span><span class="line"><span class="cl">nc -l <span class="m">123</span> <span class="c1">#get the flag</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level8: <strong>manually send an Ethernet packet.The packet should have <code>Ether type=0xFFFF</code>and be sent to the remote host at <code>x.0.0.3</code></strong></p>
+<p>we would use the <strong>scapy</strong> tool</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">scapy
+</span></span><span class="line"><span class="cl">&gt;&gt;&gt; Ether<span class="o">()</span>
+</span></span><span class="line"><span class="cl">&lt;Ether  <span class="p">|</span>&gt;
+</span></span><span class="line"><span class="cl">&gt;&gt;&gt; Ether<span class="o">()</span>.display<span class="o">()</span>
+</span></span><span class="line"><span class="cl">WARNING: Mac address to reach destination not found. Using broadcast.
+</span></span><span class="line"><span class="cl"><span class="c1">###[ Ethernet ]### </span>
+</span></span><span class="line"><span class="cl">  <span class="nv">dst</span>       <span class="o">=</span> ff:ff:ff:ff:ff:ff
+</span></span><span class="line"><span class="cl">  <span class="nv">src</span>       <span class="o">=</span> 02:42:ac:14:00:26
+</span></span><span class="line"><span class="cl">  <span class="nb">type</span>      <span class="o">=</span> 0x9000
+</span></span><span class="line"><span class="cl">&gt;&gt;&gt;sendp<span class="o">(</span>Ether<span class="o">(</span><span class="nv">type</span><span class="o">=</span>0xFFFF,src<span class="o">=</span>get_if_hwaddr<span class="o">(</span><span class="s2">&#34;eth0&#34;</span><span class="o">)</span>,dst<span class="o">=</span><span class="s2">&#34;ff:ff:ff:ff:ff:ff&#34;</span><span class="o">)</span>, <span class="nv">iface</span><span class="o">=</span><span class="s2">&#34;eth0&#34;</span><span class="o">)</span><span class="c1">#get the flag</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#get_if_hwaddr can get the src physical address</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#must have src,type and iface</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level9: <strong>manually send an Internet Protocol packet.The packet should have <code>IP proto=0xFF</code> and be sent to the remote host at <code>x.0.0.3</code>.</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">&gt;&gt;&gt; <span class="o">(</span>Ether<span class="o">()</span> / IP<span class="o">())</span>.display<span class="o">()</span>
+</span></span><span class="line"><span class="cl"><span class="c1">###[ Ethernet ]### </span>
+</span></span><span class="line"><span class="cl">  <span class="nv">dst</span>       <span class="o">=</span> ff:ff:ff:ff:ff:ff
+</span></span><span class="line"><span class="cl">  <span class="nv">src</span>       <span class="o">=</span> 00:00:00:00:00:00
+</span></span><span class="line"><span class="cl">  <span class="nb">type</span>      <span class="o">=</span> IPv4
+</span></span><span class="line"><span class="cl"><span class="c1">###[ IP ]### </span>
+</span></span><span class="line"><span class="cl">     <span class="nv">version</span>   <span class="o">=</span> <span class="m">4</span>
+</span></span><span class="line"><span class="cl">     <span class="nv">ihl</span>       <span class="o">=</span> None
+</span></span><span class="line"><span class="cl">     <span class="nv">tos</span>       <span class="o">=</span> 0x0
+</span></span><span class="line"><span class="cl">     <span class="nv">len</span>       <span class="o">=</span> None
+</span></span><span class="line"><span class="cl">     <span class="nv">id</span>        <span class="o">=</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">     <span class="nv">flags</span>     <span class="o">=</span> 
+</span></span><span class="line"><span class="cl">     <span class="nv">frag</span>      <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl">     <span class="nv">ttl</span>       <span class="o">=</span> <span class="m">64</span>
+</span></span><span class="line"><span class="cl">     <span class="nv">proto</span>     <span class="o">=</span> hopopt
+</span></span><span class="line"><span class="cl">     <span class="nv">chksum</span>    <span class="o">=</span> None
+</span></span><span class="line"><span class="cl">     <span class="nv">src</span>       <span class="o">=</span> 127.0.0.1
+</span></span><span class="line"><span class="cl">     <span class="nv">dst</span>       <span class="o">=</span> 127.0.0.1
+</span></span><span class="line"><span class="cl">     <span class="se">\o</span>ptions   <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>sendp<span class="o">(</span>Ether<span class="o">(</span><span class="nv">src</span><span class="o">=</span>get_if_hwaddr<span class="o">(</span><span class="s2">&#34;eth0&#34;</span><span class="o">))</span> / IP<span class="o">(</span><span class="nv">proto</span><span class="o">=</span>0xFF,dst<span class="o">=</span><span class="s2">&#34;x.0.0.3&#34;</span><span class="o">)</span>,iface<span class="o">=</span><span class="s2">&#34;eth0&#34;</span><span class="o">)</span><span class="c1">#get the flag</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level10: <strong>manually send a Transmission Control Protocol packet.The packet should have <code>TCP sport=31337, dport=31337, seq=31337, ack=31337, flags=APRSF</code> and be sent to the remote host at <code>x.0.0.3</code>.</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">sendp<span class="o">(</span>Ether<span class="o">(</span><span class="nv">src</span><span class="o">=</span>get_if_hwaddr<span class="o">(</span><span class="s2">&#34;eth0&#34;</span><span class="o">))</span> / IP<span class="o">(</span><span class="nv">dst</span><span class="o">=</span><span class="s2">&#34;10.0.0.3&#34;</span><span class="o">)</span> / TCP<span class="o">(</span><span class="nv">sport</span><span class="o">=</span>31337,dport<span class="o">=</span>31337,seq<span class="o">=</span>31337,ack<span class="o">=</span>31337,flags<span class="o">=</span><span class="s2">&#34;APRSF&#34;</span><span class="o">)</span>,iface<span class="o">=</span><span class="s2">&#34;eth0&#34;</span><span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level11: <strong>perform a Transmission Control Protocol handshake. The initial packet should have <code>TCP sport=31337, dport=31337, seq=31337</code> and should occur with the remote host at <code>x.0.0.3</code>.</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">tmux
+</span></span><span class="line"><span class="cl">#ctrl+b,and c:add one terminal
+</span></span><span class="line"><span class="cl">#ctrl+b,and n:change to another terminal
+</span></span><span class="line"><span class="cl">tmux1:wireshark
+</span></span><span class="line"><span class="cl">tmux2:operation
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>① A&mdash;-&gt;B <strong>SYN</strong> (seq=<code>A</code>)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">sendp<span class="o">(</span>Ether<span class="o">(</span><span class="nv">src</span><span class="o">=</span>get_if_hwaddr<span class="o">(</span><span class="s2">&#34;eth0&#34;</span><span class="o">))</span> / IP<span class="o">(</span><span class="nv">dst</span><span class="o">=</span><span class="s2">&#34;10.0.0.3&#34;</span><span class="o">)</span> / TCP<span class="o">(</span><span class="nv">sport</span><span class="o">=</span>31337,dport<span class="o">=</span>31337,seq<span class="o">=</span>31337,flags<span class="o">=</span><span class="s2">&#34;S&#34;</span><span class="o">)</span>,iface<span class="o">=</span><span class="s2">&#34;eth0&#34;</span><span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>② B&mdash;-&gt;A <strong>SYN,ACK</strong> (seq=<code>B</code>, ack=<code>(A+1)</code>)</p>
+<p><img src="/img/pwn_college/level11/Handshake.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>③ A&mdash;-&gt;B <strong>ACK</strong> (seq=<code>(A+1)</code>, ack=<code>(B+1)</code>)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">sendp<span class="o">(</span>Ether<span class="o">(</span><span class="nv">src</span><span class="o">=</span>get_if_hwaddr<span class="o">(</span><span class="s2">&#34;eth0&#34;</span><span class="o">))</span> / IP<span class="o">(</span><span class="nv">dst</span><span class="o">=</span><span class="s2">&#34;10.0.0.3&#34;</span><span class="o">)</span> / TCP<span class="o">(</span><span class="nv">sport</span><span class="o">=</span>31337,dport<span class="o">=</span>31337,seq<span class="o">=</span>31338,ack<span class="o">=</span>3814219987,flags<span class="o">=</span><span class="s2">&#34;A&#34;</span><span class="o">)</span>,iface<span class="o">=</span><span class="s2">&#34;eth0&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#get the flag</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level12: <strong>manually send an Address Resolution Protocol packet.The packet should have <code>ARP op=is-at</code> and correctly inform the remote host of where the sender can be found</strong></p>
+
 </section>
 
 
@@ -684,7 +1052,7 @@
         
             
         
-        共 14.50k 字 · 共 7篇文章
+        共 15.40k 字 · 共 7篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -883,6 +1251,8 @@
     <li><a href="#intercepting-communication-introduction">Intercepting Communication: Introduction</a></li>
     <li><a href="#intercepting-communication-ethernet">Intercepting Communication: Ethernet</a></li>
     <li><a href="#intercepting-communication-internet-protocol">Intercepting Communication: Internet Protocol</a></li>
+    <li><a href="#intercepting-communication-transmission-control-protocol">Intercepting Communication: Transmission Control Protocol</a></li>
+    <li><a href="#intercepting-communication-address-resolution-protocol">Intercepting Communication: Address Resolution Protocol</a></li>
     <li><a href="#babyintercept">babyintercept</a></li>
   </ol>
 </nav>

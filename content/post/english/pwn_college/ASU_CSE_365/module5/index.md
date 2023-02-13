@@ -77,10 +77,41 @@ TO EVERYONE. We convert the **Destination Mac Address** to `ff ff ff ff ff ff` a
 - flags: bit0 is 0. bit1(DF) 1 for don't fragment. bit2(MF) 1for there're more fragments
 - Fragment Offset: identify which piece of the fragment it is
 - Time To Live: Have 64 hops before the packets get dropped. Preventing loops
-- Protocol: declare what the follow-on contents protocol is
+- Protocol: declare what the follow-on contents protocol is (such as TCP, 06 means the TCP)
 - Header Checksum: doing some sort of mathematical operation on the header, we can see if data was corrupted
 
+## Intercepting Communication: Transmission Control Protocol
 
+TCP: enable the stateful conversation between two hosts.
+
+{{<ppt src="/img/pdf/TCP1.pdf" >}}
+
+- Sequence Number: random initialized value(32bits)
+- Acknowledgment Number: relative ACK number
+- Data Offset: 5*4 = 20, after 20bytes is where the data starts
+- Reserved: now we didn't need the 3bits
+- Flags: declare operations
+- Window Size: sending data should be shorter than this size at once 
+
+**TCP flags** (6 of 9)
+
+![](/img/pwn_college/lesson/TCPflags.png)
+
+**TCP Transmission**
+
+![](/img/pwn_college/lesson/TCPt.png)
+
+In the penultimate packet, seq may be (B+N)
+
+## Intercepting Communication: Address Resolution Protocol
+
+we can set the TYPE in Ethernet Structure to `08 06` and destination to the `all-f`which means it is ARP. The ARP is used to convert the IP to MAC address.
+
+{{<ppt src="/img/pdf/ARP1.pdf" >}}
+
+- Hardware Type: the network type. For example, 00 01 is Ethernet address
+- Protocol Type: 08 00 is IP
+- Operation: 00 01: request, 00 10: reply
 
 ## babyintercept
 
@@ -118,3 +149,155 @@ Nmap scan report for 10.0.0.223
 Host is up (0.000045s latency).
 ```
 
+level4: **The remote host is somewhere on the `x.0.0.0/16` subnetwork, listening on port `123`**
+
+```shell
+nmap -v x.x.x.0/16 -p 123 --min-rate 4096 #--min-rate: >=4096
+#x.0.0.0/16 (4096 = 256*16)
+#so x.0.0.0->x.0.16.0->x.0.32.0->x.0.48.0->x.0.64.0->x.0.80.0->x.0.96.0->x.0.112.0->x.0.128.0->x.0.144.0->x.0.160.0->x.0.176.0->x.0.192.0->x.0.208.0->x.0.224.0->x.0.240.0->x.0.255.255
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#Initiating SYN Stealth Scan at 06:27
+#Scanning x.0.1.2 [1 port]
+#Discovered open port 123/tcp on 10.0.125.87
+#Completed SYN Stealth Scan at 06:27, 0.05s elapsed (1 total ports)
+#Nmap scan report for 10.0.125.87
+#Host is up (0.000053s latency).
+#
+#Nmap done: 65536 IP addresses (2 hosts up) scanned in 537.67 seconds
+#           Raw packets sent: 131079 (3.670MB) | Rcvd: 12 (380B)
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+nc x.0.1.2 123
+```
+
+level5: **monitor traffic from a remote host.Your host is already receiving traffic on port `123`**
+
+```shell
+nc -l 123
+#nc: Address already in use
+```
+
+we can use the `tcpdump` here or use the `wireshark`!
+
+```shell
+tcpdump -i eth0 'port 123'
+# using this command we can see the traffic in the eth0 on port 123 and if we want to check the specified content, use the command below:
+tcpdump -X -i eth0 'port 123'
+#When parsing and printing, in addition to printing the headers of each packet, print the data of each  packet in hex and ASCII.
+tcpdump -A -i eth0 'port 123'
+#-A: Print each packet (minus its link level header) in ASCII.  Handy for capturing web pages.
+#-i: interface
+```
+
+level6: **monitor slow traffic from a remote host** 
+
+we use the wireshark to monitor the traffic in eth0, and click the `Follow-TCP Stream`
+
+![](img/pwn_college/level6/Wireshark1.png)
+
+![](img/pwn_college/level6/Wireshark2.png)
+
+we can get the flag here.
+
+level7: **hijack traffic from a remote host.The remote host at `x.0.0.4` is communicating with the remote host at `x.0.0.2` on port `123`.**
+
+```shell
+ip link set eth0 up		#Open the network card
+ip link set eth0 down	#Close the network card
+ip addr add 192.168.0.1/24 dev eth0
+ip addr del 192.168.0.1/24 dev eth0
+```
+
+```shell
+ip addr
+#link/ether aa:c5:28:34:89:ec brd ff:ff:ff:ff:ff:ff link-netnsid 0
+#    inet 10.0.0.3/16 scope global eth0
+#       valid_lft forever preferred_lft forever
+tcpdump -i any
+#08:03:00.690459 eth0  B   ARP, Request who-has 10.0.0.2 tell 10.0.0.4, length 28
+ip addr add 10.0.0.2/16 dev eth0
+tcpdump -i any
+#08:04:22.102786 eth0  In  ARP, Reply 10.0.0.4 is-at e6:74:f8:9d:dc:53 (oui Unknown), length 28
+#08:04:23.034965 eth0  Out ARP, Reply 10.0.0.2 is-at aa:c5:28:34:89:ec (oui Unknown), length 28
+#08:04:23.034996 eth0  In  IP 10.0.0.4.56058 > 10.0.0.2.31337: Flags [S], seq 3053028927, win 64240, options [mss 1460,sackOK,TS val 1627029525 ecr 0,nop,wscale 7], length 0
+#08:04:23.035009 eth0  Out IP 10.0.0.2.31337 > 10.0.0.4.56058: Flags [R.], seq 0, ack 3053028928, win 0, length 0
+nc -l 123 #get the flag
+```
+
+level8: **manually send an Ethernet packet.The packet should have `Ether type=0xFFFF`and be sent to the remote host at `x.0.0.3`**
+
+we would use the **scapy** tool
+
+```shell
+scapy
+>>> Ether()
+<Ether  |>
+>>> Ether().display()
+WARNING: Mac address to reach destination not found. Using broadcast.
+###[ Ethernet ]### 
+  dst       = ff:ff:ff:ff:ff:ff
+  src       = 02:42:ac:14:00:26
+  type      = 0x9000
+>>>sendp(Ether(type=0xFFFF,src=get_if_hwaddr("eth0"),dst="ff:ff:ff:ff:ff:ff"), iface="eth0")#get the flag
+#get_if_hwaddr can get the src physical address
+#must have src,type and iface
+```
+
+level9: **manually send an Internet Protocol packet.The packet should have `IP proto=0xFF` and be sent to the remote host at `x.0.0.3`.**
+
+```shell
+>>> (Ether() / IP()).display()
+###[ Ethernet ]### 
+  dst       = ff:ff:ff:ff:ff:ff
+  src       = 00:00:00:00:00:00
+  type      = IPv4
+###[ IP ]### 
+     version   = 4
+     ihl       = None
+     tos       = 0x0
+     len       = None
+     id        = 1
+     flags     = 
+     frag      = 0
+     ttl       = 64
+     proto     = hopopt
+     chksum    = None
+     src       = 127.0.0.1
+     dst       = 127.0.0.1
+     \options   \
+sendp(Ether(src=get_if_hwaddr("eth0")) / IP(proto=0xFF,dst="x.0.0.3"),iface="eth0")#get the flag
+```
+
+level10: **manually send a Transmission Control Protocol packet.The packet should have `TCP sport=31337, dport=31337, seq=31337, ack=31337, flags=APRSF` and be sent to the remote host at `x.0.0.3`.**
+
+```shell
+sendp(Ether(src=get_if_hwaddr("eth0")) / IP(dst="10.0.0.3") / TCP(sport=31337,dport=31337,seq=31337,ack=31337,flags="APRSF"),iface="eth0")
+```
+
+level11: **perform a Transmission Control Protocol handshake. The initial packet should have `TCP sport=31337, dport=31337, seq=31337` and should occur with the remote host at `x.0.0.3`.**
+
+```
+tmux
+#ctrl+b,and c:add one terminal
+#ctrl+b,and n:change to another terminal
+tmux1:wireshark
+tmux2:operation
+```
+
+① A---->B **SYN** (seq=`A`) 
+
+```shell
+sendp(Ether(src=get_if_hwaddr("eth0")) / IP(dst="10.0.0.3") / TCP(sport=31337,dport=31337,seq=31337,flags="S"),iface="eth0")
+```
+
+② B---->A **SYN,ACK** (seq=`B`, ack=`(A+1)`)
+
+![](/img/pwn_college/level11/Handshake.png)
+
+③ A---->B **ACK** (seq=`(A+1)`, ack=`(B+1)`)
+
+```shell
+sendp(Ether(src=get_if_hwaddr("eth0")) / IP(dst="10.0.0.3") / TCP(sport=31337,dport=31337,seq=31338,ack=3814219987,flags="A"),iface="eth0")
+#get the flag
+```
+
+level12: **manually send an Address Resolution Protocol packet.The packet should have `ARP op=is-at` and correctly inform the remote host of where the sender can be found**
