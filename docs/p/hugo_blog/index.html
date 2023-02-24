@@ -331,7 +331,7 @@
 
 
                 <time class="article-words">
-                    270 字
+                    323 字
                 </time>
             </div>
         
@@ -420,6 +420,23 @@
 </span></span></span><span class="line"><span class="cl"><span class="s2">&#34;</span><span class="c1">#the supplementation of commit information</span>
 </span></span><span class="line"><span class="cl"><span class="c1">#git commit --amend </span>
 </span></span><span class="line"><span class="cl">git push -f
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>about branch</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1">#first create a new remote branch at github and then :</span>
+</span></span><span class="line"><span class="cl">git fetch origin
+</span></span><span class="line"><span class="cl">git remote update origin --prune
+</span></span><span class="line"><span class="cl">git checkout -b local_branch_name origin/remote_branch_name <span class="c1">#the local_branch_name must be not exist. And at last we can change to the local_branch</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#delete the local branch:`git branch -d xxx`</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="problems-encountered">Problems encountered</h2>
@@ -540,7 +557,7 @@
         
             
         
-        共 15.60k 字 · 共 7篇文章
+        共 15.65k 字 · 共 7篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---

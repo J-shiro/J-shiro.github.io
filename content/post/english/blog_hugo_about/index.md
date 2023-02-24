@@ -58,6 +58,18 @@ issue:#xxxx
 git push -f
 ```
 
+**about branch**
+
+```shell
+#first create a new remote branch at github and then :
+git fetch origin
+git remote update origin --prune
+git checkout -b local_branch_name origin/remote_branch_name #the local_branch_name must be not exist. And at last we can change to the local_branch
+#delete the local branch:`git branch -d xxx`
+```
+
+
+
 ## Problems encountered 
 
 **error1: Updates were rejected because the remote contains work that you do not have locally. This is usually caused by another repository pushing to the same ref. You may want to  first integrate the remote changes (e.g., 'git pull ...') before pushing again.**
