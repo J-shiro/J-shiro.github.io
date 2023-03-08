@@ -1,6 +1,6 @@
 ---
 title: "PwnCollege_Note4"
-description: the 4th module of ASU CSE 365, building a web server
+description: ASU CSE 365, building a web server
 date: 2022-12-22
 image: pwncollege.png
 math: 

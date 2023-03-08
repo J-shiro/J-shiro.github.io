@@ -1,6 +1,6 @@
 ---
 title: "PwnCollege_Note5"
-description: the 5th module of ASU CSE 365, intercepting communication
+description: ASU CSE 365, intercepting communication
 date: 2023-02-10
 image: pwncollege.png
 math: 
@@ -339,3 +339,15 @@ We need to forge arp packets to x.0.0.4, update the arp cache
 level14: **man in the middle traffic between two remote hosts and inject extra traffic. The remote host at `x.0.0.4` is communicating with the remote host at `x.0.0.3` on port `123`.**
 
 trying....
+
+because of the remote server is very slow so I tried to `ssh` in my local kali linux. Just as followings: 
+
+```shell
+ssh-keygen -f key -N ''
+cat key.pub
+# copy the key.pub to pwn.college settings
+ssh -i key hacker@dojo.pwn.college
+#connected!!
+#ok, it is not so good as I thought, and I should try to use scripts instead of manually using the terminals
+```
+

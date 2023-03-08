@@ -1,6 +1,6 @@
 ---
 title: "PwnCollege_Note2"
-description: the 2nd module of ASU CSE 365, talking web
+description: ASU CSE 365, talking web
 date: 2022-11-17
 image: pwncollege.png
 math: 

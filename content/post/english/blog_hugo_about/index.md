@@ -91,6 +91,16 @@ Line breaks in Windows are different from line breaks in Unix, and Git converts 
 git config --global core.autocrlf false
 ```
 
+**error3: The github folder has a white arrow and can not open**
+
+```shell
+1、delete the .git in the directory
+2、git rm --cached [directory_name]
+3、git add [directory_name]
+4、git commit -m "msg"
+5、git push origin [branch_name] 
+```
+
 
 
 ## add picture

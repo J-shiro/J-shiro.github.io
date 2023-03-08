@@ -1,6 +1,6 @@
 ---
 title: "PwnCollege_Note1"
-description: the 1st module of ASU CSE 365, program misuse.
+description: ASU CSE 365, program misuse.
 date: 2022-10-29
 image: pwncollege.png
 math: 
