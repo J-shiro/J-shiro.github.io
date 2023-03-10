@@ -351,7 +351,7 @@ ssh -i key hacker@dojo.pwn.college
 #ok, it is not so good as I thought, and I should try to use scripts instead of manually using the terminals
 ```
 
-Ok, finally I figured it out with the help of discord friends! As we know we can't manually use the terminals so we should use python scripts with **scapy**. There'is a very cool function called {{< spoiler >}} sniffer {{</ spoiler >}} so we could use it to accept packets between x.0.0.3 and x.0.0.4
+Ok, finally I figured it out with the help of discord friends! As we know we can't manually use the terminals so we should use python scripts with **scapy**. There's a very cool function called {{< spoiler >}} sniffer {{</ spoiler >}} so we could use it to accept packets between x.0.0.3 and x.0.0.4
 
 ```python
 //a.py ==>scripts

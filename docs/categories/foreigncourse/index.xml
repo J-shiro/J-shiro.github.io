@@ -6,7 +6,18 @@
         <description>Recent content in ForeignCourse on J-shiro&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Tue, 07 Mar 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://J-shiro.github.io/categories/foreigncourse/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 10 Mar 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://J-shiro.github.io/categories/foreigncourse/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>PwnCollege_Note8</title>
+        <link>https://J-shiro.github.io/p/pwncollege_note8/</link>
+        <pubDate>Fri, 10 Mar 2023 00:00:00 +0000</pubDate>
+        
+        <guid>https://J-shiro.github.io/p/pwncollege_note8/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/p/pwncollege_note8/pwncollege.png" alt="Featured image of post PwnCollege_Note8" /&gt;&lt;h1 id=&#34;program-interaction&#34;&gt;Program Interaction&lt;/h1&gt;
+&lt;p&gt;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;&lt;strong&gt;ASU CSE 365&lt;/strong&gt;: System Security&lt;/p&gt;
+&lt;h2 id=&#34;embryoio&#34;&gt;embryoio&lt;/h2&gt;
+</description>
+        </item>
+        <item>
         <title>PwnCollege_Note7</title>
         <link>https://J-shiro.github.io/p/pwncollege_note7/</link>
         <pubDate>Tue, 07 Mar 2023 00:00:00 +0000</pubDate>
@@ -1551,7 +1562,7 @@ actual functionality of your code begins. When control flow hits any of these in
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#ok, it is not so good as I thought, and I should try to use scripts instead of manually using the terminals&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;Ok, finally I figured it out with the help of discord friends! As we know we can&amp;rsquo;t manually use the terminals so we should use python scripts with &lt;strong&gt;scapy&lt;/strong&gt;. There&amp;rsquo;is a very cool function called &lt;span class=&#34;spoiler&#34; &gt; sniffer &lt;/span&gt;
+&lt;/div&gt;&lt;p&gt;Ok, finally I figured it out with the help of discord friends! As we know we can&amp;rsquo;t manually use the terminals so we should use python scripts with &lt;strong&gt;scapy&lt;/strong&gt;. There&amp;rsquo;s a very cool function called &lt;span class=&#34;spoiler&#34; &gt; sniffer &lt;/span&gt;
  so we could use it to accept packets between x.0.0.3 and x.0.0.4&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
