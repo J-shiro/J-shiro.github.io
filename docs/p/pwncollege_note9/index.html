@@ -319,7 +319,7 @@
 
 
                 <time class="article-time--reading">
-                    4 minute read
+                    9 minute read
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -330,7 +330,7 @@
 
 
                 <time class="article-words">
-                    786 字
+                    1725 字
                 </time>
             </div>
         
@@ -346,6 +346,7 @@
     
     <h1 id="debugging-refresher">Debugging Refresher</h1>
 <p>&mdash;&mdash;&mdash;&ndash;<strong>ASU CSE 365</strong>: System Security</p>
+<h2 id="gdb-walkthrough">GDB Walkthrough</h2>
 <h2 id="embryogdb">embryogdb</h2>
 <p><code>GDB</code> is a very <strong>powerful dynamic analysis tool</strong>.</p>
 <p>level1: <strong>using the command &lsquo;continue&rsquo; or &lsquo;c&rsquo; to continue program execution</strong></p>
@@ -574,7 +575,312 @@
 </span></span><span class="line"><span class="cl">pwn.college<span class="o">{</span>abc<span class="o">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
+</div><p>level5: <strong>use gdb scripting to collect the random values</strong></p>
+<p>write commands to some file, for example <code>x.gdb</code>, and then launch gdb using the flag <code>-x &lt;PATH_TO_SCRIPT&gt;</code>. This file will <strong>execute all of the gdb commands</strong> after gdb launches. Alternatively, you can <strong>execute individual commands</strong> with <code>-ex '&lt;COMMAND&gt;'</code></p>
+<p>You can <strong>pass multiple commands</strong> with multiple <code>-ex</code> arguments. Finally, you can have <strong>some commands be always executed for any gdb session</strong> by putting them in <code>~/.gdbinit</code></p>
+<p>You probably want to put <code>set disassembly-flavor intel</code> in there</p>
+<p><strong>example1</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">start
+</span></span><span class="line"><span class="cl"><span class="nb">break</span> *main+42
+</span></span><span class="line"><span class="cl">commands
+</span></span><span class="line"><span class="cl">  x/gx <span class="nv">$rbp</span>-0x32
+</span></span><span class="line"><span class="cl">  <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">end
+</span></span><span class="line"><span class="cl"><span class="k">continue</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#whenever we hit the instruction at `main+42`, it will output a particlar local variable and then continue execution</span>
+</span></span></code></pre></td></tr></table>
 </div>
+</div><p><strong>example2</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">start
+</span></span><span class="line"><span class="cl"><span class="nb">break</span> *main+42
+</span></span><span class="line"><span class="cl">commands
+</span></span><span class="line"><span class="cl">  silent
+</span></span><span class="line"><span class="cl">  <span class="nb">set</span> <span class="nv">$local_variable</span> <span class="o">=</span> *<span class="o">(</span>unsigned long long*<span class="o">)(</span><span class="nv">$rbp</span>-0x32<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">printf</span> <span class="s2">&#34;Current value: %llx\n&#34;</span>, <span class="nv">$local_variable</span>
+</span></span><span class="line"><span class="cl">  <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">end
+</span></span><span class="line"><span class="cl"><span class="k">continue</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># the `silent` indicates that we want gdb to not report that we have hit a breakpoint, to make the output a bit cleaner.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#Then we use the `set` command to define a variable within our gdb session, whose value is our local variable.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#Finally, we output the current value using a formatted string.</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Finally we should use the scripts below to help us to get the right random value.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">start
+</span></span><span class="line"><span class="cl">run
+</span></span><span class="line"><span class="cl"><span class="nb">break</span> *main+709		<span class="c1">#this is the read function</span>
+</span></span><span class="line"><span class="cl">commands
+</span></span><span class="line"><span class="cl">        silent
+</span></span><span class="line"><span class="cl">        x/4gx <span class="nv">$rbp</span>-0x18		<span class="c1">#this is the address of the changeable random value</span>
+</span></span><span class="line"><span class="cl">        <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">end
+</span></span><span class="line"><span class="cl"><span class="k">continue</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>after 8 times trying:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">Random value: 0x8e733529fc987483
+</span></span><span class="line"><span class="cl">You input: 8e733529fc987483
+</span></span><span class="line"><span class="cl">The correct answer is: 8e733529fc987483
+</span></span><span class="line"><span class="cl">0x7ffffe21f6e8: 0xd272a5aec670f4cf      0x8e733529fc987483
+</span></span><span class="line"><span class="cl">0x7ffffe21f6f8: 0x9a96e191d9931100      0x0000000000000000
+</span></span><span class="line"><span class="cl">The random value has been set!
+</span></span><span class="line"><span class="cl">....
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">You win! Here is your flag:
+</span></span><span class="line"><span class="cl">pwn.college<span class="o">{</span>abc<span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level6: <strong>automatically solves each challenge by correctly modifying registers / memory</strong></p>
+<p>Not only can gdb analyze the program&rsquo;s state, but it can also modify it. You can modify the state of your target program with the <code>set</code> command.</p>
+<ul>
+<li><code>set $rdi = 0</code> to zero out $rdi</li>
+<li><code>set *((uint64_t *) $rsp) = 0x1234</code> to set the first value on the stack to 0x1234</li>
+<li><code>set *((uint16_t *) 0x31337000) = 0x1337</code> to set 2 bytes at 0x31337000 to 0x1337</li>
+</ul>
+<p>Suppose your target is some <strong>networked application</strong> which reads from some socket on <strong>fd 42</strong>. Maybe it would be easier for the purposes of your analysis if the target instead read from stdin. You could achieve something like that with the following gdb script:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">start
+</span></span><span class="line"><span class="cl">catch syscall <span class="nb">read</span>
+</span></span><span class="line"><span class="cl">commands
+</span></span><span class="line"><span class="cl">  silent
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">(</span><span class="nv">$rdi</span> <span class="o">==</span> 42<span class="o">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">set</span> <span class="nv">$rdi</span> <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl">  end
+</span></span><span class="line"><span class="cl">  <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">end
+</span></span><span class="line"><span class="cl"><span class="k">continue</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>This example gdb script demonstrates how you can automatically break on system calls, and how you can use conditions within your commands to conditionally perform gdb commands.</p>
+<ul>
+<li>In this level we should look carefully at the logic of this program. First we can use <code>display/8i $rip</code> to find out how the program works:</li>
+</ul>
+<p><img src="/p/pwncollege_note9/index.assets/image-20230319190108201.png"
+	width="617"
+	height="106"
+	srcset="/p/pwncollege_note9/index.assets/image-20230319190108201_hufcf98f5283a8d6ac4157aec51fd4d05a_12905_480x0_resize_box_3.png 480w, /p/pwncollege_note9/index.assets/image-20230319190108201_hufcf98f5283a8d6ac4157aec51fd4d05a_12905_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="image-20230319190108201"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="582"
+		data-flex-basis="1396px"
+	
+></p>
+<ul>
+<li>If the value in rax is equal to value in rdx, it will jump to the main, not the exit. After several times it will go to the <strong>win</strong> function to print out the flag, so what we should do is break at the cmp and make them <strong>identical</strong>.</li>
+</ul>
+<p>scripts like:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1">#y.gdb</span>
+</span></span><span class="line"><span class="cl">start
+</span></span><span class="line"><span class="cl">run
+</span></span><span class="line"><span class="cl"><span class="nb">break</span> *main+686
+</span></span><span class="line"><span class="cl">commands
+</span></span><span class="line"><span class="cl">        silent
+</span></span><span class="line"><span class="cl">        <span class="nb">set</span> <span class="nv">$rdx</span> <span class="o">=</span> <span class="nv">$rax</span>
+</span></span><span class="line"><span class="cl">        <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">end
+</span></span><span class="line"><span class="cl"><span class="k">continue</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>use:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">/challenge/embryogdb_levelx -x y.gdb
+</span></span><span class="line"><span class="cl"><span class="c1">#input any words and for several times, get the flag</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level7: <strong>run the command <code>call (void)win()</code></strong></p>
+<p>Under normal circumstances, gdb running as your regular user cannot attach to a privileged process. This is why gdb isn&rsquo;t a massive security issue which would allow you to just immediately solve all the levels.</p>
+<p><strong>Running within this elevated instance of gdb gives you elevated control over the entire system.</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">(</span>gdb<span class="o">)</span> call <span class="o">(</span>void<span class="o">)</span>win<span class="o">()</span>
+</span></span><span class="line"><span class="cl">You win! Here is your flag:
+</span></span><span class="line"><span class="cl">pwn.college<span class="o">{</span>a<span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level8: <strong>call (void)win() broke</strong></p>
+<p>Note that this will not get you the flag (it seems that we broke the win function!), so you&rsquo;ll need to work a bit
+harder to get this flag!</p>
+<p><strong>First TRY</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">(</span>gdb<span class="o">)</span> call <span class="o">(</span>void<span class="o">)</span>win<span class="o">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Program received signal SIGSEGV, Segmentation fault.
+</span></span><span class="line"><span class="cl">0x000055ea1b53d969 in win <span class="o">()</span>
+</span></span><span class="line"><span class="cl">The program being debugged was signaled <span class="k">while</span> in a <span class="k">function</span> called from GDB.
+</span></span><span class="line"><span class="cl">GDB remains in the frame where the signal was received.
+</span></span><span class="line"><span class="cl">To change this behavior use <span class="s2">&#34;set unwindonsignal on&#34;</span>.
+</span></span><span class="line"><span class="cl">Evaluation of the expression containing the <span class="k">function</span>
+</span></span><span class="line"><span class="cl"><span class="o">(</span>win<span class="o">)</span> will be abandoned.
+</span></span><span class="line"><span class="cl">When the <span class="k">function</span> is <span class="k">done</span> executing, GDB will silently stop.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>In this level we should find out why the program segment fault.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">(</span>gdb<span class="o">)</span> <span class="nb">set</span> disassembly-flavor intel
+</span></span><span class="line"><span class="cl"><span class="o">(</span>gdb<span class="o">)</span> r
+</span></span><span class="line"><span class="cl"><span class="o">(</span>gdb<span class="o">)</span> x/30i win
+</span></span><span class="line"><span class="cl">   0x55ea1b53d951 &lt;win&gt;:        endbr64 
+</span></span><span class="line"><span class="cl">   0x55ea1b53d955 &lt;win+4&gt;:      push   rbp
+</span></span><span class="line"><span class="cl">   0x55ea1b53d956 &lt;win+5&gt;:      mov    rbp,rsp
+</span></span><span class="line"><span class="cl">   0x55ea1b53d959 &lt;win+8&gt;:      sub    rsp,0x10
+</span></span><span class="line"><span class="cl">   0x55ea1b53d95d &lt;win+12&gt;:     mov    QWORD PTR <span class="o">[</span>rbp-0x8<span class="o">]</span>,0x0
+</span></span><span class="line"><span class="cl">   0x55ea1b53d965 &lt;win+20&gt;:     mov    rax,QWORD PTR <span class="o">[</span>rbp-0x8<span class="o">]</span>
+</span></span><span class="line"><span class="cl">   0x55ea1b53d969 &lt;win+24&gt;:     mov    eax,DWORD PTR <span class="o">[</span>rax<span class="o">]</span>
+</span></span><span class="line"><span class="cl">   0x55ea1b53d96b &lt;win+26&gt;:     lea    edx,<span class="o">[</span>rax+0x1<span class="o">]</span>
+</span></span><span class="line"><span class="cl">   0x55ea1b53d96e &lt;win+29&gt;:     mov    rax,QWORD PTR <span class="o">[</span>rbp-0x8<span class="o">]</span>
+</span></span><span class="line"><span class="cl">   0x55ea1b53d972 &lt;win+33&gt;:     mov    DWORD PTR <span class="o">[</span>rax<span class="o">]</span>,edx
+</span></span><span class="line"><span class="cl">   0x55ea1b53d974 &lt;win+35&gt;:     lea    rdi,<span class="o">[</span>rip+0x73e<span class="o">]</span>        <span class="c1"># 0x55ea1b53e0b9</span>
+</span></span><span class="line"><span class="cl">   0x55ea1b53d97b &lt;win+42&gt;:     call   0x55ea1b53d180 &lt;puts@plt&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>The error is at the <code>&lt;win+12&gt;</code>.  <strong>mov [rbp-0x8], 0x0</strong> and then <code>&lt;win+20&gt;</code> <strong>mov rax, [rbp-0x8]</strong>. In <code>&lt;win+24&gt;</code> <strong>mov eax, [rax]</strong> the [rax] ([0x0]) will make error. So we should jump out to the <strong>lea instruction</strong> and skip the segment faults.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">(</span>gdb<span class="o">)</span> <span class="nb">set</span> <span class="nv">$rip</span> <span class="o">=</span> 0x55ea1b53d96b
+</span></span><span class="line"><span class="cl"><span class="o">(</span>gdb<span class="o">)</span> c
+</span></span><span class="line"><span class="cl"><span class="c1">#get the flag</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>NOTE: This level refers to this <a class="link" href="https://www.twitch.tv/videos/1753535070"  target="_blank" rel="noopener"
+    >video</a> and we can find it at <a class="link" href="https://discord.com/channels/750635557666816031/888220401933631489/1081331559635886100"  target="_blank" rel="noopener"
+    >there</a></strong></p>
+
 </section>
 
 
@@ -795,7 +1101,7 @@
         
             
         
-        共 20.56k 字 · 共 11篇文章
+        共 21.50k 字 · 共 11篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -969,7 +1275,39 @@
 
 
             </main>
-    
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#gdb-walkthrough">GDB Walkthrough</a></li>
+    <li><a href="#embryogdb">embryogdb</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
 
         </div>
         <script 
