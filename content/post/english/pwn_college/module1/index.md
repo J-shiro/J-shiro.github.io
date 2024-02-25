@@ -53,6 +53,7 @@ categories:
 ```shell
 echo echo hi		#echo hi
 echo echo hi | bash	#hi
+# echo hi as the input for the bash so as to output hi
 ```
 
 ⑦	**Input and output redirection**

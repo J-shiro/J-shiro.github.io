@@ -2,7 +2,7 @@
 title: "哲学家进餐问题-c代码分析"
 description: 由于我拙劣的编程能力不能自己手搓，于是分析大佬的代码ing..并学点知识
 date: 2022-11-18
-image: 
+image: os-pv.jpg
 math: 
 license: 
 hidden: false

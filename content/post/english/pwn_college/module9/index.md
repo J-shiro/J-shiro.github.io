@@ -136,6 +136,8 @@ For example, `display/8i $rip` will always show you the next 8 instructions. On 
 
 Another option is to use the `layout regs` command. This will put gdb into its TUI mode and show you the contents of all of the registers, as well as nearby instructions.
 
+If we want to remove the display rule, use the `undisplay <num>`
+
 ```shell
 ./xxx
 (gdb)r
