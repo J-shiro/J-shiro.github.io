@@ -12,7 +12,7 @@
         <pubDate>Fri, 18 Nov 2022 00:00:00 +0000</pubDate>
         
         <guid>https://J-shiro.github.io/zh-cn/p/%E5%93%B2%E5%AD%A6%E5%AE%B6%E8%BF%9B%E9%A4%90%E9%97%AE%E9%A2%98-c%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/</guid>
-        <description>&lt;h2 id=&#34;问题分析&#34;&gt;问题分析&lt;/h2&gt;
+        <description>&lt;img src="https://J-shiro.github.io/zh-cn/p/%E5%93%B2%E5%AD%A6%E5%AE%B6%E8%BF%9B%E9%A4%90%E9%97%AE%E9%A2%98-c%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/os-pv.jpg" alt="Featured image of post 哲学家进餐问题-c代码分析" /&gt;&lt;h2 id=&#34;问题分析&#34;&gt;问题分析&lt;/h2&gt;
 &lt;p&gt;使用信号量机制解决，会出现产生死锁的情况，所以需要解决死锁，有一种方法为&lt;strong&gt;至多只允许四位哲学家同时去拿左边的筷子，最终能保证至少有一位哲学家能够进餐，并在用毕时能释放用过的两只筷子&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -477,66 +477,6 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;代码原文链接：&lt;a class=&#34;link&#34; href=&#34;https://cxybb.com/article/qq_44528283/115125474&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;linux下操作系统哲学家进餐问题参考C代码&lt;/a&gt;&lt;/p&gt;
-</description>
-        </item>
-        <item>
-        <title>六级翻译</title>
-        <link>https://J-shiro.github.io/zh-cn/p/%E5%85%AD%E7%BA%A7%E7%BF%BB%E8%AF%91/</link>
-        <pubDate>Mon, 31 Oct 2022 00:00:00 +0000</pubDate>
-        
-        <guid>https://J-shiro.github.io/zh-cn/p/%E5%85%AD%E7%BA%A7%E7%BF%BB%E8%AF%91/</guid>
-        <description>&lt;img src="https://J-shiro.github.io/zh-cn/p/%E5%85%AD%E7%BA%A7%E7%BF%BB%E8%AF%91/liujifan.png" alt="Featured image of post 六级翻译" /&gt;&lt;p&gt;一些翻译题&lt;/p&gt;
-&lt;h2 id=&#34;1&#34;&gt;1&lt;/h2&gt;
-&lt;p&gt;梅花位居中国十大名花之首，源于中国南方&lt;/p&gt;
-&lt;p&gt;The plum blossom, the &lt;strong&gt;king&lt;/strong&gt; of the China&amp;rsquo;s &lt;strong&gt;top ten&lt;/strong&gt; famous flowers, &lt;strong&gt;originated&lt;/strong&gt; in &lt;strong&gt;southern&lt;/strong&gt; China.&lt;/p&gt;
-&lt;p&gt;隆冬时节，五颜六色的梅花不畏严寒，迎着风雪傲然绽放&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;In the depths of&lt;/strong&gt; winter, colorful plum blossoms bloom &lt;strong&gt;vibrantly amidst the&lt;/strong&gt; wind and snow, &lt;strong&gt;unhindered by severe frost&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;梅花象征坚强、纯洁、高雅，激励人们不畏艰难，砥砺前行&lt;/p&gt;
-&lt;p&gt;The plum blossom, a symbol of &lt;strong&gt;strength&lt;/strong&gt;, &lt;strong&gt;purity&lt;/strong&gt; and &lt;strong&gt;elegance&lt;/strong&gt; , motivates people to &lt;strong&gt;brave hardship and forge ahead&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;自古以来：since ancient times&lt;/p&gt;
-&lt;p&gt;不朽作品：immortal works&lt;/p&gt;
-&lt;p&gt;普通大众：general public&lt;/p&gt;
-&lt;p&gt;冒着严寒：irrespective of the severe cold&lt;/p&gt;
-&lt;h2 id=&#34;2&#34;&gt;2&lt;/h2&gt;
-&lt;p&gt;这部小说描绘了著名僧侣玄奘在三个随从的陪同下穿越中国西部地区前往印度取经的艰难历程&lt;/p&gt;
-&lt;p&gt;It depicts the &lt;strong&gt;tough&lt;/strong&gt; journey of the famous &lt;strong&gt;monk&lt;/strong&gt; Xuanzang, who, accompanied by his three followers, travelled across &lt;strong&gt;Western China&lt;/strong&gt; to India for &lt;strong&gt;Buddhist scriptures&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;这部小说采用了大量中国民间故事和神话的素材，创造了各种栩栩如生的人物和动物形象&lt;/p&gt;
-&lt;p&gt;The novel &lt;strong&gt;draws on a host of&lt;/strong&gt; Chinese folk tales and mythology to create various &lt;strong&gt;vivid and lifelike&lt;/strong&gt; human and animal characters&lt;/p&gt;
-&lt;p&gt;中国文学四大经典小说：Four Great Classical Novels of Chinese literature&lt;/p&gt;
-&lt;p&gt;佛教：Buddhism&lt;/p&gt;
-&lt;p&gt;妖魔：monsters and demons&lt;/p&gt;
-&lt;h2 id=&#34;3&#34;&gt;3&lt;/h2&gt;
-&lt;p&gt;牡丹花色艳丽，形象高雅，象征着和平与繁荣，因而在中国被称为“花中之王”&lt;/p&gt;
-&lt;p&gt;The &lt;strong&gt;peony&lt;/strong&gt; , &lt;strong&gt;boastring bright colors and elegant appearance&lt;/strong&gt; , is a symbol of peace and prosperity and &lt;strong&gt;thus recognized as&lt;/strong&gt; &amp;ldquo;king of the flowers&amp;rdquo; in China.&lt;/p&gt;
-&lt;p&gt;唐代时期，牡丹在皇家园林普遍种植并被誉为国花&lt;/p&gt;
-&lt;p&gt;Peonies were particularly popular during the Tang Dynasty, when they were &lt;strong&gt;extensively cultivated&lt;/strong&gt; in the &lt;strong&gt;imperial gardens&lt;/strong&gt; and &lt;strong&gt;praised as the national flower&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;这一地位一直保持到今天&lt;/p&gt;
-&lt;p&gt;a position it still holds today.&lt;/p&gt;
-&lt;p&gt;蜂拥到：flock to&lt;/p&gt;
-&lt;p&gt;九朝古都：the ancient capital of nine dynasties&lt;/p&gt;
-&lt;p&gt;千百年来：over the centuries,&lt;/p&gt;
-&lt;p&gt;栽培种植：cultivate		培育：bread&lt;/p&gt;
-</description>
-        </item>
-        <item>
-        <title>六级作文</title>
-        <link>https://J-shiro.github.io/zh-cn/p/%E5%85%AD%E7%BA%A7%E4%BD%9C%E6%96%87/</link>
-        <pubDate>Mon, 31 Oct 2022 00:00:00 +0000</pubDate>
-        
-        <guid>https://J-shiro.github.io/zh-cn/p/%E5%85%AD%E7%BA%A7%E4%BD%9C%E6%96%87/</guid>
-        <description>&lt;img src="https://J-shiro.github.io/zh-cn/p/%E5%85%AD%E7%BA%A7%E4%BD%9C%E6%96%87/liujizuowen.jpg" alt="Featured image of post 六级作文" /&gt;&lt;p&gt;一些范文。&lt;/p&gt;
-&lt;h2 id=&#34;home&#34;&gt;Home&lt;/h2&gt;
-&lt;p&gt;Home should be where people feel secure and comfortable.Maintaining harmony at home is essential for the well-bing of an individual, a couple and their offspring, and even the society. But many &lt;strong&gt;are being plagued by(被&amp;hellip;所困扰)&lt;/strong&gt; family &lt;strong&gt;discord(不和)&lt;/strong&gt;, a problem that &lt;strong&gt;boils down to(归根结底是)&lt;/strong&gt; the lack of a sense of family responsibility.&lt;/p&gt;
-&lt;p&gt;Everyone has certain roles to take on in his or her family. Parents are expected to ensure their children are well-nourished and well-educated, helping them build a strong body and great character. We college students also need to take our responsibility as adult children. Being independent of our parents as early as possible lightens the financial burden on them. Learning to be mature and sensible can prevent us from &lt;strong&gt;becoming a constant source of worry to(总让&amp;hellip;担心)&lt;/strong&gt; them. &lt;strong&gt;Fulfilling our filial duty to the best of our abilities(尽己所能履行孝道)&lt;/strong&gt; allows them to enjoy life in midlife years,retirement and the &lt;strong&gt;twilight years(晚年)&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;In brief, a sense of responsibility among family members is a &lt;strong&gt;prerequisite(前提)&lt;/strong&gt; for a warm and loving family. Often far away from home, we may start by keeping in contact with our parents, as a means to meet our obligations as part of our family.&lt;/p&gt;
-&lt;h2 id=&#34;beauty-of-the-soul-is-the-essential-beauty&#34;&gt;Beauty of the soul is the essential beauty&lt;/h2&gt;
-&lt;p&gt;&amp;ldquo;Beauty of the soul is the essential beauty.&amp;rdquo; In other words, the true beauty of a person &lt;strong&gt;comes from within&lt;/strong&gt;, from his or her virtues. This saying is quite &lt;strong&gt;thought-provoking(引人深思的)&lt;/strong&gt; for many of today&amp;rsquo;s young adults who are obsessed with physical appearance.&lt;/p&gt;
-&lt;p&gt;Outer beauty, to be sure, is &lt;strong&gt;not insignificant(固然重要)&lt;/strong&gt;, but it will eventually fade with age. Inner beauty, on the other hand, lasts forever and even has the potential to get more &lt;strong&gt;radiant(光彩夺目的)&lt;/strong&gt; with time. Such radiance &lt;strong&gt;from the inside out(由内而外)&lt;/strong&gt; can not only help increase &lt;strong&gt;personal charisma(个人魅力)&lt;/strong&gt;, but also bring hope and warmth to others. That is why people of &lt;strong&gt;lofty character(高尚的品德)&lt;/strong&gt; always command wide respect, no matter whether they look &lt;strong&gt;gorgeous(华丽的)&lt;/strong&gt; or not. &lt;strong&gt;Take the medical staff who have risked their lives to(冒着生命危险) battle the novel coronavirus(新型管状病毒) in the front line as an example&lt;/strong&gt;. Despite the &lt;strong&gt;bruises(伤痕)&lt;/strong&gt; and marks the &lt;strong&gt;protective masks(防护口罩)&lt;/strong&gt; left on their faces, they have been praised as &lt;strong&gt;heroes in harm&amp;rsquo;s way(最美逆行者)&lt;/strong&gt; for their selfless dedication to public health.&lt;/p&gt;
-&lt;p&gt;Therefore, we must &lt;strong&gt;bear in mind that(谨记)&lt;/strong&gt; genuine beauty is found in our character rather than our external appearance. And to attain a beautiful soul, it is crucial to strive for self-improvement and enjoy doing good deeds.&lt;/p&gt;
-&lt;h2 id=&#34;importance-of-having-a-sense-of-social-responsibility&#34;&gt;Importance of having a sense of social responsibility&lt;/h2&gt;
-&lt;p&gt;Problems such as the &lt;strong&gt;violation of privacy(侵犯隐私)&lt;/strong&gt;  and environmental pollution are becoming increasingly &lt;strong&gt;prevalent(普遍的)&lt;/strong&gt; in modern society. &lt;strong&gt;To some extent(从某种程度上讲)&lt;/strong&gt; , they can &lt;strong&gt;be ascribed to(归咎于)&lt;/strong&gt; a distinct lack of a sense of social responsibility among enterprises and individuals, which is &lt;strong&gt;of crucial importance in&lt;/strong&gt; building a better world.&lt;/p&gt;
-&lt;p&gt;When seeking profits, socially responsible corporations never forget to make positive contributions to our society. Take Alibaba, a leading tech company in China. The Ant Forest green initiative it launched in 2016 has so far inspired up to 500 million Alipay users to &lt;strong&gt;adopt low-carbon lifestyles&lt;/strong&gt; and resulted in over 100 million trees planted in China&amp;rsquo;s most &lt;strong&gt;barren regions(贫瘠地区)&lt;/strong&gt;. At the individual level, a sense of social responsibility motivates us college students to acquire as much knowledge as possible and put it into practice. &lt;strong&gt;It also prevents us from engaging in unethical behaviors such as campus violence and academic misconduct(学术不端) that cause negative social impacts.&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;To sum up, a healthy society requires all its members to take on their &lt;strong&gt;respective(各自的)&lt;/strong&gt;  responsibilities. Everyone, therefor, should develop a sense of social responsibility, especially we college students who will be &lt;strong&gt;a pillar of society(社会中坚力量)&lt;/strong&gt; in the future.&lt;/p&gt;
 </description>
         </item>
         <item>
@@ -1453,29 +1393,6 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;​		谢谢，很刺激。&lt;/p&gt;
-</description>
-        </item>
-        <item>
-        <title>EMO 合集</title>
-        <link>https://J-shiro.github.io/zh-cn/p/emo-%E5%90%88%E9%9B%86/</link>
-        <pubDate>Wed, 14 Sep 2022 20:06:05 +0800</pubDate>
-        
-        <guid>https://J-shiro.github.io/zh-cn/p/emo-%E5%90%88%E9%9B%86/</guid>
-        <description>&lt;img src="https://J-shiro.github.io/zh-cn/p/emo-%E5%90%88%E9%9B%86/emo.jpg" alt="Featured image of post EMO 合集" /&gt;&lt;h2 id=&#34;2022-9-14&#34;&gt;2022-9-14&lt;/h2&gt;
-&lt;p&gt;PWN怎么这么难啊！&amp;hellip;&amp;hellip;&lt;/p&gt;
-&lt;h2 id=&#34;2022-10-22&#34;&gt;2022-10-22&lt;/h2&gt;
-&lt;p&gt;（昨日）这是关于自己的一次检讨&lt;/p&gt;
-&lt;p&gt;一直在迷茫，一直在反复横跳，以及对于习惯和很多很多行为的忽视让我一直陷入一种自我消耗的状态，也许只是一点细微的需要思考的时间都被我掐灭在诞生的时刻，所以我花了很长的时间消化这一段时间学习和摆烂之间不断横跳的奇怪心理。&lt;/p&gt;
-&lt;p&gt;我明白在于看番这一点我自己的感受，但每次都是忍不住看下一集后会不由自主一直看到结束，甚至感动到自己落泪，并心安理得觉得这一部番是一部值得看的番，同理是我对于看电影以及看电视剧的感受，在这些方面我承认我是在逃避现实，在学习不下去的时刻开启这个行为就是为了逃避对于奇怪情绪的正视，本来可以空出一段时间留给自己来开始反思，却用“看完这部有哲思意义的电影”或用“看完这部番”来逃避，还自以为很有收获，乐此不彼地吸纳这种顾此失彼，在作业还没有完成想要学的东西没做完的情况下看了一部电影或是看完一部番。&lt;/p&gt;
-&lt;p&gt;其次是我自己的精神状态，我现在很气愤自己的摆烂，我有什么资格在应该努力的时候做出不符合我自己处境的事，单单因为社会层面的一句佛性一句摆烂躺平就心安理得觉得活在当下就好开心就好，这就是本应该沉下心看书却在一小时后啥也没读懂还安慰自己说只要不挂科就行的罪恶源头，我没有切切实实学到东西反而沉浸在刷视频活在本该不属于我的这一大把娱乐时间中，我有时会觉得很对不起我自己上大学的那份初心，走的太远真的会忘记自己为何出发，然后娱乐至死。&lt;/p&gt;
-&lt;p&gt;而在学习中我仍然带着一套高中思维上大学，两年过去了我为什么现在才意识到，不，也许是本就意识到了但是自身根本就没把它当回事，也许是没考上数媒后就已经妄自菲薄悠悠度日了吧，但是现在我需要直面这件事，我仍然还在这快的不行的学期节奏下在没有刷题充足时间、没有真实理解思维、完全不触碰自己的记忆力上渴望通过考试，最后落得空得一场，我逻辑思维能力很差我知道所以我需要花很长的训练时间才可能达到一定的能力，但是不触碰自己的记忆力这点上我真的尽到了全力，于是乎在如今我的脑袋中残存着的计算机知识根本不足一提，抄袭和照做这些我小时经常做的事竟然在大学也在效仿还乐此不疲，导致我现在不能通过我自己的能力自己的知识储备完整地编写程序，我所做的一切都是照搬，我甚至还不去理解。&lt;/p&gt;
-&lt;p&gt;以及我所在的迷茫点，考研与一切与他不太好同时进行的相关的学习，但是我仍然会去思考关于工作，实习的事情，我真的思考了很多很多，但是我又不可能顾及得了这么多，所以最后当一事无成时通过其他一切我可以找到的兴趣爱好去麻痹自己，3A大作番街舞绘画wota艺甚至寻找我曾经二十年的足迹，来寻求那可悲的自豪感来告诉自己自己还不错，然后陷入死循环。&lt;/p&gt;
-&lt;p&gt;其次是生活中的事，我很讨厌我的性格，我希望的是一个沉着冷静的人而不是一个嬉皮赖脸的自己，在一切搞砸好就想通过整理来收拾烂摊子，然后重新开始，习惯每次也会在一两次的意外下打断不复存在，但整理却总是间断性的出现来试图挽回，治标不治本，庸钝至极。这些都是我的问题，大问题 一切问题的根源，我不想把他们都归结于一个自律身上也不想把他们全归结在一个意志力或毅力身上，我把他们都剖开来展现在自己面前。&lt;/p&gt;
-&lt;p&gt;于是乎，解决方法呢，便是转变我的思维方式，我需要直面这些事情并且不再逃避，真正让自己的脑子动起来开始记忆功能，开始活动起来，而不是沉迷于无止境的娱乐刷视频之间，以及对于自己完美主义心的遏制，这件事尤为体现在娱乐上，再者，习惯，以及性格，我需要耗很长很长的时间去慢慢改变，把每天做好，就是我对今晚反思的一切行动，接下来，就是jshiro自己的努力时间了。&lt;/p&gt;
-&lt;p&gt;2022年10.21晚七点于泮池立下这一检讨。&lt;/p&gt;
-&lt;h2 id=&#34;2022-12-25&#34;&gt;2022-12-25&lt;/h2&gt;
-&lt;p&gt;考研结束了，明年的今天就是我考研了，但是最近状态实在太不对劲了，我需要缓一缓，飞盘一旦停止旋转，再转起来需要很长的恢复期，从现在开始努力让他转起来的话，中间一定不能再中断了，我需要养成一个属于当下这个季节的习惯，并且持续坚持下去，想好自己的目标，确定好自己的每一步该怎么走，心无旁骛，不要太在意别人，做出属于自己的可能性，不要幻想着其他的生活其他的事情，走出自己认为对的那一步就够了。&lt;/p&gt;
-&lt;p&gt;既然不能做到平衡，那么就杜绝对于一些无用娱乐的使用。闲暇时做没有意义的事，但做有意义的事的时候，一定要沉下心做有意义的事。&lt;/p&gt;
 </description>
         </item>
         <item>
