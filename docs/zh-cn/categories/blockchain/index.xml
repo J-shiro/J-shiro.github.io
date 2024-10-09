@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>blockchain on J-shiro&#39;s 博客</title>
+        <link>https://J-shiro.github.io/zh-cn/categories/blockchain/</link>
+        <description>Recent content in blockchain on J-shiro&#39;s 博客</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Wed, 09 Oct 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://J-shiro.github.io/zh-cn/categories/blockchain/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>区块链笔记</title>
+        <link>https://J-shiro.github.io/zh-cn/p/%E5%8C%BA%E5%9D%97%E9%93%BE%E7%AC%94%E8%AE%B0/</link>
+        <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
+        
+        <guid>https://J-shiro.github.io/zh-cn/p/%E5%8C%BA%E5%9D%97%E9%93%BE%E7%AC%94%E8%AE%B0/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/img/note.jpg" alt="Featured image of post 区块链笔记" /&gt;&lt;h2 id=&#34;基础知识&#34;&gt;基础知识&lt;/h2&gt;
+&lt;p&gt;比特币&lt;/p&gt;
+&lt;p&gt;以太坊&lt;/p&gt;
+&lt;p&gt;智能合约：保证承诺不被违背&lt;/p&gt;
+&lt;p&gt;去中心化网络&lt;/p&gt;
+&lt;p&gt;Web3&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;交易&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Transaction Fee&lt;/code&gt;：付给处理此次交易的矿工的费用&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Gas Price&lt;/code&gt;：交易中每个执行单元的费用&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;运作机制&lt;/strong&gt;**&lt;code&gt;https://andersbrownworth.com/blockchain/hash&lt;/code&gt;**&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用&lt;strong&gt;Keccak256&lt;/strong&gt;哈希算法&lt;/li&gt;
+&lt;li&gt;矿工(miner)：将不断试错找到一个&lt;code&gt;Nonce&lt;/code&gt;来使得&lt;code&gt;Block&lt;/code&gt;、&lt;code&gt;Nonce&lt;/code&gt;以及&lt;code&gt;Data&lt;/code&gt;进行哈希后以&lt;code&gt;0000&lt;/code&gt;开头&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ECDSA算法&lt;/strong&gt;根据&lt;strong&gt;私钥&lt;/strong&gt;创建&lt;strong&gt;公钥&lt;/strong&gt;，私钥创建签名**，**公钥验证签名&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;账户地址&lt;/strong&gt;由公钥衍生出来&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
