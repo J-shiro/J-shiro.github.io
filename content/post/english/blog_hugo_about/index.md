@@ -111,3 +111,4 @@ Add images to the markdown: the images need to be placed in path: `/static/img`.
 ![](/img/xxx.jpg)
 ```
 
+need to change the root image directory of the typora to the `/static` which is only used for current `.md` file,  and change the reference about the typora to the `/static/img`

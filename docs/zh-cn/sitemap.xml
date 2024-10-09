@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://J-shiro.github.io/zh-cn/</loc>
-    <lastmod>2022-11-18T00:00:00+00:00</lastmod>
+    <lastmod>2024-10-09T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -16,7 +16,7 @@
                 />
   </url><url>
     <loc>https://J-shiro.github.io/zh-cn/categories/</loc>
-    <lastmod>2022-11-18T00:00:00+00:00</lastmod>
+    <lastmod>2024-10-09T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -28,11 +28,20 @@
                 href="https://J-shiro.github.io/zh-cn/categories/"
                 />
   </url><url>
-    <loc>https://J-shiro.github.io/zh-cn/categories/code/</loc>
-    <lastmod>2022-11-18T00:00:00+00:00</lastmod>
+    <loc>https://J-shiro.github.io/zh-cn/p/linux%E7%AC%94%E8%AE%B0/</loc>
+    <lastmod>2024-10-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://J-shiro.github.io/zh-cn/categories/misc/</loc>
+    <lastmod>2024-10-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://J-shiro.github.io/zh-cn/p/misc%E7%AC%94%E8%AE%B0/</loc>
+    <lastmod>2024-10-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://J-shiro.github.io/zh-cn/categories/notes/</loc>
+    <lastmod>2024-10-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://J-shiro.github.io/zh-cn/post/</loc>
-    <lastmod>2022-11-18T00:00:00+00:00</lastmod>
+    <lastmod>2024-10-09T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -43,6 +52,30 @@
                 hreflang="zh-cn"
                 href="https://J-shiro.github.io/zh-cn/post/"
                 />
+  </url><url>
+    <loc>https://J-shiro.github.io/zh-cn/categories/pwn/</loc>
+    <lastmod>2024-10-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://J-shiro.github.io/zh-cn/p/pwn%E7%AC%94%E8%AE%B0/</loc>
+    <lastmod>2024-10-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://J-shiro.github.io/zh-cn/categories/reverse/</loc>
+    <lastmod>2024-10-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://J-shiro.github.io/zh-cn/p/reverse%E7%AC%94%E8%AE%B0/</loc>
+    <lastmod>2024-10-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://J-shiro.github.io/zh-cn/categories/web/</loc>
+    <lastmod>2024-10-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://J-shiro.github.io/zh-cn/p/web%E7%AC%94%E8%AE%B0/</loc>
+    <lastmod>2024-10-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://J-shiro.github.io/zh-cn/categories/%E8%BF%90%E7%BB%B4/</loc>
+    <lastmod>2024-10-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://J-shiro.github.io/zh-cn/categories/code/</loc>
+    <lastmod>2022-11-18T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://J-shiro.github.io/zh-cn/categories/takenotes/</loc>
     <lastmod>2022-11-18T00:00:00+00:00</lastmod>

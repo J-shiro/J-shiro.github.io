@@ -1,0 +1,1508 @@
+---
+title: "REVERSE笔记"
+description: 
+date: 2024-10-09
+image: /img/note.jpg
+math: 
+license: 
+hidden: false
+comments: true
+draft: false
+categories:
+    - notes
+    - reverse
+
+typora-root-url: ..\..\..\..\..\static
+---
+
+## 基础知识
+
+### Windows
+
+`kernel32.dll`：控制系统内存管理、数据输入输出、中断处理，当Windows启动时，其驻留在内存中特定的写保护区域，使别的程序无法占用该内存区域
+
+`user32.dll`：用户界面相关应用程序接口，包括Windows处理、基本用户界面
+
+`gdi32.dll`：Windows GDI图形用户界面相关程序，绘制图形、显示文字
+
+句柄（handle）：唯一整数值，标志程序中不同对象和同类对象中的不同实例
+
+#### 反编译
+
+- **线性扫描(Linear Sweep)**：简单顺序扫描文件分析，均分析为代码，objdump, OllyDbg, x64dbg
+- **递归下降(Recursive Traversal)**：控制流根据call指令调用关系分析，IDA pro
+
+#### 约定
+
+变数名称**前缀表示类型**
+
+- **`lp`**：Loing Pointer
+- **`h`**：Handler
+- **`dw`**：DWORD
+
+函数名称后可能有**大写字母**
+
+- **`A`**：字符串参数使用ANSI
+- **`W`**：字符串参数使用UNICODE（Wide character）
+- **`EX`**：扩展（Extended）
+
+**调用约定**
+
+- x86 32位
+  - `__cdecl`：参数从右向左依次压入栈，调用完毕后，调用者caller负责清理参数，返回值位于EAX
+  - `__stdcall`：（Win32 API）参数从右向左压入栈，调用完毕后，被调用者负责清理参数，返回值位于EAX
+  - `__thiscall`：参数从右向左压入栈，类方法的`this`指针通过ECX传递给被调用者，若参数个数确定，则参数全部压入栈后`this`指针入堆栈；若参数个数不确定，调用者清理堆栈
+  - `__fastcall`：函数第一个和第二个DWORD参数通过ECX和EDX传递，其他参数从右向左压入栈，被调用函数清理堆栈
+- 清理栈帧指参数使用了栈则栈帧会发生变化，需要使用`add rsp, 0x??`来清理，push x次，32位下add x*0x4，64位下add x*0x8
+- x86-64
+  - **Microsoft x64**：前四个参数放入RDI、RSI、RDX、RCX，（Windows下前四个参数让RCX、RDX、r8、r9）剩下参数从右到左压入栈，调用者caller负责清理堆栈
+  - **SystemV x64(SysV)**：Linux与MacOS上使用，比Microsoft多两个寄存器，使用RDI、RSI、RDX、RCX、R8、R9，剩下参数从右向左压入栈中，调用者caller负责清理堆栈
+- **局部变量**：放于栈上
+
+#### **Eflags**
+
+- ZF（Zero Flag）：零标志
+- PF（Parity Flag）：奇偶标志
+- AF（Adjust Flag）：辅助标志
+- OF（Overflow Flag）：溢出标志
+- SF（Sign Flag）：符号标志
+- DF（Direction Flag）：方向标志
+- TF（Trap Flag）：追踪标志
+- IF（Interrupt enable Flag）：中断允许标志
+
+#### Syscall
+
+Windows 的 syscall number 随版本更新会变更，一般呼叫**API**
+
+### Linux
+
+```Bash
+file <somefile> # 查看文件类型
+
+strings <something> # 打印文件中可见字符串
+strings -n <min-len> <something> # 打印最短长度为min-len的可见字符串
+strings <something> | grep "xx"
+
+objdump -M intel -d <binary> # intel格式展示反汇编结果
+
+strace # 查看 binary 执行时的 system call 和 signal
+ltrace # 查看 binary 执行时的 library call
+```
+
+### 数学
+
+**乘法逆元：** $$a \cdot a^{-1}\equiv 1(mod\,p$$
+
+```Python
+# 求 a 乘法逆元
+from gmpy2 import invert
+inv = invert(a,p)
+```
+
+逆向下面公式
+
+```C
+// a1[k] 有限域 (0x00 ~ 0xff) 即 0 ~ 255 加密
+for(int j = 0; j < 12; ++j)
+    a1[j] = a1[j] * 17 + 113;
+    
+// 整除 17 会损失数据, 不可 /17
+// 逆向解密 求 17 在 mod 256 的乘法逆元: 241
+for(int j = 0; j < 12; ++j)
+    a1[j] = (a1[j] - 113) * 241
+```
+
+### 计算机组成
+
+VA：虚拟地址
+
+RVA：（Relative Virtual Address）相对虚拟地址，相对于镜像基址的位置，即VA = ImageBase + RVA
+
+- Entry Point RVA - .text section RVA = Entry Point file offset - .text section file offset
+
+1. 八个比特（bit）称为一个字节（byte）
+2. 两个字节称为一个字（word）——16bits
+3. 两个字称为一个双字（dword）——32bits
+4. 两个双字称为一个四字（qword）——64bits
+
+**位运算**
+
+```C
+// 基础 优先级 not > and > or > xor
+or |  // 00=0 01=1 10=1 11=1
+xor ^ // 00=0 01=1 10=1 11=0   a^a=0 0^a=a a^b^a=b
+and & // 00=0 01=0 10=0 11=1
+nor   // 与or相反
+nand  // 与and相反
+not   // 0=1 1=0
+
+// 位与
+x & 1 // 若为0:偶数, 若为1:奇数
+
+// 负数计算 (-25 & 0xff) 转换
+```
+
+**移位**
+
+```C
+<< n  <===>  乘2^n
+
+v1 = v2 | (v3 << 16) // v3左移16位成为高16位
+// v1 = 0xaabbccdd 则 v3 = 0xaabb, v2 = 0xccdd
+```
+
+**数据类型大小**
+
+- short：2字节
+- char：1字节
+- int：4字节
+- double：8字节
+- long：8字节
+
+**python中将负数表示为无符号32位或64位整数**
+
+```Python
+unsigned_value = (negative_value + (1 << 64)) & 0xFFFFFFFFFFFFFFFF # 转化为64位
+```
+
+### 汇编
+
+```Assembly
+jc    ;CF==1执行
+jo    ;OF==1执行
+jz    ;ZF==1执行
+```
+
+`nop`为0x90
+
+#### 语法格式
+
+**Intel**
+
+```Assembly
+mov rax, 0x80
+xor rbx, rcx
+mov rax, QWORD PTR [rbx+rcx*4]
+```
+
+**AT&T**
+
+```Assembly
+mov $0x80, %rax
+xor %rcx, %rbx
+mov (%rbx, %rcx, 4), %rax
+```
+
+#### 语法
+
+**struct**
+
+![img](/img/reverse_note.zh-cn.assets/-172845173251511.assets)
+
+1. 分配 0x18 bytes 内存空间，内存空间起始位置存在 rbp-0x8
+2. 将 rbp-0x8 的值存于 rax，即 rax 是 ms 的基址
+3. ms->a 的偏移为 0x0，ms->b的偏移为 0x8，ms->c 的偏移为 0x10
+4. 1+8+4 = 13 bytes 实际用了 24 bytes
+
+### C
+
+```C
+strncmp(const char *str1, const char *str2, size_t n)
+// 比对str1和str2开头n个字符
+
+strcpy(char *dest, const char *src)
+// 将src复制到dest
+
+memcpy(dest_addr, src_addr, bytes_num)
+// 从 src_addr 拷贝 bytes_num 个字节数据到 dest_addr
+
+memset(arr, 0, sizeof(arr));
+// 将 arr 指针指向的内存块的sizeof(arr)所有字节指定为0
+```
+
+**文件操作**
+
+```C
+fseek(FILE *stream, long int offset, int whence)// 设置流的文件位置为给定的偏移
+// 文件流, 偏移, 添加偏移量的位置(0:开头, 1:指针位置, 2:结尾)
+
+fputc(int char, FILE *stream) // 将char指定的字符写入指定的流指针处
+fprintf(ILE *stream, const char *format, ...) // 格式化字符串输出到流
+
+a = _acrt_iob_func(1i64) // 将标准输出流stdout的文件指针给a，可通过a向标准输出流写数据
+
+fgets(char *str, int n, FILE *stream);
+// 从文件流读入 n-1 个字符到 str, 第 n 个为\0
+```
+
+**宏**
+
+```C
+LODWORD(v4) = 0    //初始化低32位为0
+HIDWORD(v4) = 0    //初始化高32位为0
+SHIDWORD(v4)       //取高32位并作为有符号整数
+```
+
+数据类型：`LL`即`long long int`
+
+**其他**
+
+```C
+setlocale(int category, const char *locale); //设置或读取位置相关信息
+```
+
+**格式化字符串**
+
+```C
+printf("%x", a); // 十六进制
+```
+
+**C逆向代码**
+
+```C
+char password_enc[] = {0x49, 0x4B};
+char password[47];
+for (int i = 0; i < 46; i++){
+    password[i] = password_enc[i] ^ 0x24;
+}
+password[46] = 0;         // 使用0字符来截断掉%s的无尽输出
+printf("%s\n", password);
+```
+
+**格式转换相关**
+
+```C
+char Str[48]; // 假设已输入
+//  strlen(const char *Str) [Str是指向数组第一个字符的指针]
+if ( strlen(Str) == 12 ){} // 12是指12字节, 即Str: 'abcdefghijkl'
+process(Src); // void process(unsigned int *a1)
+// 此时Str将被解析为无符号整数 > 32位即4字节, 所以此时进入process后
+// 'abcd'->0x61,0x62,0x63,0x64->小端存储 ->0x64636261
+// a[] 3个整数: [0x64636261, 0x68676665, 0x6c6b6a69]
+// 假设操作后 0x64636261 变为 0x68676665, 该值传回a[0]时, a[0]换为char时表示'efgh' 
+```
+
+### C++
+
+`0xCC` 是一种填充字节，通常用于调试表示**未初始化**的内存区域
+
+Name Mangling：附加修饰函数名，用于辨识参数不同的同名函数
+
+命令行使用`c++filt <name>`来获取原始的函数名
+
+或gdb上使用`set print asm-demangle on`
+
+**IDA相关**
+
+```C++
+__do_global_ctors() // 编译器生成, 初始化全局和静态对象
+
+a = 20i64 // a = 20 且 i64 指定为带符号的64位整数
+
+std::ostream::operator<<(v1); // 输出
+```
+
+**Windows API**
+
+```C
+DWORD GetCurrentThreadId(void); // 获取当前线程的标识符
+```
+
+### 可执行文件
+
+#### PE文件
+
+PE文件（Portable Executable）：32位【PE32】，64位【PE+或PE32+】
+
+- 可执行：`exe, scr`
+- 库：`dll, ocx, cpl, drv`
+- 驱动程序：`sys, vxd`
+- 对象文件：`obj`
+
+![img](/img/reverse_note.zh-cn.assets/-17284517325131.assets)
+
+**DOS头**
+
+![img](/img/reverse_note.zh-cn.assets/-17284517325142.assets)
+
+**DOS存根**
+
+向下兼容，用DOSBox执行PE会输出红色框中字符串
+
+![img](/img/reverse_note.zh-cn.assets/-17284517325143.assets)
+
+**NT头**
+
+![img](/img/reverse_note.zh-cn.assets/-17284517325144.assets)
+
+**映射**
+
+![img](/img/reverse_note.zh-cn.assets/-17284517325145.assets)
+
+**节Sections**
+
+- `.text`：代码段
+- `.idata`：放 import tables
+- `.data`：初始化数据
+- `.bss`：未初始化数据
+- `.reloc`：relocation 信息
+- `.rsrc`：资源数据
+- `.rdata`：只读数据
+- `.tls`：Thread Local Storage，线程局部存储数据
+
+##### IAT
+
+(Import Address Table)，存储在 `.idata section` 内的表
+
+- 程序载入前相当于`INT`，指向 `IMAGE_IMPORT_BY_NAME`
+- 程序载入后存储外部引入函数的位置
+
+![img](/img/reverse_note.zh-cn.assets/-17284517325146.assets)
+
+##### EAT
+
+(Export Address Table)
+
+![img](/img/reverse_note.zh-cn.assets/-17284517325147.assets)
+
+**应用EAT来做GetProcAddress**
+
+1. 从 module image base 取得指定 API address
+2. 从optional header 的 DataDirectory[0] 取得EAT
+3. 遍历AddressOfNames，寻找指定API名称
+4. 透过AddressOfNameOrdinals得到ordinal
+5. 从AddressOfFunctions得到API RVA，避免直接呼叫GetProcAddress
+
+##### PEB
+
+（Process Environment Block）
+
+![img](/img/reverse_note.zh-cn.assets/-17284517325148.assets)
+
+**PEB断链：将特定的module隐藏（x86-64）**
+
+1. 从 gs:[0x60] 取得 PEB
+2. 从 PEB 取得 Ldr
+3. 通过 Ldr 内的 InLoadOrderModuleList 遍历所有  LDR_DATA_TABLE_ENTRY 结构
+4. 找到指定的 LDR_DATA_TABLE_ENTRY 后，将其从三个 linked list 中删除
+
+**应用PEB来做GetModuleHandle**
+
+1. 取得特定的 module image base(x86-64)
+2. 从 gs:[0x60] 取得 PEB
+3. 从 PEB 取得 Ldr
+4. 通过 Ldr 内的 InLoadOrderModuleList 遍历所有  LDR_DATA_TABLE_ENTRY 结构
+5. 比对 BaseDllName 得到 DllBase，避免直接呼叫 GetModuleHandle
+
+##### DLL
+
+- （Dynamic Link Library）导出函数给程序使用
+- DLL的main为**DllMain**，载入、卸载时会执行
+
+```C++
+BOOL WINAPI DllMain(
+//BOOL: 返回类型        WINAPI: 调用约定
+    HINSTANCE hinstDLL,  // 指向加载 DLL 的实例的句柄的类型
+    DWORD fdwReason,     // 调用函数原因
+    LPVOID lpvReserved )  // 保留
+{
+    switch( fdwReason ) 
+    {
+        case DLL_PROCESS_ATTACH: 
+            break;// 进程附加事件,当进程加载这个DLL时执行一次性初始化操作
+
+        case DLL_THREAD_ATTACH:
+            break;// 线程附加事件,线程从操作系统创建并且该DLL已加载时执行初始化操作
+
+        case DLL_THREAD_DETACH:
+            break;// 线程分离事件
+
+        case DLL_PROCESS_DETACH:
+            if (lpvReserved != nullptr)
+            {
+                break;// 进程未终止，不执行清理
+            }
+            break;// 清理工作
+    }
+    return TRUE;  // DLL_PROCESS_ATTACH成功
+}
+```
+
+EXE文件在终端运行，不要直接双击
+
+#### **ELF**文件
+
+```Bash
+readelf -S program # 查看elf文件的section
+readelf -a xxx     # 全部显示
+```
+
+**节：**
+
+- .text节：程序代码指令
+- .rodata节：保存只读数据，只能在text段找到.rodata节
+- .plt节：过程链接表(Procedure Linkage Table)，包含动态连接器调用从共享库导入的函数所需的代码
+- .data节：存在于data段中，保存了初始化的全局变量数据
+- .bss节：存于data段中，保存未进行初始化的全局数据，初始化为0，程序执行可进行赋值
+- .got.plt节：全局偏移表-过程链接表，.got节保存全局偏移表，.got和.plt节一起提供了对导入的共享库函数的访问入口，由动态连接器在运行时进行修改
+- .dynstr节：动态链接字符串表，存放了一系列字符串，空字符作为终止符
+
+**断点**
+
+- 软件断点：`int 3`|`0xcc` 执行触发程序异常：`breakpoint_`，或产生其他异常如`0xce`
+- 硬件断点：调试寄存器DR0~DR3设定地址，用DR7设定状态，最多4个
+  - 读/写/执行某精准地址产生异常
+- 内存断点：设置地址不可访问/写属性，读/写/执行该内存时产生异常，调试器判断并接管异常
+  - 改变某分页属性，与`VirtualProtect`函数有关
+  - 以一整个分页为单位的断点
+- 条件断点：满足特定条件，暂停执行
+
+### 大小端序
+
+字符存储为小端序，所以编写脚本计算时需要将其**倒序**
+
+栈上是小端序存储的
+
+### Python
+
+```Python
+import itertools
+
+choices = ["1", "2"]
+combinations = list(itertools.product(choices, repeat=7))
+# 7位, 每一位可以为 choices 中的任何一个, 生成所有可能值
+
+[f"{num:02x}" for num in int_array] # 整型数组以十六进制输出, 不足用0补足
+```
+
+- `ord()`: **字符** 转换为对应的 **ASCII 码值**
+- `chr()`: **ASCII 码值** 转换为对应的 **字符**
+
+**转换**
+
+```Python
+binary_data = bytes.fromhex(content)
+# 字节字符串 "0x89" "0x50" 转换为真字节 b'\x89' b'P'
+
+hex_data = binary_data.hex() 
+# 真字节b'\x89' 转换为字符串"89", 有时需要binary[::-1]
+
+hex_type = hex(int(binary_data.hex(), 16))
+# 真字节b'\x89' 转换为十六进制字符串'0x89'
+
+val = val.rstrip('h')
+hex_value = int(val, 16) # 十六进制字符 "0xabc" 直接转整型 2748
+binary_value = format(hex_value, '08b')
+# 十六进制字符串 "FFh" "D8h" 转换为对应的8位二进制数 '11111111' '11011000'
+
+byte_val = char_val.encode() # 字符串'2024' 转换为字节 b'2024'
+```
+
+**数据处理**
+
+```Python
+data = '''xjowefg, feiwow
+    ewioa,  efils , fefe # 杂乱的数据'''
+
+# 清理逗号等
+hex_values = [val.strip() for val in data.replace('\n', ',').split(',')]
+
+# 每行输出10个
+for i in range(0, len(hex_values), 10):
+    print(', '.join(hex_values[i:i+10]))
+```
+
+### JAVA
+
+```Bash
+java -jar xx.jar # 运行java文件
+```
+
+**类型**
+
+`Byte`: java.lang中一个类，封装byte
+
+`byte`: 基本数据类型，整型数据1字节
+
+**格式**
+
+```Java
+public class Main {
+  public static void main(String[] args) {
+      xx;
+  }
+}
+```
+
+**输入输出**
+
+```Java
+// 输出
+System.out.println("hello"); 
+
+// 输入
+Scanner scanner = new Scanner(System.in);
+String flag = scanner.next(); // 输入一行
+```
+
+**数据转换**
+
+```Java
+// 字符串 转换为 UTF-8字节
+String s = "hello";
+byte[] by = s.getBytes(StandardCharsets.UTF_8); // by[i]输出为第i+1个字符的ASCII码值
+
+// byte 转换为 Byte
+Byte byte_ = Byte.valueOf(by[0]); 
+byte_.byteValue() // 取值
+```
+
+**异常**
+
+```Java
+Exception[] exceptions = { 
+    (Exception)new BuDaoLePaoException(), 
+    (Exception)new DxIsNanTongException()
+};
+try {
+    xxx
+} catch (BuDaoLePaoException ex0) {
+    xxx
+} catch (DxIsNanTongException ex1){
+    xxx
+} catch (Exception e) {
+    throw new RuntimeException(e);
+} 
+```
+
+### 寄存器
+
+x86中寄存器：EBP、ESP、EIP、EAX、EBX、ECX、EDX、EDI、ESI
+
+x86-64中寄存器：RBP、RSP、RIP、RAX、RBX、RCX、RDX、RDI、RSI、R8~R15
+
+## 工具
+
+### PE-bear
+
+### 010Editor
+
+### GDB
+
+**查看格式**
+
+```
+x/nfu <addr>
+x: examine
+n: 个数
+f:显示方式
+    x:十六进制 d:十进制 u:十进制无符号 o:八进制 t:二进制
+    a:十六进制 i:地址格式 c:字符格式 f:浮点数
+u:地址单元长度
+    b:单字节 h:双字节 w:四字节 g:八字节
+```
+
+针对汇编`cmp eax, DWORD PTR [rbp-0x94]`查看地址中内容
+
+```Bash
+b *xxx # 通过objdump确定设置断点的地址
+x/wx $rbp-0x94 # gdb中查看内容
+x/sw $eax # eax中内容以字符串形式显示
+```
+
+命令
+
+```Bash
+disassemble func # 查看函数反汇编
+
+info registers # 查看寄存器地址
+```
+
+### IDA
+
+**取IDA数据时，小端序取，4个4个倒过来取**
+
+函数窗口：`ctrl+F`搜索函数
+
+导入函数窗口：`Imports`窗口，导入的一些函数
+
+添加反汇编注释：`option > general > Display disassembly line parts > Auto comments`
+
+反汇编窗口字体调整：`option > font`
+
+十六进制窗口编辑：`F2`，`F2`保存
+
+函数窗口中`shift+F5`打开应用库模块列表，继续按`insert`键打开可用库模块列表，进行导入
+
+使用`d`可以将数据改变大小从byte转换为2bytes-word，4bytes-dword，8bytes-qword
+
+或者右键设置`Array`，改变数组显示
+
+`undefine`可以将识别错误的代码取消，然后右键将字节转换为相应类型
+
+清除指针类型用于重新定义结构体：右键 > `Reset pointer type`
+
+`db, dw, dd, dq `分别代表 **1, 2, 4, 8** 字节
+
+一般直接 `shift + F12` 找字符串窗口，对应字符位置`ctrl + x` 找到函数
+
+```
+db 2 dup(14h)`表示 define byte定义字节，2个`14h
+```
+
+查看机器码：`Options `> `General `> `opcode`
+
+**应用：**
+
+**变量为64位，8字节，则在栈中需要8字节空间**
+
+```C
+int v1[] = {2, 0, 2, 4};
+func((__int64)v1); // 表示将v1的地址转为64位整数
+*(_DWORD *)(v1 + v2) + v3; // v1数组偏移v2的地址处取一个32位整数(dword)值 与v3相加
+
+*(_QWORD *)List // 读取 List 的前 64 位数据
+(_DWORD)v4 // 取低32位
+
+(result >> 32) & 0xFFFFFFFF  // 取高32位
+(result)       & 0xFFFFFFFF  // 取低32位
+
+unsigned int v4;
+__int64 a1;
+*(_DWORD *)(a1 + 4i64 * (v4 & 3));
+// v4 & 3(11) 即取低两位, 确保为 0,1,2,3, a1表示某内存区域首地址
+// 4i64为一个4字节, 作为a1偏移的单位, 即a1偏移0|1|2|3个4字节的位置取一个DWORD32位
+
+__halt(); // 暂停处理器
+unsigned _int8 // 无符号8位整型
+int // 32位整型
+.data:0000000140022000 array  db 0A3h, 69h, 96h, 26h, 0BDh, 78h, 0Bh, 3Dh, 9Dh, 0A5h
+.data:0000000140022000                                  ; DATA XREF: main_0+202↑o
+.data:000000014002200A        db 28h, 62h, 34h dup(0)
+
+// 此处存储一般为 0x269669a3, 0x3d0b780b, 0x6228a59d
+```
+
+**插件：**
+
+**快捷键：**
+
+`A`：转换为字符串（ASCII）
+
+`R`：转换为char型
+
+`C`：转换为代码（code）
+
+`ctrl+shift+w`：IDA不提供撤消，使用快照功能【`file > take database snapshot`】
+
+`ctrl+E`：函数窗口对函数进行编辑
+
+`X`：查看函数的交叉引用，如何被引用
+
+`Y`：修改局部变量类型
+
+`;`：汇编界面添加注释
+
+`/`：伪代码界面添加注释
+
+`Ctrl + P`：函数跳转
+
+`Alt + T`：搜索文本字符串
+
+`Shift + F2`：脚本执行窗口
+
+`F6`：回到最近操作的窗口
+
+`Ctrl + x`：对变量输入，可以获取哪个函数使用了这个变量
+
+**动态调试**
+
+选择Load WIndows debugger调试器，设置断点在某一代码行
+
+![img](/img/reverse_note.zh-cn.assets/-17284517325159.assets)
+
+`F7`: 单步步入
+
+`F8`: 单步步出
+
+`Ctrl + F7`: 直到返回跳出函数
+
+可以点击寄存器区的寄存器箭头前往hex程序区
+
+**远程调试(如windows调试linux下文件)**
+
+1. IDA pro安装目录下的`dbgsrv`文件夹下选择调试的程序linux_server
+2. 在相应远程linux主机设置权限并执行linux_server
+3. IDA选择Remote Linux debugger，`Debugger > Process options`，设置远程Linux IP地址
+
+`__debugbreak()`：在代码中引入断点，系统会提示用户运行调试器
+
+### Ghidra
+
+`Symbol Tree`中包含`Functions`, `Classes`等，在`m`中有main函数
+
+**查看函数调用关系**：`Window` > `Function Call Graph`
+
+**变量重命名**：`右键` > `Rename Variable`，快捷键`l`
+
+**点亮所有变量**：鼠标中键
+
+**注释**：`右键` > `Comments`
+
+**改函数签名**：`右键` > `Edit Function Signature`
+
+**改数字的进制**：右键
+
+### DIE
+
+（Detect It Easy）查壳工具
+
+### Peid
+
+### Exeinfo PE
+
+查壳工具
+
+### OllyDbg
+
+只适用32位，不再更新
+
+`F2`：下断点
+
+`F4`：运行到光标位置
+
+`F7`：单步步入
+
+`F8`：单步步过
+
+`F9`：运行，到断点处
+
+`F12`：暂停运行程序
+
+重新开始：`x`图标 + `<<`图标
+
+插件 > 中文搜索引擎 > 搜索 ASCII：找字符串
+
+查看函数调用：右键 > 查看调用树
+
+双击代码和注释都可直接进行修改
+
+**查找数据并修改：**数据窗口 > `Alt + M`打开Memory map > `Ctrl + B`进行搜索 > 右键可以修改，需要进行保存【右键复制到可执行文件】 > 保存文件
+
+**跳出循环：**右键 > 断点 > 运行到选定位置
+
+**工具栏窗口：**
+
+1.日志窗口(L) 2.模块窗口(E):查看每个模块的内存基址
+
+3.内存窗口(M):查看每一个模块的段,所占用的内存区域
+
+4.线程窗口(T):线程信息
+
+5.窗口(W):查看程序的窗口句柄,窗口名,风格样式,回调函数等信息
+
+6.句柄(H)
+
+7.反汇编窗口( C)
+
+8.补丁窗口(/)
+
+9:**堆栈窗口(K)**:可查看调用堆栈,调试时堆栈回溯：`右键` > `显示调用`
+
+10.断点窗口(B):显示所有的F2断点
+
+11.参考( R)
+
+12.run跟踪窗口(…)
+
+### x64dbg
+
+适用于32位和64位调试
+
+| 反汇编显示区   | 寄存器显示区 |
+| -------------- | ------------ |
+| 内存数据显示区 | 栈显示区     |
+
+- **运行到用户代码 点击**
+- `Az`图标：查看字符串
+
+循环箭头按键：为重新运行
+
+右箭头按键：直接运行
+
+快捷键：
+
+`ctrl+G`：跳转到目标地址/表达式
+
+`F2`：下断点
+
+`F4`：运行到光标位置
+
+`F7`：单步步入
+
+`F8`：单步步过
+
+`F9`：运行
+
+**空格修改汇编代码**
+
+可以右键修改十六进制代码：修复错误时将字节改为**90**(**nop**)
+
+可以对代码转到对应的内存空间位置：右键 > 在内存布局中转到
+
+搜索命令：右键 > 所有用户模块 > 命令，如寻找`pushad`
+
+### GNU Binary Utilities
+
+### GDB/PWNDBG
+
+```Bash
+set var $寄存器 = expr #修改寄存器的值
+set {type}address = expr #给存储在address地址的变量类型为type的变量赋值
+Fin：运行当前函数直到结束
+```
+
+### UPXshell
+
+在Windows下进行UPX脱壳
+
+### Jadx
+
+APK分析工具
+
+获取反编译后的JAVA原码且可视化，能打开文件格式：`.apk, .dex, .jar, .class, .smali, .zip, .aar, .ars`
+
+### jd-gui
+
+反编译jar包，获取JAVA源码
+
+### ILSpy
+
+用于`dll`文件的逆向，可以查看`Program`程序代码
+
+### Z3-Solver
+
+`pip install -i ``https://pypi.tuna.tsinghua.edu.cn/simple`` z3-solver`指定镜像源安装
+
+### QEMU
+
+```Bash
+# 创建虚拟磁盘
+qemu-img create -f raw hello.img 10G
+```
+
+## 算法
+
+### TEA系列
+
+均会使用特征值$$\delta$$：**0x9e3779b9，**在IDA中可能使用补码表示：**0x61c88647**，可使用python：
+
+**`hex(0xffffffff -  0x61c88647 + 1)`** **得到 0x9e3779b9**
+
+#### TEA
+
+Tiny Encryption Algorithm，使用Feistel分组加密框架，64轮迭代，原文以8字节(64位)为一组，密钥16字节(128位)，具体实现过程：
+
+![img](/img/reverse_note.zh-cn.assets/-172845173251510.assets)
+
+**加解密实现**
+
+```C
+#include <stdint.h>
+
+// 无论是64位还是32位都可以使用uint32_t
+
+//加密函数
+void encrypt (uint32_t* v, uint32_t* k) {
+    uint32_t v0=v[0], v1=v[1], sum=0, i;
+    uint32_t delta=0x9e3779b9; // 固定值
+    uint32_t k0=k[0], k1=k[1], k2=k[2], k3=k[3];
+    for (i=0; i < 32; i++) { // 实际64轮, 此处一次循环两轮
+        sum += delta;
+        v0 += ((v1<<4) + k0) ^ (v1 + sum) ^ ((v1>>5) + k1);
+        v1 += ((v0<<4) + k2) ^ (v0 + sum) ^ ((v0>>5) + k3);
+    }
+    v[0]=v0; v[1]=v1;
+}
+
+//解密函数 循环内颠倒顺序
+void decrypt (uint32_t* v, uint32_t* k) {
+    uint32_t v0=v[0], v1=v[1], sum=0xC6EF3720, i; // sum是32次循环的delta之和
+    uint32_t delta=0x9e3779b9;
+    uint32_t k0=k[0], k1=k[1], k2=k[2], k3=k[3];
+    for (i=0; i<32; i++) {
+        v1 -= ((v0<<4) + k2) ^ (v0 + sum) ^ ((v0>>5) + k3);
+        v0 -= ((v1<<4) + k0) ^ (v1 + sum) ^ ((v1>>5) + k1);
+        sum -= delta;
+    }
+    v[0]=v0; v[1]=v1;
+}
+
+int main()
+{
+    // 短数据加解密
+    uint32_t v[2]={1,2},k[4]={2,2,3,4};
+    // v为要加密的数据是两个32位无符号整数
+    // k为加密解密密钥，为4个32位无符号整数，即密钥长度为128位
+    printf("加密前原始数据：%u %u\n",v[0],v[1]);
+    encrypt(v, k);
+    printf("加密后的数据：%u %u\n",v[0],v[1]);
+    decrypt(v, k);
+    printf("解密后的数据：%u %u\n",v[0],v[1]);
+    
+    // 长数据加解密
+    char data[] = "password123456789";
+    uint32_t key[] = {0x11111111,0x22222222,0x33333333,0x44444444};
+
+    for (size_t i = 0; i < strlen(data)/8; i++) encrypt((uint32_t*)&data[i*8], key);
+    printf("加密后：%s\n", data);
+
+    for (size_t i = 0; i < strlen(data)/8; i++) decrypt((uint32_t*)&data[i*8], key);
+    printf("解密后：%s\n", data); 
+    
+    return 0;
+}
+```
+
+#### XTEA
+
+Delta值可以更改，**tea**取 key 的时候是固定下标取的，现在通过**计算**取
+
+```C
+#include<stdio.h>
+#include<stdint.h>
+ 
+void encipher(unsigned int num_rounds, uint32_t v[2], uint32_t const key[4]){
+        unsigned int i;
+        uint32_t v0=v[0],v1=v[1],sum=0,delta=0x9E3779B9;
+        for(i=0;i<num_rounds;i++){
+                v0+=(((v1<<4)^(v1>>5))+v1)^(sum+key[sum&3]);
+                sum+=delta;
+                v1+=(((v0<<4)^(v0>>5))+v0)^(sum+key[(sum>>11)&3]);
+        }
+        v[0]=v0;v[1]=v1;
+}
+ 
+void decipher(unsigned int num_rounds,uint32_t v[2],uint32_t const key[4]){
+        unsigned int i;
+        uint32_t v0=v[0],v1=v[1],delta=0x9E3779B9,sum=delta*num_rounds;
+        for(i=0;i<num_rounds;i++){
+        v1-=(((v0<<4)^(v0>>5))+v0)^(sum+key[(sum>>11)&3]);
+        sum-=delta;
+        v0-=(((v1<<4)^(v1>>5))+v1)^(sum+key[sum&3]);
+        } 
+        v[0]=v0;v[1]=v1;
+}
+ 
+int main(){
+// 输入十六进制, 可能需要倒序2个2个输入如: 0x12345678 , 用 0x78563412 输入
+        uint32_t v[2]={1,2}; 
+        uint32_t const k[4]={2,2,3,4};
+        unsigned int r=32;                                //这里是加密轮数，自己设置 
+        printf("加密前原始数据：%u %u\n",v[0],v[1]); // 更改为%x显示十六进制
+        encipher(r,v,k);
+        printf("加密后原始数据：%u %u\n",v[0],v[1]);
+        decipher(r,v,k);
+        printf("解密后原始数据：%u %u\n",v[0],v[1]); // 字符ASCII范围 < 0x7f | 127
+        return 0;
+}
+```
+
+#### XXTEA
+
+![img](/img/reverse_note.zh-cn.assets/-172845181249123.assets)
+
+原字符串长度可以不是**4**的倍数，明文分成若干固定长度块，每个块加密后，拼接
+
+```C
+#include <stdio.h>
+#include <stdint.h>
+#define DELTA 0x9e3779b9
+#define MX (((z >> 5 ^ y << 2) + (y >> 3 ^ z << 4)) ^ ((sum ^ y) + (key[(p & 3) ^ e] ^ z)))
+// 混淆操作, 密码学扩散原理, xxtea特征
+
+void xxtea(uint32_t *v, int n, uint32_t const key[4]){
+    uint32_t y, z, sum;
+    unsigned p, rounds, e; 
+    // 加密
+    if (n > 1){
+        rounds = 6 + 52 / n; // 循环轮数
+        sum = 0;
+        z = v[n - 1];
+        do{
+            sum += DELTA;
+            e = (sum >> 2) & 3;// e: sum>>2
+            for (p = 0; p < n - 1; p++){
+                y = v[p + 1];
+                z = v[p] += MX; // 本质上还是双整形加密,用v[p]和v[p+1]对v[p]加密
+                // v[p] += MX;
+                // z = v[p];
+            }
+            y = v[0];
+            z = v[n - 1] += MX; // 一轮加密的最后用v[n-1]和v[0]对v[n-1]加密
+        } while (--rounds);
+    }
+    // 解密
+    else if (n < -1){
+        n = -n;
+        rounds = 6 + 52 / n;
+        sum = rounds * DELTA;
+        y = v[0];
+        do{
+            e = (sum >> 2) & 3;
+            for (p = n - 1; p > 0; p--){
+                z = v[p - 1];
+                y = v[p] -= MX;
+            }
+            z = v[n - 1];
+            y = v[0] -= MX;
+            sum -= DELTA;
+        } while (--rounds);
+    }
+}
+
+int main(){
+    uint32_t v[2] = {1, 2};
+    uint32_t const k[4] = {2, 0, 2, 4}; // 128位
+    int n = 2;// n的绝对值为v长度，取正表示加密，取负表示解密
+
+    printf("%#10x %#10x\n", v[0], v[1]);
+    xxtea(v, n, k); // n>0为加密
+    printf("%#10x %#10x\n", v[0], v[1]);
+    xxtea(v, -n, k); // n<0为解密
+    printf("%#10x %#10x\n", v[0], v[1]);
+    return 0;
+}
+```
+
+### md5
+
+有4个固定的32bit值
+
+### SM4
+
+- 分组密码，4组，分组长度128位，密钥长度128位，加解密算法相同，轮密钥使用次序相反，32轮非线性迭代
+- 轮密钥 rK 有32个
+- $$X_{i+4}=F(X_i,X_{i+1},X_{i+2},X_{i+3},rK_i)=X_i ⊕ T( X_{i+1}⊕X_{i+2}⊕X_{i+3}⊕rK_i$$
+
+![img](/img/reverse_note.zh-cn.assets/-172845181249224.assets)
+
+**F函数中的T函数**
+
+T：合成置换，可逆变换，由非线性变换$$\ta$$和线性变换$$$$复合而成：$$T()=L(\tau()$$
+
+1. 非线性变换 A 到 B，A 和 B 均为32位，$$\ta$$由4个并行S盒构成【固定的256字节的数组】
+
+$$B =（b_0,b_1,b_2,b_3）= τ(A)=(Sbox(a_0),Sbox(a_0),Sbox(a_0),Sbox(a_0)$$
+
+查表规则：有 F 行 F 列，输入的32位可表示为2个十六进制数，一个做行一个做列找值替换
+
+![img](/img/reverse_note.zh-cn.assets/-172845181249225.assets)
+
+1. 线性变换 B 到 C，均为32位，此处为**循环左移**
+
+$$C = L(B) = B ⊕（B<<<2） ⊕(B<<<10) ⊕(B<<<18) ⊕(B<<<24)$$
+
+**轮密钥扩展**
+
+密钥128位，$$MK=(MK_0,MK_1,MK_2,MK_3$$，轮密钥由密钥生成
+
+系统参数：$$FK=(FK_0,FK_1,FK_2,FK_3$$，固定参数：$$CK=(CK_0,CK_1,\cdots ,CK_{31})$$
+
+![img](/img/reverse_note.zh-cn.assets/-172845181249326.assets)
+
+![img](/img/reverse_note.zh-cn.assets/-172845181249327.assets)
+
+- $$(K_0,K_1,K_2,K_3)= (MK_0⊕FK_0, MK_1⊕, FK_1, MK_2⊕FK_2, MK_3⊕FK_3)$$
+  - $$rK_i=K_{i+4}=K_i⊕T’(K_{i+1}⊕K_{i+2}⊕K_{i+3}⊕CK_i)----[i=0,\cdots,31]$$
+
+$$T$$即将 $$$$ 中的 $$$$ 替换为 $$L$$：$$L'(B)=B\oplus (B\lt\lt\lt 13)\oplus(B\lt\lt\lt 23)$$
+
+**解密**
+
+由于$$X_{i+4}=F(X_i,X_{i+1},X_{i+2},X_{i+3~}rK_i)=X_i ⊕ T( X_{i+1}⊕X_{i+2}⊕X_{i+3}⊕rK_i$$
+
+所以$$X_i=F(X_{i+4},X_{i+1},X_{i+2},X_{i+3},rK_i)=X_{i+4} ⊕ T(X_{i+1}⊕X_{i+2}⊕X_{i+3}⊕rK_i$$
+
+将密文逆序，轮密钥也逆序，解密流程即加密流程的逆序
+
+### RC4
+
+对称加密算法，包括**初始化算法**（KSA)和**加密算法**
+
+![img](/img/reverse_note.zh-cn.assets/-172845181249328.assets)
+
+**初始化过程**
+
+```C
+void rc4_init(unsigned char*S, unsigned char*key, unsigned long Len)
+{
+        int i = 0;
+        char T[256] = { 0 };
+        unsigned char tmp = 0;
+        
+        // 初始化 S 和 T 
+        for (i = 0; i < 256; i++){
+                S[i] = i;
+                T[i] = key[i%Len]; // Len 为 key 的长度
+        }
+        
+        // 初始排列 S
+        int j = 0;
+        for (i = 0; i < 256; i++)
+        {
+                j = (j + S[i] + T[i]) % 256; // 开始混淆
+                tmp = S[i]; 
+                S[i] = S[j]; // 交换s[i]和s[j]
+                S[j] = tmp;
+        }
+}
+```
+
+**加解密过程**
+
+```C
+void rc4_crypt(unsigned char*S, unsigned char*Data, unsigned long Len)
+{ // 加解密同一函数
+        int i = 0, j = 0, t = 0;
+        unsigned long k = 0; // 明文索引
+        unsigned char tmp;
+        for (k = 0; k < Len; k++) // Len 明文长度
+        {
+                // 生成密钥流，利用密钥流和明文进行加密
+                i = (i + 1) % 256;
+                j = (j + S[i]) % 256;
+                tmp = S[i];
+                S[i] = S[j]; // 交换 S[x] 和 S[y] 
+                S[j] = tmp;
+                t = (S[i] + S[j]) % 256;
+                Data[k] ^= S[t]; // S_box 和明文 xor 加密
+        }
+}
+```
+
+**调用**
+
+```C
+int main(){
+        system("chcp 65001"); // 防止终端乱码
+        // 赋值： unsigned __int8 data[] = {27, 155, 251, 25, 6, 106}
+        unsigned char S[256]={0}; // S_box
+        char key[256]={0};
+        char data[256]={0};
+        printf("输入密钥：");
+        scanf("%s",key);
+        unsigned long length = strlen(key);
+        rc4_init(S,key,length);
+        
+        printf("输入密文："); 
+        scanf("%s",data);
+        rc4_crypt(S,data,length);
+        printf("加/解密结果：%s",data);
+        return 0;
+}
+```
+
+### Base算法
+
+密码+编码
+
+#### base64
+
+基于64个可打印字符来表示二进制数据，6个bit为一个单元
+
+## 代码混淆
+
+### 脏字节
+
+在汇编中加入`db 232`
+
+![img](/img/reverse_note.zh-cn.assets/-172845181249329.assets)
+
+### 花指令
+
+![img](/img/reverse_note.zh-cn.assets/-172845181249330.assets)
+
+```Assembly
+mov eax, $
+add eax, 12
+jmp eax    ;跳转到寄存器中的地址
+```
+
+### SMC技术
+
+**Self Modifying Code**：自解码代码，程序中的部分代码加密，并插入解密代码，当程序需要运行源代码时，调用解密函数解密该部分代码，再跳转执行，阻止静态分析
+
+**Windows**
+
+```C++
+// API函数，允许应用程序改变内存页的保护属性
+BOOL VirtualProtect(
+    LPCVOID lpAddress,    // 内存页起始地址
+    SIZE_T dwSize,        // 内存页大小
+    DWORD flNewProtect,   // 新保护属性
+    PDWORD lpfloldProtect // 存储旧的保护属性
+};
+```
+
+### 反调试
+
+函数声明 
+
+```C
+long ptrace(enum __ptrace_request requête, pid_t pid, void *addr, void *data);
+```
+
+**PTRACE_TRACEME: 子进程标记**
+
+**PTRACE_ATTACH: 父进程附加**
+
+**PTRACE_CONT: 继续执行**
+
+绕过：通过动态调试修改RIP直接跳到main函数 或 patch/nop反调试函数
+
+### OLLVM
+
+**Obfuscator-LLVM，原理：通过修改“LLVM-IR”完成，本质是一个LLVM-PASS——一套IR代码优化脚本**
+
+![img](/img/reverse_note.zh-cn.assets/-172845181249331.assets)
+
+**控制流平坦化**
+
+将基本控制流并列，由**主分发器**来决定执行顺序
+
+![img](/img/reverse_note.zh-cn.assets/-172845181249332.assets)
+
+**指令替换**
+
+基本运算公式复杂化
+
+```Plain
+混淆前: a=b+c    >>     混淆后: a=b+r, a=a+c, a=a-r
+混淆前: a=b|c    >>     混淆后: a=(b&c)|(b^c)    //b, c均为整数时
+```
+
+**虚假控制流**
+
+将原本顺序执行转为条件执行，条件为“永真式”导致不会执行虚假块，但IDA会进行控制流分析
+
+![img](/img/reverse_note.zh-cn.assets/-172845181249333.assets)
+
+永真式：`(((x - 1) * x) & 1) == 0`
+
+## maze
+
+迷宫问题
+
+- 内存中布置一张地图(#和*显示)
+- 用户输入限制在少数几个字符范围内(方向w/s/a/d等)
+- 一般只1个迷宫入口、1个迷宫出口(多走法时代价最小 ---> 算法问题)
+
+**迷宫初始化**
+
+```Python
+rows, cols = 10, 10
+array = [['0' for _ in range(cols)] for _ in range(rows)]
+```
+
+**回溯算法**
+
+- 深度优先算法DFS：栈
+- 广度优先算法BFS：队列
+
+### 深度优先算法
+
+```Python
+import sys # 设置递归深度
+sys.setrecursionlimit(20000)
+
+# x行 y列
+def check(map, x, y): # 检查是否为0
+    if (x >= 0) and (x <= max_x) and (y >= 0) and (y <= max_y):
+        return map[x][y] == 0
+    else:
+        return False
+
+def gen_nex(map, x, y): # 当前位置四周的情况
+    all_dir = []
+    if check(map, x - 1, y):
+        all_dir.append((x - 1, y, 'w'))
+    if check(map, x + 1, y):
+        all_dir.append((x + 1, y, 's'))
+    if check(map, x, y - 1):
+        all_dir.append((x, y - 1, 'a'))
+    if check(map, x, y + 1):
+        all_dir.append((x, y + 1, 'd'))
+    return all_dir
+
+def check_success(map, x, y):
+    if x == 54 and y == 74: # 判断出口
+        return True
+    else:
+        return False
+
+def print_info(map, x, y, path, file_path):
+    with open(file_path, 'a') as f:
+    # 地图
+        for row in map:
+                f.write(''.join(str(cell) for cell in row) + '\n')
+        f.write('\n')  # 用于分隔每次递归的地图
+    # 坐标
+        f.write(str(x) + " " + str(y)+'\n')
+    # 路径
+        f.write(path+"\n")
+
+def dfs(maze, x, y, path):
+    map = maze.copy()    # 这里用将maze复制给map，避免修改掉原地图。
+    if x!=54 or y!=74:
+        map[x][y] = 1
+    if check_success(map, x, y):
+        # print_path(path, 'b.txt')
+        return True
+
+    next_point = gen_nex(map, x, y)
+    for n in next_point:
+        pathn = path + n[2]       # 将all_dir列表中的元组的第三个值，即方向传给pathn
+        print_info(map, x, y, pathn, 'a.txt')
+        if dfs(map, n[0], n[1], pathn):        # 这里开始递归 用all_dir的元组第一二个值和pathn作为参数，进行当前位置的又一次深度优先遍历
+            return True
+    return False
+
+dfs(maze, 1, 1, "begin:")
+
+# 使用之后仍需要判断是否正确, 比如: dwds > dd, dwwdss > dd
+```
+
+## 壳
+
+![img](/img/reverse_note.zh-cn.assets/-172845181249334.assets)
+
+### 压缩壳
+
+#### UPX
+
+开源、压缩壳，原文件需要40kb以上才能加壳，可通过strings查看UPX字符串
+
+脱壳原理为**ESP定律**（即堆栈平衡定律），可以在linux中使用：
+
+```Bash
+upx -d file #进行脱壳
+```
+
+或在Windows下使用**UPX shell**直接解压缩，UPX shell解压缩可能导致文件无法运行
+
+```Python
+# 在upx目录下 脱壳
+./upx.exe -d file
+```
+
+**x96dbg**：F8 > 寄存器窗口 > ESP > 在内存窗口中转到
+
+**Ollydbg**：只能调试32位
+
+**使用OD进行UPX手动脱壳**
+
+第一条指令一般为pushad，将寄存器值存入栈中，保存上下文
+
+![img](/img/reverse_note.zh-cn.assets/-172845181249435.assets)
+
+F8单步执行，此时寄存器ESP值发生改变
+
+![img](/img/reverse_note.zh-cn.assets/-172845181249436.assets)
+
+寄存器窗口 > ESP > HW break[ESP] 或 [数据窗口中跟随] 转到内存视图 > 此处ESP地址设置断点-硬件访问
+
+![img](/img/reverse_note.zh-cn.assets/-172845181249437.assets)
+
+F9运行到断点处，上图`003B750F`的上一行为`popad`，当执行到popad时，将会恢复ESP，此时将会触发硬件断点，中断
+
+发现一个大跳转`jmp UPX`，于是F4到jmp代码处 > F8步入
+
+![img](/img/reverse_note.zh-cn.assets/-172845181249438.assets)
+
+![img](/img/reverse_note.zh-cn.assets/-172845181249439.assets)
+
+出现了正常的函数开头和结尾，即找到OEP
+
+**进行dump完成脱壳：**
+
+1. **插件 > OllyDump > 脱壳在当前调试的进程 > 获取EIP作为OEP > 脱壳【由于不是windows XP会失败】**
+2. **右键 > 用OllyDump脱壳调试进程 > 脱壳**
+
+**x64dbg+手动脱壳**
+
+打开文件先查看系统断点，`F9`运行进入断点处，有多个`push`操作
+
+#### ASPack
+
+### 加密壳
+
+#### ASProtect
+
+#### Armadillo
+
+#### EXECryptor
+
+#### Themida
+
+#### VMP
+
+### 混淆壳
+
+### 虚拟机壳
+
+## 脱壳
+
+单步跟踪寻找OEP（original entry point，原始入口点），寻找大型跳转
+
+### API定位
+
+**Microsoft Visual C/C++ 6**
+
+- `VC6`写的代码，直接定位到`GetVersion`下断点
+- x64dbg中：`视图` > `模块`，`GetVersion`在`Kernel32.dll`中，运行，在栈中找调用函数
+- OEP在GetVersion上文
+
+### ESP定律
+
+od载入程序有pushad指令可用其脱壳
+
+## Windows API
+
+**堆API**
+
+```C++
+HeapCreate(flOptions, dwInitialSize, dwMaximumSize)
+// 堆分配选项, 堆的初始大小, 堆的最大大小
+
+HeapAlloc(hHeap, dwFlags, dwBytes)
+// 指向堆的句柄, 堆分配选项, 分配字节数
+
+HeapFree(hHeap, dwFlags, lpMem)
+// 释放的堆的句柄, 堆释放选项, 指向要释放内存块的指针
+
+HeapDestroy(hHeap)
+// 销毁的堆的句柄
+```
+
+**用户API**
+
+```C++
+MessageBoxA(hWnd, lpText, lpCaption, uType)
+// 消息框所有者窗口的句柄, 显示信息, 对话框标题, 对话框内容和行为(中止,重试,忽略,确认,取消) 
+```
+
+**调试API**
+
+```C++
+IsDebuggerPresent()
+// 当前进程在调试器上下文中运行，返回非0; 否则为0
+```
+
+## 安卓
+
+jadx打开文件后，`AndroidManifest.xml`文件中包括**配置信息**等
+
+## .Net
+
+### C#

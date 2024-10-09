@@ -1,0 +1,3021 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='基础知识 Windows kernel32.dll：控制系统内存管理、数据输入输出、中断处理，当Windows启动时，其驻留在内存中特定的写保护区域，使别的'><title>REVERSE笔记</title>
+
+<link rel='canonical' href='https://J-shiro.github.io/zh-cn/p/reverse%E7%AC%94%E8%AE%B0/'>
+
+<link rel="stylesheet" href="/scss/style.min.b18c0607927efd48b36f5d027b549e77e30ee300e22b6461d063f1df6ea2466b.css"><meta property='og:title' content='REVERSE笔记'>
+<meta property='og:description' content='基础知识 Windows kernel32.dll：控制系统内存管理、数据输入输出、中断处理，当Windows启动时，其驻留在内存中特定的写保护区域，使别的'>
+<meta property='og:url' content='https://J-shiro.github.io/zh-cn/p/reverse%E7%AC%94%E8%AE%B0/'>
+<meta property='og:site_name' content='J-shiro&#39;s 博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-10-09T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2024-10-09T00:00:00&#43;00:00'/><meta property='og:image' content='https://J-shiro.github.io/img/note.jpg' />
+<meta name="twitter:title" content="REVERSE笔记">
+<meta name="twitter:description" content="基础知识 Windows kernel32.dll：控制系统内存管理、数据输入输出、中断处理，当Windows启动时，其驻留在内存中特定的写保护区域，使别的"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://J-shiro.github.io/img/note.jpg' />
+    <link rel="shortcut icon" href="https://j-shiro.github.io/img/somebody.png" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/zh-cn">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu42aab1a06b48994d4eab55119e198264_548369_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/zh-cn">J-shiro&#39;s 博客</a></h1>
+            <h2 class="site-description">Welcome! I will record some of my own hobbies there.//欢迎来到我的博客！</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/J-shiro'
+                        target="_blank"
+                        title="GitHub"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/zh-cn/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/zh-cn/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/zh-cn/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>档案</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/zh-cn/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/zh-cn/%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>链接</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+                <li id="i18n-switch">  
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                    <select name="language" onchange="window.location.href = this.selectedOptions[0].value">
+                        
+                            <option value="https://J-shiro.github.io/" >English</option>
+                        
+                            <option value="https://J-shiro.github.io/zh-cn/" selected>中文</option>
+                        
+                    </select>
+                </li>
+            
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+<main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/zh-cn/p/reverse%E7%AC%94%E8%AE%B0/">
+                
+                    <img src="/img/note.jpg" loading="lazy" alt="Featured image of post REVERSE笔记" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/zh-cn/categories/notes/" >
+                notes
+            </a>
+        
+            <a href="/zh-cn/categories/reverse/" >
+                reverse
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/zh-cn/p/reverse%E7%AC%94%E8%AE%B0/">REVERSE笔记</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Oct 09, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 24 分钟
+                </time>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+                <time class="article-words">
+                    11997 字
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="基础知识">基础知识</h2>
+<h3 id="windows">Windows</h3>
+<p><code>kernel32.dll</code>：控制系统内存管理、数据输入输出、中断处理，当Windows启动时，其驻留在内存中特定的写保护区域，使别的程序无法占用该内存区域</p>
+<p><code>user32.dll</code>：用户界面相关应用程序接口，包括Windows处理、基本用户界面</p>
+<p><code>gdi32.dll</code>：Windows GDI图形用户界面相关程序，绘制图形、显示文字</p>
+<p>句柄（handle）：唯一整数值，标志程序中不同对象和同类对象中的不同实例</p>
+<h4 id="反编译">反编译</h4>
+<ul>
+<li><strong>线性扫描(Linear Sweep)</strong>：简单顺序扫描文件分析，均分析为代码，objdump, OllyDbg, x64dbg</li>
+<li><strong>递归下降(Recursive Traversal)</strong>：控制流根据call指令调用关系分析，IDA pro</li>
+</ul>
+<h4 id="约定">约定</h4>
+<p>变数名称<strong>前缀表示类型</strong></p>
+<ul>
+<li><strong><code>lp</code></strong>：Loing Pointer</li>
+<li><strong><code>h</code></strong>：Handler</li>
+<li><strong><code>dw</code></strong>：DWORD</li>
+</ul>
+<p>函数名称后可能有<strong>大写字母</strong></p>
+<ul>
+<li><strong><code>A</code></strong>：字符串参数使用ANSI</li>
+<li><strong><code>W</code></strong>：字符串参数使用UNICODE（Wide character）</li>
+<li><strong><code>EX</code></strong>：扩展（Extended）</li>
+</ul>
+<p><strong>调用约定</strong></p>
+<ul>
+<li>x86 32位
+<ul>
+<li><code>__cdecl</code>：参数从右向左依次压入栈，调用完毕后，调用者caller负责清理参数，返回值位于EAX</li>
+<li><code>__stdcall</code>：（Win32 API）参数从右向左压入栈，调用完毕后，被调用者负责清理参数，返回值位于EAX</li>
+<li><code>__thiscall</code>：参数从右向左压入栈，类方法的<code>this</code>指针通过ECX传递给被调用者，若参数个数确定，则参数全部压入栈后<code>this</code>指针入堆栈；若参数个数不确定，调用者清理堆栈</li>
+<li><code>__fastcall</code>：函数第一个和第二个DWORD参数通过ECX和EDX传递，其他参数从右向左压入栈，被调用函数清理堆栈</li>
+</ul>
+</li>
+<li>清理栈帧指参数使用了栈则栈帧会发生变化，需要使用<code>add rsp, 0x??</code>来清理，push x次，32位下add x<em>0x4，64位下add x</em>0x8</li>
+<li>x86-64
+<ul>
+<li><strong>Microsoft x64</strong>：前四个参数放入RDI、RSI、RDX、RCX，（Windows下前四个参数让RCX、RDX、r8、r9）剩下参数从右到左压入栈，调用者caller负责清理堆栈</li>
+<li><strong>SystemV x64(SysV)</strong>：Linux与MacOS上使用，比Microsoft多两个寄存器，使用RDI、RSI、RDX、RCX、R8、R9，剩下参数从右向左压入栈中，调用者caller负责清理堆栈</li>
+</ul>
+</li>
+<li><strong>局部变量</strong>：放于栈上</li>
+</ul>
+<h4 id="eflags"><strong>Eflags</strong></h4>
+<ul>
+<li>ZF（Zero Flag）：零标志</li>
+<li>PF（Parity Flag）：奇偶标志</li>
+<li>AF（Adjust Flag）：辅助标志</li>
+<li>OF（Overflow Flag）：溢出标志</li>
+<li>SF（Sign Flag）：符号标志</li>
+<li>DF（Direction Flag）：方向标志</li>
+<li>TF（Trap Flag）：追踪标志</li>
+<li>IF（Interrupt enable Flag）：中断允许标志</li>
+</ul>
+<h4 id="syscall">Syscall</h4>
+<p>Windows 的 syscall number 随版本更新会变更，一般呼叫<strong>API</strong></p>
+<h3 id="linux">Linux</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">file &lt;somefile&gt; <span class="c1"># 查看文件类型</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">strings &lt;something&gt; <span class="c1"># 打印文件中可见字符串</span>
+</span></span><span class="line"><span class="cl">strings -n &lt;min-len&gt; &lt;something&gt; <span class="c1"># 打印最短长度为min-len的可见字符串</span>
+</span></span><span class="line"><span class="cl">strings &lt;something&gt; <span class="p">|</span> grep <span class="s2">&#34;xx&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">objdump -M intel -d &lt;binary&gt; <span class="c1"># intel格式展示反汇编结果</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">strace <span class="c1"># 查看 binary 执行时的 system call 和 signal</span>
+</span></span><span class="line"><span class="cl">ltrace <span class="c1"># 查看 binary 执行时的 library call</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="数学">数学</h3>
+<p><strong>乘法逆元：</strong> $$a \cdot a^{-1}\equiv 1(mod,p$$</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="c1"># 求 a 乘法逆元</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">gmpy2</span> <span class="kn">import</span> <span class="n">invert</span>
+</span></span><span class="line"><span class="cl"><span class="n">inv</span> <span class="o">=</span> <span class="n">invert</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">p</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>逆向下面公式</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// a1[k] 有限域 (0x00 ~ 0xff) 即 0 ~ 255 加密
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">12</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">a1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">a1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="mi">17</span> <span class="o">+</span> <span class="mi">113</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl"><span class="c1">// 整除 17 会损失数据, 不可 /17
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 逆向解密 求 17 在 mod 256 的乘法逆元: 241
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">12</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">a1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">a1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="mi">113</span><span class="p">)</span> <span class="o">*</span> <span class="mi">241</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="计算机组成">计算机组成</h3>
+<p>VA：虚拟地址</p>
+<p>RVA：（Relative Virtual Address）相对虚拟地址，相对于镜像基址的位置，即VA = ImageBase + RVA</p>
+<ul>
+<li>Entry Point RVA - .text section RVA = Entry Point file offset - .text section file offset</li>
+</ul>
+<ol>
+<li>八个比特（bit）称为一个字节（byte）</li>
+<li>两个字节称为一个字（word）——16bits</li>
+<li>两个字称为一个双字（dword）——32bits</li>
+<li>两个双字称为一个四字（qword）——64bits</li>
+</ol>
+<p><strong>位运算</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// 基础 优先级 not &gt; and &gt; or &gt; xor
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">or</span> <span class="o">|</span>  <span class="c1">// 00=0 01=1 10=1 11=1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">xor</span> <span class="o">^</span> <span class="c1">// 00=0 01=1 10=1 11=0   a^a=0 0^a=a a^b^a=b
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">and</span> <span class="o">&amp;</span> <span class="c1">// 00=0 01=0 10=0 11=1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">nor</span>   <span class="c1">// 与or相反
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">nand</span>  <span class="c1">// 与and相反
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">not</span>   <span class="c1">// 0=1 1=0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 位与
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">x</span> <span class="o">&amp;</span> <span class="mi">1</span> <span class="c1">// 若为0:偶数, 若为1:奇数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 负数计算 (-25 &amp; 0xff) 转换
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>移位</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="o">&lt;&lt;</span> <span class="n">n</span>  <span class="o">&lt;===&gt;</span>  <span class="err">乘</span><span class="mi">2</span><span class="o">^</span><span class="n">n</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">v1</span> <span class="o">=</span> <span class="n">v2</span> <span class="o">|</span> <span class="p">(</span><span class="n">v3</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span><span class="p">)</span> <span class="c1">// v3左移16位成为高16位
+</span></span></span><span class="line"><span class="cl"><span class="c1">// v1 = 0xaabbccdd 则 v3 = 0xaabb, v2 = 0xccdd
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>数据类型大小</strong></p>
+<ul>
+<li>short：2字节</li>
+<li>char：1字节</li>
+<li>int：4字节</li>
+<li>double：8字节</li>
+<li>long：8字节</li>
+</ul>
+<p><strong>python中将负数表示为无符号32位或64位整数</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">unsigned_value</span> <span class="o">=</span> <span class="p">(</span><span class="n">negative_value</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">64</span><span class="p">))</span> <span class="o">&amp;</span> <span class="mh">0xFFFFFFFFFFFFFFFF</span> <span class="c1"># 转化为64位</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="汇编">汇编</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">jc    ;CF==1执行
+</span></span><span class="line"><span class="cl">jo    ;OF==1执行
+</span></span><span class="line"><span class="cl">jz    ;ZF==1执行
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>nop</code>为0x90</p>
+<h4 id="语法格式">语法格式</h4>
+<p><strong>Intel</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rax, 0x80
+</span></span><span class="line"><span class="cl">xor rbx, rcx
+</span></span><span class="line"><span class="cl">mov rax, QWORD PTR [rbx+rcx*4]
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>AT&amp;T</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov $0x80, %rax
+</span></span><span class="line"><span class="cl">xor %rcx, %rbx
+</span></span><span class="line"><span class="cl">mov (%rbx, %rcx, 4), %rax
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="语法">语法</h4>
+<p><strong>struct</strong></p>
+<p><img src="/img/reverse_note.zh-cn.assets/-172845173251511.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<ol>
+<li>分配 0x18 bytes 内存空间，内存空间起始位置存在 rbp-0x8</li>
+<li>将 rbp-0x8 的值存于 rax，即 rax 是 ms 的基址</li>
+<li>ms-&gt;a 的偏移为 0x0，ms-&gt;b的偏移为 0x8，ms-&gt;c 的偏移为 0x10</li>
+<li>1+8+4 = 13 bytes 实际用了 24 bytes</li>
+</ol>
+<h3 id="c">C</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">strncmp</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">str1</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">str2</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 比对str1和str2开头n个字符
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">strcpy</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">dest</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">src</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 将src复制到dest
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">memcpy</span><span class="p">(</span><span class="n">dest_addr</span><span class="p">,</span> <span class="n">src_addr</span><span class="p">,</span> <span class="n">bytes_num</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 从 src_addr 拷贝 bytes_num 个字节数据到 dest_addr
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">memset</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">arr</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 将 arr 指针指向的内存块的sizeof(arr)所有字节指定为0
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>文件操作</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">fseek</span><span class="p">(</span><span class="n">FILE</span> <span class="o">*</span><span class="n">stream</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">int</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">int</span> <span class="n">whence</span><span class="p">)</span><span class="c1">// 设置流的文件位置为给定的偏移
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 文件流, 偏移, 添加偏移量的位置(0:开头, 1:指针位置, 2:结尾)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">fputc</span><span class="p">(</span><span class="kt">int</span> <span class="kt">char</span><span class="p">,</span> <span class="n">FILE</span> <span class="o">*</span><span class="n">stream</span><span class="p">)</span> <span class="c1">// 将char指定的字符写入指定的流指针处
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">fprintf</span><span class="p">(</span><span class="n">ILE</span> <span class="o">*</span><span class="n">stream</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">format</span><span class="p">,</span> <span class="p">...)</span> <span class="c1">// 格式化字符串输出到流
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">a</span> <span class="o">=</span> <span class="n">_acrt_iob_func</span><span class="p">(</span><span class="mi">1</span><span class="n">i64</span><span class="p">)</span> <span class="c1">// 将标准输出流stdout的文件指针给a，可通过a向标准输出流写数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">fgets</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">str</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="n">FILE</span> <span class="o">*</span><span class="n">stream</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 从文件流读入 n-1 个字符到 str, 第 n 个为\0
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>宏</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">LODWORD</span><span class="p">(</span><span class="n">v4</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span>    <span class="c1">//初始化低32位为0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">HIDWORD</span><span class="p">(</span><span class="n">v4</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span>    <span class="c1">//初始化高32位为0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">SHIDWORD</span><span class="p">(</span><span class="n">v4</span><span class="p">)</span>       <span class="c1">//取高32位并作为有符号整数
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>数据类型：<code>LL</code>即<code>long long int</code></p>
+<p><strong>其他</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">setlocale</span><span class="p">(</span><span class="kt">int</span> <span class="n">category</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">locale</span><span class="p">);</span> <span class="c1">//设置或读取位置相关信息
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>格式化字符串</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">printf</span><span class="p">(</span><span class="s">&#34;%x&#34;</span><span class="p">,</span> <span class="n">a</span><span class="p">);</span> <span class="c1">// 十六进制
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>C逆向代码</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="kt">char</span> <span class="n">password_enc</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="mh">0x49</span><span class="p">,</span> <span class="mh">0x4B</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="kt">char</span> <span class="n">password</span><span class="p">[</span><span class="mi">47</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">46</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">password</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">password_enc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">^</span> <span class="mh">0x24</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">password</span><span class="p">[</span><span class="mi">46</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>         <span class="c1">// 使用0字符来截断掉%s的无尽输出
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">printf</span><span class="p">(</span><span class="s">&#34;%s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">password</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>格式转换相关</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="kt">char</span> <span class="n">Str</span><span class="p">[</span><span class="mi">48</span><span class="p">];</span> <span class="c1">// 假设已输入
+</span></span></span><span class="line"><span class="cl"><span class="c1">//  strlen(const char *Str) [Str是指向数组第一个字符的指针]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span> <span class="p">(</span> <span class="n">strlen</span><span class="p">(</span><span class="n">Str</span><span class="p">)</span> <span class="o">==</span> <span class="mi">12</span> <span class="p">){}</span> <span class="c1">// 12是指12字节, 即Str: &#39;abcdefghijkl&#39;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">process</span><span class="p">(</span><span class="n">Src</span><span class="p">);</span> <span class="c1">// void process(unsigned int *a1)
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 此时Str将被解析为无符号整数 &gt; 32位即4字节, 所以此时进入process后
+</span></span></span><span class="line"><span class="cl"><span class="c1">// &#39;abcd&#39;-&gt;0x61,0x62,0x63,0x64-&gt;小端存储 -&gt;0x64636261
+</span></span></span><span class="line"><span class="cl"><span class="c1">// a[] 3个整数: [0x64636261, 0x68676665, 0x6c6b6a69]
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 假设操作后 0x64636261 变为 0x68676665, 该值传回a[0]时, a[0]换为char时表示&#39;efgh&#39; 
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="c-1">C++</h3>
+<p><code>0xCC</code> 是一种填充字节，通常用于调试表示<strong>未初始化</strong>的内存区域</p>
+<p>Name Mangling：附加修饰函数名，用于辨识参数不同的同名函数</p>
+<p>命令行使用<code>c++filt &lt;name&gt;</code>来获取原始的函数名</p>
+<p>或gdb上使用<code>set print asm-demangle on</code></p>
+<p><strong>IDA相关</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="n">__do_global_ctors</span><span class="p">()</span> <span class="c1">// 编译器生成, 初始化全局和静态对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">a</span> <span class="o">=</span> <span class="mi">20</span><span class="n">i64</span> <span class="c1">// a = 20 且 i64 指定为带符号的64位整数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">ostream</span><span class="o">::</span><span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">v1</span><span class="p">);</span> <span class="c1">// 输出
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Windows API</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">DWORD</span> <span class="nf">GetCurrentThreadId</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span> <span class="c1">// 获取当前线程的标识符
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="可执行文件">可执行文件</h3>
+<h4 id="pe文件">PE文件</h4>
+<p>PE文件（Portable Executable）：32位【PE32】，64位【PE+或PE32+】</p>
+<ul>
+<li>可执行：<code>exe, scr</code></li>
+<li>库：<code>dll, ocx, cpl, drv</code></li>
+<li>驱动程序：<code>sys, vxd</code></li>
+<li>对象文件：<code>obj</code></li>
+</ul>
+<p><img src="/img/reverse_note.zh-cn.assets/-17284517325131.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><strong>DOS头</strong></p>
+<p><img src="/img/reverse_note.zh-cn.assets/-17284517325142.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><strong>DOS存根</strong></p>
+<p>向下兼容，用DOSBox执行PE会输出红色框中字符串</p>
+<p><img src="/img/reverse_note.zh-cn.assets/-17284517325143.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><strong>NT头</strong></p>
+<p><img src="/img/reverse_note.zh-cn.assets/-17284517325144.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><strong>映射</strong></p>
+<p><img src="/img/reverse_note.zh-cn.assets/-17284517325145.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><strong>节Sections</strong></p>
+<ul>
+<li><code>.text</code>：代码段</li>
+<li><code>.idata</code>：放 import tables</li>
+<li><code>.data</code>：初始化数据</li>
+<li><code>.bss</code>：未初始化数据</li>
+<li><code>.reloc</code>：relocation 信息</li>
+<li><code>.rsrc</code>：资源数据</li>
+<li><code>.rdata</code>：只读数据</li>
+<li><code>.tls</code>：Thread Local Storage，线程局部存储数据</li>
+</ul>
+<h5 id="iat">IAT</h5>
+<p>(Import Address Table)，存储在 <code>.idata section</code> 内的表</p>
+<ul>
+<li>程序载入前相当于<code>INT</code>，指向 <code>IMAGE_IMPORT_BY_NAME</code></li>
+<li>程序载入后存储外部引入函数的位置</li>
+</ul>
+<p><img src="/img/reverse_note.zh-cn.assets/-17284517325146.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<h5 id="eat">EAT</h5>
+<p>(Export Address Table)</p>
+<p><img src="/img/reverse_note.zh-cn.assets/-17284517325147.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><strong>应用EAT来做GetProcAddress</strong></p>
+<ol>
+<li>从 module image base 取得指定 API address</li>
+<li>从optional header 的 DataDirectory[0] 取得EAT</li>
+<li>遍历AddressOfNames，寻找指定API名称</li>
+<li>透过AddressOfNameOrdinals得到ordinal</li>
+<li>从AddressOfFunctions得到API RVA，避免直接呼叫GetProcAddress</li>
+</ol>
+<h5 id="peb">PEB</h5>
+<p>（Process Environment Block）</p>
+<p><img src="/img/reverse_note.zh-cn.assets/-17284517325148.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><strong>PEB断链：将特定的module隐藏（x86-64）</strong></p>
+<ol>
+<li>从 gs:[0x60] 取得 PEB</li>
+<li>从 PEB 取得 Ldr</li>
+<li>通过 Ldr 内的 InLoadOrderModuleList 遍历所有  LDR_DATA_TABLE_ENTRY 结构</li>
+<li>找到指定的 LDR_DATA_TABLE_ENTRY 后，将其从三个 linked list 中删除</li>
+</ol>
+<p><strong>应用PEB来做GetModuleHandle</strong></p>
+<ol>
+<li>取得特定的 module image base(x86-64)</li>
+<li>从 gs:[0x60] 取得 PEB</li>
+<li>从 PEB 取得 Ldr</li>
+<li>通过 Ldr 内的 InLoadOrderModuleList 遍历所有  LDR_DATA_TABLE_ENTRY 结构</li>
+<li>比对 BaseDllName 得到 DllBase，避免直接呼叫 GetModuleHandle</li>
+</ol>
+<h5 id="dll">DLL</h5>
+<ul>
+<li>（Dynamic Link Library）导出函数给程序使用</li>
+<li>DLL的main为<strong>DllMain</strong>，载入、卸载时会执行</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="n">BOOL</span> <span class="n">WINAPI</span> <span class="nf">DllMain</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//BOOL: 返回类型        WINAPI: 调用约定
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">HINSTANCE</span> <span class="n">hinstDLL</span><span class="p">,</span>  <span class="c1">// 指向加载 DLL 的实例的句柄的类型
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">DWORD</span> <span class="n">fdwReason</span><span class="p">,</span>     <span class="c1">// 调用函数原因
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">LPVOID</span> <span class="n">lpvReserved</span> <span class="p">)</span>  <span class="c1">// 保留
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">switch</span><span class="p">(</span> <span class="n">fdwReason</span> <span class="p">)</span> 
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">case</span> <span class="nl">DLL_PROCESS_ATTACH</span><span class="p">:</span> 
+</span></span><span class="line"><span class="cl">            <span class="k">break</span><span class="p">;</span><span class="c1">// 进程附加事件,当进程加载这个DLL时执行一次性初始化操作
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">        <span class="k">case</span> <span class="nl">DLL_THREAD_ATTACH</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">break</span><span class="p">;</span><span class="c1">// 线程附加事件,线程从操作系统创建并且该DLL已加载时执行初始化操作
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">        <span class="k">case</span> <span class="nl">DLL_THREAD_DETACH</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">break</span><span class="p">;</span><span class="c1">// 线程分离事件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">        <span class="k">case</span> <span class="nl">DLL_PROCESS_DETACH</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">lpvReserved</span> <span class="o">!=</span> <span class="k">nullptr</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">break</span><span class="p">;</span><span class="c1">// 进程未终止，不执行清理
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="k">break</span><span class="p">;</span><span class="c1">// 清理工作
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">TRUE</span><span class="p">;</span>  <span class="c1">// DLL_PROCESS_ATTACH成功
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>EXE文件在终端运行，不要直接双击</p>
+<h4 id="elf文件"><strong>ELF</strong>文件</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">readelf -S program <span class="c1"># 查看elf文件的section</span>
+</span></span><span class="line"><span class="cl">readelf -a xxx     <span class="c1"># 全部显示</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>节：</strong></p>
+<ul>
+<li>.text节：程序代码指令</li>
+<li>.rodata节：保存只读数据，只能在text段找到.rodata节</li>
+<li>.plt节：过程链接表(Procedure Linkage Table)，包含动态连接器调用从共享库导入的函数所需的代码</li>
+<li>.data节：存在于data段中，保存了初始化的全局变量数据</li>
+<li>.bss节：存于data段中，保存未进行初始化的全局数据，初始化为0，程序执行可进行赋值</li>
+<li>.got.plt节：全局偏移表-过程链接表，.got节保存全局偏移表，.got和.plt节一起提供了对导入的共享库函数的访问入口，由动态连接器在运行时进行修改</li>
+<li>.dynstr节：动态链接字符串表，存放了一系列字符串，空字符作为终止符</li>
+</ul>
+<p><strong>断点</strong></p>
+<ul>
+<li>软件断点：<code>int 3</code>|<code>0xcc</code> 执行触发程序异常：<code>breakpoint_</code>，或产生其他异常如<code>0xce</code></li>
+<li>硬件断点：调试寄存器DR0~DR3设定地址，用DR7设定状态，最多4个
+<ul>
+<li>读/写/执行某精准地址产生异常</li>
+</ul>
+</li>
+<li>内存断点：设置地址不可访问/写属性，读/写/执行该内存时产生异常，调试器判断并接管异常
+<ul>
+<li>改变某分页属性，与<code>VirtualProtect</code>函数有关</li>
+<li>以一整个分页为单位的断点</li>
+</ul>
+</li>
+<li>条件断点：满足特定条件，暂停执行</li>
+</ul>
+<h3 id="大小端序">大小端序</h3>
+<p>字符存储为小端序，所以编写脚本计算时需要将其<strong>倒序</strong></p>
+<p>栈上是小端序存储的</p>
+<h3 id="python">Python</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">itertools</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">choices</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&#34;1&#34;</span><span class="p">,</span> <span class="s2">&#34;2&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">combinations</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="n">choices</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="mi">7</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 7位, 每一位可以为 choices 中的任何一个, 生成所有可能值</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">num</span><span class="si">:</span><span class="s2">02x</span><span class="si">}</span><span class="s2">&#34;</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">int_array</span><span class="p">]</span> <span class="c1"># 整型数组以十六进制输出, 不足用0补足</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>ord()</code>: <strong>字符</strong> 转换为对应的 <strong>ASCII 码值</strong></li>
+<li><code>chr()</code>: <strong>ASCII 码值</strong> 转换为对应的 <strong>字符</strong></li>
+</ul>
+<p><strong>转换</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">binary_data</span> <span class="o">=</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 字节字符串 &#34;0x89&#34; &#34;0x50&#34; 转换为真字节 b&#39;\x89&#39; b&#39;P&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">hex_data</span> <span class="o">=</span> <span class="n">binary_data</span><span class="o">.</span><span class="n">hex</span><span class="p">()</span> 
+</span></span><span class="line"><span class="cl"><span class="c1"># 真字节b&#39;\x89&#39; 转换为字符串&#34;89&#34;, 有时需要binary[::-1]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">hex_type</span> <span class="o">=</span> <span class="nb">hex</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">binary_data</span><span class="o">.</span><span class="n">hex</span><span class="p">(),</span> <span class="mi">16</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 真字节b&#39;\x89&#39; 转换为十六进制字符串&#39;0x89&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">val</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;h&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">hex_value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="c1"># 十六进制字符 &#34;0xabc&#34; 直接转整型 2748</span>
+</span></span><span class="line"><span class="cl"><span class="n">binary_value</span> <span class="o">=</span> <span class="nb">format</span><span class="p">(</span><span class="n">hex_value</span><span class="p">,</span> <span class="s1">&#39;08b&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 十六进制字符串 &#34;FFh&#34; &#34;D8h&#34; 转换为对应的8位二进制数 &#39;11111111&#39; &#39;11011000&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">byte_val</span> <span class="o">=</span> <span class="n">char_val</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span> <span class="c1"># 字符串&#39;2024&#39; 转换为字节 b&#39;2024&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>数据处理</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">data</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;xjowefg, feiwow
+</span></span></span><span class="line"><span class="cl"><span class="s1">    ewioa,  efils , fefe # 杂乱的数据&#39;&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 清理逗号等</span>
+</span></span><span class="line"><span class="cl"><span class="n">hex_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">val</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 每行输出10个</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">hex_values</span><span class="p">),</span> <span class="mi">10</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">hex_values</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">10</span><span class="p">]))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="java">JAVA</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">java -jar xx.jar <span class="c1"># 运行java文件</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>类型</strong></p>
+<p><code>Byte</code>: java.lang中一个类，封装byte</p>
+<p><code>byte</code>: 基本数据类型，整型数据1字节</p>
+<p><strong>格式</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Java" data-lang="Java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">xx</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>输入输出</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Java" data-lang="Java"><span class="line"><span class="cl"><span class="c1">// 输出
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;hello&#34;</span><span class="o">);</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 输入
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">Scanner</span> <span class="n">scanner</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Scanner</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">in</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">String</span> <span class="n">flag</span> <span class="o">=</span> <span class="n">scanner</span><span class="o">.</span><span class="na">next</span><span class="o">();</span> <span class="c1">// 输入一行
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>数据转换</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Java" data-lang="Java"><span class="line"><span class="cl"><span class="c1">// 字符串 转换为 UTF-8字节
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">String</span> <span class="n">s</span> <span class="o">=</span> <span class="s">&#34;hello&#34;</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">byte</span><span class="o">[]</span> <span class="n">by</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="na">getBytes</span><span class="o">(</span><span class="n">StandardCharsets</span><span class="o">.</span><span class="na">UTF_8</span><span class="o">);</span> <span class="c1">// by[i]输出为第i+1个字符的ASCII码值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// byte 转换为 Byte
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">Byte</span> <span class="n">byte_</span> <span class="o">=</span> <span class="n">Byte</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">by</span><span class="o">[</span><span class="n">0</span><span class="o">]);</span> 
+</span></span><span class="line"><span class="cl"><span class="n">byte_</span><span class="o">.</span><span class="na">byteValue</span><span class="o">()</span> <span class="c1">// 取值
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>异常</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Java" data-lang="Java"><span class="line"><span class="cl"><span class="n">Exception</span><span class="o">[]</span> <span class="n">exceptions</span> <span class="o">=</span> <span class="o">{</span> 
+</span></span><span class="line"><span class="cl">    <span class="o">(</span><span class="n">Exception</span><span class="o">)</span><span class="k">new</span> <span class="n">BuDaoLePaoException</span><span class="o">(),</span> 
+</span></span><span class="line"><span class="cl">    <span class="o">(</span><span class="n">Exception</span><span class="o">)</span><span class="k">new</span> <span class="n">DxIsNanTongException</span><span class="o">()</span>
+</span></span><span class="line"><span class="cl"><span class="o">};</span>
+</span></span><span class="line"><span class="cl"><span class="k">try</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">xxx</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">BuDaoLePaoException</span> <span class="n">ex0</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">xxx</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">DxIsNanTongException</span> <span class="n">ex1</span><span class="o">){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">xxx</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">throw</span> <span class="k">new</span> <span class="n">RuntimeException</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span> 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="寄存器">寄存器</h3>
+<p>x86中寄存器：EBP、ESP、EIP、EAX、EBX、ECX、EDX、EDI、ESI</p>
+<p>x86-64中寄存器：RBP、RSP、RIP、RAX、RBX、RCX、RDX、RDI、RSI、R8~R15</p>
+<h2 id="工具">工具</h2>
+<h3 id="pe-bear">PE-bear</h3>
+<h3 id="010editor">010Editor</h3>
+<h3 id="gdb">GDB</h3>
+<p><strong>查看格式</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">x/nfu &lt;addr&gt;
+</span></span><span class="line"><span class="cl">x: examine
+</span></span><span class="line"><span class="cl">n: 个数
+</span></span><span class="line"><span class="cl">f:显示方式
+</span></span><span class="line"><span class="cl">    x:十六进制 d:十进制 u:十进制无符号 o:八进制 t:二进制
+</span></span><span class="line"><span class="cl">    a:十六进制 i:地址格式 c:字符格式 f:浮点数
+</span></span><span class="line"><span class="cl">u:地址单元长度
+</span></span><span class="line"><span class="cl">    b:单字节 h:双字节 w:四字节 g:八字节
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>针对汇编<code>cmp eax, DWORD PTR [rbp-0x94]</code>查看地址中内容</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">b *xxx <span class="c1"># 通过objdump确定设置断点的地址</span>
+</span></span><span class="line"><span class="cl">x/wx <span class="nv">$rbp</span>-0x94 <span class="c1"># gdb中查看内容</span>
+</span></span><span class="line"><span class="cl">x/sw <span class="nv">$eax</span> <span class="c1"># eax中内容以字符串形式显示</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>命令</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">disassemble func <span class="c1"># 查看函数反汇编</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">info registers <span class="c1"># 查看寄存器地址</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="ida">IDA</h3>
+<p><strong>取IDA数据时，小端序取，4个4个倒过来取</strong></p>
+<p>函数窗口：<code>ctrl+F</code>搜索函数</p>
+<p>导入函数窗口：<code>Imports</code>窗口，导入的一些函数</p>
+<p>添加反汇编注释：<code>option &gt; general &gt; Display disassembly line parts &gt; Auto comments</code></p>
+<p>反汇编窗口字体调整：<code>option &gt; font</code></p>
+<p>十六进制窗口编辑：<code>F2</code>，<code>F2</code>保存</p>
+<p>函数窗口中<code>shift+F5</code>打开应用库模块列表，继续按<code>insert</code>键打开可用库模块列表，进行导入</p>
+<p>使用<code>d</code>可以将数据改变大小从byte转换为2bytes-word，4bytes-dword，8bytes-qword</p>
+<p>或者右键设置<code>Array</code>，改变数组显示</p>
+<p><code>undefine</code>可以将识别错误的代码取消，然后右键将字节转换为相应类型</p>
+<p>清除指针类型用于重新定义结构体：右键 &gt; <code>Reset pointer type</code></p>
+<p><code>db, dw, dd, dq </code>分别代表 <strong>1, 2, 4, 8</strong> 字节</p>
+<p>一般直接 <code>shift + F12</code> 找字符串窗口，对应字符位置<code>ctrl + x</code> 找到函数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">db 2 dup(14h)`表示 define byte定义字节，2个`14h
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查看机器码：<code>Options </code>&gt; <code>General </code>&gt; <code>opcode</code></p>
+<p><strong>应用：</strong></p>
+<p><strong>变量为64位，8字节，则在栈中需要8字节空间</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">v1</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="n">func</span><span class="p">((</span><span class="kr">__int64</span><span class="p">)</span><span class="n">v1</span><span class="p">);</span> <span class="c1">// 表示将v1的地址转为64位整数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">*</span><span class="p">(</span><span class="n">_DWORD</span> <span class="o">*</span><span class="p">)(</span><span class="n">v1</span> <span class="o">+</span> <span class="n">v2</span><span class="p">)</span> <span class="o">+</span> <span class="n">v3</span><span class="p">;</span> <span class="c1">// v1数组偏移v2的地址处取一个32位整数(dword)值 与v3相加
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="o">*</span><span class="p">(</span><span class="n">_QWORD</span> <span class="o">*</span><span class="p">)</span><span class="n">List</span> <span class="c1">// 读取 List 的前 64 位数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">(</span><span class="n">_DWORD</span><span class="p">)</span><span class="n">v4</span> <span class="c1">// 取低32位
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="n">result</span> <span class="o">&gt;&gt;</span> <span class="mi">32</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFFFFFFFF</span>  <span class="c1">// 取高32位
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">(</span><span class="n">result</span><span class="p">)</span>       <span class="o">&amp;</span> <span class="mh">0xFFFFFFFF</span>  <span class="c1">// 取低32位
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">v4</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">__int64</span> <span class="n">a1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">*</span><span class="p">(</span><span class="n">_DWORD</span> <span class="o">*</span><span class="p">)(</span><span class="n">a1</span> <span class="o">+</span> <span class="mi">4</span><span class="n">i64</span> <span class="o">*</span> <span class="p">(</span><span class="n">v4</span> <span class="o">&amp;</span> <span class="mi">3</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// v4 &amp; 3(11) 即取低两位, 确保为 0,1,2,3, a1表示某内存区域首地址
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 4i64为一个4字节, 作为a1偏移的单位, 即a1偏移0|1|2|3个4字节的位置取一个DWORD32位
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">__halt</span><span class="p">();</span> <span class="c1">// 暂停处理器
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">unsigned</span> <span class="n">_int8</span> <span class="c1">// 无符号8位整型
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="c1">// 32位整型
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">.</span><span class="nl">data</span><span class="p">:</span><span class="mo">0000000140022000</span> <span class="n">array</span>  <span class="n">db</span> <span class="mi">0</span><span class="n">A3h</span><span class="p">,</span> <span class="mi">69</span><span class="n">h</span><span class="p">,</span> <span class="mi">96</span><span class="n">h</span><span class="p">,</span> <span class="mi">26</span><span class="n">h</span><span class="p">,</span> <span class="mi">0</span><span class="n">BDh</span><span class="p">,</span> <span class="mi">78</span><span class="n">h</span><span class="p">,</span> <span class="mi">0</span><span class="n">Bh</span><span class="p">,</span> <span class="mi">3</span><span class="n">Dh</span><span class="p">,</span> <span class="mi">9</span><span class="n">Dh</span><span class="p">,</span> <span class="mi">0</span><span class="n">A5h</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nl">data</span><span class="p">:</span><span class="mo">0000000140022000</span>                                  <span class="p">;</span> <span class="n">DATA</span> <span class="nl">XREF</span><span class="p">:</span> <span class="n">main_0</span><span class="o">+</span><span class="mi">202</span><span class="err">↑</span><span class="n">o</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nl">data</span><span class="p">:</span><span class="mo">000000014002200</span><span class="n">A</span>        <span class="n">db</span> <span class="mi">28</span><span class="n">h</span><span class="p">,</span> <span class="mi">62</span><span class="n">h</span><span class="p">,</span> <span class="mi">34</span><span class="n">h</span> <span class="n">dup</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 此处存储一般为 0x269669a3, 0x3d0b780b, 0x6228a59d
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>插件：</strong></p>
+<p><strong>快捷键：</strong></p>
+<p><code>A</code>：转换为字符串（ASCII）</p>
+<p><code>R</code>：转换为char型</p>
+<p><code>C</code>：转换为代码（code）</p>
+<p><code>ctrl+shift+w</code>：IDA不提供撤消，使用快照功能【<code>file &gt; take database snapshot</code>】</p>
+<p><code>ctrl+E</code>：函数窗口对函数进行编辑</p>
+<p><code>X</code>：查看函数的交叉引用，如何被引用</p>
+<p><code>Y</code>：修改局部变量类型</p>
+<p><code>;</code>：汇编界面添加注释</p>
+<p><code>/</code>：伪代码界面添加注释</p>
+<p><code>Ctrl + P</code>：函数跳转</p>
+<p><code>Alt + T</code>：搜索文本字符串</p>
+<p><code>Shift + F2</code>：脚本执行窗口</p>
+<p><code>F6</code>：回到最近操作的窗口</p>
+<p><code>Ctrl + x</code>：对变量输入，可以获取哪个函数使用了这个变量</p>
+<p><strong>动态调试</strong></p>
+<p>选择Load WIndows debugger调试器，设置断点在某一代码行</p>
+<p><img src="/img/reverse_note.zh-cn.assets/-17284517325159.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><code>F7</code>: 单步步入</p>
+<p><code>F8</code>: 单步步出</p>
+<p><code>Ctrl + F7</code>: 直到返回跳出函数</p>
+<p>可以点击寄存器区的寄存器箭头前往hex程序区</p>
+<p><strong>远程调试(如windows调试linux下文件)</strong></p>
+<ol>
+<li>IDA pro安装目录下的<code>dbgsrv</code>文件夹下选择调试的程序linux_server</li>
+<li>在相应远程linux主机设置权限并执行linux_server</li>
+<li>IDA选择Remote Linux debugger，<code>Debugger &gt; Process options</code>，设置远程Linux IP地址</li>
+</ol>
+<p><code>__debugbreak()</code>：在代码中引入断点，系统会提示用户运行调试器</p>
+<h3 id="ghidra">Ghidra</h3>
+<p><code>Symbol Tree</code>中包含<code>Functions</code>, <code>Classes</code>等，在<code>m</code>中有main函数</p>
+<p><strong>查看函数调用关系</strong>：<code>Window</code> &gt; <code>Function Call Graph</code></p>
+<p><strong>变量重命名</strong>：<code>右键</code> &gt; <code>Rename Variable</code>，快捷键<code>l</code></p>
+<p><strong>点亮所有变量</strong>：鼠标中键</p>
+<p><strong>注释</strong>：<code>右键</code> &gt; <code>Comments</code></p>
+<p><strong>改函数签名</strong>：<code>右键</code> &gt; <code>Edit Function Signature</code></p>
+<p><strong>改数字的进制</strong>：右键</p>
+<h3 id="die">DIE</h3>
+<p>（Detect It Easy）查壳工具</p>
+<h3 id="peid">Peid</h3>
+<h3 id="exeinfo-pe">Exeinfo PE</h3>
+<p>查壳工具</p>
+<h3 id="ollydbg">OllyDbg</h3>
+<p>只适用32位，不再更新</p>
+<p><code>F2</code>：下断点</p>
+<p><code>F4</code>：运行到光标位置</p>
+<p><code>F7</code>：单步步入</p>
+<p><code>F8</code>：单步步过</p>
+<p><code>F9</code>：运行，到断点处</p>
+<p><code>F12</code>：暂停运行程序</p>
+<p>重新开始：<code>x</code>图标 + <code>&lt;&lt;</code>图标</p>
+<p>插件 &gt; 中文搜索引擎 &gt; 搜索 ASCII：找字符串</p>
+<p>查看函数调用：右键 &gt; 查看调用树</p>
+<p>双击代码和注释都可直接进行修改</p>
+<p>**查找数据并修改：**数据窗口 &gt; <code>Alt + M</code>打开Memory map &gt; <code>Ctrl + B</code>进行搜索 &gt; 右键可以修改，需要进行保存【右键复制到可执行文件】 &gt; 保存文件</p>
+<p>**跳出循环：**右键 &gt; 断点 &gt; 运行到选定位置</p>
+<p><strong>工具栏窗口：</strong></p>
+<p>1.日志窗口(L) 2.模块窗口(E):查看每个模块的内存基址</p>
+<p>3.内存窗口(M):查看每一个模块的段,所占用的内存区域</p>
+<p>4.线程窗口(T):线程信息</p>
+<p>5.窗口(W):查看程序的窗口句柄,窗口名,风格样式,回调函数等信息</p>
+<p>6.句柄(H)</p>
+<p>7.反汇编窗口( C)</p>
+<p>8.补丁窗口(/)</p>
+<p>9:<strong>堆栈窗口(K)</strong>:可查看调用堆栈,调试时堆栈回溯：<code>右键</code> &gt; <code>显示调用</code></p>
+<p>10.断点窗口(B):显示所有的F2断点</p>
+<p>11.参考( R)</p>
+<p>12.run跟踪窗口(…)</p>
+<h3 id="x64dbg">x64dbg</h3>
+<p>适用于32位和64位调试</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>反汇编显示区</th>
+<th>寄存器显示区</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>内存数据显示区</td>
+<td>栈显示区</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>运行到用户代码 点击</strong></li>
+<li><code>Az</code>图标：查看字符串</li>
+</ul>
+<p>循环箭头按键：为重新运行</p>
+<p>右箭头按键：直接运行</p>
+<p>快捷键：</p>
+<p><code>ctrl+G</code>：跳转到目标地址/表达式</p>
+<p><code>F2</code>：下断点</p>
+<p><code>F4</code>：运行到光标位置</p>
+<p><code>F7</code>：单步步入</p>
+<p><code>F8</code>：单步步过</p>
+<p><code>F9</code>：运行</p>
+<p><strong>空格修改汇编代码</strong></p>
+<p>可以右键修改十六进制代码：修复错误时将字节改为<strong>90</strong>(<strong>nop</strong>)</p>
+<p>可以对代码转到对应的内存空间位置：右键 &gt; 在内存布局中转到</p>
+<p>搜索命令：右键 &gt; 所有用户模块 &gt; 命令，如寻找<code>pushad</code></p>
+<h3 id="gnu-binary-utilities">GNU Binary Utilities</h3>
+<h3 id="gdbpwndbg">GDB/PWNDBG</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="nb">set</span> var $<span class="nv">寄存器</span> <span class="o">=</span> expr <span class="c1">#修改寄存器的值</span>
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> <span class="o">{</span>type<span class="o">}</span><span class="nv">address</span> <span class="o">=</span> expr <span class="c1">#给存储在address地址的变量类型为type的变量赋值</span>
+</span></span><span class="line"><span class="cl">Fin：运行当前函数直到结束
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="upxshell">UPXshell</h3>
+<p>在Windows下进行UPX脱壳</p>
+<h3 id="jadx">Jadx</h3>
+<p>APK分析工具</p>
+<p>获取反编译后的JAVA原码且可视化，能打开文件格式：<code>.apk, .dex, .jar, .class, .smali, .zip, .aar, .ars</code></p>
+<h3 id="jd-gui">jd-gui</h3>
+<p>反编译jar包，获取JAVA源码</p>
+<h3 id="ilspy">ILSpy</h3>
+<p>用于<code>dll</code>文件的逆向，可以查看<code>Program</code>程序代码</p>
+<h3 id="z3-solver">Z3-Solver</h3>
+<p><code>pip install -i ``https://pypi.tuna.tsinghua.edu.cn/simple`` z3-solver</code>指定镜像源安装</p>
+<h3 id="qemu">QEMU</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="c1"># 创建虚拟磁盘</span>
+</span></span><span class="line"><span class="cl">qemu-img create -f raw hello.img 10G
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="算法">算法</h2>
+<h3 id="tea系列">TEA系列</h3>
+<p>均会使用特征值$$\delta$$：**0x9e3779b9，**在IDA中可能使用补码表示：<strong>0x61c88647</strong>，可使用python：</p>
+<p><strong><code>hex(0xffffffff -  0x61c88647 + 1)</code></strong> <strong>得到 0x9e3779b9</strong></p>
+<h4 id="tea">TEA</h4>
+<p>Tiny Encryption Algorithm，使用Feistel分组加密框架，64轮迭代，原文以8字节(64位)为一组，密钥16字节(128位)，具体实现过程：</p>
+<p><img src="/img/reverse_note.zh-cn.assets/-172845173251510.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><strong>加解密实现</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdint.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 无论是64位还是32位都可以使用uint32_t
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">//加密函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">encrypt</span> <span class="p">(</span><span class="kt">uint32_t</span><span class="o">*</span> <span class="n">v</span><span class="p">,</span> <span class="kt">uint32_t</span><span class="o">*</span> <span class="n">k</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint32_t</span> <span class="n">v0</span><span class="o">=</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v1</span><span class="o">=</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sum</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint32_t</span> <span class="n">delta</span><span class="o">=</span><span class="mh">0x9e3779b9</span><span class="p">;</span> <span class="c1">// 固定值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">uint32_t</span> <span class="n">k0</span><span class="o">=</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">k1</span><span class="o">=</span><span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">k2</span><span class="o">=</span><span class="n">k</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">k3</span><span class="o">=</span><span class="n">k</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">32</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 实际64轮, 此处一次循环两轮
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">sum</span> <span class="o">+=</span> <span class="n">delta</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">v0</span> <span class="o">+=</span> <span class="p">((</span><span class="n">v1</span><span class="o">&lt;&lt;</span><span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="n">k0</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="n">v1</span> <span class="o">+</span> <span class="n">sum</span><span class="p">)</span> <span class="o">^</span> <span class="p">((</span><span class="n">v1</span><span class="o">&gt;&gt;</span><span class="mi">5</span><span class="p">)</span> <span class="o">+</span> <span class="n">k1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">v1</span> <span class="o">+=</span> <span class="p">((</span><span class="n">v0</span><span class="o">&lt;&lt;</span><span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="n">k2</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="n">v0</span> <span class="o">+</span> <span class="n">sum</span><span class="p">)</span> <span class="o">^</span> <span class="p">((</span><span class="n">v0</span><span class="o">&gt;&gt;</span><span class="mi">5</span><span class="p">)</span> <span class="o">+</span> <span class="n">k3</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">v0</span><span class="p">;</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="n">v1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//解密函数 循环内颠倒顺序
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">decrypt</span> <span class="p">(</span><span class="kt">uint32_t</span><span class="o">*</span> <span class="n">v</span><span class="p">,</span> <span class="kt">uint32_t</span><span class="o">*</span> <span class="n">k</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint32_t</span> <span class="n">v0</span><span class="o">=</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v1</span><span class="o">=</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sum</span><span class="o">=</span><span class="mh">0xC6EF3720</span><span class="p">,</span> <span class="n">i</span><span class="p">;</span> <span class="c1">// sum是32次循环的delta之和
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">uint32_t</span> <span class="n">delta</span><span class="o">=</span><span class="mh">0x9e3779b9</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint32_t</span> <span class="n">k0</span><span class="o">=</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">k1</span><span class="o">=</span><span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">k2</span><span class="o">=</span><span class="n">k</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">k3</span><span class="o">=</span><span class="n">k</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">32</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">v1</span> <span class="o">-=</span> <span class="p">((</span><span class="n">v0</span><span class="o">&lt;&lt;</span><span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="n">k2</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="n">v0</span> <span class="o">+</span> <span class="n">sum</span><span class="p">)</span> <span class="o">^</span> <span class="p">((</span><span class="n">v0</span><span class="o">&gt;&gt;</span><span class="mi">5</span><span class="p">)</span> <span class="o">+</span> <span class="n">k3</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">v0</span> <span class="o">-=</span> <span class="p">((</span><span class="n">v1</span><span class="o">&lt;&lt;</span><span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="n">k0</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="n">v1</span> <span class="o">+</span> <span class="n">sum</span><span class="p">)</span> <span class="o">^</span> <span class="p">((</span><span class="n">v1</span><span class="o">&gt;&gt;</span><span class="mi">5</span><span class="p">)</span> <span class="o">+</span> <span class="n">k1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sum</span> <span class="o">-=</span> <span class="n">delta</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">v0</span><span class="p">;</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="n">v1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 短数据加解密
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">uint32_t</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">},</span><span class="n">k</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// v为要加密的数据是两个32位无符号整数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// k为加密解密密钥，为4个32位无符号整数，即密钥长度为128位
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;加密前原始数据：%u %u</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">encrypt</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">k</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;加密后的数据：%u %u</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">decrypt</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">k</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;解密后的数据：%u %u</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1">// 长数据加解密
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">char</span> <span class="n">data</span><span class="p">[]</span> <span class="o">=</span> <span class="s">&#34;password123456789&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint32_t</span> <span class="n">key</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="mh">0x11111111</span><span class="p">,</span><span class="mh">0x22222222</span><span class="p">,</span><span class="mh">0x33333333</span><span class="p">,</span><span class="mh">0x44444444</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="n">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">strlen</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">/</span><span class="mi">8</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">encrypt</span><span class="p">((</span><span class="kt">uint32_t</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">8</span><span class="p">],</span> <span class="n">key</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;加密后：%s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="n">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">strlen</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">/</span><span class="mi">8</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">decrypt</span><span class="p">((</span><span class="kt">uint32_t</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">8</span><span class="p">],</span> <span class="n">key</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;解密后：%s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="xtea">XTEA</h4>
+<p>Delta值可以更改，<strong>tea</strong>取 key 的时候是固定下标取的，现在通过<strong>计算</strong>取</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;stdint.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span> 
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">encipher</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">num_rounds</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="kt">uint32_t</span> <span class="k">const</span> <span class="n">key</span><span class="p">[</span><span class="mi">4</span><span class="p">]){</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">uint32_t</span> <span class="n">v0</span><span class="o">=</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">v1</span><span class="o">=</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">sum</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">delta</span><span class="o">=</span><span class="mh">0x9E3779B9</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">num_rounds</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="n">v0</span><span class="o">+=</span><span class="p">(((</span><span class="n">v1</span><span class="o">&lt;&lt;</span><span class="mi">4</span><span class="p">)</span><span class="o">^</span><span class="p">(</span><span class="n">v1</span><span class="o">&gt;&gt;</span><span class="mi">5</span><span class="p">))</span><span class="o">+</span><span class="n">v1</span><span class="p">)</span><span class="o">^</span><span class="p">(</span><span class="n">sum</span><span class="o">+</span><span class="n">key</span><span class="p">[</span><span class="n">sum</span><span class="o">&amp;</span><span class="mi">3</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">sum</span><span class="o">+=</span><span class="n">delta</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">v1</span><span class="o">+=</span><span class="p">(((</span><span class="n">v0</span><span class="o">&lt;&lt;</span><span class="mi">4</span><span class="p">)</span><span class="o">^</span><span class="p">(</span><span class="n">v0</span><span class="o">&gt;&gt;</span><span class="mi">5</span><span class="p">))</span><span class="o">+</span><span class="n">v0</span><span class="p">)</span><span class="o">^</span><span class="p">(</span><span class="n">sum</span><span class="o">+</span><span class="n">key</span><span class="p">[(</span><span class="n">sum</span><span class="o">&gt;&gt;</span><span class="mi">11</span><span class="p">)</span><span class="o">&amp;</span><span class="mi">3</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">v0</span><span class="p">;</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="n">v1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">decipher</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">num_rounds</span><span class="p">,</span><span class="kt">uint32_t</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="kt">uint32_t</span> <span class="k">const</span> <span class="n">key</span><span class="p">[</span><span class="mi">4</span><span class="p">]){</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">uint32_t</span> <span class="n">v0</span><span class="o">=</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">v1</span><span class="o">=</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">delta</span><span class="o">=</span><span class="mh">0x9E3779B9</span><span class="p">,</span><span class="n">sum</span><span class="o">=</span><span class="n">delta</span><span class="o">*</span><span class="n">num_rounds</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">num_rounds</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">v1</span><span class="o">-=</span><span class="p">(((</span><span class="n">v0</span><span class="o">&lt;&lt;</span><span class="mi">4</span><span class="p">)</span><span class="o">^</span><span class="p">(</span><span class="n">v0</span><span class="o">&gt;&gt;</span><span class="mi">5</span><span class="p">))</span><span class="o">+</span><span class="n">v0</span><span class="p">)</span><span class="o">^</span><span class="p">(</span><span class="n">sum</span><span class="o">+</span><span class="n">key</span><span class="p">[(</span><span class="n">sum</span><span class="o">&gt;&gt;</span><span class="mi">11</span><span class="p">)</span><span class="o">&amp;</span><span class="mi">3</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sum</span><span class="o">-=</span><span class="n">delta</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">v0</span><span class="o">-=</span><span class="p">(((</span><span class="n">v1</span><span class="o">&lt;&lt;</span><span class="mi">4</span><span class="p">)</span><span class="o">^</span><span class="p">(</span><span class="n">v1</span><span class="o">&gt;&gt;</span><span class="mi">5</span><span class="p">))</span><span class="o">+</span><span class="n">v1</span><span class="p">)</span><span class="o">^</span><span class="p">(</span><span class="n">sum</span><span class="o">+</span><span class="n">key</span><span class="p">[</span><span class="n">sum</span><span class="o">&amp;</span><span class="mi">3</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> 
+</span></span><span class="line"><span class="cl">        <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">v0</span><span class="p">;</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="n">v1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 输入十六进制, 可能需要倒序2个2个输入如: 0x12345678 , 用 0x78563412 输入
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">uint32_t</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">};</span> 
+</span></span><span class="line"><span class="cl">        <span class="kt">uint32_t</span> <span class="k">const</span> <span class="n">k</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">r</span><span class="o">=</span><span class="mi">32</span><span class="p">;</span>                                <span class="c1">//这里是加密轮数，自己设置 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">printf</span><span class="p">(</span><span class="s">&#34;加密前原始数据：%u %u</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="c1">// 更改为%x显示十六进制
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">encipher</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="n">k</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">printf</span><span class="p">(</span><span class="s">&#34;加密后原始数据：%u %u</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">decipher</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="n">k</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">printf</span><span class="p">(</span><span class="s">&#34;解密后原始数据：%u %u</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="c1">// 字符ASCII范围 &lt; 0x7f | 127
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="xxtea">XXTEA</h4>
+<p><img src="/img/reverse_note.zh-cn.assets/-172845181249123.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p>原字符串长度可以不是<strong>4</strong>的倍数，明文分成若干固定长度块，每个块加密后，拼接</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdint.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define DELTA 0x9e3779b9
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define MX (((z &gt;&gt; 5 ^ y &lt;&lt; 2) + (y &gt;&gt; 3 ^ z &lt;&lt; 4)) ^ ((sum ^ y) + (key[(p &amp; 3) ^ e] ^ z)))
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1">// 混淆操作, 密码学扩散原理, xxtea特征
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">xxtea</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="o">*</span><span class="n">v</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="k">const</span> <span class="n">key</span><span class="p">[</span><span class="mi">4</span><span class="p">]){</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint32_t</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">sum</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">unsigned</span> <span class="n">p</span><span class="p">,</span> <span class="n">rounds</span><span class="p">,</span> <span class="n">e</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">    <span class="c1">// 加密
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">rounds</span> <span class="o">=</span> <span class="mi">6</span> <span class="o">+</span> <span class="mi">52</span> <span class="o">/</span> <span class="n">n</span><span class="p">;</span> <span class="c1">// 循环轮数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">z</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="k">do</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sum</span> <span class="o">+=</span> <span class="n">DELTA</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">e</span> <span class="o">=</span> <span class="p">(</span><span class="n">sum</span> <span class="o">&gt;&gt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">3</span><span class="p">;</span><span class="c1">// e: sum&gt;&gt;2
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="k">for</span> <span class="p">(</span><span class="n">p</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">p</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">p</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="n">y</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">p</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">                <span class="n">z</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">+=</span> <span class="n">MX</span><span class="p">;</span> <span class="c1">// 本质上还是双整形加密,用v[p]和v[p+1]对v[p]加密
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="c1">// v[p] += MX;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="c1">// z = v[p];
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="n">y</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">            <span class="n">z</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">MX</span><span class="p">;</span> <span class="c1">// 一轮加密的最后用v[n-1]和v[0]对v[n-1]加密
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="o">--</span><span class="n">rounds</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 解密
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">n</span> <span class="o">=</span> <span class="o">-</span><span class="n">n</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">rounds</span> <span class="o">=</span> <span class="mi">6</span> <span class="o">+</span> <span class="mi">52</span> <span class="o">/</span> <span class="n">n</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sum</span> <span class="o">=</span> <span class="n">rounds</span> <span class="o">*</span> <span class="n">DELTA</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">y</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="k">do</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">e</span> <span class="o">=</span> <span class="p">(</span><span class="n">sum</span> <span class="o">&gt;&gt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">3</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="p">(</span><span class="n">p</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">p</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span> <span class="n">p</span><span class="o">--</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="n">z</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">p</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">                <span class="n">y</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">-=</span> <span class="n">MX</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="n">z</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">            <span class="n">y</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-=</span> <span class="n">MX</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sum</span> <span class="o">-=</span> <span class="n">DELTA</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="o">--</span><span class="n">rounds</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint32_t</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint32_t</span> <span class="k">const</span> <span class="n">k</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">};</span> <span class="c1">// 128位
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span><span class="c1">// n的绝对值为v长度，取正表示加密，取负表示解密
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;%#10x %#10x</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">xxtea</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">);</span> <span class="c1">// n&gt;0为加密
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;%#10x %#10x</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">xxtea</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="o">-</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">);</span> <span class="c1">// n&lt;0为解密
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;%#10x %#10x</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="md5">md5</h3>
+<p>有4个固定的32bit值</p>
+<h3 id="sm4">SM4</h3>
+<ul>
+<li>分组密码，4组，分组长度128位，密钥长度128位，加解密算法相同，轮密钥使用次序相反，32轮非线性迭代</li>
+<li>轮密钥 rK 有32个</li>
+<li>$$X_{i+4}=F(X_i,X_{i+1},X_{i+2},X_{i+3},rK_i)=X_i ⊕ T( X_{i+1}⊕X_{i+2}⊕X_{i+3}⊕rK_i$$</li>
+</ul>
+<p><img src="/img/reverse_note.zh-cn.assets/-172845181249224.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><strong>F函数中的T函数</strong></p>
+<p>T：合成置换，可逆变换，由非线性变换$$\ta$$和线性变换$$$$复合而成：$$T()=L(\tau()$$</p>
+<ol>
+<li>非线性变换 A 到 B，A 和 B 均为32位，$$\ta$$由4个并行S盒构成【固定的256字节的数组】</li>
+</ol>
+<p>$$B =（b_0,b_1,b_2,b_3）= τ(A)=(Sbox(a_0),Sbox(a_0),Sbox(a_0),Sbox(a_0)$$</p>
+<p>查表规则：有 F 行 F 列，输入的32位可表示为2个十六进制数，一个做行一个做列找值替换</p>
+<p><img src="/img/reverse_note.zh-cn.assets/-172845181249225.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<ol>
+<li>线性变换 B 到 C，均为32位，此处为<strong>循环左移</strong></li>
+</ol>
+<p>$$C = L(B) = B ⊕（B&laquo;&lt;2） ⊕(B&laquo;&lt;10) ⊕(B&laquo;&lt;18) ⊕(B&laquo;&lt;24)$$</p>
+<p><strong>轮密钥扩展</strong></p>
+<p>密钥128位，$$MK=(MK_0,MK_1,MK_2,MK_3$$，轮密钥由密钥生成</p>
+<p>系统参数：$$FK=(FK_0,FK_1,FK_2,FK_3$$，固定参数：$$CK=(CK_0,CK_1,\cdots ,CK_{31})$$</p>
+<p><img src="/img/reverse_note.zh-cn.assets/-172845181249326.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><img src="/img/reverse_note.zh-cn.assets/-172845181249327.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<ul>
+<li>$$(K_0,K_1,K_2,K_3)= (MK_0⊕FK_0, MK_1⊕, FK_1, MK_2⊕FK_2, MK_3⊕FK_3)$$
+<ul>
+<li>$$rK_i=K_{i+4}=K_i⊕T’(K_{i+1}⊕K_{i+2}⊕K_{i+3}⊕CK_i)&mdash;-[i=0,\cdots,31]$$</li>
+</ul>
+</li>
+</ul>
+<p>$$T$$即将 $$$$ 中的 $$$$ 替换为 $$L$$：$$L&rsquo;(B)=B\oplus (B\lt\lt\lt 13)\oplus(B\lt\lt\lt 23)$$</p>
+<p><strong>解密</strong></p>
+<p>由于$$X_{i+4}=F(X_i,X_{i+1},X_{i+2},X_{i+3~}rK_i)=X_i ⊕ T( X_{i+1}⊕X_{i+2}⊕X_{i+3}⊕rK_i$$</p>
+<p>所以$$X_i=F(X_{i+4},X_{i+1},X_{i+2},X_{i+3},rK_i)=X_{i+4} ⊕ T(X_{i+1}⊕X_{i+2}⊕X_{i+3}⊕rK_i$$</p>
+<p>将密文逆序，轮密钥也逆序，解密流程即加密流程的逆序</p>
+<h3 id="rc4">RC4</h3>
+<p>对称加密算法，包括<strong>初始化算法</strong>（KSA)和<strong>加密算法</strong></p>
+<p><img src="/img/reverse_note.zh-cn.assets/-172845181249328.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><strong>初始化过程</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">rc4_init</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span><span class="o">*</span><span class="n">S</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">char</span><span class="o">*</span><span class="n">key</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">Len</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">char</span> <span class="n">T</span><span class="p">[</span><span class="mi">256</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">tmp</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="c1">// 初始化 S 和 T 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">256</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">key</span><span class="p">[</span><span class="n">i</span><span class="o">%</span><span class="n">Len</span><span class="p">];</span> <span class="c1">// Len 为 key 的长度
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="c1">// 初始排列 S
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">256</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">j</span> <span class="o">=</span> <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">%</span> <span class="mi">256</span><span class="p">;</span> <span class="c1">// 开始混淆
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="n">tmp</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> 
+</span></span><span class="line"><span class="cl">                <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="n">j</span><span class="p">];</span> <span class="c1">// 交换s[i]和s[j]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="n">S</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>加解密过程</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">rc4_crypt</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span><span class="o">*</span><span class="n">S</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">char</span><span class="o">*</span><span class="n">Data</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">Len</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span> <span class="c1">// 加解密同一函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// 明文索引
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">tmp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">Len</span><span class="p">;</span> <span class="n">k</span><span class="o">++</span><span class="p">)</span> <span class="c1">// Len 明文长度
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="c1">// 生成密钥流，利用密钥流和明文进行加密
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="n">i</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">256</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">j</span> <span class="o">=</span> <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">%</span> <span class="mi">256</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">tmp</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">                <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="n">j</span><span class="p">];</span> <span class="c1">// 交换 S[x] 和 S[y] 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="n">S</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">S</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">%</span> <span class="mi">256</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">Data</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">^=</span> <span class="n">S</span><span class="p">[</span><span class="n">t</span><span class="p">];</span> <span class="c1">// S_box 和明文 xor 加密
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>调用</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">system</span><span class="p">(</span><span class="s">&#34;chcp 65001&#34;</span><span class="p">);</span> <span class="c1">// 防止终端乱码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 赋值： unsigned __int8 data[] = {27, 155, 251, 25, 6, 106}
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">S</span><span class="p">[</span><span class="mi">256</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span> <span class="c1">// S_box
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">char</span> <span class="n">key</span><span class="p">[</span><span class="mi">256</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">char</span> <span class="n">data</span><span class="p">[</span><span class="mi">256</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">        <span class="n">printf</span><span class="p">(</span><span class="s">&#34;输入密钥：&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">scanf</span><span class="p">(</span><span class="s">&#34;%s&#34;</span><span class="p">,</span><span class="n">key</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">length</span> <span class="o">=</span> <span class="n">strlen</span><span class="p">(</span><span class="n">key</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">rc4_init</span><span class="p">(</span><span class="n">S</span><span class="p">,</span><span class="n">key</span><span class="p">,</span><span class="n">length</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="n">printf</span><span class="p">(</span><span class="s">&#34;输入密文：&#34;</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl">        <span class="n">scanf</span><span class="p">(</span><span class="s">&#34;%s&#34;</span><span class="p">,</span><span class="n">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">rc4_crypt</span><span class="p">(</span><span class="n">S</span><span class="p">,</span><span class="n">data</span><span class="p">,</span><span class="n">length</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">printf</span><span class="p">(</span><span class="s">&#34;加/解密结果：%s&#34;</span><span class="p">,</span><span class="n">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="base算法">Base算法</h3>
+<p>密码+编码</p>
+<h4 id="base64">base64</h4>
+<p>基于64个可打印字符来表示二进制数据，6个bit为一个单元</p>
+<h2 id="代码混淆">代码混淆</h2>
+<h3 id="脏字节">脏字节</h3>
+<p>在汇编中加入<code>db 232</code></p>
+<p><img src="/img/reverse_note.zh-cn.assets/-172845181249329.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<h3 id="花指令">花指令</h3>
+<p><img src="/img/reverse_note.zh-cn.assets/-172845181249330.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov eax, $
+</span></span><span class="line"><span class="cl">add eax, 12
+</span></span><span class="line"><span class="cl">jmp eax    ;跳转到寄存器中的地址
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="smc技术">SMC技术</h3>
+<p><strong>Self Modifying Code</strong>：自解码代码，程序中的部分代码加密，并插入解密代码，当程序需要运行源代码时，调用解密函数解密该部分代码，再跳转执行，阻止静态分析</p>
+<p><strong>Windows</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="c1">// API函数，允许应用程序改变内存页的保护属性
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">BOOL</span> <span class="n">VirtualProtect</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">LPCVOID</span> <span class="n">lpAddress</span><span class="p">,</span>    <span class="c1">// 内存页起始地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">SIZE_T</span> <span class="n">dwSize</span><span class="p">,</span>        <span class="c1">// 内存页大小
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">DWORD</span> <span class="n">flNewProtect</span><span class="p">,</span>   <span class="c1">// 新保护属性
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">PDWORD</span> <span class="n">lpfloldProtect</span> <span class="c1">// 存储旧的保护属性
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="反调试">反调试</h3>
+<p>函数声明</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="kt">long</span> <span class="nf">ptrace</span><span class="p">(</span><span class="k">enum</span> <span class="n">__ptrace_request</span> <span class="n">requête</span><span class="p">,</span> <span class="n">pid_t</span> <span class="n">pid</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">addr</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>PTRACE_TRACEME: 子进程标记</strong></p>
+<p><strong>PTRACE_ATTACH: 父进程附加</strong></p>
+<p><strong>PTRACE_CONT: 继续执行</strong></p>
+<p>绕过：通过动态调试修改RIP直接跳到main函数 或 patch/nop反调试函数</p>
+<h3 id="ollvm">OLLVM</h3>
+<p><strong>Obfuscator-LLVM，原理：通过修改“LLVM-IR”完成，本质是一个LLVM-PASS——一套IR代码优化脚本</strong></p>
+<p><img src="/img/reverse_note.zh-cn.assets/-172845181249331.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><strong>控制流平坦化</strong></p>
+<p>将基本控制流并列，由<strong>主分发器</strong>来决定执行顺序</p>
+<p><img src="/img/reverse_note.zh-cn.assets/-172845181249332.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><strong>指令替换</strong></p>
+<p>基本运算公式复杂化</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Plain" data-lang="Plain"><span class="line"><span class="cl">混淆前: a=b+c    &gt;&gt;     混淆后: a=b+r, a=a+c, a=a-r
+</span></span><span class="line"><span class="cl">混淆前: a=b|c    &gt;&gt;     混淆后: a=(b&amp;c)|(b^c)    //b, c均为整数时
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>虚假控制流</strong></p>
+<p>将原本顺序执行转为条件执行，条件为“永真式”导致不会执行虚假块，但IDA会进行控制流分析</p>
+<p><img src="/img/reverse_note.zh-cn.assets/-172845181249333.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p>永真式：<code>(((x - 1) * x) &amp; 1) == 0</code></p>
+<h2 id="maze">maze</h2>
+<p>迷宫问题</p>
+<ul>
+<li>内存中布置一张地图(#和*显示)</li>
+<li>用户输入限制在少数几个字符范围内(方向w/s/a/d等)</li>
+<li>一般只1个迷宫入口、1个迷宫出口(多走法时代价最小 &mdash;&gt; 算法问题)</li>
+</ul>
+<p><strong>迷宫初始化</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span>
+</span></span><span class="line"><span class="cl"><span class="n">array</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;0&#39;</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">)]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">)]</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>回溯算法</strong></p>
+<ul>
+<li>深度优先算法DFS：栈</li>
+<li>广度优先算法BFS：队列</li>
+</ul>
+<h3 id="深度优先算法">深度优先算法</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">sys</span> <span class="c1"># 设置递归深度</span>
+</span></span><span class="line"><span class="cl"><span class="n">sys</span><span class="o">.</span><span class="n">setrecursionlimit</span><span class="p">(</span><span class="mi">20000</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># x行 y列</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="nb">map</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span> <span class="c1"># 检查是否为0</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="n">max_x</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">y</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">y</span> <span class="o">&lt;=</span> <span class="n">max_y</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">map</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="kc">False</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">gen_nex</span><span class="p">(</span><span class="nb">map</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span> <span class="c1"># 当前位置四周的情况</span>
+</span></span><span class="line"><span class="cl">    <span class="n">all_dir</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">check</span><span class="p">(</span><span class="nb">map</span><span class="p">,</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">all_dir</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">check</span><span class="p">(</span><span class="nb">map</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">all_dir</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">check</span><span class="p">(</span><span class="nb">map</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">all_dir</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">check</span><span class="p">(</span><span class="nb">map</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">all_dir</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">all_dir</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">check_success</span><span class="p">(</span><span class="nb">map</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">54</span> <span class="ow">and</span> <span class="n">y</span> <span class="o">==</span> <span class="mi">74</span><span class="p">:</span> <span class="c1"># 判断出口</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="kc">True</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="kc">False</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">print_info</span><span class="p">(</span><span class="nb">map</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">file_path</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 地图</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">map</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span> <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">row</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># 用于分隔每次递归的地图</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 坐标</span>
+</span></span><span class="line"><span class="cl">        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&#34; &#34;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 路径</span>
+</span></span><span class="line"><span class="cl">        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">path</span><span class="o">+</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">dfs</span><span class="p">(</span><span class="n">maze</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">map</span> <span class="o">=</span> <span class="n">maze</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>    <span class="c1"># 这里用将maze复制给map，避免修改掉原地图。</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">x</span><span class="o">!=</span><span class="mi">54</span> <span class="ow">or</span> <span class="n">y</span><span class="o">!=</span><span class="mi">74</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">map</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">check_success</span><span class="p">(</span><span class="nb">map</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># print_path(path, &#39;b.txt&#39;)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="kc">True</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">next_point</span> <span class="o">=</span> <span class="n">gen_nex</span><span class="p">(</span><span class="nb">map</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">next_point</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pathn</span> <span class="o">=</span> <span class="n">path</span> <span class="o">+</span> <span class="n">n</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>       <span class="c1"># 将all_dir列表中的元组的第三个值，即方向传给pathn</span>
+</span></span><span class="line"><span class="cl">        <span class="n">print_info</span><span class="p">(</span><span class="nb">map</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">pathn</span><span class="p">,</span> <span class="s1">&#39;a.txt&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">dfs</span><span class="p">(</span><span class="nb">map</span><span class="p">,</span> <span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">pathn</span><span class="p">):</span>        <span class="c1"># 这里开始递归 用all_dir的元组第一二个值和pathn作为参数，进行当前位置的又一次深度优先遍历</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="kc">True</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="kc">False</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">dfs</span><span class="p">(</span><span class="n">maze</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&#34;begin:&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 使用之后仍需要判断是否正确, 比如: dwds &gt; dd, dwwdss &gt; dd</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="壳">壳</h2>
+<p><img src="/img/reverse_note.zh-cn.assets/-172845181249334.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<h3 id="压缩壳">压缩壳</h3>
+<h4 id="upx">UPX</h4>
+<p>开源、压缩壳，原文件需要40kb以上才能加壳，可通过strings查看UPX字符串</p>
+<p>脱壳原理为<strong>ESP定律</strong>（即堆栈平衡定律），可以在linux中使用：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">upx -d file <span class="c1">#进行脱壳</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>或在Windows下使用<strong>UPX shell</strong>直接解压缩，UPX shell解压缩可能导致文件无法运行</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="c1"># 在upx目录下 脱壳</span>
+</span></span><span class="line"><span class="cl"><span class="o">./</span><span class="n">upx</span><span class="o">.</span><span class="n">exe</span> <span class="o">-</span><span class="n">d</span> <span class="n">file</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>x96dbg</strong>：F8 &gt; 寄存器窗口 &gt; ESP &gt; 在内存窗口中转到</p>
+<p><strong>Ollydbg</strong>：只能调试32位</p>
+<p><strong>使用OD进行UPX手动脱壳</strong></p>
+<p>第一条指令一般为pushad，将寄存器值存入栈中，保存上下文</p>
+<p><img src="/img/reverse_note.zh-cn.assets/-172845181249435.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p>F8单步执行，此时寄存器ESP值发生改变</p>
+<p><img src="/img/reverse_note.zh-cn.assets/-172845181249436.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p>寄存器窗口 &gt; ESP &gt; HW break[ESP] 或 [数据窗口中跟随] 转到内存视图 &gt; 此处ESP地址设置断点-硬件访问</p>
+<p><img src="/img/reverse_note.zh-cn.assets/-172845181249437.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p>F9运行到断点处，上图<code>003B750F</code>的上一行为<code>popad</code>，当执行到popad时，将会恢复ESP，此时将会触发硬件断点，中断</p>
+<p>发现一个大跳转<code>jmp UPX</code>，于是F4到jmp代码处 &gt; F8步入</p>
+<p><img src="/img/reverse_note.zh-cn.assets/-172845181249438.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><img src="/img/reverse_note.zh-cn.assets/-172845181249439.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p>出现了正常的函数开头和结尾，即找到OEP</p>
+<p><strong>进行dump完成脱壳：</strong></p>
+<ol>
+<li><strong>插件 &gt; OllyDump &gt; 脱壳在当前调试的进程 &gt; 获取EIP作为OEP &gt; 脱壳【由于不是windows XP会失败】</strong></li>
+<li><strong>右键 &gt; 用OllyDump脱壳调试进程 &gt; 脱壳</strong></li>
+</ol>
+<p><strong>x64dbg+手动脱壳</strong></p>
+<p>打开文件先查看系统断点，<code>F9</code>运行进入断点处，有多个<code>push</code>操作</p>
+<h4 id="aspack">ASPack</h4>
+<h3 id="加密壳">加密壳</h3>
+<h4 id="asprotect">ASProtect</h4>
+<h4 id="armadillo">Armadillo</h4>
+<h4 id="execryptor">EXECryptor</h4>
+<h4 id="themida">Themida</h4>
+<h4 id="vmp">VMP</h4>
+<h3 id="混淆壳">混淆壳</h3>
+<h3 id="虚拟机壳">虚拟机壳</h3>
+<h2 id="脱壳">脱壳</h2>
+<p>单步跟踪寻找OEP（original entry point，原始入口点），寻找大型跳转</p>
+<h3 id="api定位">API定位</h3>
+<p><strong>Microsoft Visual C/C++ 6</strong></p>
+<ul>
+<li><code>VC6</code>写的代码，直接定位到<code>GetVersion</code>下断点</li>
+<li>x64dbg中：<code>视图</code> &gt; <code>模块</code>，<code>GetVersion</code>在<code>Kernel32.dll</code>中，运行，在栈中找调用函数</li>
+<li>OEP在GetVersion上文</li>
+</ul>
+<h3 id="esp定律">ESP定律</h3>
+<p>od载入程序有pushad指令可用其脱壳</p>
+<h2 id="windows-api">Windows API</h2>
+<p><strong>堆API</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="n">HeapCreate</span><span class="p">(</span><span class="n">flOptions</span><span class="p">,</span> <span class="n">dwInitialSize</span><span class="p">,</span> <span class="n">dwMaximumSize</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 堆分配选项, 堆的初始大小, 堆的最大大小
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">HeapAlloc</span><span class="p">(</span><span class="n">hHeap</span><span class="p">,</span> <span class="n">dwFlags</span><span class="p">,</span> <span class="n">dwBytes</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 指向堆的句柄, 堆分配选项, 分配字节数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">HeapFree</span><span class="p">(</span><span class="n">hHeap</span><span class="p">,</span> <span class="n">dwFlags</span><span class="p">,</span> <span class="n">lpMem</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 释放的堆的句柄, 堆释放选项, 指向要释放内存块的指针
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">HeapDestroy</span><span class="p">(</span><span class="n">hHeap</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 销毁的堆的句柄
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>用户API</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="n">MessageBoxA</span><span class="p">(</span><span class="n">hWnd</span><span class="p">,</span> <span class="n">lpText</span><span class="p">,</span> <span class="n">lpCaption</span><span class="p">,</span> <span class="n">uType</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 消息框所有者窗口的句柄, 显示信息, 对话框标题, 对话框内容和行为(中止,重试,忽略,确认,取消) 
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>调试API</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="n">IsDebuggerPresent</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 当前进程在调试器上下文中运行，返回非0; 否则为0
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="安卓">安卓</h2>
+<p>jadx打开文件后，<code>AndroidManifest.xml</code>文件中包括<strong>配置信息</strong>等</p>
+<h2 id="net">.Net</h2>
+<h3 id="c-2">C#</h3>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/zh-cn/p/linux%E7%AC%94%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/img/note.jpg" loading="lazy" data-key="" data-hash="/img/note.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">LINUX笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/zh-cn/p/misc%E7%AC%94%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/img/note.jpg" loading="lazy" data-key="" data-hash="/img/note.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">MISC笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/zh-cn/p/pwn%E7%AC%94%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/img/note.jpg" loading="lazy" data-key="" data-hash="/img/note.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">PWN笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/zh-cn/p/web%E7%AC%94%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/img/note.jpg" loading="lazy" data-key="" data-hash="/img/note.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">WEB笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
+<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet'/>
+<div id="waline" class="waline-container"></div>
+<style>
+    .waline-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+        --waline-font-size: var(--article-font-size);
+    }
+    .waline-container .wl-count {
+        color: var(--card-text-color-main);
+    }
+</style><script>
+    
+    Waline.init({"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://unpkg.com/@waline/emojis@1.0.1/weibo"],"locale":{"admin":"Admin","placeholder":null},"requiredMeta":["name","email","url"],"serverURL":"https://blog-waline-ox87ky1di-j-shiro.vercel.app/"});
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2024 J-shiro&#39;s 博客<br />
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+        共 71.06k 字 · 共 8篇文章
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
+            <span id="busuanzi_container_site_pv"> 总访问量<span id="busuanzi_value_site_pv"></span>次 </span>---
+            <span id="busuanzi_container_page_pv">本文阅读量<span id="busuanzi_value_page_pv"></span>次</span>    
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.13.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+
+    
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/live2d-widget@3.1.4/lib/L2Dwidget.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/live2d-widget@3.1.4/lib/L2Dwidget.0.min.js"></script>
+
+<script type="text/javascript">
+    L2Dwidget.init({
+        model: {
+            scale: 1,
+            hHeadPos: 0.5,
+            vHeadPos: 0.618,
+            jsonPath: 'https://cdn.jsdelivr.net/npm/live2d-widget-model-hibiki@1.0.5/assets/hibiki.model.json',       
+        },
+        display: {
+            superSample: 9,     
+            width: 160,         
+            height: 440,        
+            position: 'left',   
+            hOffset: 130,         
+            vOffset: -50,         
+        },
+        mobile: {
+            show: false,         
+            scale: 1,           
+            motion: true,       
+        },
+        react: {
+            opacityDefault: 1,  
+            opacityOnHover: 1,  
+        },
+    });
+</script>
+
+
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+    <div id="backTop" onclick="backTopFunction()" style="right: 40px; bottom: 40px; display: flex;">
+        <svg xmlns="http://www.w3.org/2000/svg" height="30" width="20" viewBox="0 0 512 512"><title>Caret Up</title>
+            <path d="M414 321.94L274.22 158.82a24 24 0 00-36.44 0L98 321.94c-13.34 15.57-2.28 39.62 18.22 39.62h279.6c20.5 0 31.56-24.05 18.18-39.62z" fill="#adb5bd"></path>
+        </svg>
+        <style type="text/css">
+            #backTop {
+                position: fixed;
+                background-color: #fff;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 0 6px rgba(0,0,0,.12);
+                cursor: pointer;
+                z-index: 5;
+            }
+    
+            #backTop:hover {
+                background-color: #f1f4f8;
+            }
+        </style>
+        <script>
+    
+            window.onscroll = function() {scrollFunction()};
+    
+            function scrollFunction() {console.log(121);
+                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                    document.getElementById("backTop").style.display = "flex";
+                } else {
+                    document.getElementById("backTop").style.display = "none";
+                }
+            }
+    
+    
+            function backTopFunction() {
+                document.body.scrollTop = 0;
+                document.documentElement.scrollTop = 0;
+            }
+        </script>
+    </div>
+    
+
+
+            </main>
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#基础知识">基础知识</a>
+      <ol>
+        <li><a href="#windows">Windows</a>
+          <ol>
+            <li><a href="#反编译">反编译</a></li>
+            <li><a href="#约定">约定</a></li>
+            <li><a href="#eflags"><strong>Eflags</strong></a></li>
+            <li><a href="#syscall">Syscall</a></li>
+          </ol>
+        </li>
+        <li><a href="#linux">Linux</a></li>
+        <li><a href="#数学">数学</a></li>
+        <li><a href="#计算机组成">计算机组成</a></li>
+        <li><a href="#汇编">汇编</a>
+          <ol>
+            <li><a href="#语法格式">语法格式</a></li>
+            <li><a href="#语法">语法</a></li>
+          </ol>
+        </li>
+        <li><a href="#c">C</a></li>
+        <li><a href="#c-1">C++</a></li>
+        <li><a href="#可执行文件">可执行文件</a>
+          <ol>
+            <li><a href="#pe文件">PE文件</a></li>
+            <li><a href="#elf文件"><strong>ELF</strong>文件</a></li>
+          </ol>
+        </li>
+        <li><a href="#大小端序">大小端序</a></li>
+        <li><a href="#python">Python</a></li>
+        <li><a href="#java">JAVA</a></li>
+        <li><a href="#寄存器">寄存器</a></li>
+      </ol>
+    </li>
+    <li><a href="#工具">工具</a>
+      <ol>
+        <li><a href="#pe-bear">PE-bear</a></li>
+        <li><a href="#010editor">010Editor</a></li>
+        <li><a href="#gdb">GDB</a></li>
+        <li><a href="#ida">IDA</a></li>
+        <li><a href="#ghidra">Ghidra</a></li>
+        <li><a href="#die">DIE</a></li>
+        <li><a href="#peid">Peid</a></li>
+        <li><a href="#exeinfo-pe">Exeinfo PE</a></li>
+        <li><a href="#ollydbg">OllyDbg</a></li>
+        <li><a href="#x64dbg">x64dbg</a></li>
+        <li><a href="#gnu-binary-utilities">GNU Binary Utilities</a></li>
+        <li><a href="#gdbpwndbg">GDB/PWNDBG</a></li>
+        <li><a href="#upxshell">UPXshell</a></li>
+        <li><a href="#jadx">Jadx</a></li>
+        <li><a href="#jd-gui">jd-gui</a></li>
+        <li><a href="#ilspy">ILSpy</a></li>
+        <li><a href="#z3-solver">Z3-Solver</a></li>
+        <li><a href="#qemu">QEMU</a></li>
+      </ol>
+    </li>
+    <li><a href="#算法">算法</a>
+      <ol>
+        <li><a href="#tea系列">TEA系列</a>
+          <ol>
+            <li><a href="#tea">TEA</a></li>
+            <li><a href="#xtea">XTEA</a></li>
+            <li><a href="#xxtea">XXTEA</a></li>
+          </ol>
+        </li>
+        <li><a href="#md5">md5</a></li>
+        <li><a href="#sm4">SM4</a></li>
+        <li><a href="#rc4">RC4</a></li>
+        <li><a href="#base算法">Base算法</a>
+          <ol>
+            <li><a href="#base64">base64</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#代码混淆">代码混淆</a>
+      <ol>
+        <li><a href="#脏字节">脏字节</a></li>
+        <li><a href="#花指令">花指令</a></li>
+        <li><a href="#smc技术">SMC技术</a></li>
+        <li><a href="#反调试">反调试</a></li>
+        <li><a href="#ollvm">OLLVM</a></li>
+      </ol>
+    </li>
+    <li><a href="#maze">maze</a>
+      <ol>
+        <li><a href="#深度优先算法">深度优先算法</a></li>
+      </ol>
+    </li>
+    <li><a href="#壳">壳</a>
+      <ol>
+        <li><a href="#压缩壳">压缩壳</a>
+          <ol>
+            <li><a href="#upx">UPX</a></li>
+            <li><a href="#aspack">ASPack</a></li>
+          </ol>
+        </li>
+        <li><a href="#加密壳">加密壳</a>
+          <ol>
+            <li><a href="#asprotect">ASProtect</a></li>
+            <li><a href="#armadillo">Armadillo</a></li>
+            <li><a href="#execryptor">EXECryptor</a></li>
+            <li><a href="#themida">Themida</a></li>
+            <li><a href="#vmp">VMP</a></li>
+          </ol>
+        </li>
+        <li><a href="#混淆壳">混淆壳</a></li>
+        <li><a href="#虚拟机壳">虚拟机壳</a></li>
+      </ol>
+    </li>
+    <li><a href="#脱壳">脱壳</a>
+      <ol>
+        <li><a href="#api定位">API定位</a></li>
+        <li><a href="#esp定律">ESP定律</a></li>
+      </ol>
+    </li>
+    <li><a href="#windows-api">Windows API</a></li>
+    <li><a href="#安卓">安卓</a></li>
+    <li><a href="#net">.Net</a>
+      <ol>
+        <li><a href="#c-2">C#</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+
+    }());
+</script>
+
+<script
+    src="https://cdn.jsdelivr.net/gh/zhixuan2333/gh-blog@v0.1.0/js/nprogress.min.js"
+    integrity="sha384-bHDlAEUFxsRI7JfULv3DTpL2IXbbgn4JHQJibgo5iiXSK6Iu8muwqHANhun74Cqg"
+    crossorigin="anonymous"
+></script>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/zhixuan2333/gh-blog@v0.1.0/css/nprogress.css"
+    integrity="sha384-KJyhr2syt5+4M9Pz5dipCvTrtvOmLk/olWVdfhAp858UCa64Ia5GFpTN7+G4BWpE"
+    crossorigin="anonymous"
+/>
+<script>
+    NProgress.start();
+    document.addEventListener("readystatechange", () => {
+        if (document.readyState === "interactive") NProgress.inc(0.8);
+        if (document.readyState === "complete") NProgress.done();
+    });
+</script>
+
+    </body>
+</html>

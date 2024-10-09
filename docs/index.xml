@@ -19,6 +19,8 @@
 &lt;p&gt;Now I am learning the PWN. I may write some markdown about what I have learnt. &lt;span class=&#34;spoiler&#34; &gt; Actually, I am still a rookie. Hope you like some of my articles.  &lt;/span&gt;
   Peace and love!&lt;/p&gt;
 &lt;p&gt;&lt;span style=&#34;background: #86cce8&#34;&gt;   I am still just an undergraduate student who has been confused, and I may participate in the postgraduate entrance examination in the future.  I will record some content related to life, study and interests here&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Updating in 2024.10.9&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;It has been a long time since I began to prepare for the postgraduate examination, and now I am a graduate student. My blog has not been updated for a long time. I also haven&amp;rsquo;t read the pwn.college for a long time. Postgraduate life seems to be very busy, I feel very sorry for those who watched my blog but not receiving any reply orzzz. And I will definitely study the knowledge of pwn.college if I have time later. Recently, I will update some notes in the Chinese part, and now I am still confused and do not know the future way out. Maybe I still have to explore it slowly&amp;hellip;&amp;hellip;&lt;/p&gt;
 </description>
         </item>
         <item>
@@ -9151,7 +9153,8 @@ more than one FILE is specified.&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;![](/img/xxx.jpg)
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description>
+&lt;/div&gt;&lt;p&gt;need to change the root image directory of the typora to the &lt;code&gt;/static&lt;/code&gt; which is only used for current &lt;code&gt;.md&lt;/code&gt; file,  and change the reference about the typora to the &lt;code&gt;/static/img&lt;/code&gt;&lt;/p&gt;
+</description>
         </item>
         <item>
         <title>About</title>

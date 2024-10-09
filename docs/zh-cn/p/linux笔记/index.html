@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='一些命令 若不需要-a这些参数, 可以使用-- 数据处理 1 2 3 4 5 6 7 8 9 R --slave -e &amp;#39;x &amp;lt;- scan(file=&amp;#34;stdin&amp;#34;, quiet=TRUE); summary(x)&amp;#39; # --slave: 抑制消息、提示 # -e: 直接执行表达式 # 从标准输入到x, 并'><title>LINUX笔记</title>
+
+<link rel='canonical' href='https://J-shiro.github.io/zh-cn/p/linux%E7%AC%94%E8%AE%B0/'>
+
+<link rel="stylesheet" href="/scss/style.min.b18c0607927efd48b36f5d027b549e77e30ee300e22b6461d063f1df6ea2466b.css"><meta property='og:title' content='LINUX笔记'>
+<meta property='og:description' content='一些命令 若不需要-a这些参数, 可以使用-- 数据处理 1 2 3 4 5 6 7 8 9 R --slave -e &amp;#39;x &amp;lt;- scan(file=&amp;#34;stdin&amp;#34;, quiet=TRUE); summary(x)&amp;#39; # --slave: 抑制消息、提示 # -e: 直接执行表达式 # 从标准输入到x, 并'>
+<meta property='og:url' content='https://J-shiro.github.io/zh-cn/p/linux%E7%AC%94%E8%AE%B0/'>
+<meta property='og:site_name' content='J-shiro&#39;s 博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-10-09T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2024-10-09T00:00:00&#43;00:00'/><meta property='og:image' content='https://J-shiro.github.io/img/note.jpg' />
+<meta name="twitter:title" content="LINUX笔记">
+<meta name="twitter:description" content="一些命令 若不需要-a这些参数, 可以使用-- 数据处理 1 2 3 4 5 6 7 8 9 R --slave -e &amp;#39;x &amp;lt;- scan(file=&amp;#34;stdin&amp;#34;, quiet=TRUE); summary(x)&amp;#39; # --slave: 抑制消息、提示 # -e: 直接执行表达式 # 从标准输入到x, 并"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://J-shiro.github.io/img/note.jpg' />
+    <link rel="shortcut icon" href="https://j-shiro.github.io/img/somebody.png" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/zh-cn">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu42aab1a06b48994d4eab55119e198264_548369_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/zh-cn">J-shiro&#39;s 博客</a></h1>
+            <h2 class="site-description">Welcome! I will record some of my own hobbies there.//欢迎来到我的博客！</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/J-shiro'
+                        target="_blank"
+                        title="GitHub"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/zh-cn/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/zh-cn/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/zh-cn/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>档案</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/zh-cn/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/zh-cn/%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>链接</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+                <li id="i18n-switch">  
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                    <select name="language" onchange="window.location.href = this.selectedOptions[0].value">
+                        
+                            <option value="https://J-shiro.github.io/" >English</option>
+                        
+                            <option value="https://J-shiro.github.io/zh-cn/" selected>中文</option>
+                        
+                    </select>
+                </li>
+            
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+<main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/zh-cn/p/linux%E7%AC%94%E8%AE%B0/">
+                
+                    <img src="/img/note.jpg" loading="lazy" alt="Featured image of post LINUX笔记" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/zh-cn/categories/notes/" >
+                notes
+            </a>
+        
+            <a href="/zh-cn/categories/%E8%BF%90%E7%BB%B4/" >
+                运维
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/zh-cn/p/linux%E7%AC%94%E8%AE%B0/">LINUX笔记</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Oct 09, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 9 分钟
+                </time>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+                <time class="article-words">
+                    4153 字
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="一些命令">一些命令</h2>
+<p>若不需要<code>-a</code>这些参数, 可以使用<code>--</code></p>
+<p><strong>数据处理</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">R --slave -e <span class="s1">&#39;x &lt;- scan(file=&#34;stdin&#34;, quiet=TRUE); summary(x)&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># --slave: 抑制消息、提示</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># -e: 直接执行表达式</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 从标准输入到x, 并计算显示数据的汇总信息</span>
+</span></span><span class="line"><span class="cl">gnuplot -p -e <span class="s1">&#39;set boxwidth 0.5; plot &#34;-&#34; using 1:xtic(2) with boxes&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># -p: 保持图形打开</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># -e: 直接执行命令</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 宽度0.5, &#34;-&#34;从标准输入读取数据</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># using 1:xtic(2): 第1列-条形高度, 第2列-x轴刻度标签  boxes条形图</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>性能分析</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">perf stat stress -c <span class="m">1</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># perf: 性能分析和调试工具</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># stat: 收集显示性能统计信息</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># stress: 负载生成工具</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># -c: CPU负载核心数</span>
+</span></span><span class="line"><span class="cl">perf report <span class="c1"># 生成和查看性能数据的报告</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 精准测试命令执行时间工具</span>
+</span></span><span class="line"><span class="cl">hyperfine --warmup <span class="m">3</span> <span class="s1">&#39;fd -e jpg&#39;</span> <span class="s1">&#39;find . -iname &#34;*.jpg&#34;&#39;</span> <span class="c1"># 比较 fd 和 find</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># --warmup 3: 预热执行三次后再测试</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="简单命令">简单命令</h2>
+<p>**tree：**列举所有文件，类似于<code>ls -R</code>，递归列举文件</p>
+<p>**tldr：**连接 <code>command</code> 可以列举使用该命令的用法</p>
+<p>**journalctl：**查看和管理 systemd 的日志</p>
+<p><strong>wc：</strong><code>wc -l</code>，统计文件行数</p>
+<p>**sort：**排序，<code>sort-nk1,1</code>，<code>-n</code>为按数值大小排序，<code>-k1,1</code>排序键从第1列到第1列</p>
+<p><strong>unique：</strong><code>unique -c</code>，统计相邻且相同的行出现的次数，<code>-c</code>在每行前加入次数</p>
+<p><strong>paste：</strong><code>paste -sd,</code> 多行以逗号分隔合并为单行，<code>-s</code>串联，<code>-d</code>指定分隔符</p>
+<p><strong>bc：</strong><code>bc -l</code>，计算器运算</p>
+<p>**tee：**从标准输入读取数据，并将数据同时写入到一个或多个文件和标准输出</p>
+<p>**jobs：**显示终端运行或挂起的后台作业</p>
+<p>**nohup：**使得一个进程在用户登出或会话终止后仍然继续运行</p>
+<p>**bg：**将已暂停的后台作业继续运行，<code>bg %1</code>指定 <code>jobs</code> 中序号</p>
+<p>**alias：**命令别名，<code>alias ll=&quot;ls -lah&quot;</code>及直接<code>alias command</code>查看命令别名意义</p>
+<p>**htop：**进程查看器和系统监视器</p>
+<p>**time：**获取命令执行的真实、用户、系统时间</p>
+<p>**tac：**最后一行开始，逐行向上显示内容</p>
+<p>**du：**显示目录及子目录磁盘使用情况，<code>du -h directory</code>，<code>-h</code>表示人类可读</p>
+<p><strong>curl：</strong> 可查看公网ip地址</p>
+<p><strong>ps：</strong><code>ps -ef | grep xx</code>查找指定进程格式</p>
+<p><strong>查看某个文件的绝对路径：</strong> <code>pwd|awk '{print $1&quot;/file_name&quot;}'</code></p>
+<p><strong>查看版本：</strong><code>cat /proc/version</code></p>
+<p><strong>显示操作系统信息：</strong><code>uname -a</code></p>
+<h2 id="netstat">netstat</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"> netstat -plant
+</span></span><span class="line"><span class="cl"> -p: --programs，与链接相关程序名和进程的PID
+</span></span><span class="line"><span class="cl"> -l: --listening，显示所有监听的端口
+</span></span><span class="line"><span class="cl"> -a: --all，显示所有链接和监听端口
+</span></span><span class="line"><span class="cl"> -n: 进制使用域名解析功能。链接以数字形式展示<span class="o">(</span>IP地址<span class="o">)</span>，而不是通过主机名或域名形式展示
+</span></span><span class="line"><span class="cl"> -t: 所有的 tcp 协议的端口
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="find">find</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">find . -name xxx -type d <span class="c1"># d 表示 目录</span>
+</span></span><span class="line"><span class="cl">find . -path <span class="s1">&#39;**/test/*.py&#39;</span> -type f <span class="c1"># f 表示 文件</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">find . -name <span class="s2">&#34;*.tmp&#34;</span> -exec rm <span class="o">{}</span> <span class="se">\;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># -exec rm {} \; 表示对每个找到的文件进行rm操作 </span>
+</span></span><span class="line"><span class="cl"><span class="c1"># {} 是一个占位符，表示当前找到的文件。find 命令会用找到的文件的完整路径替换 {}</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># \; 表示 -exec 操作的结束, \ 是用来转义 ; 的， shell 中 ; 通常是一个命令分隔符</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="locate">locate</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">locate filename
+</span></span><span class="line"><span class="cl"><span class="c1"># 根据 mlocate.db 数据库查找</span>
+</span></span><span class="line"><span class="cl">sudo updatedb
+</span></span><span class="line"><span class="cl"><span class="c1"># 用于更新数据库</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="lsof">lsof</h2>
+<p>列出当前系统打开文件，包括网络连接、设备</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">lsof <span class="p">|</span> grep <span class="s2">&#34;:4444 .LISTEN&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 列出4444端口监听的进程</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="ssh">ssh</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">ssh-keygen -o -a <span class="m">100</span> -t ed25519
+</span></span><span class="line"><span class="cl"><span class="c1"># -o: 使用新的OpenSSH私钥文件格式</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># -a 100: 键派生函数迭代次数</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># -t ed25519: 生成的密钥类型, ed25519-一种椭圆曲线签名算法</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>会生成公私钥对<code>id_xxx</code>及<code>id_xxx.pub</code>在<code>.ssh</code>中</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">cat ~/.ssh/id_xxx.pub <span class="p">|</span> ssh a@x.x.x.x tee .ssh/authorized_keys
+</span></span><span class="line"><span class="cl"><span class="c1"># 公钥传入远程服务器</span>
+</span></span><span class="line"><span class="cl">ssh -i key xxx@ip
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>scp</code>是ssh的子命令</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="c1"># 远程文件传输</span>
+</span></span><span class="line"><span class="cl">scp -i secret_key -r local_file user@x.x.x.x:remote_file_location <span class="c1"># 本地到远程</span>
+</span></span><span class="line"><span class="cl">scp -r user@x.x.x.x:remote_file local_destination <span class="c1"># 远程到本地</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>rsync</code>同样可以传输文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">rsync -avP local_file user@x.x.x.x:destination <span class="c1"># 本地到远程</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># -a: 递归复制  -v: 显示详细信息  -P: 允许断点续传, 显示传输进度信息</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="strace">strace</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">strace -e lstat ls -l &gt; /dev/null
+</span></span><span class="line"><span class="cl"><span class="c1"># 使用 strace 只跟踪 ls -l 命令中的 lstat 系统调用, 丢弃输出到/dev/null</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="xargs">xargs</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;file1 file2 file3&#34;</span> <span class="p">|</span> xargs rm
+</span></span><span class="line"><span class="cl"><span class="c1"># 将标准输入中的数据转换为命令行参数，并将这些参数传递给指定的命令</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="awk">awk</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">awk <span class="s1">&#39;{print $2}&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 输出每行第 2 个字段, 默认将空格作为分隔符</span>
+</span></span><span class="line"><span class="cl">awk <span class="s1">&#39;$1 == 1 &amp;&amp; $2 ~ /^c.*e$/ {print $0}&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 第 1 列为 1, 第 2 列满足以c开头以e结尾, $0 输出当前行</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="grep">grep</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">xxx <span class="p">|</span> grep <span class="s1">&#39;xxxx&#39;</span> &gt; ans.txt
+</span></span><span class="line"><span class="cl">ll -a <span class="p">|</span> grep -E <span class="s2">&#34;1|2&#34;</span> <span class="c1"># 用正则显示含1或含2的目录</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="sed">sed</h2>
+<p>流编辑器，用于处理文本，引号内为正则表达式</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">cat xxx <span class="p">|</span> sed <span class="s1">&#39;s/^.*hello(haha)?[ab][^,]/g&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># s: 替换操作</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># /: 分隔符</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ^: 匹配行的开头</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># .*: 任意数量字符(除换行符)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ()?: ?表示()中内容可以出现 0 或 1 次</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># []: 匹配包含内容中的任何一个字符</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># [^,]: 表示匹配除 , 外任何字符</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># //: 替换成空字符串, 删除匹配内容</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># g: 表示全局替换(global), 替换所有匹配的字符, 若没有g则替换一个</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">cat xxx <span class="p">|</span> sed -E <span class="s1">&#39;s/(ab|bc)*\s*[0-9.]+[0-9]+$//g&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># -E: 表示使用扩展, 使得可以用()而不需要用\来对()转义</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ()*: 匹配0或多次连续的()内的内容 </span>
+</span></span><span class="line"><span class="cl"><span class="c1"># |: 表示或者</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># \s*: 0个或多个空白字符</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># [0-9.]+: 匹配一个或多个数字或点(IP地址)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># [0-9]+: 匹配一个或多个数字(端口)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># $: 匹配行的结尾</span>
+</span></span><span class="line"><span class="cl">cat xxx <span class="p">|</span> sed -E <span class="s1">&#39;s/x(hello)?xxx(.*)xx/\2/&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># (.*): 不仅匹配内容，还将其存储在捕获组中, 后续可用 \number 引用</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 将匹配到的内容用(.*)中的内容替换</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="shell">shell</h2>
+<p>可以用<code>shellcheck</code>命令检查shell脚本错误</p>
+<p><strong>基础例子</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="nv">foo</span><span class="o">=</span>bar
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="nv">$foo</span> <span class="c1"># bar 也可在$foo外加入双引号, 效果一致</span>
+</span></span><span class="line"><span class="cl"><span class="nb">unset</span> foo <span class="c1"># 环境中删除 foo 变量</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">PYTHONPATH</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$DIR</span><span class="s2">:</span><span class="nv">$PYTHONPATH</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">exec</span> python <span class="s2">&#34;</span><span class="nv">$DIR</span><span class="s2">/main.py&#34;</span> <span class="s2">&#34;</span><span class="nv">$@</span><span class="s2">&#34;</span> <span class="c1"># exec 执行命令</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>函数</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="c1"># a.sh 文件内容</span>
+</span></span><span class="line"><span class="cl">a<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    mkdir -p <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">cd</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span>        <span class="c1"># $1 指第1个参数</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># shell 中定义函数并直接执行</span>
+</span></span><span class="line"><span class="cl"><span class="nb">source</span> a.sh
+</span></span><span class="line"><span class="cl">a xxx <span class="c1"># 执行 a 中定义的函数</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>基础变量</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="k">$(</span>date<span class="k">)</span>  <span class="c1"># 日期</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$0</span>       <span class="c1"># 当前脚本名称</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$#</span>       <span class="c1"># 提供的参数数量</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$$</span>       <span class="c1"># 正在运行命令的PID</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$@</span>       <span class="c1"># 表示所有的参数, 包含$1, $2, ..., 用于遍历</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$?</span>       <span class="c1"># 存储上一条命令的退出状态, 命令执行成功为0, 失败为非0</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>循环</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="k">for</span> file in <span class="nv">$@</span><span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">    grep foobar <span class="s2">&#34;</span><span class="nv">$file</span><span class="s2">&#34;</span> &gt; /dev/null 2&gt; /dev/null
+</span></span><span class="line"><span class="cl">    <span class="c1"># 在提供的file中寻找字符串foobar</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># &gt; 标准输出重定向到 /dev/null 丢弃</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 2 &gt; 将标准错误重定向到 /dev/null 丢弃</span>
+</span></span><span class="line"><span class="cl"><span class="k">done</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>条件</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$?</span><span class="s2">&#34;</span> -ne <span class="m">0</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># -ne 不等于</span>
+</span></span><span class="line"><span class="cl">    some_commands
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>命令行命令</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">!!               <span class="c1"># 直接替换为上一次使用的命令</span>
+</span></span><span class="line"><span class="cl">Ctrl + R         <span class="c1"># 回溯历史操作</span>
+</span></span><span class="line"><span class="cl">readelf -S xxx   <span class="c1"># 查看程序.bss段地址</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> -             <span class="c1"># 返回到上一次工作目录</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>匹配</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">xxx*     <span class="c1"># *匹配任意</span>
+</span></span><span class="line"><span class="cl">xxx?     <span class="c1"># ?匹配一个字符</span>
+</span></span><span class="line"><span class="cl">xx<span class="o">{</span>1,2<span class="o">}</span>  <span class="c1"># 自动补充为xx1, xx2, 也可用多个{}做成笛卡尔积</span>
+</span></span><span class="line"><span class="cl">xx<span class="o">{</span>a..c<span class="o">}</span> <span class="c1"># 自动补全为xxa, xxb, xxc</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="vim">vim</h2>
+<p><code>Vim file1 file2 -O</code>可打开两个文件</p>
+<p>显示当前文件名：<code>:r! echo %</code></p>
+<p>显示当前全局路径：<code>:r! echo %:p</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">:%!xxd     <span class="c1"># 可以用于查看c代码的十六进制编码</span>
+</span></span><span class="line"><span class="cl">:%!xxd -r  <span class="c1"># 返回/取消</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>补全</strong></p>
+<ul>
+<li><code>ctrl + n</code> 和 <code>ctrl + p</code>补全单词，<code>ctrl + n</code>和<code>ctrl + p</code>上下移动选择补全内容</li>
+<li><code>ctrl +x ctrl + f</code>补全文件名</li>
+<li><code>ctrl + x ctrl + o </code>补全代码，需使用<code>:filetype on</code>，查看<code>:set filetype + 回车</code></li>
+</ul>
+<p><strong>寄存器</strong></p>
+<p>使用<code>&quot;</code>指定寄存器，包括<code>a-z</code>，即<code>&quot;bdd</code>删除当前行到寄存器b中</p>
+<p><code>:reg a</code>查看寄存器a内容</p>
+<p>复制专用寄存器<code>&quot;0</code>，系统剪贴板<code>&quot;+</code></p>
+<p><strong>宏</strong></p>
+<p>用于批处理，录制：<code>q{register}</code>开始录制到寄存器，<code>q</code>结束录制，回放：<code>@{register}</code>回放命令</p>
+<p>在命令模式下：<code>:normal @a</code>全选文本内容后执行a寄存器中命令</p>
+<h3 id="normal模式">Normal模式</h3>
+<p>字符前插入：<code>i</code>；字符后插入：<code>a</code>；换行插入：<code>o</code>；行末插入：<code>A</code>；行首插入：<code>I</code>；行上另起一行插入：<code>O</code></p>
+<p>移动：<code>hjkl</code>左下上右，<code>w</code>移动到下一个单词开头，<code>b</code>回到上一个单词开头</p>
+<p>行间搜索移动：<code>f{char}</code>移动到char字符上，用<code>;</code>和<code>,</code>搜索<strong>下一个</strong>和<strong>上一个</strong>，<code>t{char}</code>移动到char前一个字符，<code>F{char}</code>反过来搜前面的char字符</p>
+<p>水平移动：<code>0</code>移动到行首第一个字符，<code>$</code>移动到行尾</p>
+<p>垂直移动：<code>()</code>句子间移动，<code>{}</code>段落间移动</p>
+<p>页面移动：<code>gg/G</code>移动到文件开头/结尾，<code>ctrl+o</code>快速返回，<code>H/M/L</code>跳转到屏幕开头/中间/结尾；<code>ctrl+u</code>, <code>ctrl+f</code>上下翻页；<code>zz</code>把屏幕置为中间</p>
+<p>删除：<code>x</code>删除一个字符，<code>daw</code>删除一个单词，<code>d</code>和<code>x</code>可搭配数字执行多次：<code>3x</code> or <code>3daw</code></p>
+<p>修改：<code>r</code>替换一个字符，<code>s</code>替换并进入Insert模式，c搭配：<code>ct&quot;</code>删除<code>&quot;&quot;</code>内的内容</p>
+<blockquote>
+<p>使用<code>ci</code>加上一个 <code>'</code> 或 <code>&lt;</code> 或 <code>&quot;</code> 或 <code>《</code> 都可以删除以此符号包含的文本并进行替换输入</p>
+</blockquote>
+<p>查询：<code>/</code>或<code>?</code>进行前向或反向搜索，<code>n/N</code>跳转到下一个或上一个匹配，<code>*</code>或<code>#</code>进行当前单词前向和后向匹配</p>
+<p>复制：<code>y</code>，<code>yy</code>复制一行，<code>yiw</code>复制一个单词，剪切：<code>x</code>，粘贴：<code>p</code></p>
+<p><code>.</code>表示重复之前的操作</p>
+<p><code>ctrl+o</code>：回跳到原位</p>
+<p><strong>光标设置</strong></p>
+<ol>
+<li><code>m{a-z}</code> 文件内标记，文件内跳转</li>
+<li><code>m{A-Z}</code> 标记文件，不同文件间跳转</li>
+</ol>
+<p><strong>光标跳转</strong></p>
+<ol>
+<li>``{mark}` 跳转到标记位置</li>
+<li><code>'{mark}</code> 跳转到标记位置所在行的首字母</li>
+</ol>
+<p><strong>文本对象操作</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">[number]&lt;command&gt;[text object]
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>number次数</li>
+<li>command命令，<code>d</code>删除，<code>c</code>替换，<code>y</code>复制</li>
+<li>text object文本对象，<code>w</code>单词，<code>s</code>句子，<code>p</code>段落</li>
+</ul>
+<p>可以用<code>a</code>或<code>i</code>加上字符`(, &lt;, {, [, &ldquo;, ``等选择包括中的内容</p>
+<h3 id="command模式">Command模式</h3>
+<p>查看文件二进制：<code>:%!xxd</code></p>
+<p>取消二进制显示——<code>:%!xxd -r</code></p>
+<p>显示行号：<code>:set nu</code></p>
+<p>全局替换：<code>:% s/被替换单词/替换为的单词/g</code></p>
+<p>替换命令：<code>:[range]s[ubstitute]/{pattern}/{string}/[flags]</code></p>
+<ul>
+<li>range：范围，<code>:10,20</code>表示10-20行，<code>%</code>表示全部</li>
+<li>pattern：要替换的模式，string替换后文本<code>/</code>为空</li>
+<li>flags：<code>g</code>全局，<code>c</code>确认（替换前会进行确认），<code>n</code>报告匹配到的次数而不替换</li>
+</ul>
+<p><code>Ctrl + P</code>：回到上一个命令</p>
+<p><strong>Buffer切换</strong></p>
+<p><code>:ls</code>列举当前缓冲区，<code>:b n</code>跳转到第n个缓冲区，<code>:bpre</code> <code>:bnext</code> <code>:bfirst</code> <code>:blast</code> <code>:b buffer_name</code>来切换，<code>:e file_name</code>打开新的文件进入缓冲区编辑</p>
+<p><strong>Window切换</strong></p>
+<p>左右分屏：<code>vs</code>或<code>ctrl + w + v</code>，上下分屏：<code>sp</code>或<code>ctrl + w + s</code></p>
+<p>切换窗口：<code>ctrl + w + w/h/j/k/l</code> 分别为 循环切换，左，下，上，右窗口</p>
+<p><strong>标签页tab</strong></p>
+<p><code>:tabe file_name</code>新标签页打开文件，<code>ctrl + w + T</code>当前窗口移到新标签页，<code>:tabc</code>关闭当前标签页及其中所有窗口，<code>:tabo</code>只保留活动标签页</p>
+<p><code>:tabn {N}</code>切到N标签页，<code>:tabn</code>切到下一标签页，<code>:tabp</code>切到上一标签页</p>
+<h3 id="visual模式">Visual模式</h3>
+<p>Normal模式<code>v</code>进入，<code>V</code>选择行，<code>ctrl+v</code>选择方块</p>
+<p><code>viw</code>：选中当前单词，<code>vaw</code>：选中当前单词及后空格</p>
+<ol>
+<li>先按Esc 键，确认是在命令的状态下</li>
+<li>按V 键</li>
+<li>再按Shift + &lt; ，这是将代码往左<strong>移动</strong>的；Shift + &gt; 是将代码往右边<strong>移动</strong>的。</li>
+</ol>
+<h3 id="insert模式">Insert模式</h3>
+<p><code>ctrl+h</code>删除上一个字符，<code>ctrl+w</code>删除上一个单词，<code>ctrl+u</code>删除当前行光标前内容</p>
+<p><code>ctrl+[</code>切换为Normal模式，<code>gi</code>快速跳转到最后一次编辑的地方并进入Insert模式</p>
+<h2 id="配置">配置</h2>
+<p>bash的配置在<code>~/.bashrc</code>中</p>
+<p>git的配置在<code>~/.gitconfig</code>中</p>
+<p>vim的配置在<code>~/.vimrc</code>中</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/zh-cn/p/misc%E7%AC%94%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/img/note.jpg" loading="lazy" data-key="" data-hash="/img/note.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">MISC笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/zh-cn/p/pwn%E7%AC%94%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/img/note.jpg" loading="lazy" data-key="" data-hash="/img/note.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">PWN笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/zh-cn/p/reverse%E7%AC%94%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/img/note.jpg" loading="lazy" data-key="" data-hash="/img/note.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">REVERSE笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/zh-cn/p/web%E7%AC%94%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/img/note.jpg" loading="lazy" data-key="" data-hash="/img/note.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">WEB笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
+<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet'/>
+<div id="waline" class="waline-container"></div>
+<style>
+    .waline-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+        --waline-font-size: var(--article-font-size);
+    }
+    .waline-container .wl-count {
+        color: var(--card-text-color-main);
+    }
+</style><script>
+    
+    Waline.init({"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://unpkg.com/@waline/emojis@1.0.1/weibo"],"locale":{"admin":"Admin","placeholder":null},"requiredMeta":["name","email","url"],"serverURL":"https://blog-waline-ox87ky1di-j-shiro.vercel.app/"});
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2024 J-shiro&#39;s 博客<br />
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+        共 71.06k 字 · 共 8篇文章
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
+            <span id="busuanzi_container_site_pv"> 总访问量<span id="busuanzi_value_site_pv"></span>次 </span>---
+            <span id="busuanzi_container_page_pv">本文阅读量<span id="busuanzi_value_page_pv"></span>次</span>    
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.13.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+
+    
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/live2d-widget@3.1.4/lib/L2Dwidget.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/live2d-widget@3.1.4/lib/L2Dwidget.0.min.js"></script>
+
+<script type="text/javascript">
+    L2Dwidget.init({
+        model: {
+            scale: 1,
+            hHeadPos: 0.5,
+            vHeadPos: 0.618,
+            jsonPath: 'https://cdn.jsdelivr.net/npm/live2d-widget-model-hibiki@1.0.5/assets/hibiki.model.json',       
+        },
+        display: {
+            superSample: 9,     
+            width: 160,         
+            height: 440,        
+            position: 'left',   
+            hOffset: 130,         
+            vOffset: -50,         
+        },
+        mobile: {
+            show: false,         
+            scale: 1,           
+            motion: true,       
+        },
+        react: {
+            opacityDefault: 1,  
+            opacityOnHover: 1,  
+        },
+    });
+</script>
+
+
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+    <div id="backTop" onclick="backTopFunction()" style="right: 40px; bottom: 40px; display: flex;">
+        <svg xmlns="http://www.w3.org/2000/svg" height="30" width="20" viewBox="0 0 512 512"><title>Caret Up</title>
+            <path d="M414 321.94L274.22 158.82a24 24 0 00-36.44 0L98 321.94c-13.34 15.57-2.28 39.62 18.22 39.62h279.6c20.5 0 31.56-24.05 18.18-39.62z" fill="#adb5bd"></path>
+        </svg>
+        <style type="text/css">
+            #backTop {
+                position: fixed;
+                background-color: #fff;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 0 6px rgba(0,0,0,.12);
+                cursor: pointer;
+                z-index: 5;
+            }
+    
+            #backTop:hover {
+                background-color: #f1f4f8;
+            }
+        </style>
+        <script>
+    
+            window.onscroll = function() {scrollFunction()};
+    
+            function scrollFunction() {console.log(121);
+                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                    document.getElementById("backTop").style.display = "flex";
+                } else {
+                    document.getElementById("backTop").style.display = "none";
+                }
+            }
+    
+    
+            function backTopFunction() {
+                document.body.scrollTop = 0;
+                document.documentElement.scrollTop = 0;
+            }
+        </script>
+    </div>
+    
+
+
+            </main>
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#一些命令">一些命令</a></li>
+    <li><a href="#简单命令">简单命令</a></li>
+    <li><a href="#netstat">netstat</a></li>
+    <li><a href="#find">find</a></li>
+    <li><a href="#locate">locate</a></li>
+    <li><a href="#lsof">lsof</a></li>
+    <li><a href="#ssh">ssh</a></li>
+    <li><a href="#strace">strace</a></li>
+    <li><a href="#xargs">xargs</a></li>
+    <li><a href="#awk">awk</a></li>
+    <li><a href="#grep">grep</a></li>
+    <li><a href="#sed">sed</a></li>
+    <li><a href="#shell">shell</a></li>
+    <li><a href="#vim">vim</a>
+      <ol>
+        <li><a href="#normal模式">Normal模式</a></li>
+        <li><a href="#command模式">Command模式</a></li>
+        <li><a href="#visual模式">Visual模式</a></li>
+        <li><a href="#insert模式">Insert模式</a></li>
+      </ol>
+    </li>
+    <li><a href="#配置">配置</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+
+    }());
+</script>
+
+<script
+    src="https://cdn.jsdelivr.net/gh/zhixuan2333/gh-blog@v0.1.0/js/nprogress.min.js"
+    integrity="sha384-bHDlAEUFxsRI7JfULv3DTpL2IXbbgn4JHQJibgo5iiXSK6Iu8muwqHANhun74Cqg"
+    crossorigin="anonymous"
+></script>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/zhixuan2333/gh-blog@v0.1.0/css/nprogress.css"
+    integrity="sha384-KJyhr2syt5+4M9Pz5dipCvTrtvOmLk/olWVdfhAp858UCa64Ia5GFpTN7+G4BWpE"
+    crossorigin="anonymous"
+/>
+<script>
+    NProgress.start();
+    document.addEventListener("readystatechange", () => {
+        if (document.readyState === "interactive") NProgress.inc(0.8);
+        if (document.readyState === "complete") NProgress.done();
+    });
+</script>
+
+    </body>
+</html>
