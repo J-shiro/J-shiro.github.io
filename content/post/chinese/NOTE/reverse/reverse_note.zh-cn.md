@@ -3,7 +3,7 @@ title: "REVERSE笔记"
 description: 
 date: 2024-10-09
 image: /img/note.jpg
-math: 
+math: true
 license: 
 hidden: false
 comments: true
@@ -16,6 +16,8 @@ typora-root-url: ..\..\..\..\..\static
 ---
 
 ## 基础知识
+
+除了逆向外也可以尝试**爆破**
 
 ### Windows
 
@@ -89,9 +91,17 @@ strace # 查看 binary 执行时的 system call 和 signal
 ltrace # 查看 binary 执行时的 library call
 ```
 
+**可执行程序报错**：linux版本可能不匹配，尝试高版本打开
+
+```bash
+./a.elf: /lib/x86_64-linux-gnu/libstdc++.so.6: version `GLIBCXX_3.4.32' not found (required by ./a.elf)
+```
+
+
+
 ### 数学
 
-**乘法逆元：** $$a \cdot a^{-1}\equiv 1(mod\,p$$
+**乘法逆元：** $a\cdot a^{-1}\equiv 1(mod\quad p)$
 
 ```Python
 # 求 a 乘法逆元
@@ -480,6 +490,8 @@ combinations = list(itertools.product(choices, repeat=7))
 
 **转换**
 
+可以尝试用CyberChef转换，output中的**魔法棒**
+
 ```Python
 binary_data = bytes.fromhex(content)
 # 字节字符串 "0x89" "0x50" 转换为真字节 b'\x89' b'P'
@@ -511,6 +523,26 @@ hex_values = [val.strip() for val in data.replace('\n', ',').split(',')]
 for i in range(0, len(hex_values), 10):
     print(', '.join(hex_values[i:i+10]))
 ```
+
+**类**
+
+```python
+class A:
+    def __str__(self):
+    # __xx__魔术内置方法，一般python解释器自动调用
+        return str(self)
+    # 静态方法: 用于创建类的实例，分配内存创建对象
+    def __new__(cls, *args, **kwargs):
+        return super(A, cls).__new__(cls, *args, **kwargs)
+    
+    @property # 方法转换为同名的只读属性 instance.aaa来访问
+    def aaa(self):
+        return self.aaa
+
+A1 = package.A()
+```
+
+
 
 ### JAVA
 
@@ -717,7 +749,7 @@ int // 32位整型
 
 **动态调试**
 
-选择Load WIndows debugger调试器，设置断点在某一代码行
+选择Load WIndows debugger调试器，设置断点在某一代码行，需要在`Debugger`中打开`Use source-level debugging`
 
 ![img](/img/reverse_note.zh-cn.assets/-17284517325159.assets)
 
@@ -1083,17 +1115,17 @@ int main(){
 
 - 分组密码，4组，分组长度128位，密钥长度128位，加解密算法相同，轮密钥使用次序相反，32轮非线性迭代
 - 轮密钥 rK 有32个
-- $$X_{i+4}=F(X_i,X_{i+1},X_{i+2},X_{i+3},rK_i)=X_i ⊕ T( X_{i+1}⊕X_{i+2}⊕X_{i+3}⊕rK_i$$
+- $$X_{i+4}=F(X_i,X_{i+1},X_{i+2},X_{i+3},rK_i)=X_i ⊕ T( X_{i+1}⊕X_{i+2}⊕X_{i+3}⊕rK_i)$$
 
 ![img](/img/reverse_note.zh-cn.assets/-172845181249224.assets)
 
 **F函数中的T函数**
 
-T：合成置换，可逆变换，由非线性变换$$\ta$$和线性变换$$$$复合而成：$$T()=L(\tau()$$
+T：合成置换，可逆变换，由非线性变换$$\tau$$和线性变换$$L$$复合而成：$$T()=L(\tau())$$
 
-1. 非线性变换 A 到 B，A 和 B 均为32位，$$\ta$$由4个并行S盒构成【固定的256字节的数组】
+1. 非线性变换 A 到 B，A 和 B 均为32位，$$\tau$$由4个并行S盒构成【固定的256字节的数组】
 
-$$B =（b_0,b_1,b_2,b_3）= τ(A)=(Sbox(a_0),Sbox(a_0),Sbox(a_0),Sbox(a_0)$$
+$$B =（b_0,b_1,b_2,b_3）= τ(A)=(Sbox(a_0),Sbox(a_0),Sbox(a_0),Sbox(a_0))$$
 
 查表规则：有 F 行 F 列，输入的32位可表示为2个十六进制数，一个做行一个做列找值替换
 
@@ -1101,13 +1133,13 @@ $$B =（b_0,b_1,b_2,b_3）= τ(A)=(Sbox(a_0),Sbox(a_0),Sbox(a_0),Sbox(a_0)$$
 
 1. 线性变换 B 到 C，均为32位，此处为**循环左移**
 
-$$C = L(B) = B ⊕（B<<<2） ⊕(B<<<10) ⊕(B<<<18) ⊕(B<<<24)$$
+$$C = L(B) = B ⊕(B<<<2)⊕(B<<<10) ⊕(B<<<18) ⊕(B<<<24)$$
 
 **轮密钥扩展**
 
-密钥128位，$$MK=(MK_0,MK_1,MK_2,MK_3$$，轮密钥由密钥生成
+密钥128位，$$MK=(MK_0,MK_1,MK_2,MK_3)$$，轮密钥由密钥生成
 
-系统参数：$$FK=(FK_0,FK_1,FK_2,FK_3$$，固定参数：$$CK=(CK_0,CK_1,\cdots ,CK_{31})$$
+系统参数：$$FK=(FK_0,FK_1,FK_2,FK_3)$$，固定参数：$$CK=(CK_0,CK_1,\cdots ,CK_{31})$$
 
 ![img](/img/reverse_note.zh-cn.assets/-172845181249326.assets)
 
@@ -1116,15 +1148,17 @@ $$C = L(B) = B ⊕（B<<<2） ⊕(B<<<10) ⊕(B<<<18) ⊕(B<<<24)$$
 - $$(K_0,K_1,K_2,K_3)= (MK_0⊕FK_0, MK_1⊕, FK_1, MK_2⊕FK_2, MK_3⊕FK_3)$$
   - $$rK_i=K_{i+4}=K_i⊕T’(K_{i+1}⊕K_{i+2}⊕K_{i+3}⊕CK_i)----[i=0,\cdots,31]$$
 
-$$T$$即将 $$$$ 中的 $$$$ 替换为 $$L$$：$$L'(B)=B\oplus (B\lt\lt\lt 13)\oplus(B\lt\lt\lt 23)$$
+$$T'$$即将 $$T$$ 中的 $$L$$ 替换为 $L'$：$$L'(B)=B\oplus (B\lt\lt\lt 13)\oplus(B\lt\lt\lt 23)$$
 
 **解密**
 
-由于$$X_{i+4}=F(X_i,X_{i+1},X_{i+2},X_{i+3~}rK_i)=X_i ⊕ T( X_{i+1}⊕X_{i+2}⊕X_{i+3}⊕rK_i$$
+由于$$X_{i+4}=F(X_i,X_{i+1},X_{i+2},X_{i+3~}rK_i)=X_i ⊕ T( X_{i+1}⊕X_{i+2}⊕X_{i+3}⊕rK_i)$$
 
-所以$$X_i=F(X_{i+4},X_{i+1},X_{i+2},X_{i+3},rK_i)=X_{i+4} ⊕ T(X_{i+1}⊕X_{i+2}⊕X_{i+3}⊕rK_i$$
+所以$$X_i=F(X_{i+4},X_{i+1},X_{i+2},X_{i+3},rK_i)=X_{i+4} ⊕ T(X_{i+1}⊕X_{i+2}⊕X_{i+3}⊕rK_i)$$
 
 将密文逆序，轮密钥也逆序，解密流程即加密流程的逆序
+
+
 
 ### RC4
 
@@ -1135,6 +1169,7 @@ $$T$$即将 $$$$ 中的 $$$$ 替换为 $$L$$：$$L'(B)=B\oplus (B\lt\lt\lt 13)\o
 **初始化过程**
 
 ```C
+#include<stdio.h>
 void rc4_init(unsigned char*S, unsigned char*key, unsigned long Len)
 {
         int i = 0;
@@ -1162,12 +1197,12 @@ void rc4_init(unsigned char*S, unsigned char*key, unsigned long Len)
 **加解密过程**
 
 ```C
-void rc4_crypt(unsigned char*S, unsigned char*Data, unsigned long Len)
+void rc4_crypt(unsigned char*S, unsigned char*Data, unsigned long Len_Data)
 { // 加解密同一函数
         int i = 0, j = 0, t = 0;
         unsigned long k = 0; // 明文索引
         unsigned char tmp;
-        for (k = 0; k < Len; k++) // Len 明文长度
+        for (k = 0; k < Len_Data; k++) // Len 明文长度
         {
                 // 生成密钥流，利用密钥流和明文进行加密
                 i = (i + 1) % 256;
@@ -1185,23 +1220,37 @@ void rc4_crypt(unsigned char*S, unsigned char*Data, unsigned long Len)
 
 ```C
 int main(){
-        system("chcp 65001"); // 防止终端乱码
-        // 赋值： unsigned __int8 data[] = {27, 155, 251, 25, 6, 106}
-        unsigned char S[256]={0}; // S_box
-        char key[256]={0};
-        char data[256]={0};
-        printf("输入密钥：");
-        scanf("%s",key);
-        unsigned long length = strlen(key);
-        rc4_init(S,key,length);
+    // system("chcp 65001"); // 防止终端乱码
         
-        printf("输入密文："); 
-        scanf("%s",data);
-        rc4_crypt(S,data,length);
-        printf("加/解密结果：%s",data);
-        return 0;
+    unsigned char S[256]={0}; // S_box
+    unsigned char key[]= "xxxxxx"; // char key[256] = {0}
+    // scanf("%s",key);
+    // 赋值： unsigned __int8 data[] = {27, 155, 251, 25, 6, 106};
+    unsigned char data[] = {0xa7, 0x11};
+    // scanf("%s",data);
+    
+    // unsigned long length = strlen(key);
+    unsigned long length = sizeof(key) - 1;
+    unsigned long data_size = sizeof(data);
+    rc4_init(S,key,length);
+    
+    rc4_crypt(S,data,data_size);
+    printf("%s",data);
+    return 0;
 }
 ```
+
+**CyberChef**
+
+```
+input: 0xA7, 0x1A, 0x11
+# Find/Replace , {Global match, Case insensitive, Dot matches all}
+# Find/Replace \n {Global match, Case insensitive, Dot matches all}
+# From Hex Auto
+# RC4 
+```
+
+
 
 ### Base算法
 
@@ -1310,7 +1359,7 @@ array = [['0' for _ in range(cols)] for _ in range(rows)]
 - 深度优先算法DFS：栈
 - 广度优先算法BFS：队列
 
-### 深度优先算法
+### DFS
 
 ```Python
 import sys # 设置递归深度
@@ -1506,3 +1555,17 @@ jadx打开文件后，`AndroidManifest.xml`文件中包括**配置信息**等
 ## .Net
 
 ### C#
+
+## python
+
+**Cython**
+
+`whl`文件格式`xxx-1.14-cp312-cp312-win_amd64`中cp312表示python的版本：python-3.12，需要使用对应的python版本进行安装
+
+```python
+pythonx -m pip install xxx.whl # 使用python指定的对应pip安装
+
+import xxx # 安装后直接导入
+help(xxx) # 可以查看信息
+```
+

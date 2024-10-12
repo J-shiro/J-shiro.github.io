@@ -67,6 +67,22 @@ binwalk -e xx.xx
 
 ## 基础知识
 
+**常见文件头**
+
+| 格式                | 文件头            | 文件尾      |
+| ------------------- | ----------------- | ----------- |
+| ZIP(zip)            | 50 4B 03 04       | 50 4B       |
+| RAR(rar)            | 52 61 72 21       |             |
+| JPEG(jpg)           | FF D8 FF          | FF D9       |
+| PNG(png)            | 89 50 4E 47       | AE 42 60 82 |
+| GIF(gif)            | 47 49 46 38       | 00 3B       |
+| TIFF(tif)           | 49 49 2A 00       |             |
+| Windows Bitmap(bmp) | 42 4D AE 0A 0B    |             |
+| 7-ZIP(7z)           | 37 7A BC AF 27 1C |             |
+| avi(RIFF)           | 52 49 46 46       |             |
+
+
+
 ### 音频
 
 wav文件头：`52494646E6AD250357415645666D7420`
@@ -379,6 +395,29 @@ if len(code) > 15 # 通过延后输入代码解析
 
 eval(input()) # 使用该命令绕过初始限制
 ```
+
+**重写`eval`屏蔽**
+
+```python
+eval(code, {"__builtins__": {"eval": lambda *x: print("sry, no eval for u")}}, {})
+# eval(code, globals, locals): globals 和 locals 定义了全局和局部命名空间
+# {"__builtins__": {"eval": lambda *x: print("sry, no eval for u")}} 作为全局重写为无论输入什么都只打印
+```
+
+```bash
+# 绕过
+[klass for klass in "".__class__.__base__.__subclasses__() if klass.__name__ == "BuiltinImporter"][0].load_module("builtins").__import__("os").system("ls")
+
+# "".__class__: 获取<class 'str'>
+# .__base__: 获取基类<class 'object'>
+# .__subclasses__(): 返回object类所有子类列表
+# 列表推导式筛选出BuiltinImporter的类——用于导入内置模块
+# [0]取出第一个元素BuiltinImporter类
+# .load_module("builtins"): 加载builtins模块，包含python所有内置对象和函数
+# .__import__("os").system("ls") # 执行命令
+```
+
+
 
 ## 密码
 

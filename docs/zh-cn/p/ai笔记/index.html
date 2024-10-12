@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='基础 灰度图 一般为3个数相乘，前两个数是长宽，单位为像素，最后一个数是指RGB通道数，灰度图为1，相乘的结果作为维数，输入值将平展为一列向量 均'><title>AI笔记</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='基础 笔记相关 数学公式：$$为不另起一行，$$$$为另起一行 \\换行需要转换为\\\ 换行 _有时需要转义为\_ \,有时需要转义为\\, 以下均可能'><title>AI笔记</title>
 
 <link rel='canonical' href='https://J-shiro.github.io/zh-cn/p/ai%E7%AC%94%E8%AE%B0/'>
 
 <link rel="stylesheet" href="/scss/style.min.b18c0607927efd48b36f5d027b549e77e30ee300e22b6461d063f1df6ea2466b.css"><meta property='og:title' content='AI笔记'>
-<meta property='og:description' content='基础 灰度图 一般为3个数相乘，前两个数是长宽，单位为像素，最后一个数是指RGB通道数，灰度图为1，相乘的结果作为维数，输入值将平展为一列向量 均'>
+<meta property='og:description' content='基础 笔记相关 数学公式：$$为不另起一行，$$$$为另起一行 \\换行需要转换为\\\ 换行 _有时需要转义为\_ \,有时需要转义为\\, 以下均可能'>
 <meta property='og:url' content='https://J-shiro.github.io/zh-cn/p/ai%E7%AC%94%E8%AE%B0/'>
 <meta property='og:site_name' content='J-shiro&#39;s 博客'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-10-09T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2024-10-09T00:00:00&#43;00:00'/><meta property='og:image' content='https://J-shiro.github.io/img/note.jpg' />
 <meta name="twitter:title" content="AI笔记">
-<meta name="twitter:description" content="基础 灰度图 一般为3个数相乘，前两个数是长宽，单位为像素，最后一个数是指RGB通道数，灰度图为1，相乘的结果作为维数，输入值将平展为一列向量 均"><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="基础 笔记相关 数学公式：$$为不另起一行，$$$$为另起一行 \\换行需要转换为\\\ 换行 _有时需要转义为\_ \,有时需要转义为\\, 以下均可能"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://J-shiro.github.io/img/note.jpg' />
     <link rel="shortcut icon" href="https://j-shiro.github.io/img/somebody.png" />
 
@@ -307,7 +307,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 48 分钟
+                    阅读时长: 49 分钟
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -318,7 +318,7 @@
 
 
                 <time class="article-words">
-                    23728 字
+                    24380 字
                 </time>
             </div>
         
@@ -333,6 +333,19 @@
     
     
     <h2 id="基础">基础</h2>
+<p><strong>笔记相关</strong></p>
+<blockquote>
+<ul>
+<li>数学公式：<code>$$</code>为不另起一行，<code>$$$$</code>为另起一行</li>
+<li><code>\\</code>换行需要转换为<code>\\\ </code>换行</li>
+<li><code>_</code>有时需要转义为<code>\_</code></li>
+<li><code>\,</code>有时需要转义为<code>\\,</code></li>
+<li>以下均可能被包裹在<code>{}</code>中，只需要转义第一个字符</li>
+<li><code>&lt;</code>需要转义为<code>\&lt;</code></li>
+<li><code>[</code>需要转义为<code>\[</code></li>
+<li>先下标再上标</li>
+</ul>
+</blockquote>
 <p><strong>灰度图</strong></p>
 <p>一般为3个数相乘，前两个数是长宽，单位为像素，最后一个数是指RGB通道数，灰度图为1，相乘的结果作为维数，输入值将平展为一列向量</p>
 <p><strong>均方误差</strong></p>
@@ -841,7 +854,8 @@
 <p><strong>代价函数</strong></p>
 <p>平方误差代价函数不适合逻辑回归，会导致梯度下降时有多个局部最低点</p>
 <p>定义<strong>损失函数</strong></p>
-<p>$$L(f_{w,b}(x^{(i)}), y^{(i)})=\begin{cases}-log(f_{w,b}(x^{(i)}))\quad y^{(i)}=1\-log(1-f_{w,b}(x^{(i)}))\quad y^{(i)}=0\end{cases}$$，其中f(x)是sigmoid函数，所以取值[0, 1]</p>
+<p>$$L(f_{w,b}(x^{(i)}), y^{(i)})=\begin{cases}-log(f_{w,b}(x^{(i)}))\quad y^{(i)}=1\\ -log(1-f_{w,b}(x^{(i)}))\quad y^{(i)}=0\end{cases}$$</p>
+<p>其中f(x)是sigmoid函数，所以取值[0, 1]</p>
 <p><img src="/img/ai_note.zh-cn.assets/-172845431716314.assets"
 	
 	
@@ -885,10 +899,11 @@
 <h4 id="softmax回归">Softmax回归</h4>
 <p><strong>多类别分类(multi class classification)</strong>——Logistic回归的推广</p>
 <p><strong>Softmax计算概率：</strong></p>
-<p>$\hat P_k=\sigma(s(x))<em>k=\frac{exp(s_k(x))}{\sum</em>{j=1}^Kexp(s_j(x))}$，将不同组的得分值 <strong>s</strong> 进行指数化来使得差异更大</p>
-<p>假设<strong>四</strong>个输出：$z_1=w_1\cdot x + b_1\z_2=w_2\cdot x + b_2\z_3=w_3\cdot x + b_3\z_4=w_4\cdot x + b_4$，$a_i=\frac{e^{z_i}}{e^{z_1}+e^{z_2}+e^{z_3}+e^{z_4}}=P(y=i|x)$</p>
+<p>$\hat P_k=\sigma(s(x))_k=\frac{exp(s_k(x))}{\sum_{j=1}^Kexp(s_j(x))}$，将不同组的得分值 <strong>s</strong> 进行指数化来使得差异更大</p>
+<p>假设<strong>四</strong>个输出：</p>
+<p>$z_1=w_1\cdot x + b_1\\ z_2=w_2\cdot x + b_2\\ z_3=w_3\cdot x + b_3\\ z_4=w_4\cdot x + b_4$，$a_i=\frac{e^{z_i}}{e^{z_1}+e^{z_2}+e^{z_3}+e^{z_4}}=P(y=i|x)$</p>
 <p><strong>损失函数</strong></p>
-<p>$loss(a_1, \cdots, a_N, y)=\begin{cases}-\log{a_1}\quad if,y=1\-\log{a_2}\quad if,y=2\\quad\vdots\-\log{a_N}\quad if,y=N\end{cases}$，使用-log函数来使得概率越接近 **1 ，**损失函数值越小</p>
+<p>$loss(a_1, \cdots, a_N, y)=\begin{cases}-\log{a_1}\quad if\,y=1\\ -\log{a_2}\quad if\,y=2\\ \quad\vdots\\ -\log{a_N}\quad if\,y=N\end{cases}$，使用-log函数来使得概率越接近 **1 ，**损失函数值越小</p>
 <p><strong>损失函数（交叉熵）：</strong>$J(\theta)=-\frac{1}{m}\sum_{i=1}^m\sum_{k=1}^Ky_k^{(i)}log(\hat p_k^{(i)})$</p>
 <p>运用到神经网络：输出层将需要 N 个神经元，以分为 N 个类别，Softmax激活功能使得$a_i$与$z_1 \cdots z_N$所有值相关，区别于logistic回归：$a_i$只与$z_i$有关</p>
 <p><strong>多标签分类(multi label classification)</strong>——输入单图像，判断是否有行人，是否有车，是否有公交，向量[1 0 1]</p>
@@ -1348,7 +1363,8 @@
 </table></div>
 <ul>
 <li>$n_u$人数，$n_m$电影数，$r(i,j)=1/0$用户 j 是否给电影 i 打分，$y^{(i,j)}$用户 j 对 i 的打分值，$w^{(j)},b^{(j)}$用户 j 的参数，$x^{(i)}$电影 i 的特征向量</li>
-<li>对 a(j) 预测第 3(i) 个电影：假设已得出了 w 和 b $w^{(j)}\cdot x^{(i)}+b^{(j)}=[5\quad 0]\cdot \begin{bmatrix}0.99\0\end{bmatrix}+0=4.95$</li>
+<li>对 a(j) 预测第 3(i) 个电影：假设已得出了 w 和 b</li>
+<li>$w^{(j)}\cdot x^{(i)}+b^{(j)}=[5\quad 0]\cdot \begin{bmatrix}0.99\\ 0\end{bmatrix}+0=4.95$</li>
 </ul>
 <p><strong>成本函数</strong></p>
 <p>对单个用户 j</p>
@@ -1560,7 +1576,7 @@
 </li>
 <li><strong>决策方程：</strong>$y(x)=w^T\Phi(x)+b$，$\Phi(x)$对数据做了变换
 <ul>
-<li>$\begin{cases}y(x_i)\gt 0\Leftrightarrow y_i=+1\y(x_i)\lt 0\Leftrightarrow y_i=-1\end{cases}\quad\Rightarrow\quad y_i\cdot y(x_i)\gt 0$</li>
+<li>$\begin{cases}y(x_i)\gt 0\Leftrightarrow y_i=+1\\ y(x_i)\lt 0\Leftrightarrow y_i=-1\end{cases}\quad\Rightarrow\quad y_i\cdot y(x_i)\gt 0$</li>
 </ul>
 </li>
 </ul>
@@ -1685,6 +1701,59 @@
 </ul>
 <p><strong>软更新</strong></p>
 <p>当使用小批量梯度下降时，更新 Q 的参数 w 及 b 时：$w=0.01w_{new}+0.99w\quad b=0.01b_{new}+0.99b$</p>
+<h3 id="mcts">MCTS</h3>
+<p>蒙特卡洛树搜索，The Monte Carlo Tree Search，给定一个游戏状态，选择最佳下一步</p>
+<ul>
+<li>
+<p>选择selection：选择最大化UCB值的结点，$UCB(S_i)=\overline{V_i}+c\sqrt{\frac{\log N}{n_i}}, c=2$</p>
+<ul>
+<li>$V_i$指该结点下平均价值，N探索次数，n当前结点探索次数</li>
+</ul>
+</li>
+<li>
+<p>扩展node_expansion：创建一个或多个子节点</p>
+</li>
+<li>
+<p>仿真Rollout：某一节点用随机策略进行游戏</p>
+</li>
+<li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Def Rollout(S_i):
+</span></span><span class="line"><span class="cl">	loop forever:
+</span></span><span class="line"><span class="cl">		if S_i is a terminal state:
+</span></span><span class="line"><span class="cl">			return value(S_i)
+</span></span><span class="line"><span class="cl">		A_i = random(available-actions(S_i))
+</span></span><span class="line"><span class="cl">		S_i = simulate(A_i, S_i)
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>反向传播backpropagation：使用随机搜索结果更新搜索树，价值累加，探索次数加一</p>
+</li>
+</ul>
+<p><img src="/img/ai_note.zh-cn.assets/image-20241009232005644.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20241009232005644"
+	
+	
+></p>
+<ol>
+<li>通过计算UCB最大值一直到叶结点，查看是否探索过，未探索过则仿真</li>
+<li>探索过则枚举当前结点所有可能动作添加到树，扩展一个新结点</li>
+</ol>
 <h2 id="深度学习">深度学习</h2>
 <ul>
 <li>机器学习过程：数据获取、【<strong>特征工程】</strong>、建立模型、评估应用</li>
@@ -1809,7 +1878,7 @@
 <p><strong>损失函数</strong></p>
 <ul>
 <li>举例一个损失函数$L_i=\sum_{j\ne y_i}max(0,s_j-s_{y_i}+1)$，$s_j$是错误的，$s_{y_i}$是正确的</li>
-<li>再加入正则化惩罚项防止过拟合：$L=\frac{1}{N}\sum_{i=1}^N\sum_{j\ne y_i}max(0,f(x_i;W)<em>j-f(x_i;W)</em>{y_i}+1)+\lambda R(W)$，其中$R(W)=\sum_k\sum_lW^2_{k,l}$</li>
+<li>再加入正则化惩罚项防止过拟合：$L=\frac{1}{N}\sum_{i=1}^N\sum_{j\ne y_i}max(0,f(x_i;W)_j-f(x_i;W)_{y_i}+1)+\lambda R(W)$，其中$R(W)=\sum_k\sum_lW^2_{k,l}$</li>
 </ul>
 <h3 id="深度神经网络">深度神经网络</h3>
 <ul>
@@ -1988,7 +2057,7 @@
 	
 ></p>
 <p>【调试】梯度检查：J 函数中的 $\theta$是向量中某个$\theta_i$</p>
-<p>计算$d\theta_{approx}=\frac{J(\theta+\varepsilon)-J(\theta-\varepsilon)}{2\varepsilon}$，计算标准化后欧几里得距离$\frac{||d\theta_{approx}-d\theta||<em>2}{||d\theta</em>{approx}||_2+||d\theta||_2}$与$\varepsilon=10^{-7}$比较</p>
+<p>计算$d\theta_{approx}=\frac{J(\theta+\varepsilon)-J(\theta-\varepsilon)}{2\varepsilon}$，计算标准化后欧几里得距离$\frac{||d\theta_{approx}-d\theta||_2}{||d\theta_{approx}||_2+||d\theta||_2}$与$\varepsilon=10^{-7}$比较</p>
 <p><strong>指数加权滑动平均</strong></p>
 <p>有大体趋势的多噪声散点图使用：$V_t = \beta V_{t-1} + (1-\beta \theta_t)$做出平滑曲线，相当于取$\frac{1}{1-\beta}$天的平均值</p>
 <p><strong>偏差纠正</strong></p>
@@ -2319,8 +2388,8 @@
 <li><strong>风格代价函数</strong></li>
 </ol>
 <p><strong>风格矩阵/gram matrix</strong>：$a_{i,j,k}^{[l]}$表示高 i 宽 j 通道 k 的激活因子，$G^{[l]}:,,n_c^{[l]}\times n_c^{[l]}$记录每一对通道间的相关性</p>
-<p>$G_{kk&rsquo;}^{<a class="link" href="S" >l</a>}=\sum_{i=1}^{n_H^{[l]}}\sum_{j=1}^{n_W^{[l]}}a_{ijk}^{<a class="link" href="S" >l</a>}a_{ijk&rsquo;}^{<a class="link" href="S" >l</a>},\quad\quad k=1,\cdots ,n_c^{[l]}$</p>
-<p>$G_{kk&rsquo;}^{<a class="link" href="G" >l</a>}=\sum_{i=1}^{n_H^{[l]}}\sum_{j=1}^{n_W^{[l]}}a_{ijk}^{<a class="link" href="G" >l</a>}a_{ijk&rsquo;}^{<a class="link" href="G" >l</a>},\quad\quad k=1,\cdots ,n_c^{[l]}$</p>
+<p>$G_{kk&rsquo;}^{[l](S)}=\sum_{i=1}^{n_H^{[l]}}\sum_{j=1}^{n_W^{[l]}}a_{ijk}^{[l](S)}a_{ijk&rsquo;}^{[l](S)},\quad\quad k=1,\cdots ,n_c^{[l]}$</p>
+<p>$G_{kk&rsquo;}^{[l](G)}=\sum_{i=1}^{n_H^{[l]}}\sum_{j=1}^{n_W^{[l]}}a_{ijk}^{[l](G)}a_{ijk&rsquo;}^{[l](G)},\quad\quad k=1,\cdots ,n_c^{[l]}$</p>
 <p>$J_{Style}^{[l]}(S,G)=\frac{1}{(\cdots)}||G^{[l][S]}-G^{[l][G]}||_F^2$</p>
 <p><img src="/img/ai_note.zh-cn.assets/-172845431716877.assets"
 	
@@ -2355,14 +2424,14 @@
 ></p>
 <p>$a^{&lt;0&gt;}=\vec 0$</p>
 <ol>
-<li>Tanh, ReLU：$a^{<t>}=g(w_{aa}a^{<t-1>}+w_{ax}x^{<t>}+b_a)$</li>
-<li>Sigmoid, SoftMax: $\hat y^{<t>}=g(w_{ya}a^{<t>}+b_y)$</li>
+<li>Tanh, ReLU：$a^{&lt;t&gt;}=g(w_{aa}a^{&lt;t-1&gt;}+w_{ax}x^{&lt;t&gt;}+b_a)$</li>
+<li>Sigmoid, SoftMax: $\hat y^{&lt;t&gt;}=g(w_{ya}a^{&lt;t&gt;}+b_y)$</li>
 </ol>
-<p>将$W_{aa}$和$W_{ax}$矩阵左右联结表示为$W_a$，1 式转化为$a^{<t>}=g(W_a[a^{<t-1>}, x^{<t>}]+b_a)$，[ , ]中表示上下联结</p>
+<p>将$W_{aa}$和$W_{ax}$矩阵左右联结表示为$W_a$，1 式转化为$a^{&lt;t&gt;}=g(W_a[a^{&lt;t-1&gt;}, x^{&lt;t&gt;}]+b_a)$，[ , ]中表示上下联结</p>
 <p><strong>基于时间反向传播</strong></p>
 <p>预测特定词是一个人名的概率是$\hat y$，使用逻辑回归损失</p>
-<p>某一时间损失：$L^{<t>}(\hat y^{<t>},y^{<t>})=-y^{<t>}\log \hat y^{<t>}-(1-y^{<t>})\log (1-\hat y^{<t>})$</p>
-<p>总体损失函数：$L(\hat y, y)=\sum_{t=1}^{T_y}L^{<t>}(\hat y^{<t>},y^{<t>})$，$T_x$和$T_y$可能不同</p>
+<p>某一时间损失：$L^{&lt;t&gt;}(\hat y^{&lt;t&gt;},y^{&lt;t&gt;})=-y^{&lt;t&gt;}\log \hat y^{&lt;t&gt;}-(1-y^{&lt;t&gt;})\log (1-\hat y^{&lt;t&gt;})$</p>
+<p>总体损失函数：$L(\hat y, y)=\sum_{t=1}^{T_y}L^{&lt;t&gt;}(\hat y^{&lt;t&gt;},y^{&lt;t&gt;})$，$T_x$和$T_y$可能不同</p>
 <p><strong>架构类型</strong></p>
 <p><img src="/img/ai_note.zh-cn.assets/-172845431716879.assets"
 	
@@ -2386,7 +2455,7 @@
 ></p>
 <p><strong>语言模型+序列生成</strong></p>
 <p>训练集为极大<strong>语料库</strong>（corpus），将数据句子<strong>标记化</strong>（tokenize），句子末尾加入<strong>EOS</strong>（End Of Sentence）标记，定位句子结尾，未知单词标记为**<UNK>**（unknown word）标记，$\hat y$对应于已知条件概率P(__|已知)</p>
-<p><strong>损失函数：</strong>$L(\hat y^{<t>},y^{<t>})=-\sum_iy_i^{<t>}\log \hat y_i^{<t>}$，softmax损失函数</p>
+<p><strong>损失函数：</strong>$L(\hat y^{&lt;t&gt;},y^{&lt;t&gt;})=-\sum_iy_i^{&lt;t&gt;}\log \hat y_i^{&lt;t&gt;}$，softmax损失函数</p>
 <p><strong>字符级语言模型，字典为[a,b,c,&hellip;,z,A,&hellip;,Z]</strong></p>
 <p><img src="/img/ai_note.zh-cn.assets/-172845431716881.assets"
 	
@@ -2400,10 +2469,10 @@
 ></p>
 <p><strong>Gate Recurrent Unit（GRU）门控制单元</strong></p>
 <ul>
-<li>解决RNN<strong>梯度消失问题，</strong>$C^{<t>}$记忆单元来存储记忆，如：需要记住cat是单数，使用was而不是were</li>
-<li>$\tilde C^{<t>}=\tanh (W_c[\Gamma_r\cdot C^{<t-1>},x^{<t>}]+b_c)$</li>
-<li>门控值：<strong>更新门</strong>$\Gamma_u=\sigma(W_u[C^{<t-1>},x^{<t>}]+b_u)$，sigmoid使范围为0-1，为0表示不更新$C^{<t>}$，同样适用于<strong>相关性门</strong>$\Gamma_r$</li>
-<li>$C^{<t>}=\Gamma_u\cdot \tilde C^{<t>}+(1-\Gamma_u)\cdot C^{<t-1>}$ ，a和c相等</li>
+<li>解决RNN<strong>梯度消失问题，</strong>$C^{&lt;t&gt;}$记忆单元来存储记忆，如：需要记住cat是单数，使用was而不是were</li>
+<li>$\tilde C^{&lt;t&gt;}=\tanh (W_c[\Gamma_r\cdot C^{&lt;t-1&gt;},x^{&lt;t&gt;}]+b_c)$</li>
+<li>门控值：<strong>更新门</strong>$\Gamma_u=\sigma(W_u[C^{&lt;t-1&gt;},x^{&lt;t&gt;}]+b_u)$，sigmoid使范围为0-1，为0表示不更新$C^{&lt;t&gt;}$，同样适用于<strong>相关性门</strong>$\Gamma_r$</li>
+<li>$C^{&lt;t&gt;}=\Gamma_u\cdot \tilde C^{&lt;t&gt;}+(1-\Gamma_u)\cdot C^{&lt;t-1&gt;}$ ，a和c相等</li>
 </ul>
 <p><img src="/img/ai_note.zh-cn.assets/-172845431716882.assets"
 	
@@ -2417,9 +2486,9 @@
 ></p>
 <p><strong>Long Short Term Memory Units（LSTM）长短期记忆单元</strong></p>
 <ul>
-<li>$\tilde C^{<t>}=\tanh (W_c[a^{<t-1>},x^{<t>}]+b_c)$</li>
-<li><strong>更新门</strong>$\Gamma_u=\sigma(W_u[C^{<t-1>},x^{<t>}]+b_u)$，<strong>遗忘门</strong>$\Gamma_f=\sigma(W_f[C^{<t-1>},x^{<t>}]+b_f)$，<strong>输出门</strong>$\Gamma_o=\sigma(W_o[C^{<t-1>},x^{<t>}]+b_o)$</li>
-<li>更新：$C^{<t>}=\Gamma_u\cdot \tilde C^{<t>}+\Gamma_f\cdot C^{<t-1>}$，$a^{<t>}=\Gamma_o\cdot C^{<t>}$，a和c不再相等</li>
+<li>$\tilde C^{&lt;t&gt;}=\tanh (W_c[a^{&lt;t-1&gt;},x^{&lt;t&gt;}]+b_c)$</li>
+<li><strong>更新门</strong>$\Gamma_u=\sigma(W_u[C^{&lt;t-1&gt;},x^{&lt;t&gt;}]+b_u)$，<strong>遗忘门</strong>$\Gamma_f=\sigma(W_f[C^{&lt;t-1&gt;},x^{&lt;t&gt;}]+b_f)$，<strong>输出门</strong>$\Gamma_o=\sigma(W_o[C^{&lt;t-1&gt;},x^{&lt;t&gt;}]+b_o)$</li>
+<li>更新：$C^{&lt;t&gt;}=\Gamma_u\cdot \tilde C^{&lt;t&gt;}+\Gamma_f\cdot C^{&lt;t-1&gt;}$，$a^{&lt;t&gt;}=\Gamma_o\cdot C^{&lt;t&gt;}$，a和c不再相等</li>
 </ul>
 <p><img src="/img/ai_note.zh-cn.assets/-172845431716883.assets"
 	
@@ -2559,7 +2628,7 @@
 <ul>
 <li>Beam Search或集束搜索</li>
 <li>参数B表示集束宽度，保留备选单词数，每次选择B个最高条件概率词元</li>
-<li>$\arg \max_y\frac{1}{T_y^{\alpha}}\sum_{t=1}^{T_y}\log P(y^{<t>}|x,y^{&lt;1&gt;},\cdots ,y^{<t-1>})$，$\alpha$=0.7取部分规范化</li>
+<li>$\arg \max_y\frac{1}{T_y^{\alpha}}\sum_{t=1}^{T_y}\log P(y^{&lt;t&gt;}|x,y^{&lt;1&gt;},\cdots ,y^{&lt;t-1&gt;})$，$\alpha$=0.7取部分规范化</li>
 <li>$P(y^{&lt;1&gt;}\cdots y^{&lt;T_y&gt;}|x)=P(y^{&lt;1&gt;}|x)P(y^{&lt;2&gt;}|x,y^{&lt;1&gt;})\cdots P(y^{&lt;T_y&gt;}|x,y^{&lt;1&gt;},\cdots ,y^{&lt;T_y-1&gt;})$</li>
 </ul>
 <p><img src="/img/ai_note.zh-cn.assets/-172845431716991.assets"
@@ -2608,9 +2677,9 @@
 ></p>
 <p>将每个单词与q(Query), K(Key), V(Value)关联，W为学习参数</p>
 <ol>
-<li>$q^{<i>}=W^Q\cdot x^{<i>}$</li>
-<li>$K^{<i>}=W^K\cdot x^{<i>}$</li>
-<li>$V^{<i>}=W^V\cdot x^{<i>}$</li>
+<li>$q^{&lt;i&gt;}=W^Q\cdot x^{&lt;i&gt;}$</li>
+<li>$K^{&lt;i&gt;}=W^K\cdot x^{&lt;i&gt;}$</li>
+<li>$V^{&lt;i&gt;}=W^V\cdot x^{&lt;i&gt;}$</li>
 </ol>
 <p><img src="/img/ai_note.zh-cn.assets/-172845431716994.assets"
 	
@@ -2863,7 +2932,7 @@
         
             
         
-        共 95.61k 字 · 共 12篇文章
+        共 97.05k 字 · 共 12篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -3132,7 +3201,11 @@
         </li>
       </ol>
     </li>
-    <li><a href="#强化学习">强化学习</a></li>
+    <li><a href="#强化学习">强化学习</a>
+      <ol>
+        <li><a href="#mcts">MCTS</a></li>
+      </ol>
+    </li>
     <li><a href="#深度学习">深度学习</a>
       <ol>
         <li><a href="#神经网络">神经网络</a></li>

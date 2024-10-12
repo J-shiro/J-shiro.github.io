@@ -820,6 +820,18 @@ lrwx------ 1 root root 64 1月  18 22:21 2 -> /dev/pts/0
      cd xxx
      python3 setup.py install
     ```
+    
+  - ```python
+    # 使用虚拟环境
+    apt install python3-venv
+    pthon3 -m venv myenv
+    source myenv/bin/activate
+    pip install xxx
+    ```
+  
+    
+
+
 
 ### readelf
 

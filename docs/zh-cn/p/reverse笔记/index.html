@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='基础知识 Windows kernel32.dll：控制系统内存管理、数据输入输出、中断处理，当Windows启动时，其驻留在内存中特定的写保护区域，使别的'><title>REVERSE笔记</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='基础知识 除了逆向外也可以尝试爆破 Windows kernel32.dll：控制系统内存管理、数据输入输出、中断处理，当Windows启动时，其驻留在内存中'><title>REVERSE笔记</title>
 
 <link rel='canonical' href='https://J-shiro.github.io/zh-cn/p/reverse%E7%AC%94%E8%AE%B0/'>
 
 <link rel="stylesheet" href="/scss/style.min.b18c0607927efd48b36f5d027b549e77e30ee300e22b6461d063f1df6ea2466b.css"><meta property='og:title' content='REVERSE笔记'>
-<meta property='og:description' content='基础知识 Windows kernel32.dll：控制系统内存管理、数据输入输出、中断处理，当Windows启动时，其驻留在内存中特定的写保护区域，使别的'>
+<meta property='og:description' content='基础知识 除了逆向外也可以尝试爆破 Windows kernel32.dll：控制系统内存管理、数据输入输出、中断处理，当Windows启动时，其驻留在内存中'>
 <meta property='og:url' content='https://J-shiro.github.io/zh-cn/p/reverse%E7%AC%94%E8%AE%B0/'>
 <meta property='og:site_name' content='J-shiro&#39;s 博客'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-10-09T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2024-10-09T00:00:00&#43;00:00'/><meta property='og:image' content='https://J-shiro.github.io/img/note.jpg' />
 <meta name="twitter:title" content="REVERSE笔记">
-<meta name="twitter:description" content="基础知识 Windows kernel32.dll：控制系统内存管理、数据输入输出、中断处理，当Windows启动时，其驻留在内存中特定的写保护区域，使别的"><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="基础知识 除了逆向外也可以尝试爆破 Windows kernel32.dll：控制系统内存管理、数据输入输出、中断处理，当Windows启动时，其驻留在内存中"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://J-shiro.github.io/img/note.jpg' />
     <link rel="shortcut icon" href="https://j-shiro.github.io/img/somebody.png" />
 
@@ -311,7 +311,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 24 分钟
+                    阅读时长: 25 分钟
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    11997 字
+                    12350 字
                 </time>
             </div>
         
@@ -337,6 +337,7 @@
     
     
     <h2 id="基础知识">基础知识</h2>
+<p>除了逆向外也可以尝试<strong>爆破</strong></p>
 <h3 id="windows">Windows</h3>
 <p><code>kernel32.dll</code>：控制系统内存管理、数据输入输出、中断处理，当Windows启动时，其驻留在内存中特定的写保护区域，使别的程序无法占用该内存区域</p>
 <p><code>user32.dll</code>：用户界面相关应用程序接口，包括Windows处理、基本用户界面</p>
@@ -419,8 +420,17 @@
 </span></span><span class="line"><span class="cl">ltrace <span class="c1"># 查看 binary 执行时的 library call</span>
 </span></span></code></pre></td></tr></table>
 </div>
+</div><p><strong>可执行程序报错</strong>：linux版本可能不匹配，尝试高版本打开</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./a.elf: /lib/x86_64-linux-gnu/libstdc++.so.6: version <span class="sb">`</span>GLIBCXX_3.4.32<span class="err">&#39;</span> not found <span class="o">(</span>required by ./a.elf<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
 </div><h3 id="数学">数学</h3>
-<p><strong>乘法逆元：</strong> $$a \cdot a^{-1}\equiv 1(mod,p$$</p>
+<p><strong>乘法逆元：</strong> $a\cdot a^{-1}\equiv 1(mod\quad p)$</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -1021,6 +1031,7 @@
 <li><code>chr()</code>: <strong>ASCII 码值</strong> 转换为对应的 <strong>字符</strong></li>
 </ul>
 <p><strong>转换</strong></p>
+<p>可以尝试用CyberChef转换，output中的<strong>魔法棒</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -1080,6 +1091,39 @@
 </span></span><span class="line"><span class="cl"><span class="c1"># 每行输出10个</span>
 </span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">hex_values</span><span class="p">),</span> <span class="mi">10</span><span class="p">):</span>
 </span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">hex_values</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">10</span><span class="p">]))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>类</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">A</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># __xx__魔术内置方法，一般python解释器自动调用</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 静态方法: 用于创建类的实例，分配内存创建对象</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="nd">@property</span> <span class="c1"># 方法转换为同名的只读属性 instance.aaa来访问</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">aaa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">aaa</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">A1</span> <span class="o">=</span> <span class="n">package</span><span class="o">.</span><span class="n">A</span><span class="p">()</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="java">JAVA</h3>
@@ -1336,7 +1380,7 @@
 <p><code>F6</code>：回到最近操作的窗口</p>
 <p><code>Ctrl + x</code>：对变量输入，可以获取哪个函数使用了这个变量</p>
 <p><strong>动态调试</strong></p>
-<p>选择Load WIndows debugger调试器，设置断点在某一代码行</p>
+<p>选择Load WIndows debugger调试器，设置断点在某一代码行，需要在<code>Debugger</code>中打开<code>Use source-level debugging</code></p>
 <p><img src="/img/reverse_note.zh-cn.assets/-17284517325159.assets"
 	
 	
@@ -1819,7 +1863,7 @@
 <ul>
 <li>分组密码，4组，分组长度128位，密钥长度128位，加解密算法相同，轮密钥使用次序相反，32轮非线性迭代</li>
 <li>轮密钥 rK 有32个</li>
-<li>$$X_{i+4}=F(X_i,X_{i+1},X_{i+2},X_{i+3},rK_i)=X_i ⊕ T( X_{i+1}⊕X_{i+2}⊕X_{i+3}⊕rK_i$$</li>
+<li>$$X_{i+4}=F(X_i,X_{i+1},X_{i+2},X_{i+3},rK_i)=X_i ⊕ T( X_{i+1}⊕X_{i+2}⊕X_{i+3}⊕rK_i)$$</li>
 </ul>
 <p><img src="/img/reverse_note.zh-cn.assets/-172845181249224.assets"
 	
@@ -1832,11 +1876,11 @@
 	
 ></p>
 <p><strong>F函数中的T函数</strong></p>
-<p>T：合成置换，可逆变换，由非线性变换$$\ta$$和线性变换$$$$复合而成：$$T()=L(\tau()$$</p>
+<p>T：合成置换，可逆变换，由非线性变换$$\tau$$和线性变换$$L$$复合而成：$$T()=L(\tau())$$</p>
 <ol>
-<li>非线性变换 A 到 B，A 和 B 均为32位，$$\ta$$由4个并行S盒构成【固定的256字节的数组】</li>
+<li>非线性变换 A 到 B，A 和 B 均为32位，$$\tau$$由4个并行S盒构成【固定的256字节的数组】</li>
 </ol>
-<p>$$B =（b_0,b_1,b_2,b_3）= τ(A)=(Sbox(a_0),Sbox(a_0),Sbox(a_0),Sbox(a_0)$$</p>
+<p>$$B =（b_0,b_1,b_2,b_3）= τ(A)=(Sbox(a_0),Sbox(a_0),Sbox(a_0),Sbox(a_0))$$</p>
 <p>查表规则：有 F 行 F 列，输入的32位可表示为2个十六进制数，一个做行一个做列找值替换</p>
 <p><img src="/img/reverse_note.zh-cn.assets/-172845181249225.assets"
 	
@@ -1851,10 +1895,10 @@
 <ol>
 <li>线性变换 B 到 C，均为32位，此处为<strong>循环左移</strong></li>
 </ol>
-<p>$$C = L(B) = B ⊕（B&laquo;&lt;2） ⊕(B&laquo;&lt;10) ⊕(B&laquo;&lt;18) ⊕(B&laquo;&lt;24)$$</p>
+<p>$$C = L(B) = B ⊕(B&laquo;&lt;2)⊕(B&laquo;&lt;10) ⊕(B&laquo;&lt;18) ⊕(B&laquo;&lt;24)$$</p>
 <p><strong>轮密钥扩展</strong></p>
-<p>密钥128位，$$MK=(MK_0,MK_1,MK_2,MK_3$$，轮密钥由密钥生成</p>
-<p>系统参数：$$FK=(FK_0,FK_1,FK_2,FK_3$$，固定参数：$$CK=(CK_0,CK_1,\cdots ,CK_{31})$$</p>
+<p>密钥128位，$$MK=(MK_0,MK_1,MK_2,MK_3)$$，轮密钥由密钥生成</p>
+<p>系统参数：$$FK=(FK_0,FK_1,FK_2,FK_3)$$，固定参数：$$CK=(CK_0,CK_1,\cdots ,CK_{31})$$</p>
 <p><img src="/img/reverse_note.zh-cn.assets/-172845181249326.assets"
 	
 	
@@ -1882,10 +1926,10 @@
 </ul>
 </li>
 </ul>
-<p>$$T$$即将 $$$$ 中的 $$$$ 替换为 $$L$$：$$L&rsquo;(B)=B\oplus (B\lt\lt\lt 13)\oplus(B\lt\lt\lt 23)$$</p>
+<p>$$T&rsquo;$$即将 $$T$$ 中的 $$L$$ 替换为 $L&rsquo;$：$$L&rsquo;(B)=B\oplus (B\lt\lt\lt 13)\oplus(B\lt\lt\lt 23)$$</p>
 <p><strong>解密</strong></p>
-<p>由于$$X_{i+4}=F(X_i,X_{i+1},X_{i+2},X_{i+3~}rK_i)=X_i ⊕ T( X_{i+1}⊕X_{i+2}⊕X_{i+3}⊕rK_i$$</p>
-<p>所以$$X_i=F(X_{i+4},X_{i+1},X_{i+2},X_{i+3},rK_i)=X_{i+4} ⊕ T(X_{i+1}⊕X_{i+2}⊕X_{i+3}⊕rK_i$$</p>
+<p>由于$$X_{i+4}=F(X_i,X_{i+1},X_{i+2},X_{i+3~}rK_i)=X_i ⊕ T( X_{i+1}⊕X_{i+2}⊕X_{i+3}⊕rK_i)$$</p>
+<p>所以$$X_i=F(X_{i+4},X_{i+1},X_{i+2},X_{i+3},rK_i)=X_{i+4} ⊕ T(X_{i+1}⊕X_{i+2}⊕X_{i+3}⊕rK_i)$$</p>
 <p>将密文逆序，轮密钥也逆序，解密流程即加密流程的逆序</p>
 <h3 id="rc4">RC4</h3>
 <p>对称加密算法，包括<strong>初始化算法</strong>（KSA)和<strong>加密算法</strong></p>
@@ -1924,9 +1968,11 @@
 </span><span class="lnt">20
 </span><span class="lnt">21
 </span><span class="lnt">22
+</span><span class="lnt">23
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">rc4_init</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span><span class="o">*</span><span class="n">S</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">char</span><span class="o">*</span><span class="n">key</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">Len</span><span class="p">)</span>
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="kt">void</span> <span class="nf">rc4_init</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span><span class="o">*</span><span class="n">S</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">char</span><span class="o">*</span><span class="n">key</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">Len</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">        <span class="kt">char</span> <span class="n">T</span><span class="p">[</span><span class="mi">256</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span> <span class="p">};</span>
@@ -1972,12 +2018,12 @@
 </span><span class="lnt">17
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">rc4_crypt</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span><span class="o">*</span><span class="n">S</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">char</span><span class="o">*</span><span class="n">Data</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">Len</span><span class="p">)</span>
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">rc4_crypt</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span><span class="o">*</span><span class="n">S</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">char</span><span class="o">*</span><span class="n">Data</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">Len_Data</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span> <span class="c1">// 加解密同一函数
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">        <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// 明文索引
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">tmp</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">Len</span><span class="p">;</span> <span class="n">k</span><span class="o">++</span><span class="p">)</span> <span class="c1">// Len 明文长度
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">Len_Data</span><span class="p">;</span> <span class="n">k</span><span class="o">++</span><span class="p">)</span> <span class="c1">// Len 明文长度
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">{</span>
 </span></span><span class="line"><span class="cl">                <span class="c1">// 生成密钥流，利用密钥流和明文进行加密
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="n">i</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">256</span><span class="p">;</span>
@@ -2011,25 +2057,46 @@
 </span><span class="lnt">15
 </span><span class="lnt">16
 </span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
-</span></span><span class="line"><span class="cl">        <span class="n">system</span><span class="p">(</span><span class="s">&#34;chcp 65001&#34;</span><span class="p">);</span> <span class="c1">// 防止终端乱码
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 赋值： unsigned __int8 data[] = {27, 155, 251, 25, 6, 106}
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">S</span><span class="p">[</span><span class="mi">256</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span> <span class="c1">// S_box
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">char</span> <span class="n">key</span><span class="p">[</span><span class="mi">256</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">char</span> <span class="n">data</span><span class="p">[</span><span class="mi">256</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
-</span></span><span class="line"><span class="cl">        <span class="n">printf</span><span class="p">(</span><span class="s">&#34;输入密钥：&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">scanf</span><span class="p">(</span><span class="s">&#34;%s&#34;</span><span class="p">,</span><span class="n">key</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">length</span> <span class="o">=</span> <span class="n">strlen</span><span class="p">(</span><span class="n">key</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">rc4_init</span><span class="p">(</span><span class="n">S</span><span class="p">,</span><span class="n">key</span><span class="p">,</span><span class="n">length</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        
-</span></span><span class="line"><span class="cl">        <span class="n">printf</span><span class="p">(</span><span class="s">&#34;输入密文：&#34;</span><span class="p">);</span> 
-</span></span><span class="line"><span class="cl">        <span class="n">scanf</span><span class="p">(</span><span class="s">&#34;%s&#34;</span><span class="p">,</span><span class="n">data</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">rc4_crypt</span><span class="p">(</span><span class="n">S</span><span class="p">,</span><span class="n">data</span><span class="p">,</span><span class="n">length</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">printf</span><span class="p">(</span><span class="s">&#34;加/解密结果：%s&#34;</span><span class="p">,</span><span class="n">data</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// system(&#34;chcp 65001&#34;); // 防止终端乱码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        
+</span></span><span class="line"><span class="cl">    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">S</span><span class="p">[</span><span class="mi">256</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span> <span class="c1">// S_box
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">key</span><span class="p">[]</span><span class="o">=</span> <span class="s">&#34;xxxxxx&#34;</span><span class="p">;</span> <span class="c1">// char key[256] = {0}
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// scanf(&#34;%s&#34;,key);
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// 赋值： unsigned __int8 data[] = {27, 155, 251, 25, 6, 106};
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">data</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="mh">0xa7</span><span class="p">,</span> <span class="mh">0x11</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// scanf(&#34;%s&#34;,data);
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    
+</span></span><span class="line"><span class="cl">    <span class="c1">// unsigned long length = strlen(key);
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">length</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">data_size</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">rc4_init</span><span class="p">(</span><span class="n">S</span><span class="p">,</span><span class="n">key</span><span class="p">,</span><span class="n">length</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">rc4_crypt</span><span class="p">(</span><span class="n">S</span><span class="p">,</span><span class="n">data</span><span class="p">,</span><span class="n">data_size</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;%s&#34;</span><span class="p">,</span><span class="n">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>CyberChef</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">input: 0xA7, 0x1A, 0x11
+</span></span><span class="line"><span class="cl"># Find/Replace , {Global match, Case insensitive, Dot matches all}
+</span></span><span class="line"><span class="cl"># Find/Replace \n {Global match, Case insensitive, Dot matches all}
+</span></span><span class="line"><span class="cl"># From Hex Auto
+</span></span><span class="line"><span class="cl"># RC4 
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="base算法">Base算法</h3>
@@ -2181,7 +2248,7 @@
 <li>深度优先算法DFS：栈</li>
 <li>广度优先算法BFS：队列</li>
 </ul>
-<h3 id="深度优先算法">深度优先算法</h3>
+<h3 id="dfs">DFS</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -2480,7 +2547,24 @@
 <p>jadx打开文件后，<code>AndroidManifest.xml</code>文件中包括<strong>配置信息</strong>等</p>
 <h2 id="net">.Net</h2>
 <h3 id="c-2">C#</h3>
-
+<h2 id="python-1">python</h2>
+<p><strong>Cython</strong></p>
+<p><code>whl</code>文件格式<code>xxx-1.14-cp312-cp312-win_amd64</code>中cp312表示python的版本：python-3.12，需要使用对应的python版本进行安装</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">pythonx</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">xxx</span><span class="o">.</span><span class="n">whl</span> <span class="c1"># 使用python指定的对应pip安装</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">xxx</span> <span class="c1"># 安装后直接导入</span>
+</span></span><span class="line"><span class="cl"><span class="n">help</span><span class="p">(</span><span class="n">xxx</span><span class="p">)</span> <span class="c1"># 可以查看信息</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 
@@ -2503,6 +2587,29 @@
 
 
     
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css"integrity="sha256-J&#43;iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s="crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.js"integrity="sha256-InsNdER1b2xUewP&#43;pKCUJpkhiqwHgqiPXDlIk7GzBu4="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/contrib/auto-render.min.js"integrity="sha256-y39Mpg7V3D4lhBX4x6O0bUqTV4pSrfgwEfGKfxkOdgI="crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ]
+        });})
+</script>
+    
 </article>
 
     
@@ -2513,6 +2620,25 @@
     <h2 class="section-title">相关文章</h2>
     <div class="related-content">
         <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/zh-cn/p/ai%E7%AC%94%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/img/note.jpg" loading="lazy" data-key="" data-hash="/img/note.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">AI笔记</h2>
+        </div>
+    </a>
+</article>
+
             
                 
 <article class="has-image">
@@ -2590,25 +2716,6 @@
 </article>
 
             
-                
-<article class="has-image">
-    <a href="/zh-cn/p/web%E7%AC%94%E8%AE%B0/">
-        
-        
-            <div class="article-image">
-                
-                    <img src="/img/note.jpg" loading="lazy" data-key="" data-hash="/img/note.jpg"/>
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">WEB笔记</h2>
-        </div>
-    </a>
-</article>
-
-            
         </div>
     </div>
 </aside>
@@ -2680,7 +2787,7 @@
         
             
         
-        共 95.61k 字 · 共 12篇文章
+        共 97.05k 字 · 共 12篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -2961,7 +3068,7 @@
     </li>
     <li><a href="#maze">maze</a>
       <ol>
-        <li><a href="#深度优先算法">深度优先算法</a></li>
+        <li><a href="#dfs">DFS</a></li>
       </ol>
     </li>
     <li><a href="#壳">壳</a>
@@ -2998,6 +3105,7 @@
         <li><a href="#c-2">C#</a></li>
       </ol>
     </li>
+    <li><a href="#python-1">python</a></li>
   </ol>
 </nav>
         </div>

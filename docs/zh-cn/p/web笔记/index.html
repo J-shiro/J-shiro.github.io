@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    5635 字
+                    5735 字
                 </time>
             </div>
         
@@ -360,7 +360,17 @@
 <p>Intruder模块：可以多线程对URL或data中的参数进行<strong>爆破</strong></p>
 <h3 id="dig">dig</h3>
 <p>用于从域名系统（DNS）服务器中收集信息，在线网站：<code>https://tool.lu/dns/index.html</code></p>
-<h2 id="python">Python</h2>
+<h2 id="linux">Linux</h2>
+<p><strong>远程命令绕过</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ping x:x:x:x <span class="p">;</span> ls
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="python">Python</h2>
 <h3 id="基础知识">基础知识</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -744,12 +754,14 @@
 </span><span class="lnt">17
 </span><span class="lnt">18
 </span><span class="lnt">19
+</span><span class="lnt">20
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-PHP" data-lang="PHP"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nx">error_reporting</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="c1">// 关闭所有错误报告
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">session_start</span><span class="p">();</span> <span class="c1">// 允许脚本访问和修改用户的会话数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">include</span><span class="p">(</span><span class="s2">&#34;file.file&#34;</span><span class="p">);</span> <span class="c1">// 此文件包含file.file所有变量范围 
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
 </span></span><span class="line"><span class="cl"><span class="nx">highlight_file</span><span class="p">(</span><span class="s2">&#34;xx.php&#34;</span><span class="p">);</span> <span class="c1">// 将PHP代码高亮显示在网页
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">isset</span><span class="p">()</span> <span class="c1">// 判断一个变量是否已被设置, 且不为 null
@@ -782,6 +794,7 @@
 </span><span class="lnt">10
 </span><span class="lnt">11
 </span><span class="lnt">12
+</span><span class="lnt">13
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-PHP" data-lang="PHP"><span class="line"><span class="cl"><span class="c1">// a变量值
@@ -790,9 +803,10 @@
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
 </span></span><span class="line"><span class="cl"><span class="nx">preg_match</span><span class="p">(</span><span class="s1">&#39;/flag/&#39;</span><span class="p">,</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">])</span><span class="c1">// 检查是否存在匹配 flag 的子串
 </span></span></span><span class="line"><span class="cl"><span class="c1">// /flag/i   i 忽略大小写匹配, 即FlaG也会匹配
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">preg_match</span><span class="p">(</span><span class="s2">&#34;/[a-zA-Z0-9]+\./&#34;</span><span class="p">,</span> <span class="nv">$b</span><span class="p">)</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">@</span><span class="nx">preg_match</span><span class="p">(</span><span class="s2">&#34;/^[a-zA-Z0-9]+\.$/&#34;</span><span class="p">,</span> <span class="nv">$b</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="c1">// [a-zA-Z0-9]+   [x]: 表示匹配其中任何一个字符  +: 匹配前面一次或多次
-</span></span></span><span class="line"><span class="cl"><span class="c1">// \.: 匹配 .  因为只有 . 是匹配任何字符, 此处转义
+</span></span></span><span class="line"><span class="cl"><span class="c1">// \.: 匹配 .  因为只有 . 是匹配任何字符, 此处转义 {6}:至少重复6次，可不连续
+</span></span></span><span class="line"><span class="cl"><span class="c1">// @表示隐藏报错 ^$锚定开头和结尾
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nx">header</span><span class="p">(</span><span class="s1">&#39;Content-Type: &#39;</span> <span class="o">.</span> <span class="nv">$mime_type</span><span class="p">);</span> <span class="c1">// 设置指定 HTTP 响应头
@@ -855,11 +869,15 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-PHP" data-lang="PHP"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">is_numeric</span><span class="p">(</span><span class="nv">$a</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">is_numeric</span><span class="p">(</span><span class="nv">$b</span><span class="p">))</span> <span class="p">{</span> <span class="c1">// a和b不是数值
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="nv">$a</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">md5</span><span class="p">(</span><span class="nv">$a</span><span class="p">)</span> <span class="o">==</span> <span class="nv">$b</span><span class="p">[</span><span class="nv">$a</span><span class="p">]){}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="c1">// 可以通过 a = false = 0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span><span class="p">(</span><span class="nv">$a</span> <span class="o">&gt;</span> <span class="mi">99</span><span class="p">)</span> <span class="c1">// a = 100abc也可通过且可绕过in_numeric
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="php伪协议">PHP伪协议</h3>
@@ -1691,6 +1709,25 @@
             
                 
 <article class="has-image">
+    <a href="/zh-cn/p/ai%E7%AC%94%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/img/note.jpg" loading="lazy" data-key="" data-hash="/img/note.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">AI笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
     <a href="/zh-cn/p/fuzzing%E7%AC%94%E8%AE%B0/">
         
         
@@ -1760,25 +1797,6 @@
 
         <div class="article-details">
             <h2 class="article-title">PWN笔记</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
-    <a href="/zh-cn/p/reverse%E7%AC%94%E8%AE%B0/">
-        
-        
-            <div class="article-image">
-                
-                    <img src="/img/note.jpg" loading="lazy" data-key="" data-hash="/img/note.jpg"/>
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">REVERSE笔记</h2>
         </div>
     </a>
 </article>
@@ -1855,7 +1873,7 @@
         
             
         
-        共 95.61k 字 · 共 12篇文章
+        共 97.05k 字 · 共 12篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -2058,6 +2076,7 @@
         <li><a href="#dig">dig</a></li>
       </ol>
     </li>
+    <li><a href="#linux">Linux</a></li>
     <li><a href="#python">Python</a>
       <ol>
         <li><a href="#基础知识">基础知识</a></li>
