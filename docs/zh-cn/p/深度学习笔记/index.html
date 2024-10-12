@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='深度学习 机器学习过程：数据获取、【特征工程】、建立模型、评估应用 特征工程：数据特征决定模型上限，算法和参数用于接近上限 主：计算机视觉 **图像'><title>深度学习笔记</title>
+
+<link rel='canonical' href='https://J-shiro.github.io/zh-cn/p/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/'>
+
+<link rel="stylesheet" href="/scss/style.min.b18c0607927efd48b36f5d027b549e77e30ee300e22b6461d063f1df6ea2466b.css"><meta property='og:title' content='深度学习笔记'>
+<meta property='og:description' content='深度学习 机器学习过程：数据获取、【特征工程】、建立模型、评估应用 特征工程：数据特征决定模型上限，算法和参数用于接近上限 主：计算机视觉 **图像'>
+<meta property='og:url' content='https://J-shiro.github.io/zh-cn/p/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/'>
+<meta property='og:site_name' content='J-shiro&#39;s 博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-10-12T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2024-10-12T00:00:00&#43;00:00'/><meta property='og:image' content='https://J-shiro.github.io/img/ai_note.png' />
+<meta name="twitter:title" content="深度学习笔记">
+<meta name="twitter:description" content="深度学习 机器学习过程：数据获取、【特征工程】、建立模型、评估应用 特征工程：数据特征决定模型上限，算法和参数用于接近上限 主：计算机视觉 **图像"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://J-shiro.github.io/img/ai_note.png' />
+    <link rel="shortcut icon" href="https://j-shiro.github.io/img/somebody.png" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/zh-cn">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu42aab1a06b48994d4eab55119e198264_548369_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/zh-cn">J-shiro&#39;s 博客</a></h1>
+            <h2 class="site-description">Welcome! I will record some of my own hobbies there.//欢迎来到我的博客！</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/J-shiro'
+                        target="_blank"
+                        title="GitHub"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/zh-cn/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/zh-cn/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/zh-cn/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>档案</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/zh-cn/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/zh-cn/%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>链接</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+                <li id="i18n-switch">  
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                    <select name="language" onchange="window.location.href = this.selectedOptions[0].value">
+                        
+                            <option value="https://J-shiro.github.io/" >English</option>
+                        
+                            <option value="https://J-shiro.github.io/zh-cn/" selected>中文</option>
+                        
+                    </select>
+                </li>
+            
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+<main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/zh-cn/p/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+                
+                    <img src="/img/ai_note.png" loading="lazy" alt="Featured image of post 深度学习笔记" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/zh-cn/categories/notes/" >
+                notes
+            </a>
+        
+            <a href="/zh-cn/categories/ai/" >
+                AI
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/zh-cn/p/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">深度学习笔记</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Oct 12, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 6 分钟
+                </time>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+                <time class="article-words">
+                    2904 字
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="深度学习">深度学习</h2>
+<ul>
+<li>机器学习过程：数据获取、【<strong>特征工程】</strong>、建立模型、评估应用</li>
+<li>特征工程：数据特征决定模型上限，算法和参数用于接近上限</li>
+<li>主：<strong>计算机视觉</strong></li>
+<li>**图像识别：**将图片1000x1000像素展开为一个向量数组作为输入</li>
+</ul>
+<h3 id="神经网络">神经网络</h3>
+<p><strong>整体框架</strong></p>
+<p><img src="/img/deep_learning_note.zh-cn.assets/-172845431716543.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<ul>
+<li>堆叠：$f=W_3max(0,W_2max(0,W_1x))$，参数极多</li>
+<li>神经元个数影响：神经元多，分类效果好</li>
+<li>参数个数影响：参数多，拟合高</li>
+<li>极大神经网络在适当正则化下不损害性能，拥有低偏差：惩罚力度小，拟合高；惩罚力度大，平稳</li>
+<li>停滞区（plateaus）使学习过程慢</li>
+</ul>
+<p><strong>参数随机初始化</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="mf">0.01</span> 
+</span></span><span class="line"><span class="cl"><span class="c1"># [1]表示第一层 初始化 w 不能只设为 0, 否则会使得多个神经元工作对称一致 0.01使得学习速度更快</span>
+</span></span><span class="line"><span class="cl"><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># b 不会由于初始值为 0 产生对称问题/对称失效问题</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>隐藏层工作</strong></p>
+<p><img src="/img/deep_learning_note.zh-cn.assets/-172845431716544.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><strong>层类型</strong></p>
+<p>密集层（Dense Layer）</p>
+<p>上一层的输出经过激活函数，得到该层每个神经元输出</p>
+<p>卷积层（Convolutional Layer）</p>
+<p>该层每个神经元只关注上一层输入的一部分，例如图像中抽取任意个像素块，可以相互重叠</p>
+<p>计算快，更少训练集，不易过拟合</p>
+<p>使用TensorFlow构建神经网络模式</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">([</span><span class="n">Dense</span><span class="p">(</span><span class="n">units</span> <span class="o">=</span> <span class="mi">153</span><span class="p">,</span> <span class="n">activation</span> <span class="o">=</span> <span class="s1">&#39;sigmoid&#39;</span><span class="p">),</span> <span class="c1"># 全连接层 layer1</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">Dense</span><span class="p">(</span><span class="n">units</span> <span class="o">=</span> <span class="mi">21</span><span class="p">,</span> <span class="n">activation</span> <span class="o">=</span> <span class="s1">&#39;sigmoid&#39;</span><span class="p">)])</span> <span class="c1"># layer2</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># activation: linear, relu, sigmoid, softmax</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">xx</span><span class="p">,</span> <span class="n">xx</span><span class="p">],</span> <span class="p">[</span><span class="n">xx</span><span class="p">,</span> <span class="n">xx</span><span class="p">]])</span>
+</span></span><span class="line"><span class="cl"><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xx</span><span class="p">,</span> <span class="n">xx</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">BinaryCrossentropy</span><span class="p">())</span> <span class="c1"># 损失函数</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># BinaryCrossentropy 适用于二元分类0或1: 逻辑回归 二元交叉熵函数</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># MeanSquaredError 适用于回归: 预测数值 </span>
+</span></span><span class="line"><span class="cl"><span class="c1"># SparseCategoricalCrossentropy  适用于SoftMax多分类 稀疏范畴交叉熵函数 得到N个值中的一个值</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="c1"># fit:实现反向传播  epochs: 梯度下降/迭代次数</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_new</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>SoftMax / Sigmoid中：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="c1"># 前面的Dense最后一层activation使用&#39;linear&#39;输出中间值</span>
+</span></span><span class="line"><span class="cl"><span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">SparseCategoricalCrossentropy</span><span class="p">(</span><span class="n">from_logits</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 损失值不标准化为概率, 使得数字更准确, SoftMax操作交给TensorFlow的损失函数计算</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 预测</span>
+</span></span><span class="line"><span class="cl"><span class="n">logits</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="c1"># SoftMax输出z1-zN, 即非概率   Sigmoid输出z, 非概率</span>
+</span></span><span class="line"><span class="cl"><span class="n">f_x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">logits</span><span class="p">)</span> <span class="c1"># tf.nn.sigmoid(logits) 将中间值单独调用函数转为概率</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>线性函数</strong></p>
+<ul>
+<li>输入到输出的映射：图片（32x32x3）经$f(x, W)=Wx+b$得到每个分类的得分，x为图片，W为权重参数，b为偏置参数</li>
+<li>其中，共分N个类别，则W=Nx32x32x3=Nx3072，x=32x32x3x1=3072x1，两者矩阵相乘得到 Nx1 的不同类别的得分，b为Nx1，进行微调</li>
+</ul>
+<p><strong>损失函数</strong></p>
+<ul>
+<li>举例一个损失函数$L_i=\sum_{j\ne y_i}max(0,s_j-s_{y_i}+1)$，$s_j$是错误的，$s_{y_i}$是正确的</li>
+<li>再加入正则化惩罚项防止过拟合：$L=\frac{1}{N}\sum_{i=1}^N\sum_{j\ne y_i}max(0,f(x_i;W)_j-f(x_i;W)_{y_i}+1)+\lambda R(W)$，其中$R(W)=\sum_k\sum_lW^2_{k,l}$</li>
+</ul>
+<h3 id="深度神经网络">深度神经网络</h3>
+<ul>
+<li>$n^{[l]}$表示第 l 层的神经元数 ，$a^{[l]}$表示第 l 层的激活函数</li>
+<li>$w^{[l]}$表示第 l 层中间值的权重，$b^{[l]}$表示第 l 层中间值的偏置值</li>
+<li>$z=g(a), \quad a=w\cdot x+b$</li>
+<li>$Z^{[l]}, A^{[l]},dZ^{[l]}, dA^{[l]}$矩阵: $(n^{[l]}, m)$，m为训练集数量</li>
+</ul>
+<p><strong>超参数(Hyperparameters)</strong></p>
+<p>学习率、动量值、mini-batch大小、迭代次数、隐藏层数、神经元数、激活函数选择、衰减率</p>
+<h3 id="激活函数"><strong>激活函数</strong></h3>
+<p>模型输出的<strong>原始值</strong>转换为<strong>概率分布</strong></p>
+<ul>
+<li>线性激活函数：$g(z)=z$
+<ul>
+<li>全为线性激活函数使得神经网络等价于线性回归模型</li>
+<li>隐藏层均为线性激活函数而输出层为sigmoid函数使得神经网络等价于逻辑回归模型</li>
+</ul>
+</li>
+<li>非线性变化：Sigmoid，Relu，tanh等</li>
+</ul>
+<p>神经网络主要使用 <strong>Relu函数 (Rectified Linerar Unite：线性整流函数，非二元, 更快)</strong> 而不使用Sigmoid函数，Sigmoid函数会出现梯度消失现象( 两端平坦, 导致梯度下降慢, Relu只有一端平坦 )</p>
+<p><strong>Relu函数：</strong>$\sigma(x)=max(0,x)$</p>
+<p><img src="/img/deep_learning_note.zh-cn.assets/-172845431716545.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><strong>Leaky ReLU函数：</strong>$\sigma(x)=\begin{cases}x,,,x\gt 0\\alpha x,,,x\le 0\end{cases}$</p>
+<p><img src="/img/deep_learning_note.zh-cn.assets/-172845431716546.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><strong>tanh函数：</strong>$\sigma(x)=tanh(x)=\frac{e^x-e^{-x}}{e^x+e^{-x}}$，具有居中数据效果</p>
+<p><img src="/img/deep_learning_note.zh-cn.assets/-172845431716547.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><strong>神经网络-激活函数选择</strong></p>
+<ul>
+<li>输出层：线性: y=+/-  |  Sigmoid: y=0/1  |  Relu: y=0/+</li>
+<li>隐藏层：默认选择Relu</li>
+</ul>
+<p><strong>Frobenius norm 正则化</strong>：$||\cdot||_F^2$</p>
+<p>$\frac{\lambda}{2m}\sum_{l=1}^L||w^{[l]}||^2_F=\sum_{i=1}^{n^{[l-1]}}\sum_{j=1}^{n^{[l]}}(w_{ij}^{[l]})^2$</p>
+<p>反向传播中：$dw^{[l]}=(from backprop) + \frac{\lambda}{m}w^{[l]}$</p>
+<p><strong>DROP-OUT 正则化</strong></p>
+<p>随机抽取一些神经元训练，解决过拟合，以某一概率选择</p>
+<p><img src="/img/deep_learning_note.zh-cn.assets/-172845431716648.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><strong>反向随机失活（Inverted dropout）</strong></p>
+<p>不依赖任何一个特征，所以权重将会更扩散</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="c1"># dl: 布尔矩阵 </span>
+</span></span><span class="line"><span class="cl"><span class="n">dl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">al</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">al</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">keep</span><span class="o">-</span><span class="n">prob</span> <span class="c1"># keep-prob为留存概率值 0.8</span>
+</span></span><span class="line"><span class="cl"><span class="n">al</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">myltiply</span><span class="p">(</span><span class="n">al</span><span class="p">,</span> <span class="n">dl</span><span class="p">)</span> <span class="c1"># 可能有20%的将会为false</span>
+</span></span><span class="line"><span class="cl"><span class="n">al</span> <span class="o">/=</span> <span class="n">keep</span><span class="o">-</span><span class="n">prob</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>归一化输入</strong></p>
+<p>对训练集和测试集使用归一化，使用同样的均值及方差：</p>
+<ul>
+<li>计算均值，每个值减去$\mu$，将均值$\mu$变为0</li>
+<li>方差归一化，计算方差，每个样本除以$\sigma^2$，将方差变为1</li>
+</ul>
+<p>深层网络——<strong>梯度消失/爆炸</strong></p>
+<ul>
+<li>当权重 w 只比 1 或单位矩阵大一点，激活函数/梯度将会随 L 层指数级增长到爆炸</li>
+<li>当权重 w 比 1 小一点，激活函数/梯度将会指数级减少到消失</li>
+</ul>
+<p><strong>权值初始化</strong>减轻梯度消失/爆炸</p>
+<ul>
+<li>Xavier初始化：Tanh 对随机生成的 w 参数$\cdot \sqrt\frac{1}{n^{[l]}}$，n 为特征/神经元数，l 为层数</li>
+<li>ReLu函数则$\cdot \sqrt\frac{2}{n^{[l]}}$</li>
+</ul>
+<p><strong>批量归一化(Batch Norm)</strong></p>
+<p>隐藏层归一化，对隐藏单元的$z_{norm}^{(i)}=\frac{z^{(i)}-\mu}{\sqrt{\sigma^2+\varepsilon}}$及$\tilde z^{(i)}=\gamma\cdot z_{norm}^{(i)}+\beta$归一化再输入激活函数，$\gamma, \beta$参数可由梯度下降调整</p>
+<h3 id="前向传播"><strong>前向传播</strong></h3>
+<p>输入到输出，从左往右，神经元数逐层减少，计算<strong>激活值</strong>及<strong>成本</strong></p>
+<p>使用指数函数扩大差异，再取平均值归一化：$P(Y=k|X=x_i)=\frac{e^{s_k}}{\sum_je^{s_j}}$，其中$s=f(x_i;W)$</p>
+<p>计算损失值：$L_i=-logP(Y=y_i|X=x_i)$，P越接近1，log后越小</p>
+<p><img src="/img/deep_learning_note.zh-cn.assets/-172845431716649.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><img src="/img/deep_learning_note.zh-cn.assets/-172845431716650.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<h3 id="反向传播">反向传播</h3>
+<p><strong>梯度下降</strong> 链式法则：梯度一步步传播，参考偏导来计算 J 关于 w 和 b 参数的<strong>导数，反向的时候需要：正向时的每个中间结点的值都存储在中间结点</strong></p>
+<p><img src="/img/deep_learning_note.zh-cn.assets/-172845431716651.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p>例子：</p>
+<p><img src="/img/deep_learning_note.zh-cn.assets/-172845431716652.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><img src="/img/deep_learning_note.zh-cn.assets/-172845431716653.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><strong>逻辑回归反向传播过程</strong></p>
+<p><img src="/img/deep_learning_note.zh-cn.assets/-172845431716654.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p>【调试】梯度检查：J 函数中的 $\theta$是向量中某个$\theta_i$</p>
+<p>计算$d\theta_{approx}=\frac{J(\theta+\varepsilon)-J(\theta-\varepsilon)}{2\varepsilon}$，计算标准化后欧几里得距离$\frac{||d\theta_{approx}-d\theta||_2}{||d\theta_{approx}||_2+||d\theta||_2}$与$\varepsilon=10^{-7}$比较</p>
+<p><strong>指数加权滑动平均</strong></p>
+<p>有大体趋势的多噪声散点图使用：$V_t = \beta V_{t-1} + (1-\beta \theta_t)$做出平滑曲线，相当于取$\frac{1}{1-\beta}$天的平均值</p>
+<p><strong>偏差纠正</strong></p>
+<p>解决初期<strong>指数加权平均</strong>的值与真实值相差过大，使用$\frac{V_t}{1-\beta^t}$</p>
+<p><strong>反向传播门单元：</strong></p>
+<ul>
+<li>加法门单元：均等分配</li>
+<li>MAX门单元：给最大的</li>
+<li>乘法门单元：互换</li>
+</ul>
+<p><img src="/img/deep_learning_note.zh-cn.assets/-172845431716655.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css"integrity="sha256-J&#43;iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s="crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.js"integrity="sha256-InsNdER1b2xUewP&#43;pKCUJpkhiqwHgqiPXDlIk7GzBu4="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/contrib/auto-render.min.js"integrity="sha256-y39Mpg7V3D4lhBX4x6O0bUqTV4pSrfgwEfGKfxkOdgI="crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ]
+        });})
+</script>
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/zh-cn/p/nlp%E7%AC%94%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/img/ai_note.png" loading="lazy" data-key="" data-hash="/img/ai_note.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">NLP笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/zh-cn/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/img/ai_note.png" loading="lazy" data-key="" data-hash="/img/ai_note.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">强化学习笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/zh-cn/p/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E7%AC%94%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/img/ai_note.png" loading="lazy" data-key="" data-hash="/img/ai_note.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">计算机视觉笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/zh-cn/p/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/img/ai_note.png" loading="lazy" data-key="" data-hash="/img/ai_note.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">机器学习笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/zh-cn/p/fuzzing%E7%AC%94%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/img/note.jpg" loading="lazy" data-key="" data-hash="/img/note.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Fuzzing笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
+<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet'/>
+<div id="waline" class="waline-container"></div>
+<style>
+    .waline-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+        --waline-font-size: var(--article-font-size);
+    }
+    .waline-container .wl-count {
+        color: var(--card-text-color-main);
+    }
+</style><script>
+    
+    Waline.init({"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://unpkg.com/@waline/emojis@1.0.1/weibo"],"locale":{"admin":"Admin","placeholder":null},"requiredMeta":["name","email","url"],"serverURL":"https://blog-waline-ox87ky1di-j-shiro.vercel.app/"});
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2024 J-shiro&#39;s 博客<br />
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+        共 97.05k 字 · 共 16篇文章
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
+            <span id="busuanzi_container_site_pv"> 总访问量<span id="busuanzi_value_site_pv"></span>次 </span>---
+            <span id="busuanzi_container_page_pv">本文阅读量<span id="busuanzi_value_page_pv"></span>次</span>    
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.13.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+
+    
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/live2d-widget@3.1.4/lib/L2Dwidget.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/live2d-widget@3.1.4/lib/L2Dwidget.0.min.js"></script>
+
+<script type="text/javascript">
+    L2Dwidget.init({
+        model: {
+            scale: 1,
+            hHeadPos: 0.5,
+            vHeadPos: 0.618,
+            jsonPath: 'https://cdn.jsdelivr.net/npm/live2d-widget-model-hibiki@1.0.5/assets/hibiki.model.json',       
+        },
+        display: {
+            superSample: 9,     
+            width: 160,         
+            height: 440,        
+            position: 'left',   
+            hOffset: 130,         
+            vOffset: -50,         
+        },
+        mobile: {
+            show: false,         
+            scale: 1,           
+            motion: true,       
+        },
+        react: {
+            opacityDefault: 1,  
+            opacityOnHover: 1,  
+        },
+    });
+</script>
+
+
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+    <div id="backTop" onclick="backTopFunction()" style="right: 40px; bottom: 40px; display: flex;">
+        <svg xmlns="http://www.w3.org/2000/svg" height="30" width="20" viewBox="0 0 512 512"><title>Caret Up</title>
+            <path d="M414 321.94L274.22 158.82a24 24 0 00-36.44 0L98 321.94c-13.34 15.57-2.28 39.62 18.22 39.62h279.6c20.5 0 31.56-24.05 18.18-39.62z" fill="#adb5bd"></path>
+        </svg>
+        <style type="text/css">
+            #backTop {
+                position: fixed;
+                background-color: #fff;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 0 6px rgba(0,0,0,.12);
+                cursor: pointer;
+                z-index: 5;
+            }
+    
+            #backTop:hover {
+                background-color: #f1f4f8;
+            }
+        </style>
+        <script>
+    
+            window.onscroll = function() {scrollFunction()};
+    
+            function scrollFunction() {console.log(121);
+                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                    document.getElementById("backTop").style.display = "flex";
+                } else {
+                    document.getElementById("backTop").style.display = "none";
+                }
+            }
+    
+    
+            function backTopFunction() {
+                document.body.scrollTop = 0;
+                document.documentElement.scrollTop = 0;
+            }
+        </script>
+    </div>
+    
+
+
+            </main>
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#深度学习">深度学习</a>
+      <ol>
+        <li><a href="#神经网络">神经网络</a></li>
+        <li><a href="#深度神经网络">深度神经网络</a></li>
+        <li><a href="#激活函数"><strong>激活函数</strong></a></li>
+        <li><a href="#前向传播"><strong>前向传播</strong></a></li>
+        <li><a href="#反向传播">反向传播</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+
+    }());
+</script>
+
+<script
+    src="https://cdn.jsdelivr.net/gh/zhixuan2333/gh-blog@v0.1.0/js/nprogress.min.js"
+    integrity="sha384-bHDlAEUFxsRI7JfULv3DTpL2IXbbgn4JHQJibgo5iiXSK6Iu8muwqHANhun74Cqg"
+    crossorigin="anonymous"
+></script>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/zhixuan2333/gh-blog@v0.1.0/css/nprogress.css"
+    integrity="sha384-KJyhr2syt5+4M9Pz5dipCvTrtvOmLk/olWVdfhAp858UCa64Ia5GFpTN7+G4BWpE"
+    crossorigin="anonymous"
+/>
+<script>
+    NProgress.start();
+    document.addEventListener("readystatechange", () => {
+        if (document.readyState === "interactive") NProgress.inc(0.8);
+        if (document.readyState === "complete") NProgress.done();
+    });
+</script>
+
+    </body>
+</html>

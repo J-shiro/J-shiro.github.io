@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='NLP 自然语言处理Natural language processing (NLP) ，有监督学习 序列模型 $T_x^{(i)}$表示第 i 个训练样例的序列长度，$X^{(i)}$表示 i 序列中第 t'><title>NLP笔记</title>
+
+<link rel='canonical' href='https://J-shiro.github.io/zh-cn/p/nlp%E7%AC%94%E8%AE%B0/'>
+
+<link rel="stylesheet" href="/scss/style.min.b18c0607927efd48b36f5d027b549e77e30ee300e22b6461d063f1df6ea2466b.css"><meta property='og:title' content='NLP笔记'>
+<meta property='og:description' content='NLP 自然语言处理Natural language processing (NLP) ，有监督学习 序列模型 $T_x^{(i)}$表示第 i 个训练样例的序列长度，$X^{(i)}$表示 i 序列中第 t'>
+<meta property='og:url' content='https://J-shiro.github.io/zh-cn/p/nlp%E7%AC%94%E8%AE%B0/'>
+<meta property='og:site_name' content='J-shiro&#39;s 博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-10-12T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2024-10-12T00:00:00&#43;00:00'/><meta property='og:image' content='https://J-shiro.github.io/img/ai_note.png' />
+<meta name="twitter:title" content="NLP笔记">
+<meta name="twitter:description" content="NLP 自然语言处理Natural language processing (NLP) ，有监督学习 序列模型 $T_x^{(i)}$表示第 i 个训练样例的序列长度，$X^{(i)}$表示 i 序列中第 t"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://J-shiro.github.io/img/ai_note.png' />
+    <link rel="shortcut icon" href="https://j-shiro.github.io/img/somebody.png" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/zh-cn">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu42aab1a06b48994d4eab55119e198264_548369_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/zh-cn">J-shiro&#39;s 博客</a></h1>
+            <h2 class="site-description">Welcome! I will record some of my own hobbies there.//欢迎来到我的博客！</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/J-shiro'
+                        target="_blank"
+                        title="GitHub"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/zh-cn/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/zh-cn/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/zh-cn/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>档案</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/zh-cn/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/zh-cn/%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>链接</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+                <li id="i18n-switch">  
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                    <select name="language" onchange="window.location.href = this.selectedOptions[0].value">
+                        
+                            <option value="https://J-shiro.github.io/" >English</option>
+                        
+                            <option value="https://J-shiro.github.io/zh-cn/" selected>中文</option>
+                        
+                    </select>
+                </li>
+            
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+<main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/zh-cn/p/nlp%E7%AC%94%E8%AE%B0/">
+                
+                    <img src="/img/ai_note.png" loading="lazy" alt="Featured image of post NLP笔记" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/zh-cn/categories/notes/" >
+                notes
+            </a>
+        
+            <a href="/zh-cn/categories/ai/" >
+                AI
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/zh-cn/p/nlp%E7%AC%94%E8%AE%B0/">NLP笔记</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Oct 12, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 6 分钟
+                </time>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+                <time class="article-words">
+                    2860 字
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="nlp">NLP</h2>
+<p>自然语言处理Natural language processing (NLP) ，有监督学习</p>
+<h3 id="序列模型">序列模型</h3>
+<p>$T_x^{(i)}$表示第 i 个训练样例的序列长度，$X^{(i)}$表示 i 序列中第 t 个元素，x 表示输入 y 表示输出</p>
+<p>**数据表示：**存在单词字典列表，使用<code>one hot</code>，即每个单词对应一个等长向量列表，对应单词索引处为1其余为0</p>
+<h3 id="循环神经网络">循环神经网络</h3>
+<p>（Recurrent Neural）处理  一维序列化数据</p>
+<p><strong>前向传播</strong></p>
+<p><img src="/img/nlp_note.zh-cn.assets/-172845431716878.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p>$a^{&lt;0&gt;}=\vec 0$</p>
+<ol>
+<li>Tanh, ReLU：$a^{&lt;t&gt;}=g(w_{aa}a^{&lt;t-1&gt;}+w_{ax}x^{&lt;t&gt;}+b_a)$</li>
+<li>Sigmoid, SoftMax: $\hat y^{&lt;t&gt;}=g(w_{ya}a^{&lt;t&gt;}+b_y)$</li>
+</ol>
+<p>将$W_{aa}$和$W_{ax}$矩阵左右联结表示为$W_a$，1 式转化为$a^{&lt;t&gt;}=g(W_a[a^{&lt;t-1&gt;}, x^{&lt;t&gt;}]+b_a)$，[ , ]中表示上下联结</p>
+<p><strong>基于时间反向传播</strong></p>
+<p>预测特定词是一个人名的概率是$\hat y$，使用逻辑回归损失</p>
+<p>某一时间损失：$L^{&lt;t&gt;}(\hat y^{&lt;t&gt;},y^{&lt;t&gt;})=-y^{&lt;t&gt;}\log \hat y^{&lt;t&gt;}-(1-y^{&lt;t&gt;})\log (1-\hat y^{&lt;t&gt;})$</p>
+<p>总体损失函数：$L(\hat y, y)=\sum_{t=1}^{T_y}L^{&lt;t&gt;}(\hat y^{&lt;t&gt;},y^{&lt;t&gt;})$，$T_x$和$T_y$可能不同</p>
+<p><strong>架构类型</strong></p>
+<p><img src="/img/nlp_note.zh-cn.assets/-172845431716879.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><img src="/img/nlp_note.zh-cn.assets/-172845431716880.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><strong>语言模型+序列生成</strong></p>
+<p>训练集为极大<strong>语料库</strong>（corpus），将数据句子<strong>标记化</strong>（tokenize），句子末尾加入<strong>EOS</strong>（End Of Sentence）标记，定位句子结尾，未知单词标记为**<UNK>**（unknown word）标记，$\hat y$对应于已知条件概率P(__|已知)</p>
+<p><strong>损失函数：</strong>$L(\hat y^{&lt;t&gt;},y^{&lt;t&gt;})=-\sum_iy_i^{&lt;t&gt;}\log \hat y_i^{&lt;t&gt;}$，softmax损失函数</p>
+<p><strong>字符级语言模型，字典为[a,b,c,&hellip;,z,A,&hellip;,Z]</strong></p>
+<p><img src="/img/nlp_note.zh-cn.assets/-172845431716881.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><strong>Gate Recurrent Unit（GRU）门控制单元</strong></p>
+<ul>
+<li>解决RNN<strong>梯度消失问题，</strong>$C^{&lt;t&gt;}$记忆单元来存储记忆，如：需要记住cat是单数，使用was而不是were</li>
+<li>$\tilde C^{&lt;t&gt;}=\tanh (W_c[\Gamma_r\cdot C^{&lt;t-1&gt;},x^{&lt;t&gt;}]+b_c)$</li>
+<li>门控值：<strong>更新门</strong>$\Gamma_u=\sigma(W_u[C^{&lt;t-1&gt;},x^{&lt;t&gt;}]+b_u)$，sigmoid使范围为0-1，为0表示不更新$C^{&lt;t&gt;}$，同样适用于<strong>相关性门</strong>$\Gamma_r$</li>
+<li>$C^{&lt;t&gt;}=\Gamma_u\cdot \tilde C^{&lt;t&gt;}+(1-\Gamma_u)\cdot C^{&lt;t-1&gt;}$ ，a和c相等</li>
+</ul>
+<p><img src="/img/nlp_note.zh-cn.assets/-172845431716882.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><strong>Long Short Term Memory Units（LSTM）长短期记忆单元</strong></p>
+<ul>
+<li>$\tilde C^{&lt;t&gt;}=\tanh (W_c[a^{&lt;t-1&gt;},x^{&lt;t&gt;}]+b_c)$</li>
+<li><strong>更新门</strong>$\Gamma_u=\sigma(W_u[C^{&lt;t-1&gt;},x^{&lt;t&gt;}]+b_u)$，<strong>遗忘门</strong>$\Gamma_f=\sigma(W_f[C^{&lt;t-1&gt;},x^{&lt;t&gt;}]+b_f)$，<strong>输出门</strong>$\Gamma_o=\sigma(W_o[C^{&lt;t-1&gt;},x^{&lt;t&gt;}]+b_o)$</li>
+<li>更新：$C^{&lt;t&gt;}=\Gamma_u\cdot \tilde C^{&lt;t&gt;}+\Gamma_f\cdot C^{&lt;t-1&gt;}$，$a^{&lt;t&gt;}=\Gamma_o\cdot C^{&lt;t&gt;}$，a和c不再相等</li>
+</ul>
+<p><img src="/img/nlp_note.zh-cn.assets/-172845431716883.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><strong>情感分类</strong></p>
+<p><img src="/img/nlp_note.zh-cn.assets/-172845431716884.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><strong>双向递归网络</strong></p>
+<ul>
+<li>（bi-directional recurrent neural network, BRNNs）</li>
+<li>解决单词不能单从前面得出是否是人名</li>
+</ul>
+<p><img src="/img/nlp_note.zh-cn.assets/-172845431716885.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><strong>深度递归网络</strong></p>
+<ul>
+<li>Deep RNNs</li>
+</ul>
+<p><img src="/img/nlp_note.zh-cn.assets/-172845431716886.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<h3 id="词嵌入模型">词嵌入模型</h3>
+<p><strong>词向量表示</strong></p>
+<ul>
+<li>one-hot编码两两单词相乘为0</li>
+<li>需要描述一个物，需要综合多项指标（向量），向量可以用不同方法计算相似度，相似词在特征表达中比较相似</li>
+<li>特征比如单词与性别（-1~1）、年龄、是否为食物的指标值（0~1）</li>
+</ul>
+<p><strong>相似度——类比推理</strong></p>
+<p>如：男生与女生对应国王和皇后，t-SAE算法以非线性方式映射到2维空间，将会把类比关系打破</p>
+<p><strong>余弦相似度(相似函数)</strong></p>
+<ul>
+<li>$\arg \max sim(e_w,e_{king}-e_{man}+e_{woman})\sim(u,v)=\frac{u^Tv}{||u||_2\cdot||v||_2}$，实则求 u 和 v 之间的角$\phi$的余弦值，<code>0~180:1~-1</code></li>
+</ul>
+<p><strong>矩阵嵌入</strong></p>
+<p>使用单词矩阵与one-hot编码向量相乘获取对应单词的向量，实则一般在<strong>嵌入层</strong>中直接取对应列即可</p>
+<p>暂时无法在飞书文档外展示此内容</p>
+<h3 id="词向量模型">词向量模型</h3>
+<p><strong>Word2Vec模型</strong>，将文本向量化</p>
+<p><strong>训练数据</strong></p>
+<p><img src="/img/nlp_note.zh-cn.assets/-172845431716887.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p>不同模型：<strong>CBOW（上下文推词）</strong> 与 <strong>Skipgram（词推上下文）</strong></p>
+<p><img src="/img/nlp_note.zh-cn.assets/-172845431716888.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><strong>除偏（性别、种族偏差）</strong></p>
+<ol>
+<li>识别需要消除的偏差方向，使用$e_{he}-e_{she}$等多组的平均值获取坐标轴</li>
+<li>中立化：未被定义的词通过映射到避开偏差</li>
+<li>均匀化：移动相关性别的词使得距离坐标轴相等</li>
+</ol>
+<p><img src="/img/nlp_note.zh-cn.assets/-172845431716989.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<h4 id="skip-grams"><strong>Skip-grams</strong></h4>
+<p><strong>有监督学习——<strong>语境词</strong>c</strong>，目标词<strong>t，</strong>$\theta_t$是关于 t 的参数（w），未包含偏置项</p>
+<p>$p(t|c)=\frac{e^{\theta_t^Te_c}}{\sum_{j=1}^{10000}e^{\theta_j^Te_c}}$，softmax 中分母的运算代价极大</p>
+<p><strong>负采样（Negative Sampling）</strong></p>
+<p>数据集将会对context（上下文）跟着的word（单词）进行target赋值1（正样本）或0（负样本），表示是否可以组成一个词组，使用有监督学习，根据context和word为输入【包含一个正样本和k-1个负样本】，target为预测，使得计算代价低，进行逻辑回归训练k-1个分类器，多次二分类</p>
+<h4 id="glove算法">GloVe算法</h4>
+<ul>
+<li>Global Vectors for word representation</li>
+<li>$X_{ij}$表示 i(t) 在 j(c) 的上下文出现次数，$f(X_{ij})$是权重项，调整使得常见词权重不高，罕见词权重不低，X为0时f为0，采用&quot;0log0=0&quot;的规则</li>
+<li>$minimize,, \sum_{i=1}^{10000}\sum_{j=1}^{10000}f(X_{ij})(\theta_i^Te_j+b_i+b_j&rsquo;-\log X_{ij})^2$，随机均匀初始化$\theta,e$，梯度下降最小化目标函数</li>
+<li>$e_w^{(final)}=\frac{e_w+\theta_w}{2}$</li>
+</ul>
+<h3 id="seq2seq模型">Seq2Seq模型</h3>
+<ul>
+<li>（Sequence-to-sequence），机器翻译+语音识别</li>
+<li>先将语言经过编码器，然后经过解码器进行翻译，计算$P(y^{&lt;1&gt;}|x)$</li>
+</ul>
+<p><img src="/img/nlp_note.zh-cn.assets/-172845431716990.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p>Bleu指数在句子长度小和极大时都很小</p>
+<h4 id="定向搜索算法">定向搜索算法</h4>
+<ul>
+<li>Beam Search或集束搜索</li>
+<li>参数B表示集束宽度，保留备选单词数，每次选择B个最高条件概率词元</li>
+<li>$\arg \max_y\frac{1}{T_y^{\alpha}}\sum_{t=1}^{T_y}\log P(y^{&lt;t&gt;}|x,y^{&lt;1&gt;},\cdots ,y^{&lt;t-1&gt;})$，$\alpha$=0.7取部分规范化</li>
+<li>$P(y^{&lt;1&gt;}\cdots y^{&lt;T_y&gt;}|x)=P(y^{&lt;1&gt;}|x)P(y^{&lt;2&gt;}|x,y^{&lt;1&gt;})\cdots P(y^{&lt;T_y&gt;}|x,y^{&lt;1&gt;},\cdots ,y^{&lt;T_y-1&gt;})$</li>
+</ul>
+<p><img src="/img/nlp_note.zh-cn.assets/-172845431716991.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><strong>Bleu指数</strong></p>
+<ul>
+<li>多个好结果下选择一个最好的看n元单词在参考翻译中出现概率</li>
+<li>$P_n=\frac{\sum_{n-grams\in \hat y}Count_{clips}(n-gram)}{\sum_{n-grams\in \hat y}Count(n-gram)}$再去各个n的平均值</li>
+<li>n个n个取参考翻译记录每n个单词的count，再在机器翻译中得出count_clip</li>
+</ul>
+<h4 id="注意力模型">注意力模型</h4>
+<ul>
+<li>（attention model），会生成多个注意力权重参数$\alpha$总和为1，将在某个词放入多少注意力，$\alpha^{&lt;t, t&rsquo;&gt;}$ 表示生成 t 时需要对 t&rsquo; 花费的注意力是多少</li>
+</ul>
+<p><img src="/img/nlp_note.zh-cn.assets/-172845431716992.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<h3 id="transformer">Transformer</h3>
+<p>同一时间对一句话同时处理，注意力+卷积</p>
+<p><strong>自注意力机制：并行计算</strong></p>
+<p>为每个单词计算出一个基于注意力的表达：$A(q,K,V)$，即$A^{&lt;1&gt;},A^{&lt;2&gt;},\cdot$</p>
+<p><img src="/img/nlp_note.zh-cn.assets/-172845431716993.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p>将每个单词与q(Query), K(Key), V(Value)关联，W为学习参数</p>
+<ol>
+<li>$q^{&lt;i&gt;}=W^Q\cdot x^{&lt;i&gt;}$</li>
+<li>$K^{&lt;i&gt;}=W^K\cdot x^{&lt;i&gt;}$</li>
+<li>$V^{&lt;i&gt;}=W^V\cdot x^{&lt;i&gt;}$</li>
+</ol>
+<p><img src="/img/nlp_note.zh-cn.assets/-172845431716994.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><strong>多头注意力机制：循环并行计算自注意力</strong></p>
+<p>通过不同矩阵参数集进行重复多次的自注意力计算，用于回答不同问题：when,where,who,how&hellip;</p>
+<p><strong>transformer架构</strong></p>
+<p><img src="/img/nlp_note.zh-cn.assets/-172845431716995.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css"integrity="sha256-J&#43;iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s="crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.js"integrity="sha256-InsNdER1b2xUewP&#43;pKCUJpkhiqwHgqiPXDlIk7GzBu4="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/contrib/auto-render.min.js"integrity="sha256-y39Mpg7V3D4lhBX4x6O0bUqTV4pSrfgwEfGKfxkOdgI="crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ]
+        });})
+</script>
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/zh-cn/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/img/ai_note.png" loading="lazy" data-key="" data-hash="/img/ai_note.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">强化学习笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/zh-cn/p/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/img/ai_note.png" loading="lazy" data-key="" data-hash="/img/ai_note.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">深度学习笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/zh-cn/p/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E7%AC%94%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/img/ai_note.png" loading="lazy" data-key="" data-hash="/img/ai_note.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">计算机视觉笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/zh-cn/p/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/img/ai_note.png" loading="lazy" data-key="" data-hash="/img/ai_note.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">机器学习笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/zh-cn/p/fuzzing%E7%AC%94%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/img/note.jpg" loading="lazy" data-key="" data-hash="/img/note.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Fuzzing笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
+<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet'/>
+<div id="waline" class="waline-container"></div>
+<style>
+    .waline-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+        --waline-font-size: var(--article-font-size);
+    }
+    .waline-container .wl-count {
+        color: var(--card-text-color-main);
+    }
+</style><script>
+    
+    Waline.init({"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://unpkg.com/@waline/emojis@1.0.1/weibo"],"locale":{"admin":"Admin","placeholder":null},"requiredMeta":["name","email","url"],"serverURL":"https://blog-waline-ox87ky1di-j-shiro.vercel.app/"});
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2024 J-shiro&#39;s 博客<br />
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+        共 97.05k 字 · 共 16篇文章
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
+            <span id="busuanzi_container_site_pv"> 总访问量<span id="busuanzi_value_site_pv"></span>次 </span>---
+            <span id="busuanzi_container_page_pv">本文阅读量<span id="busuanzi_value_page_pv"></span>次</span>    
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.13.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+
+    
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/live2d-widget@3.1.4/lib/L2Dwidget.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/live2d-widget@3.1.4/lib/L2Dwidget.0.min.js"></script>
+
+<script type="text/javascript">
+    L2Dwidget.init({
+        model: {
+            scale: 1,
+            hHeadPos: 0.5,
+            vHeadPos: 0.618,
+            jsonPath: 'https://cdn.jsdelivr.net/npm/live2d-widget-model-hibiki@1.0.5/assets/hibiki.model.json',       
+        },
+        display: {
+            superSample: 9,     
+            width: 160,         
+            height: 440,        
+            position: 'left',   
+            hOffset: 130,         
+            vOffset: -50,         
+        },
+        mobile: {
+            show: false,         
+            scale: 1,           
+            motion: true,       
+        },
+        react: {
+            opacityDefault: 1,  
+            opacityOnHover: 1,  
+        },
+    });
+</script>
+
+
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+    <div id="backTop" onclick="backTopFunction()" style="right: 40px; bottom: 40px; display: flex;">
+        <svg xmlns="http://www.w3.org/2000/svg" height="30" width="20" viewBox="0 0 512 512"><title>Caret Up</title>
+            <path d="M414 321.94L274.22 158.82a24 24 0 00-36.44 0L98 321.94c-13.34 15.57-2.28 39.62 18.22 39.62h279.6c20.5 0 31.56-24.05 18.18-39.62z" fill="#adb5bd"></path>
+        </svg>
+        <style type="text/css">
+            #backTop {
+                position: fixed;
+                background-color: #fff;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 0 6px rgba(0,0,0,.12);
+                cursor: pointer;
+                z-index: 5;
+            }
+    
+            #backTop:hover {
+                background-color: #f1f4f8;
+            }
+        </style>
+        <script>
+    
+            window.onscroll = function() {scrollFunction()};
+    
+            function scrollFunction() {console.log(121);
+                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                    document.getElementById("backTop").style.display = "flex";
+                } else {
+                    document.getElementById("backTop").style.display = "none";
+                }
+            }
+    
+    
+            function backTopFunction() {
+                document.body.scrollTop = 0;
+                document.documentElement.scrollTop = 0;
+            }
+        </script>
+    </div>
+    
+
+
+            </main>
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#nlp">NLP</a>
+      <ol>
+        <li><a href="#序列模型">序列模型</a></li>
+        <li><a href="#循环神经网络">循环神经网络</a></li>
+        <li><a href="#词嵌入模型">词嵌入模型</a></li>
+        <li><a href="#词向量模型">词向量模型</a>
+          <ol>
+            <li><a href="#skip-grams"><strong>Skip-grams</strong></a></li>
+            <li><a href="#glove算法">GloVe算法</a></li>
+          </ol>
+        </li>
+        <li><a href="#seq2seq模型">Seq2Seq模型</a>
+          <ol>
+            <li><a href="#定向搜索算法">定向搜索算法</a></li>
+            <li><a href="#注意力模型">注意力模型</a></li>
+          </ol>
+        </li>
+        <li><a href="#transformer">Transformer</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+
+    }());
+</script>
+
+<script
+    src="https://cdn.jsdelivr.net/gh/zhixuan2333/gh-blog@v0.1.0/js/nprogress.min.js"
+    integrity="sha384-bHDlAEUFxsRI7JfULv3DTpL2IXbbgn4JHQJibgo5iiXSK6Iu8muwqHANhun74Cqg"
+    crossorigin="anonymous"
+></script>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/zhixuan2333/gh-blog@v0.1.0/css/nprogress.css"
+    integrity="sha384-KJyhr2syt5+4M9Pz5dipCvTrtvOmLk/olWVdfhAp858UCa64Ia5GFpTN7+G4BWpE"
+    crossorigin="anonymous"
+/>
+<script>
+    NProgress.start();
+    document.addEventListener("readystatechange", () => {
+        if (document.readyState === "interactive") NProgress.inc(0.8);
+        if (document.readyState === "complete") NProgress.done();
+    });
+</script>
+
+    </body>
+</html>
