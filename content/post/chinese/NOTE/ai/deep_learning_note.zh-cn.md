@@ -2,7 +2,7 @@
 title: "深度学习笔记"
 description: 
 date: 2024-10-12
-image: /img/ai_note.png
+image: /img/ai_note.jpg
 math: true
 license: 
 hidden: false

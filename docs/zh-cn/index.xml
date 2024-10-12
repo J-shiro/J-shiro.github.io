@@ -12,7 +12,7 @@
         <pubDate>Sat, 12 Oct 2024 00:00:00 +0000</pubDate>
         
         <guid>https://J-shiro.github.io/zh-cn/p/nlp%E7%AC%94%E8%AE%B0/</guid>
-        <description>&lt;img src="https://J-shiro.github.io/img/ai_note.png" alt="Featured image of post NLP笔记" /&gt;&lt;h2 id=&#34;nlp&#34;&gt;NLP&lt;/h2&gt;
+        <description>&lt;img src="https://J-shiro.github.io/img/ai_note.jpg" alt="Featured image of post NLP笔记" /&gt;&lt;h2 id=&#34;nlp&#34;&gt;NLP&lt;/h2&gt;
 &lt;p&gt;自然语言处理Natural language processing (NLP) ，有监督学习&lt;/p&gt;
 &lt;h3 id=&#34;序列模型&#34;&gt;序列模型&lt;/h3&gt;
 &lt;p&gt;$T_x^{(i)}$表示第 i 个训练样例的序列长度，$X^{(i)}$表示 i 序列中第 t 个元素，x 表示输入 y 表示输出&lt;/p&gt;
@@ -153,7 +153,7 @@
 &lt;ul&gt;
 &lt;li&gt;one-hot编码两两单词相乘为0&lt;/li&gt;
 &lt;li&gt;需要描述一个物，需要综合多项指标（向量），向量可以用不同方法计算相似度，相似词在特征表达中比较相似&lt;/li&gt;
-&lt;li&gt;特征比如单词与性别（-1~1）、年龄、是否为食物的指标值（0~1）&lt;/li&gt;
+&lt;li&gt;特征比如单词与性别（&lt;code&gt;-1~1&lt;/code&gt;）、年龄、是否为食物的指标值（&lt;code&gt;0~1&lt;/code&gt;）&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;相似度——类比推理&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;如：男生与女生对应国王和皇后，t-SAE算法以非线性方式映射到2维空间，将会把类比关系打破&lt;/p&gt;
@@ -163,7 +163,16 @@
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;矩阵嵌入&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;使用单词矩阵与one-hot编码向量相乘获取对应单词的向量，实则一般在&lt;strong&gt;嵌入层&lt;/strong&gt;中直接取对应列即可&lt;/p&gt;
-&lt;p&gt;暂时无法在飞书文档外展示此内容&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/nlp_note.zh-cn.assets/image-20241012233656947.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241012233656947&#34;
+	
+	
+&gt;&lt;/p&gt;
 &lt;h3 id=&#34;词向量模型&#34;&gt;词向量模型&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;Word2Vec模型&lt;/strong&gt;，将文本向量化&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;训练数据&lt;/strong&gt;&lt;/p&gt;
@@ -320,7 +329,7 @@
         <pubDate>Sat, 12 Oct 2024 00:00:00 +0000</pubDate>
         
         <guid>https://J-shiro.github.io/zh-cn/p/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E7%AC%94%E8%AE%B0/</guid>
-        <description>&lt;img src="https://J-shiro.github.io/img/ai_note.png" alt="Featured image of post 计算机视觉笔记" /&gt;&lt;h2 id=&#34;计算机视觉&#34;&gt;计算机视觉&lt;/h2&gt;
+        <description>&lt;img src="https://J-shiro.github.io/img/ai_note.jpg" alt="Featured image of post 计算机视觉笔记" /&gt;&lt;h2 id=&#34;计算机视觉&#34;&gt;计算机视觉&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;垂直边缘检测——灰度图&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/cv_note.zh-cn.assets/-172845431716656.assets&#34;
 	
@@ -654,7 +663,7 @@
         <pubDate>Sat, 12 Oct 2024 00:00:00 +0000</pubDate>
         
         <guid>https://J-shiro.github.io/zh-cn/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
-        <description>&lt;img src="https://J-shiro.github.io/img/ai_note.png" alt="Featured image of post 强化学习笔记" /&gt;&lt;h2 id=&#34;强化学习&#34;&gt;强化学习&lt;/h2&gt;
+        <description>&lt;img src="https://J-shiro.github.io/img/ai_note.jpg" alt="Featured image of post 强化学习笔记" /&gt;&lt;h2 id=&#34;强化学习&#34;&gt;强化学习&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;奖励函数（reward function）&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;奖励(reward)：R，通过奖励好行为和惩罚坏行为使自动学习，核心要素：(s_start, action, reward(s_start), s_change)&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;回报 （return）&lt;/strong&gt;&lt;/p&gt;
@@ -769,7 +778,7 @@
         <pubDate>Sat, 12 Oct 2024 00:00:00 +0000</pubDate>
         
         <guid>https://J-shiro.github.io/zh-cn/p/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
-        <description>&lt;img src="https://J-shiro.github.io/img/ai_note.png" alt="Featured image of post 深度学习笔记" /&gt;&lt;h2 id=&#34;深度学习&#34;&gt;深度学习&lt;/h2&gt;
+        <description>&lt;img src="https://J-shiro.github.io/img/ai_note.jpg" alt="Featured image of post 深度学习笔记" /&gt;&lt;h2 id=&#34;深度学习&#34;&gt;深度学习&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;机器学习过程：数据获取、【&lt;strong&gt;特征工程】&lt;/strong&gt;、建立模型、评估应用&lt;/li&gt;
 &lt;li&gt;特征工程：数据特征决定模型上限，算法和参数用于接近上限&lt;/li&gt;
@@ -11246,6 +11255,28 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;php&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;://&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;filter&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;read&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;convert&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;base64&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;encode&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;resource&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;flag&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;php&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;命令执行&#34;&gt;命令执行&lt;/h3&gt;
+&lt;p&gt;Linux下命令：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ls替代：&lt;code&gt;dir&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;空格绕过：&lt;code&gt;&amp;lt;&lt;/code&gt;, &lt;code&gt;${IFS}&lt;/code&gt;, &lt;code&gt;$IFS$9&lt;/code&gt;, &lt;code&gt;%09&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;cat命令替代：&lt;code&gt;more&lt;/code&gt;, &lt;code&gt;tail&lt;/code&gt;, &lt;code&gt;head&lt;/code&gt;, &lt;code&gt;less&lt;/code&gt;, &lt;code&gt;nl&lt;/code&gt;, &lt;code&gt;sort&lt;/code&gt;, &lt;code&gt;tailf&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;截断字符替代：&lt;code&gt;&amp;amp;&amp;amp;&lt;/code&gt;, &lt;code&gt;||&lt;/code&gt;, &lt;code&gt;;&lt;/code&gt;, &lt;code&gt;%0a&lt;/code&gt;, &lt;code&gt;|&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;反斜杠绕过：&lt;code&gt;ca\t fl\ag.txt&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;编码绕过：&lt;code&gt;echo &#39;a==&#39; | base64 -d&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;单双引号绕过：&lt;code&gt;c&#39;a&#39;t&lt;/code&gt;, &lt;code&gt;c&amp;quot;a&amp;quot;t&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;通配符绕过：&lt;code&gt;f?ag&lt;/code&gt;, &lt;code&gt;f*&lt;/code&gt;, &lt;code&gt;f[a-z]ag&lt;/code&gt;, &lt;code&gt;f{l,b}ag&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;shell_exec&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;nslookup &amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$domain&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// &amp;amp;quot;为&amp;#34;的html形式
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
 &lt;/div&gt;&lt;h3 id=&#34;远程命令执行&#34;&gt;远程命令执行&lt;/h3&gt;
 &lt;p&gt;RCE，Remote Command Execution&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -12018,7 +12049,7 @@
         <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
         
         <guid>https://J-shiro.github.io/zh-cn/p/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
-        <description>&lt;img src="https://J-shiro.github.io/img/ai_note.png" alt="Featured image of post 机器学习笔记" /&gt;&lt;h2 id=&#34;基础&#34;&gt;基础&lt;/h2&gt;
+        <description>&lt;img src="https://J-shiro.github.io/img/ai_note.jpg" alt="Featured image of post 机器学习笔记" /&gt;&lt;h2 id=&#34;基础&#34;&gt;基础&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;笔记相关&lt;/strong&gt;&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;ul&gt;
