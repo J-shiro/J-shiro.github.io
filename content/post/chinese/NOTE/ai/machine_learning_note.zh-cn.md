@@ -1019,7 +1019,7 @@ cost = tf.keras.losses.MeanSquaredError()
 
 - 判定邮件D是否为垃圾邮件，h+表示垃圾邮件，h-表示正常邮件
 
-$\begin{cases}P(h+|D)=\frac{P(h+)P(D|h+)}{P(D)}\\P(h-|D)=\frac{P(h-)P(D|h-)}{P(D)}\end{cases}$，P(h+)和P(h-)为先验概率
+$\begin{cases}P(h+|D)=\frac{P(h+)P(D|h+)}{P(D)}\\\ P(h-|D)=\frac{P(h-)P(D|h-)}{P(D)}\end{cases}$，P(h+)和P(h-)为先验概率
 
 - D由N个单词组成，所以有$P(D|h+)=P(d_1,d_2,\cdots,d_n|h+)=P(d_1|h+)\cdot P(d_2|d_1,h+)\cdot P(d_3|d_2,d_1,h+)\cdots$
 - 朴素贝叶斯假设特征之间是独立的，则化简为$P(d_1|h+)\cdot P(d_2|h+)\cdot P(d_3|h+)\cdots$，则只要统计$d_i$这个单词在垃圾邮件中出现的概率即可
