@@ -311,7 +311,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 13 分钟
+                    阅读时长: 14 分钟
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    6260 字
+                    6522 字
                 </time>
             </div>
         
@@ -1782,7 +1782,80 @@
 </div><p><strong>关键字绕过</strong></p>
 <p>将<code>or</code>, <code>select</code>, <code>union</code>, <code>where</code>, <code>and</code>, <code>from</code>进行屏蔽</p>
 <p><code>str_replace</code>函数屏蔽将目标字符串只过滤一次，可以通过双写绕过：<code>uunionnion, sselectelect, oorr</code></p>
-
+<h2 id="java">JAVA</h2>
+<h3 id="sql注入">SQL注入</h3>
+<p>漏洞点：字符串拼接</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="k">if</span> <span class="o">(!</span><span class="n">StringUtils</span><span class="o">.</span><span class="na">isNullOrEmpty</span><span class="o">(</span><span class="n">userName</span><span class="o">))</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">sql</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&#34; and u.userName like &#39;%&#34;</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="n">userName</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">&#34;%&#39;&#34;</span><span class="o">);</span><span class="c1">// 模糊查询: % 匹配任意长度的字符
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>前后闭合</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">// %25 为 %, 此处需要用%25, % 会报错
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">name</span><span class="o">%</span><span class="n">25</span><span class="err">&#39;</span> <span class="n">union</span> <span class="n">select</span> <span class="n">1</span><span class="o">,</span><span class="n">2</span><span class="o">,</span><span class="n">version</span><span class="o">(),</span><span class="n">4</span><span class="o">,</span><span class="n">5</span><span class="o">,</span><span class="n">6</span><span class="o">,</span><span class="n">database</span><span class="o">(),</span><span class="n">8</span><span class="o">,</span><span class="n">9</span><span class="o">,</span><span class="n">10</span><span class="o">,</span><span class="n">11</span><span class="o">,</span><span class="n">12</span><span class="o">,</span><span class="n">13</span><span class="o">,</span><span class="n">14</span> <span class="n">where</span> <span class="sc">&#39;1&#39;</span> <span class="n">like</span> <span class="err">&#39;</span><span class="o">%</span><span class="n">251</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 大于14不返回结果可判断回显列数
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>PrepareStatement</strong></p>
+<p>JAVA SQL API中用于执行参数化查询的接口，可防止SQL注入，SQL语句<strong>提前编译</strong>，参数作为数据处理而非直接拼接</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">// 查询公共类
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">public</span> <span class="kd">static</span> <span class="n">ResultSet</span> <span class="nf">execute</span><span class="o">(</span><span class="n">Connection</span> <span class="n">connection</span><span class="o">,</span> <span class="n">PreparedStatement</span> <span class="n">preparedStatement</span><span class="o">,</span> <span class="n">ResultSet</span> <span class="n">resultSet</span><span class="o">,</span> <span class="n">String</span> <span class="n">sql</span><span class="o">,</span> <span class="n">Object</span><span class="o">[]</span> <span class="n">params</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">SQLException</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 获取预编译的SQL语句
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">preparedStatement</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">prepareStatement</span><span class="o">(</span><span class="n">sql</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 将占位符 ? 赋值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">params</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">preparedStatement</span><span class="o">.</span><span class="na">setObject</span><span class="o">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">1</span><span class="o">,</span> <span class="n">params</span><span class="o">[</span><span class="n">i</span><span class="o">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 执行查询
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">resultSet</span> <span class="o">=</span> <span class="n">preparedStatement</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">resultSet</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>使用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&#34;SELECT * FROM users WHERE username = ? AND age = ?&#34;</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">Object</span><span class="o">[]</span> <span class="n">params</span> <span class="o">=</span> <span class="o">{</span> <span class="s">&#34;Alice&#34;</span><span class="o">,</span> <span class="n">25</span> <span class="o">};</span>
+</span></span><span class="line"><span class="cl"><span class="n">ResultSet</span> <span class="n">resultSet</span> <span class="o">=</span> <span class="n">execute</span><span class="o">(</span><span class="n">connection</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="n">sql</span><span class="o">,</span> <span class="n">params</span><span class="o">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 
@@ -1990,7 +2063,7 @@
         
             
         
-        共 98.48k 字 · 共 16篇文章
+        共 101.95k 字 · 共 16篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -2220,6 +2293,11 @@
             <li><a href="#sql操作">SQL操作</a></li>
           </ol>
         </li>
+      </ol>
+    </li>
+    <li><a href="#java">JAVA</a>
+      <ol>
+        <li><a href="#sql注入">SQL注入</a></li>
       </ol>
     </li>
   </ol>

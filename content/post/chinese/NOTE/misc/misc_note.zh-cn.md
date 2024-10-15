@@ -337,6 +337,59 @@ png图片存储中，每个颜色表示有8bit，即256种颜色，一共包含2
 
 可以使用**Stegsolve**来进行提取
 
+### IDAT隐写
+
+```bash
+$ pngcheck -v x.png
+...
+chunk IDAT at offset 0x634d0, length 268:  EOF while reading data # IDAT块错误
+
+$ binwalk -e x.png # 提取IDAT块，获取xxx.zlib文件(789C开头)
+```
+
+**zlib解压**——解压结果可能为01串/十六进制数/Base64值，再做相应处理
+
+```python
+import zlib
+import binascii
+a = "789c45xxxxx"
+re = binascii.unhexlify(a)
+ans = zlib.decompress(re)
+print(ans)
+# b'89504E470D0'
+```
+
+返回十六进制数，CyberChef处理
+
+返回01串，若长度为255，尝试转换为二维码
+
+```python
+from PIL import Image
+MAX = 25
+pic = Image.new("RGB",(MAX, MAX))
+sttr="01" # 255个
+i=0
+for y in range (0,MAX):
+    for x in range (0,MAX):
+        if(sttr[i] == '1'):
+            pic.putpixel([x,y],(0, 0, 0))
+        else:
+            pic.putpixel([x,y],(255,255,255))
+        i = i+1
+
+pic.show()
+pic.save("flag.png")
+```
+
+## 文本隐写
+
+**txt零宽度隐写**
+
+- 零宽度字符：隐藏、不显示、不可打印，大部分程序和编辑器是看不到这种字符，用于调整字符的显示格式
+- **隐藏：**需要被加密的内容转换为二进制（Morse编码），该二进制（Morse编码）将被转换为一系列零宽度字符，即可将零宽度的字符串不可见地插入正常文本中隐藏
+
+`https://yuanfux.github.io/zero-width-web/`进行加解密，`vim`可能可以看到零宽度字符
+
 ## Python逃逸
 
 ```Python
@@ -441,6 +494,10 @@ print(text)
 **福尔摩斯跳舞小人加密**
 
 ![img](/img/misc_note.zh-cn.assets/-17284513528808.assets)
+
+**佛与论禅**
+
+`http://hi.pcmoe.net/buddha.html`解密
 
 ## AI
 

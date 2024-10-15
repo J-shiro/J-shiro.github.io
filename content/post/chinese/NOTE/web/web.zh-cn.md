@@ -916,3 +916,50 @@ union select 1,2,group_concat(leak_column_name) from data_base_table_name # 或 
 
 `str_replace`函数屏蔽将目标字符串只过滤一次，可以通过双写绕过：`uunionnion, sselectelect, oorr`
 
+## JAVA
+
+### SQL注入
+
+漏洞点：字符串拼接
+
+```java
+if (!StringUtils.isNullOrEmpty(userName)) {
+	sql.append(" and u.userName like '%").append(userName).append("%'");// 模糊查询: % 匹配任意长度的字符
+}
+```
+
+**前后闭合**
+
+```java
+// %25 为 %, 此处需要用%25, % 会报错
+name%25' union select 1,2,version(),4,5,6,database(),8,9,10,11,12,13,14 where '1' like '%251
+// 大于14不返回结果可判断回显列数
+```
+
+**PrepareStatement**
+
+JAVA SQL API中用于执行参数化查询的接口，可防止SQL注入，SQL语句**提前编译**，参数作为数据处理而非直接拼接
+
+```java
+// 查询公共类
+public static ResultSet execute(Connection connection, PreparedStatement preparedStatement, ResultSet resultSet, String sql, Object[] params) throws SQLException {
+    // 获取预编译的SQL语句
+    preparedStatement = connection.prepareStatement(sql);
+    // 将占位符 ? 赋值
+    for (int i = 0; i < params.length; i++) {
+        preparedStatement.setObject(i + 1, params[i]);
+    }
+	// 执行查询
+    resultSet = preparedStatement.executeQuery();
+    return resultSet;
+}
+```
+
+使用
+
+```java
+String sql = "SELECT * FROM users WHERE username = ? AND age = ?";
+Object[] params = { "Alice", 25 };
+ResultSet resultSet = execute(connection, null, null, sql, params);
+```
+

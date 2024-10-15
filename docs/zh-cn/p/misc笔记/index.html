@@ -311,7 +311,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 7 分钟
+                    阅读时长: 8 分钟
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    3134 字
+                    3599 字
                 </time>
             </div>
         
@@ -834,6 +834,89 @@
 ></p>
 <p><strong>LSB隐写:</strong> 修改RGB颜色分量的最低二进制位，即最低有效位（LSB），人类眼睛不会注意到前后变化，且图片携带信息</p>
 <p>可以使用<strong>Stegsolve</strong>来进行提取</p>
+<h3 id="idat隐写">IDAT隐写</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ pngcheck -v x.png
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">chunk IDAT at offset 0x634d0, length 268:  EOF <span class="k">while</span> reading data <span class="c1"># IDAT块错误</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ binwalk -e x.png <span class="c1"># 提取IDAT块，获取xxx.zlib文件(789C开头)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>zlib解压</strong>——解压结果可能为01串/十六进制数/Base64值，再做相应处理</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">zlib</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">binascii</span>
+</span></span><span class="line"><span class="cl"><span class="n">a</span> <span class="o">=</span> <span class="s2">&#34;789c45xxxxx&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">re</span> <span class="o">=</span> <span class="n">binascii</span><span class="o">.</span><span class="n">unhexlify</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">ans</span> <span class="o">=</span> <span class="n">zlib</span><span class="o">.</span><span class="n">decompress</span><span class="p">(</span><span class="n">re</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">ans</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># b&#39;89504E470D0&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>返回十六进制数，CyberChef处理</p>
+<p>返回01串，若长度为255，尝试转换为二维码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+</span></span><span class="line"><span class="cl"><span class="n">MAX</span> <span class="o">=</span> <span class="mi">25</span>
+</span></span><span class="line"><span class="cl"><span class="n">pic</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&#34;RGB&#34;</span><span class="p">,(</span><span class="n">MAX</span><span class="p">,</span> <span class="n">MAX</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">sttr</span><span class="o">=</span><span class="s2">&#34;01&#34;</span> <span class="c1"># 255个</span>
+</span></span><span class="line"><span class="cl"><span class="n">i</span><span class="o">=</span><span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">MAX</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">MAX</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">sttr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pic</span><span class="o">.</span><span class="n">putpixel</span><span class="p">([</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">],(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pic</span><span class="o">.</span><span class="n">putpixel</span><span class="p">([</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">],(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">pic</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">pic</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&#34;flag.png&#34;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="文本隐写">文本隐写</h2>
+<p><strong>txt零宽度隐写</strong></p>
+<ul>
+<li>零宽度字符：隐藏、不显示、不可打印，大部分程序和编辑器是看不到这种字符，用于调整字符的显示格式</li>
+<li>**隐藏：**需要被加密的内容转换为二进制（Morse编码），该二进制（Morse编码）将被转换为一系列零宽度字符，即可将零宽度的字符串不可见地插入正常文本中隐藏</li>
+</ul>
+<p><code>https://yuanfux.github.io/zero-width-web/</code>进行加解密，<code>vim</code>可能可以看到零宽度字符</p>
 <h2 id="python逃逸">Python逃逸</h2>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -1010,6 +1093,8 @@
 	
 	
 ></p>
+<p><strong>佛与论禅</strong></p>
+<p><code>http://hi.pcmoe.net/buddha.html</code>解密</p>
 <h2 id="ai">AI</h2>
 <h3 id="prompt">Prompt</h3>
 <ol>
@@ -1228,7 +1313,7 @@
         
             
         
-        共 98.48k 字 · 共 16篇文章
+        共 101.95k 字 · 共 16篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -1462,8 +1547,10 @@
       <ol>
         <li><a href="#pdf">PDF</a></li>
         <li><a href="#lsb隐写">LSB隐写</a></li>
+        <li><a href="#idat隐写">IDAT隐写</a></li>
       </ol>
     </li>
+    <li><a href="#文本隐写">文本隐写</a></li>
     <li><a href="#python逃逸">Python逃逸</a></li>
     <li><a href="#密码">密码</a></li>
     <li><a href="#ai">AI</a>
