@@ -65,6 +65,10 @@ binwalk xx.xx
 binwalk -e xx.xx
 ```
 
+### CyberChef
+
+有终端显示为中文的字节可以使用CyberChef查看
+
 ## 基础知识
 
 **常见文件头**

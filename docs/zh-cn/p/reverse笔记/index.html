@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='基础知识 除了逆向外也可以尝试爆破 Windows kernel32.dll：控制系统内存管理、数据输入输出、中断处理，当Windows启动时，其驻留在内存中'><title>REVERSE笔记</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='基础知识 除了逆向外也可以尝试爆破 1 2 3 4 5 6 7 8 9 10 11 #include &amp;lt;stdio.h&amp;gt; int main(){ int cipher; for(int i=0;i&amp;lt;0xffffffff;i&#43;&#43;){ cipher = i; //加密异或等操作 } if (cipher==20241212153){ printf(&amp;#34;flag1:%x\n&amp;#34;,i); } } Windows kernel32.dll：控制系'><title>REVERSE笔记</title>
 
 <link rel='canonical' href='https://J-shiro.github.io/zh-cn/p/reverse%E7%AC%94%E8%AE%B0/'>
 
 <link rel="stylesheet" href="/scss/style.min.b18c0607927efd48b36f5d027b549e77e30ee300e22b6461d063f1df6ea2466b.css"><meta property='og:title' content='REVERSE笔记'>
-<meta property='og:description' content='基础知识 除了逆向外也可以尝试爆破 Windows kernel32.dll：控制系统内存管理、数据输入输出、中断处理，当Windows启动时，其驻留在内存中'>
+<meta property='og:description' content='基础知识 除了逆向外也可以尝试爆破 1 2 3 4 5 6 7 8 9 10 11 #include &amp;lt;stdio.h&amp;gt; int main(){ int cipher; for(int i=0;i&amp;lt;0xffffffff;i&#43;&#43;){ cipher = i; //加密异或等操作 } if (cipher==20241212153){ printf(&amp;#34;flag1:%x\n&amp;#34;,i); } } Windows kernel32.dll：控制系'>
 <meta property='og:url' content='https://J-shiro.github.io/zh-cn/p/reverse%E7%AC%94%E8%AE%B0/'>
 <meta property='og:site_name' content='J-shiro&#39;s 博客'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-10-09T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2024-10-09T00:00:00&#43;00:00'/><meta property='og:image' content='https://J-shiro.github.io/img/note.jpg' />
 <meta name="twitter:title" content="REVERSE笔记">
-<meta name="twitter:description" content="基础知识 除了逆向外也可以尝试爆破 Windows kernel32.dll：控制系统内存管理、数据输入输出、中断处理，当Windows启动时，其驻留在内存中"><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="基础知识 除了逆向外也可以尝试爆破 1 2 3 4 5 6 7 8 9 10 11 #include &amp;lt;stdio.h&amp;gt; int main(){ int cipher; for(int i=0;i&amp;lt;0xffffffff;i&#43;&#43;){ cipher = i; //加密异或等操作 } if (cipher==20241212153){ printf(&amp;#34;flag1:%x\n&amp;#34;,i); } } Windows kernel32.dll：控制系"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://J-shiro.github.io/img/note.jpg' />
     <link rel="shortcut icon" href="https://j-shiro.github.io/img/somebody.png" />
 
@@ -311,7 +311,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 30 分钟
+                    阅读时长: 32 分钟
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    14965 字
+                    15669 字
                 </time>
             </div>
         
@@ -338,7 +338,35 @@
     
     <h2 id="基础知识">基础知识</h2>
 <p>除了逆向外也可以尝试<strong>爆破</strong></p>
-<h3 id="windows">Windows</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">cipher</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mh">0xffffffff</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cipher</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">//加密异或等操作
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">cipher</span><span class="o">==</span><span class="mi">20241212153</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">printf</span><span class="p">(</span><span class="s">&#34;flag1:%x</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="windows">Windows</h3>
 <p><code>kernel32.dll</code>：控制系统内存管理、数据输入输出、中断处理，当Windows启动时，其驻留在内存中特定的写保护区域，使别的程序无法占用该内存区域</p>
 <p><code>user32.dll</code>：用户界面相关应用程序接口，包括Windows处理、基本用户界面</p>
 <p><code>gdi32.dll</code>：Windows GDI图形用户界面相关程序，绘制图形、显示文字</p>
@@ -430,7 +458,7 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="数学">数学</h3>
-<p><strong>乘法逆元：</strong> $a\cdot a^{-1}\equiv 1(mod\quad p)$</p>
+<p><strong>乘法逆元</strong>： $a\cdot a^{-1}\equiv 1(mod\quad p)$</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -498,7 +526,7 @@
 <pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// 基础 优先级 not &gt; and &gt; or &gt; xor
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">or</span> <span class="o">|</span>  <span class="c1">// 00=0 01=1 10=1 11=1
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">xor</span> <span class="o">^</span> <span class="c1">// 00=0 01=1 10=1 11=0   a^a=0 0^a=a a^b^a=b
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">and</span> <span class="o">&amp;</span> <span class="c1">// 00=0 01=0 10=0 11=1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">and</span> <span class="o">&amp;</span> <span class="c1">// 00=0 01=0 10=0 11=1 自己与自己相与得自己
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">nor</span>   <span class="c1">// 与or相反
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">nand</span>  <span class="c1">// 与and相反
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">not</span>   <span class="c1">// 0=1 1=0
@@ -555,7 +583,19 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><code>nop</code>为0x90</p>
-<h4 id="语法格式">语法格式</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">movzx ; 将源操作数值复制到目标寄存器后将高位清零得到32位
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">xor edx, eax; 结果存在edx中
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="语法格式">语法格式</h4>
 <p><strong>Intel</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -617,6 +657,8 @@
 </span><span class="lnt">12
 </span><span class="lnt">13
 </span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">strncmp</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">str1</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">str2</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">)</span>
@@ -633,6 +675,8 @@
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
 </span></span><span class="line"><span class="cl"><span class="n">scanf</span><span class="p">(</span><span class="s">&#34;%s&#34;</span><span class="p">,</span> <span class="n">buf</span><span class="p">);</span> <span class="c1">// 存在溢出操作, 假设输入15个字节, 会自动将第16个字节设为\0
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">scanf</span><span class="p">(</span><span class="s">&#34;%15s&#34;</span><span class="p">,</span> <span class="n">buf</span><span class="p">);</span> <span class="c1">// 指定输入字节
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">fgets</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="n">stdin</span><span class="p">);</span> <span class="c1">// IDA中可能将x数组分为多个变量，实际可能均为x, 但代码显示的x实际为x[0]
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>文件操作</strong></p>
@@ -982,7 +1026,7 @@
 </span></span><span class="line"><span class="cl">readelf -a xxx     <span class="c1"># 全部显示</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><strong>节：</strong></p>
+</div><p><strong>节</strong>：</p>
 <ul>
 <li>.text节：程序代码指令</li>
 <li>.rodata节：保存只读数据，只能在text段找到.rodata节</li>
@@ -1322,7 +1366,7 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>查看机器码：<code>Options </code>&gt; <code>General </code>&gt; <code>opcode</code></p>
-<p><strong>应用：</strong></p>
+<p><strong>应用</strong>：</p>
 <p><strong>变量为64位，8字节，则在栈中需要8字节空间</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -1378,8 +1422,8 @@
 </span></span><span class="line"><span class="cl"><span class="c1">// 此处存储一般为 0x269669a3, 0x3d0b780b, 0x6228a59d
 </span></span></span></code></pre></td></tr></table>
 </div>
-</div><p><strong>插件：</strong></p>
-<p><strong>快捷键：</strong></p>
+</div><p><strong>插件</strong>：</p>
+<p><strong>快捷键</strong>：</p>
 <p><code>A</code>：转换为字符串（ASCII）</p>
 <p><code>R</code>：转换为char型</p>
 <p><code>C</code>：转换为代码（code）</p>
@@ -1408,8 +1452,10 @@
 ></p>
 <p><code>F7</code>: 单步步入</p>
 <p><code>F8</code>: 单步步出</p>
+<p><code>F9</code>: 直接跳到下一个断点</p>
 <p><code>Ctrl + F7</code>: 直到返回跳出函数</p>
 <p>可以点击寄存器区的寄存器箭头前往hex程序区</p>
+<p>想查看某变量变化：<code>右键</code> &gt; <code>Add Watch</code></p>
 <p><strong>远程调试(如windows调试linux下文件)</strong></p>
 <ol>
 <li>IDA pro安装目录下的<code>dbgsrv</code>文件夹下选择调试的程序linux_server</li>
@@ -1442,9 +1488,9 @@
 <p>插件 &gt; 中文搜索引擎 &gt; 搜索 ASCII：找字符串</p>
 <p>查看函数调用：右键 &gt; 查看调用树</p>
 <p>双击代码和注释都可直接进行修改</p>
-<p>**查找数据并修改：**数据窗口 &gt; <code>Alt + M</code>打开Memory map &gt; <code>Ctrl + B</code>进行搜索 &gt; 右键可以修改，需要进行保存【右键复制到可执行文件】 &gt; 保存文件</p>
-<p>**跳出循环：**右键 &gt; 断点 &gt; 运行到选定位置</p>
-<p><strong>工具栏窗口：</strong></p>
+<p><strong>查找数据并修改</strong>：数据窗口 &gt; <code>Alt + M</code>打开Memory map &gt; <code>Ctrl + B</code>进行搜索 &gt; 右键可以修改，需要进行保存【右键复制到可执行文件】 &gt; 保存文件</p>
+<p><strong>跳出循环</strong>：右键 &gt; 断点 &gt; 运行到选定位置</p>
+<p><strong>工具栏窗口</strong>：</p>
 <p>1.日志窗口(L) 2.模块窗口(E):查看每个模块的内存基址</p>
 <p>3.内存窗口(M):查看每一个模块的段,所占用的内存区域</p>
 <p>4.线程窗口(T):线程信息</p>
@@ -1513,8 +1559,57 @@
 <h3 id="ilspy">ILSpy</h3>
 <p>用于<code>dll</code>文件的逆向，可以查看<code>Program</code>程序代码</p>
 <h3 id="z3-solver">Z3-Solver</h3>
+<ul>
+<li>
 <p><code>pip install -i ``https://pypi.tuna.tsinghua.edu.cn/simple`` z3-solver</code>指定镜像源安装</p>
-<h3 id="qemu">QEMU</h3>
+</li>
+<li>
+<p>一般输入的是字符串，但最终将字符串转换为了数值进行计算，最终获取数值还需要转换回字符串，注意参与计算的数值之间的顺序（小端序，如何输入）</p>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">z3</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">libnum</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 定义变量</span>
+</span></span><span class="line"><span class="cl"><span class="n">v1</span> <span class="o">=</span> <span class="n">BitVec</span><span class="p">(</span><span class="s1">&#39;v1&#39;</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">v2</span> <span class="o">=</span> <span class="n">BitVec</span><span class="p">(</span><span class="s1">&#39;v2&#39;</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">solver</span> <span class="o">=</span> <span class="n">Solver</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 加入表达式</span>
+</span></span><span class="line"><span class="cl"><span class="n">solver</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">v1</span> <span class="o">&amp;</span> <span class="n">v2</span> <span class="o">^</span> <span class="p">(</span><span class="n">v1</span> <span class="o">|</span> <span class="o">~</span><span class="p">(</span><span class="n">v1</span> <span class="o">+</span> <span class="n">v2</span><span class="p">))</span> <span class="o">&amp;</span> <span class="n">v2</span> <span class="o">&amp;</span> <span class="n">v1</span><span class="p">)</span> <span class="o">!=</span> <span class="mh">0xdeadbeef</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="n">solver</span><span class="o">.</span><span class="n">check</span><span class="p">()</span> <span class="o">==</span> <span class="n">sat</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">result</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">model</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="c1"># 获取所有结果</span>
+</span></span><span class="line"><span class="cl">    <span class="n">v1_val</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">v1</span><span class="p">]</span><span class="o">.</span><span class="n">as_long</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">v1_val</span><span class="p">)</span> <span class="c1"># 获取单个结果</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">n2s</span><span class="p">(</span><span class="n">v1_val</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="c1"># 逆序转换为字符串</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="qemu">QEMU</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -1540,7 +1635,7 @@
 </div>
 </div><h2 id="算法">算法</h2>
 <h3 id="tea系列">TEA系列</h3>
-<p>均会使用特征值$$\delta$$：**0x9e3779b9，**在IDA中可能使用补码表示：<strong>0x61c88647</strong>，可使用python：</p>
+<p>均会使用特征值$\delta$：<strong>0x9e3779b9</strong>，在IDA中可能使用补码表示：<strong>0x61c88647</strong>，可使用python：</p>
 <p><strong><code>hex(0xffffffff -  0x61c88647 + 1)</code></strong> <strong>得到 0x9e3779b9</strong></p>
 <h4 id="tea">TEA</h4>
 <p>Tiny Encryption Algorithm，使用Feistel分组加密框架，64轮迭代，原文以8字节(64位)为一组，密钥16字节(128位)，具体实现过程：</p>
@@ -1554,7 +1649,30 @@
 	
 	
 ></p>
-<p><strong>加解密实现</strong></p>
+<p><strong>汇编判断</strong>：花指令</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov ecx, xxx
+</span></span><span class="line"><span class="cl">shl ecx, 4
+</span></span><span class="line"><span class="cl">add ecx, xxx
+</span></span><span class="line"><span class="cl">mov edx, xxx
+</span></span><span class="line"><span class="cl">add edx, xxx
+</span></span><span class="line"><span class="cl">xor ecx, edx
+</span></span><span class="line"><span class="cl">mov eax, xxx
+</span></span><span class="line"><span class="cl">shr eax, 5
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>加解密实现</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -2620,7 +2738,8 @@
 </span></span><span class="line"><span class="cl">jmp eax    ;跳转到寄存器中的地址
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="smc技术">SMC技术</h3>
+</div><p>需要在汇编查看可疑跳转，IDA F5无法看出</p>
+<h3 id="smc技术">SMC技术</h3>
 <p><strong>Self Modifying Code</strong>：自解码代码，程序中的部分代码加密，并插入解密代码，当程序需要运行源代码时，调用解密函数解密该部分代码，再跳转执行，阻止静态分析</p>
 <p><strong>Windows</strong></p>
 <div class="highlight"><div class="chroma">
@@ -2632,18 +2751,83 @@
 </span><span class="lnt">5
 </span><span class="lnt">6
 </span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="c1">// API函数，允许应用程序改变内存页的保护属性
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">BOOL</span> <span class="n">VirtualProtect</span><span class="p">(</span>
 </span></span><span class="line"><span class="cl">    <span class="n">LPCVOID</span> <span class="n">lpAddress</span><span class="p">,</span>    <span class="c1">// 内存页起始地址
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">SIZE_T</span> <span class="n">dwSize</span><span class="p">,</span>        <span class="c1">// 内存页大小
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">DWORD</span> <span class="n">flNewProtect</span><span class="p">,</span>   <span class="c1">// 新保护属性
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">DWORD</span> <span class="n">flNewProtect</span><span class="p">,</span>   <span class="c1">// 新保护属性 PAGE_EXECUTE_READWRITE=0x40
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">PDWORD</span> <span class="n">lpfloldProtect</span> <span class="c1">// 存储旧的保护属性
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl"><span class="n">VirtualProtect</span><span class="p">((</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">loc_401040</span><span class="p">,</span> <span class="mh">0xCCu</span><span class="p">,</span> <span class="mh">0x40u</span><span class="p">,</span> <span class="p">(</span><span class="n">PDWORD</span><span class="p">)(</span><span class="n">v</span><span class="p">));</span> <span class="c1">// 使得401040开始0xcc的内存可读可写可执行
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>修改会在IDA中发现：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kr">__asm</span> <span class="p">{</span> <span class="n">outsd</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">__indword</span><span class="p">(</span><span class="mh">0x98u</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kr">__asm</span> <span class="p">{</span> <span class="n">retf</span> <span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="反调试">反调试</h3>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="o">*</span><span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="mi">40</span><span class="p">),</span> <span class="o">*</span><span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="mi">36</span><span class="p">),</span> <span class="o">*</span><span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="mi">32</span><span class="p">)</span> <span class="c1">// 一般为四个字节当一个整型计算
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>IDAPython</strong></p>
+<p>操作：<code>File &gt; Script command &gt; run</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">idc</span>
+</span></span><span class="line"><span class="cl"><span class="n">addr</span> <span class="o">=</span> <span class="mh">0xabcdef</span>  <span class="c1"># 是开始操作的起始地址</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">531</span><span class="p">):</span> <span class="c1"># 直接末尾地址-起始地址</span>
+</span></span><span class="line"><span class="cl">    <span class="n">b</span> <span class="o">=</span> <span class="n">get_bytes</span><span class="p">(</span><span class="n">addr</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">idc</span><span class="o">.</span><span class="n">patch_byte</span><span class="p">(</span><span class="n">addr</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="nb">ord</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">^</span> <span class="mh">0x90</span><span class="p">)</span> <span class="c1"># 具体变化操作</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>IDC</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">static</span> <span class="nf">xor</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">	<span class="k">auto</span> <span class="n">addr</span> <span class="o">=</span> <span class="mh">0xabcdef</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">auto</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">addr</span><span class="o">+</span><span class="n">i</span><span class="o">&lt;</span><span class="mh">0xfedcba</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">		<span class="n">PatchByte</span><span class="p">(</span><span class="n">addr</span><span class="o">+</span><span class="n">i</span><span class="p">,</span><span class="n">Byte</span><span class="p">(</span><span class="n">addr</span><span class="o">+</span><span class="n">i</span><span class="p">)</span><span class="o">^</span><span class="mh">0x90</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>动调解决</strong></p>
+<h3 id="反调试">反调试</h3>
 <p>函数声明</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -2945,7 +3129,7 @@
 	
 ></p>
 <p>出现了正常的函数开头和结尾，即找到OEP</p>
-<p><strong>进行dump完成脱壳：</strong></p>
+<p><strong>进行dump完成脱壳</strong>：</p>
 <ol>
 <li><strong>插件 &gt; OllyDump &gt; 脱壳在当前调试的进程 &gt; 获取EIP作为OEP &gt; 脱壳【由于不是windows XP会失败】</strong></li>
 <li><strong>右键 &gt; 用OllyDump脱壳调试进程 &gt; 脱壳</strong></li>
@@ -3023,6 +3207,76 @@
 <pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="n">IsDebuggerPresent</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl"><span class="c1">// 当前进程在调试器上下文中运行，返回非0; 否则为0
 </span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>调用库API</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">libr</span> <span class="o">=</span> <span class="n">LoadLibraryA</span><span class="p">(</span><span class="s">&#34;xxx.dll&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 将指定模块加载到调用进程地址空间
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">addr</span> <span class="o">=</span> <span class="n">GetProcAddress</span><span class="p">(</span><span class="n">libr</span><span class="p">,</span> <span class="s">&#34;fun_or_vari&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 从指定动态链接库dll导入函数或变量地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">CloseHandle</span><span class="p">(</span><span class="n">libr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 关闭对象的有效句柄
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>爆破脚本</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;Windows.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">BF</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">	<span class="n">HMODULE</span> <span class="n">h</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">h</span> <span class="o">=</span> <span class="n">LoadLibraryA</span><span class="p">(</span><span class="s">&#34;xx.dll&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">typedef</span> <span class="kt">int</span><span class="p">(</span><span class="o">*</span><span class="n">func_in_dll</span><span class="p">)(</span><span class="kt">char</span><span class="o">*</span><span class="p">,</span> <span class="n">size_t</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span><span class="o">*</span> <span class="n">flag</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="mi">16</span><span class="p">);</span> <span class="c1">// 15内容+&#39;\0&#39;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// 初始化
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">flag</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;x&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">func_in_dll</span> <span class="n">func</span> <span class="o">=</span> <span class="p">(</span><span class="n">func_in_dll</span><span class="p">)</span><span class="n">GetProcAddress</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="s">&#34;func_in_dll&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 爆破
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">...</span> <span class="k">if</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">flag</span><span class="p">,</span> <span class="mi">15</span><span class="p">)){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">printf</span><span class="p">(</span><span class="s">&#34;%s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">flag</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">CloseHandle</span><span class="p">(</span><span class="n">h</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="安卓">安卓</h2>
 <p>jadx打开文件后，<code>AndroidManifest.xml</code>文件中包括<strong>配置信息</strong>等</p>
@@ -3277,7 +3531,7 @@
         
             
         
-        共 101.95k 字 · 共 16篇文章
+        共 102.83k 字 · 共 16篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---

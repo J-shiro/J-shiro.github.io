@@ -88,7 +88,9 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;binwalk -e xx.xx
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;基础知识&#34;&gt;基础知识&lt;/h2&gt;
+&lt;/div&gt;&lt;h3 id=&#34;cyberchef&#34;&gt;CyberChef&lt;/h3&gt;
+&lt;p&gt;有终端显示为中文的字节可以使用CyberChef查看&lt;/p&gt;
+&lt;h2 id=&#34;基础知识&#34;&gt;基础知识&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;常见文件头&lt;/strong&gt;&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;

