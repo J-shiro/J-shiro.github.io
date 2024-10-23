@@ -27,6 +27,19 @@ typora-root-url: ..\..\..\..\..\static
 java Extract ../../Desktop/xxx.jpg -p password
 ```
 
+### aircrack-ng
+
+### hashcat
+
+```bash
+./hashcat -m 22000 -a 3 <path_to_hash_hc22000_file> -1 <custom_charset> ?1?1?1?1?1?1?1?1
+# -m 22000 用于 WPA/WPA2 模式
+# -a 3 Brute-Force攻击模式
+# -1: 所以使用?1, 每个?1代表一个字符位置 --custom-charset1=abcdefg...也可
+```
+
+
+
 ### **Stegsolve**
 
 ![img](/img/misc_note.zh-cn.assets/-17284513528809.assets)
@@ -323,6 +336,23 @@ for i in tmp:
         f.write(b'\xff\xd8\xff\xe0\x00\x10JFIF' + i)
 ```
 
+### WIFI
+
+协议：**802.11**，WPA或WEP加密后数据包
+
+```bash
+# kali
+$ aircrack-ng xxx.cap
+   #  BSSID              ESSID                     Encryption
+   1  xx:xx:xx:xx:xx:xx  XXXXXXX                   WPA (1 handshake)
+```
+
+**无线握手包WIFI密码破解**
+
+`https://hashcat.net/cap2hashcat/`在线将`.cap`文件转换为`.hc22000`格式用于`hashcat`破解密码
+
+
+
 ## 图片隐写
 
 ### PDF
@@ -513,3 +543,7 @@ print(text)
 4. 停止扮演
 5. 括号逃逸：先输入`] `，再输入`[ `
 6. 小费攻击：对回答评分，基于评分给小费
+6. 使用+将flag切割：`fl+ag`
+6. 用逗号分隔
+6. 换行空一行输入
+6. 侧信道一个一个爆破问

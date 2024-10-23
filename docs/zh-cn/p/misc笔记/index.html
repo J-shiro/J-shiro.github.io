@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='工具 pngcheck 目录下CMD调用：pngcheck -v file F5-steganography 1 java Extract ../../Desktop/xxx.jpg -p password Stegsolve Volatility 取证工具 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 volatility.exe -f image.vmem imageinfo # 查看镜像的系统信息 获取Win7'><title>MISC笔记</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='工具 pngcheck 目录下CMD调用：pngcheck -v file F5-steganography 1 java Extract ../../Desktop/xxx.jpg -p password aircrack-ng hashcat 1 2 3 4 ./hashcat -m 22000 -a 3 &amp;lt;path_to_hash_hc22000_file&amp;gt; -1 &amp;lt;custom_charset&amp;gt; ?1?1?1?1?1?1?1?1 # -m 22000 用于 WPA/WPA2 模式 # -a 3 Brute-Force攻击模式'><title>MISC笔记</title>
 
 <link rel='canonical' href='https://J-shiro.github.io/zh-cn/p/misc%E7%AC%94%E8%AE%B0/'>
 
 <link rel="stylesheet" href="/scss/style.min.b18c0607927efd48b36f5d027b549e77e30ee300e22b6461d063f1df6ea2466b.css"><meta property='og:title' content='MISC笔记'>
-<meta property='og:description' content='工具 pngcheck 目录下CMD调用：pngcheck -v file F5-steganography 1 java Extract ../../Desktop/xxx.jpg -p password Stegsolve Volatility 取证工具 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 volatility.exe -f image.vmem imageinfo # 查看镜像的系统信息 获取Win7'>
+<meta property='og:description' content='工具 pngcheck 目录下CMD调用：pngcheck -v file F5-steganography 1 java Extract ../../Desktop/xxx.jpg -p password aircrack-ng hashcat 1 2 3 4 ./hashcat -m 22000 -a 3 &amp;lt;path_to_hash_hc22000_file&amp;gt; -1 &amp;lt;custom_charset&amp;gt; ?1?1?1?1?1?1?1?1 # -m 22000 用于 WPA/WPA2 模式 # -a 3 Brute-Force攻击模式'>
 <meta property='og:url' content='https://J-shiro.github.io/zh-cn/p/misc%E7%AC%94%E8%AE%B0/'>
 <meta property='og:site_name' content='J-shiro&#39;s 博客'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-10-09T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2024-10-09T00:00:00&#43;00:00'/><meta property='og:image' content='https://J-shiro.github.io/img/note.jpg' />
 <meta name="twitter:title" content="MISC笔记">
-<meta name="twitter:description" content="工具 pngcheck 目录下CMD调用：pngcheck -v file F5-steganography 1 java Extract ../../Desktop/xxx.jpg -p password Stegsolve Volatility 取证工具 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 volatility.exe -f image.vmem imageinfo # 查看镜像的系统信息 获取Win7"><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="工具 pngcheck 目录下CMD调用：pngcheck -v file F5-steganography 1 java Extract ../../Desktop/xxx.jpg -p password aircrack-ng hashcat 1 2 3 4 ./hashcat -m 22000 -a 3 &amp;lt;path_to_hash_hc22000_file&amp;gt; -1 &amp;lt;custom_charset&amp;gt; ?1?1?1?1?1?1?1?1 # -m 22000 用于 WPA/WPA2 模式 # -a 3 Brute-Force攻击模式"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://J-shiro.github.io/img/note.jpg' />
     <link rel="shortcut icon" href="https://j-shiro.github.io/img/somebody.png" />
 
@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    3626 字
+                    3879 字
                 </time>
             </div>
         
@@ -346,6 +346,22 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">java Extract ../../Desktop/xxx.jpg -p password
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="aircrack-ng">aircrack-ng</h3>
+<h3 id="hashcat">hashcat</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./hashcat -m <span class="m">22000</span> -a <span class="m">3</span> &lt;path_to_hash_hc22000_file&gt; -1 &lt;custom_charset&gt; ?1?1?1?1?1?1?1?1
+</span></span><span class="line"><span class="cl"><span class="c1"># -m 22000 用于 WPA/WPA2 模式</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># -a 3 Brute-Force攻击模式</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># -1: 所以使用?1, 每个?1代表一个字符位置 --custom-charset1=abcdefg...也可</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="stegsolve"><strong>Stegsolve</strong></h3>
@@ -818,7 +834,25 @@
 </span></span><span class="line"><span class="cl">        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\xff\xd8\xff\xe0\x00\x10</span><span class="s1">JFIF&#39;</span> <span class="o">+</span> <span class="n">i</span><span class="p">)</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="图片隐写">图片隐写</h2>
+</div><h3 id="wifi">WIFI</h3>
+<p>协议：<strong>802.11</strong>，WPA或WEP加密后数据包</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># kali</span>
+</span></span><span class="line"><span class="cl">$ aircrack-ng xxx.cap
+</span></span><span class="line"><span class="cl">   <span class="c1">#  BSSID              ESSID                     Encryption</span>
+</span></span><span class="line"><span class="cl">   <span class="m">1</span>  xx:xx:xx:xx:xx:xx  XXXXXXX                   WPA <span class="o">(</span><span class="m">1</span> handshake<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>无线握手包WIFI密码破解</strong></p>
+<p><code>https://hashcat.net/cap2hashcat/</code>在线将<code>.cap</code>文件转换为<code>.hc22000</code>格式用于<code>hashcat</code>破解密码</p>
+<h2 id="图片隐写">图片隐写</h2>
 <h3 id="pdf">PDF</h3>
 <p>若PDF图片中有多图层，可现将PDF转为WORD，然后将图片保存载入<strong>Stegsolve</strong>进行不同图层查看</p>
 <h3 id="lsb隐写">LSB隐写</h3>
@@ -1106,6 +1140,10 @@
 <li>停止扮演</li>
 <li>括号逃逸：先输入<code>] </code>，再输入<code>[ </code></li>
 <li>小费攻击：对回答评分，基于评分给小费</li>
+<li>使用+将flag切割：<code>fl+ag</code></li>
+<li>用逗号分隔</li>
+<li>换行空一行输入</li>
+<li>侧信道一个一个爆破问</li>
 </ol>
 
 </section>
@@ -1315,7 +1353,7 @@
         
             
         
-        共 102.83k 字 · 共 16篇文章
+        共 105.33k 字 · 共 16篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -1515,6 +1553,8 @@
       <ol>
         <li><a href="#pngcheck">pngcheck</a></li>
         <li><a href="#f5-steganography">F5-steganography</a></li>
+        <li><a href="#aircrack-ng">aircrack-ng</a></li>
+        <li><a href="#hashcat">hashcat</a></li>
         <li><a href="#stegsolve"><strong>Stegsolve</strong></a></li>
         <li><a href="#volatility">Volatility</a></li>
         <li><a href="#veracrypt">VeraCrypt</a></li>
@@ -1544,6 +1584,7 @@
     <li><a href="#流量分析">流量分析</a>
       <ol>
         <li><a href="#usb">USB</a></li>
+        <li><a href="#wifi">WIFI</a></li>
       </ol>
     </li>
     <li><a href="#图片隐写">图片隐写</a>

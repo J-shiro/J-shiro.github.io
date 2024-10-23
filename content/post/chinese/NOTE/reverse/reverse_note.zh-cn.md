@@ -92,6 +92,52 @@ int main(){
 
 Windows 的 syscall number 随版本更新会变更，一般呼叫**API**
 
+#### SEH机制
+
+**Structured Exception Handling**，结构化异常处理
+
+- VC++及Windows的异常处理机制，可利用`/0`等方式触发异常
+
+- 以链的形式存在，第一个异常处理器中若未处理相关异常，异常会传递到下个异常处理器直到得到处理
+
+- ```C++
+  typedef struct _EXCEPTION_REGISTRATION_RECORD
+  {
+      PEXCEPTION_REGISTRATION_RECORD Next; // Next值为FFFFFFFF表示最后一个节点
+      PEXCEPTION_DISPOSITION Handler; // 当前异常处理回调函数的地址
+  } EXCEPTION_REGISTRATION_RECORD, *PEXCEPTION_REGISTRATION_RECORD;
+  ```
+
+![image-20241022224820682](/img/reverse_note.zh-cn.assets/image-20241022224820682.png)**线程信息块TIB**（Thread Information Block or TEB）
+
+```C++
+typedef struct _NT_TIB {
+     struct _EXCEPTION_REGISTRATION_RECORD *ExceptionList; //异常的链表
+
+     PVOID StackBase;
+     PVOID StackLimit;
+     PVOID SubSystemTib;
+
+     union {
+         PVOID FiberData;
+         DWORD Version;
+     };
+ 
+     PVOID ArbitraryUserPointer;
+     struct _NT_TIB *Self;
+} NT_TIB;
+```
+
+**调用**
+
+```c++
+// Visual C++
+__try{compound-statement} __except(filter-expression){compound-statement}
+__try{compound-statement} __finally{compound-statement}
+```
+
+
+
 ### Linux
 
 ```Bash
@@ -207,9 +253,37 @@ movzx ; 将源操作数值复制到目标寄存器后将高位清零得到32位
 xor edx, eax; 结果存在edx中
 ```
 
+x86-64架构的SIMD寄存器，处理单指令多数据操作：`xmm0`-`xmm15`可以存储128位数据，IDA中显示不了`xmm`寄存器值
 
+```assembly
+movaps xmm0, ds:xmmword_XXXX ; 将该地址128位数据移到xmm0中, xmm0中存4个32位整数
 
-#### 语法格式
+# xmmword_XXXXX xmmword 3000000020000000100000000h
+# xmm0: [0x1, 0x2, 0x3, 0x4]
+```
+
+```assembly
+movd xmm0, ecx ; 将ecx 32位整数移到xmm0中, 其余96位填充为0
+pshufd xmm1, xmm0, 0 ; 从xmm0取第0个元素复制到xmm1中，其余填充为0
+```
+
+```assembly
+# xmm1 = [0x00, 0x01, 0x02, 0x03]
+# xmm0 = [0x15151515, 0x0, 0x0, 0x0, 0x0]
+
+padd xmm1, xmm0 ; 相加 
+; [0x00+0x15, 0x01+0x15, 0x02+0x15, 0x03+0x15]
+andps xmm1, xmm0 ; 按位与
+; [0x00&0x15, 0x01&0x15, 0x02&0x15, 0x03&0x15]
+xorps xmm1, xmm2 ; 按位异或
+; [0x00^0x15, 0x01^0x15, 0x02^0x15, 0x03^0x15]
+```
+
+```assembly
+packuswd xmm1, xmm1 ; 16位无符号整数打包到一个8位无符号整数
+# xmm1 = [0x0000ffff, 0x00010001, 0x00020002, 0x00030003]
+# xmm1 = [0xffff, 0x0001, 0x0002, 0x0003]
+```
 
 **Intel**
 
@@ -226,8 +300,6 @@ mov $0x80, %rax
 xor %rcx, %rbx
 mov (%rbx, %rcx, 4), %rax
 ```
-
-#### 语法
 
 **struct**
 
@@ -577,6 +649,31 @@ A1 = package.A()
 map(function, iterable) # 对iterable中的每个元素应用function
 ```
 
+**pip**
+
+安装指定版本的包会将原先的包给卸载，代替为指定版本
+
+**进程subprocess**
+
+```python
+import ctypes
+def start_suspended_process(proc_name): # 启动并挂起进程
+    creation_flags = 0x14
+    # CREATE_SUSPENDED=0x4: 子进程创建立即挂起
+    # CREATE_NEW_CONSOLE=0x10: 创建新的控制台窗口
+    process = subprocess.Popen(proc_name, creationflags=creation_flags)
+    print("子进程已启动并挂起")
+    return process.pid
+
+def resume_process(pid): # 恢复进程
+    try:
+        kernel32 = ctypes.WinDLL('kernel32', use_last_error=True)
+        kernel32.DebugActiveProcess(pid)
+        print(f"进程 {pid} 已恢复.")
+    except OSError as e:
+        print(f"恢复进程时发生错误: {str(e)}")
+```
+
 
 
 ### JAVA
@@ -752,6 +849,39 @@ int // 32位整型
 
 **插件**：
 
+`Ctrl + 3`：呼出插件
+
+- **Findcrypt**：IDA9中成功，IDA7.5, 7.7, 8.3中都不显示
+
+  - `edit` > `Plugins` > `Findcrypt`：可以找到`MD5, DES, CRC`等
+
+- **E-Decompiler**：IDA7.5，对易语言进行分析插件
+
+  - `ida.cfg`文件解除`Block_CJK_Unified_Ideographs`前的注释
+
+  - `ida.dll`文件用IDA64打开，搜索`[](),`，将有下划线一行nop掉
+
+  - ```c
+    if ( !v8 || !strchr(" [](),*&", v11) )
+          {
+            if ( v10 - v9 < 8 || strncmp(v10 - 8, "operator", 8ui64) )
+            {
+    LABEL_23:
+              *v10 = '_'; // nop!
+    ```
+
+  - 装入插件可显示中文函数及易语言反编译
+
+- **Scyllahide**：反反调试工具，IDA7.5，注意要明确调试代码是**32**位还是**64**位！！
+
+  - 反调试报错：`XXXXXXXX:unknown exception code 0 (exc.code 0, tid XXXXX)`
+  - 64位调试32位程序使用Scyllahide后会报错
+  - 设置扩展参数
+
+  ![image-20241022105920446](/img/reverse_note.zh-cn.assets/image-20241022105920446.png)
+
+  - 运行`ScyllaHideIDAServerx86.exe`，并开始动态调试，可绕过debug检测
+
 **快捷键**：
 
 `A`：转换为字符串（ASCII）
@@ -800,6 +930,11 @@ int // 32位整型
 
 想查看某变量变化：`右键` > `Add Watch`
 
+**断点**
+
+- 可下多个断点，F9直接跳转；
+- 内存断点，对数据段进行断点，每次读写该区域将会提示并停止：`点击数据所在地址` > `F2` > `设置是否读写 + 设置Size(可观察数组)`
+
 **远程调试(如windows调试linux下文件)**
 
 1. IDA pro安装目录下的`dbgsrv`文件夹下选择调试的程序linux_server
@@ -823,6 +958,19 @@ int // 32位整型
 **改函数签名**：`右键` > `Edit Function Signature`
 
 **改数字的进制**：右键
+
+### Frida
+
+可用于调试hook Windows的exe可执行文件进程
+
+pip安装出现：`拒绝访问。`，以管理员身份运行
+
+```bash
+pip install frida==16.4.10 # 16.5.1 win10报错不支持, win11可以
+pip install frida-tools
+```
+
+
 
 ### DIE
 
@@ -954,8 +1102,8 @@ APK分析工具
 ### Z3-Solver
 
 - `pip install -i ``https://pypi.tuna.tsinghua.edu.cn/simple`` z3-solver`指定镜像源安装
-
 - 一般输入的是字符串，但最终将字符串转换为了数值进行计算，最终获取数值还需要转换回字符串，注意参与计算的数值之间的顺序（小端序，如何输入）
+- Linux下运行
 
 ```python
 from z3 import *
@@ -1201,7 +1349,7 @@ int main(){
 ### SM4
 
 - 分组密码，4组，分组长度128位，密钥长度128位，加解密算法相同，轮密钥使用次序相反，32轮非线性迭代
-- 轮密钥 rK 有32个
+- 轮密钥 rK 有32个，32位为单位，每一次迭代为一轮F函数
 - $X_{i+4}=F(X_i,X_{i+1},X_{i+2},X_{i+3},rK_i)=X_i ⊕ T( X_{i+1}⊕X_{i+2}⊕X_{i+3}⊕rK_i)$
 
 ![img](/img/reverse_note.zh-cn.assets/-172845181249224.assets)
@@ -1565,6 +1713,20 @@ input: 0xA7, 0x1A, 0x11
 # RC4 
 ```
 
+**python**
+
+```python
+from Crypto.Cipher import ARC4
+
+def rc4_decrypt(ciphertext):
+    key = b'flag.fromserver'
+    rc4 = ARC4.new(key)
+    decrypted_data = rc4.decrypt(ciphertext)
+    return decrypted_data
+```
+
+### DES
+
 
 
 ### Base算法
@@ -1855,6 +2017,35 @@ F9运行到断点处，上图`003B750F`的上一行为`popad`，当执行到popa
 
 #### VMP
 
+dll中加入了VMP壳：`VMProtect`
+
+**爆破脚本**：爆破exe文件
+
+```C++
+#include<iostream>
+#include<Windows.h>
+
+void BF(){
+	HMODULE h = NULL;
+    h = LoadLibraryA("xx.dll");
+    
+    typedef int(*func_in_dll)(char*, size_t);
+    char* flag = (char*)malloc(16); // 15内容+'\0'
+    // 初始化
+    flag[0] = 'x';
+    flag[15] = '\0';
+    func_in_dll func = (func_in_dll)GetProcAddress(h, "func_in_dll");
+    // 爆破
+    ... if(func(flag, 15)){
+        printf("%s\n", flag);
+        return;
+    }
+    CloseHandle(h);
+}
+```
+
+
+
 ### 混淆壳
 
 ### 虚拟机壳
@@ -1920,31 +2111,6 @@ CloseHandle(libr);
 // 关闭对象的有效句柄
 ```
 
-**爆破脚本**
-
-```C++
-#include<iostream>
-#include<Windows.h>
-
-void BF(){
-	HMODULE h = NULL;
-    h = LoadLibraryA("xx.dll");
-    
-    typedef int(*func_in_dll)(char*, size_t);
-    char* flag = (char*)malloc(16); // 15内容+'\0'
-    // 初始化
-    flag[0] = 'x';
-    flag[15] = '\0';
-    func_in_dll func = (func_in_dll)GetProcAddress(h, "func_in_dll");
-    // 爆破
-    ... if(func(flag, 15)){
-        printf("%s\n", flag);
-        return;
-    }
-    CloseHandle(h);
-}
-```
-
 
 
 ## 安卓
@@ -1969,4 +2135,165 @@ pythonx -m pip install xxx.whl # 使用python指定的对应pip安装
 import xxx # 安装后直接导入
 help(xxx) # 可以查看信息
 ```
+
+## VM
+
+维护opcode操作码表模拟虚拟机操作，`switch`对于不同的码进行相应操作，一般来说都是对**单字符**进行处理（友好出题人，先使用IDA动态调试跟踪操作
+
+**Frida插桩测试**
+
+```javascript
+var number  = 0
+function main()
+{
+     var base  =  Module.findBaseAddress( "test.exe" ) // 获取目标进程的基地址 
+     // console.log( "base:" ,base)
+     if (base){
+         Interceptor.attach(base.add( 0x1044 ), { // 该地址为opcode idx+1
+                 onEnter: function(args) {
+                     number += 1 // 进行插桩 每当程序运行到该地址 number + = 1
+                 }
+         });
+ 
+         Interceptor.attach(base.add( 0x113f ), { // 结束
+             onEnter: function(args) {
+                 // send(number) // 配合python自动化脚本
+                 console.log( "end!" ,number)
+             }
+         });
+     }
+}
+setImmediate(main); // 异步调用
+```
+
+此时在输入不同值时会出现不同number，且输入正确number会增加，可利用此进行侧信道爆破
+
+**侧信道爆破**
+
+```python
+# -*- coding: UTF-8 -*-
+import subprocess
+import frida
+
+def is_right():
+    global new_number,number
+    if new_number > number: # number增加则猜测正确，更新
+        number = new_number
+        return True
+    else:
+        return False
+
+def on_message(message, data): # 处理从注入的 JavaScript 脚本中发送回来的消息
+    global new_number
+    if message['type'] == 'send':
+        print("[*] {0}".format(message['payload']))
+        new_number = message['payload']
+    elif message['type'] == "error":
+        print(message["description"])
+        print(message["stack"])
+        print(message["fileName"],"line:",message["lineNumber"],"colum:",message["columnNumber"])
+    else:
+        print(message)
+        pass        
+
+printable = "`!\"#$%&'()*+,-./:;<=>?@[]^_{|}~0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+number = 709 # 测试脚本输出的number值
+new_number = 0
+flag = "xxxctf{"
+
+jscode = open("h00k.js","rb").read().decode()
+
+for index in range(len(flag),54):
+    for i in printable:
+        process = subprocess.Popen("test.exe", # 启动程序
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            universal_newlines=True)
+        tmp_flag = (flag+i).ljust(53,"A")+"}" # 54 - 1
+        print(tmp_flag)
+        print("try index:",index ,"chr :",i)
+
+		# 附加frida脚本到目标进程
+        session = frida.attach("test.exe")
+        script = session.create_script(jscode) # 在目标进程里创建脚本
+        script.on('message', on_message) # 注册消息回调
+        script.load() # 加载创建好的javascript脚本
+
+        process.stdin.write(tmp_flag) # 写入
+        output, error = process.communicate() # 获取输出
+        if(i == '`'):
+            number = new_number
+        elif(is_right() == True):
+            flag +=i
+            print(flag)
+            break
+        process.terminate()
+```
+
+最后一个字符还需要再次爆破
+
+```python
+import subprocess
+flag = 'flag{xxxx }'
+
+for i in range(32,128):
+    process = subprocess.Popen("test.exe",
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        universal_newlines=True)
+    
+    input_data = flag.replace(" ",chr(i))
+    
+    process.stdin.write(input_data)
+    print(input_data)
+    output, error = process.communicate() # 读取进程的输出
+
+    if ("Invalid" not in output.strip()):
+    	print('Output:', output.strip())
+    
+    if error:
+        print('Error:', error.strip())
+    process.terminate()
+```
+
+## 易语言
+
+- 运行exe文件寻找逻辑：找**点击**类似的函数，分析输入经过的过程
+- 易语言加密算法可选DES和RC4，RC4与标准算法结果相同，直接RC4解即可，**DES算法和其他标准算法产生结果不同**
+
+**DES算法解密**
+
+```python
+# 易语言特定解法，加密过程Key值每一个Byte都被按位倒转
+from Crypto.Cipher import DES
+
+def reverse_bytes(b): # 翻转字节串
+    assert type(b) == bytes
+    ba = bytearray(b) # 字节串转换为可变字节数组
+    for i in range(0, len(b)):
+        ba[i] = int(format(b[i], '0>8b')[::-1], 2)
+        # format(b[i], '0>8b') 将第i字节变为8位二进制01串
+    return bytes(ba)
+
+def get_new_key(key): # 新密钥生成函数
+    ba = bytearray(8) # 长度为8字节数组
+    i = 0
+    for b in key:
+        ba[i] = b ^ ba[i]
+        i = i + 1 if i < 7 else 0 # 0-7
+    return bytes(ba)
+
+def remove_len(d):
+    assert type(d) == bytes
+    return d[4:]
+
+def e_des_decrypt(raw, key):
+    des = DES.new(reverse_bytes(get_new_key(key)), DES.MODE_ECB)
+    t = des.decrypt(raw)
+    return remove_len(t)
+```
+
+
 
