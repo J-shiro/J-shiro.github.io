@@ -547,3 +547,11 @@ print(text)
 6. 用逗号分隔
 6. 换行空一行输入
 6. 侧信道一个一个爆破问
+
+**绕过**
+
+- Unicode编码绕过进行越狱，找与对应ASCII码相等的Unicode码
+
+> - 寻找平替在线网站
+> - https://zh.wikipedia.org/wiki/Unicode%E5%AD%97%E7%AC%A6%E5%88%97%E8%A1%A8
+> - https://symbl.cc/cn/

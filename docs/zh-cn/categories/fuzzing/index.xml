@@ -38,7 +38,7 @@
 &lt;p&gt;文件格式都有所谓的魔数，即文件开头的特定字节序列，标识文件格式&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;jpg文件格式&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;开头为&lt;code&gt;FFD8&lt;/code&gt;，结尾为&lt;code&gt;FFD9&lt;/code&gt;&lt;/p&gt;
-&lt;h1 id=&#34;afl&#34;&gt;AFL++&lt;/h1&gt;
+&lt;h2 id=&#34;afl&#34;&gt;AFL++&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;编译&lt;/strong&gt;获取可被测试的程序&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -74,6 +74,13 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;可在&lt;code&gt;crashes&lt;/code&gt;目录中查看成功测试&lt;/p&gt;
+&lt;h2 id=&#34;浏览器fuzz&#34;&gt;浏览器fuzz&lt;/h2&gt;
+&lt;h3 id=&#34;chrome架构&#34;&gt;Chrome架构&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;浏览器漏洞分类：RCE、Sandbox Escape&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;浏览器进程&lt;/strong&gt;：运行UI管理网页及插件进程的主进程&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;渲染进程&lt;/strong&gt;：每个网页运行在单独进程，沙箱限制其对系统资源访问，通过IPC完成网络、文件资源访问&lt;/li&gt;
+&lt;/ul&gt;
 </description>
         </item>
         

@@ -349,12 +349,12 @@
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">devtools
-</span></span><span class="line"><span class="cl">X-Forwarded-For: 127.0.0.1 // 只允许本机登录
-</span></span><span class="line"><span class="cl">// 识别通过HTTP代理或负载均衡器连接到Web服务器的客户端的原始IP地址
-</span></span><span class="line"><span class="cl">User Agent: // 向服务器发出请求的客户端软件
-</span></span><span class="line"><span class="cl">Referer: // 链接到当前请求页面的前一个网页的URL
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">devtools</span>
+</span></span><span class="line"><span class="cl"><span class="n">X</span><span class="o">-</span><span class="n">Forwarded</span><span class="o">-</span><span class="nl">For</span><span class="p">:</span> <span class="mf">127.0.0.1</span> <span class="c1">// 只允许本机登录
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 识别通过HTTP代理或负载均衡器连接到Web服务器的客户端的原始IP地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">User</span> <span class="nl">Agent</span><span class="p">:</span> <span class="c1">// 向服务器发出请求的客户端软件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nl">Referer</span><span class="p">:</span> <span class="c1">// 链接到当前请求页面的前一个网页的URL
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="burpsuite">Burpsuite</h3>
 <p>Intruder模块：可以多线程对URL或data中的参数进行<strong>爆破</strong></p>
@@ -2063,7 +2063,9 @@
         
             
         
-        共 105.33k 字 · 共 16篇文章
+            
+        
+        共 106.68k 字 · 共 17篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---

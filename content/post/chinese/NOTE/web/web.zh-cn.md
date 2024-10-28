@@ -23,7 +23,7 @@ typora-root-url: ..\..\..\..\..\static
 
 ### HackBar
 
-```
+```c
 devtools
 X-Forwarded-For: 127.0.0.1 // 只允许本机登录
 // 识别通过HTTP代理或负载均衡器连接到Web服务器的客户端的原始IP地址
