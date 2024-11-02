@@ -141,6 +141,14 @@ from pwn import *
 p = process(["/path/to/ld.so", "./test"], env={"LD_PRELOAD":"/path/to/libc.so.6"})    
 ```
 
+### checksec
+
+```bash
+checksec --file={file_name}
+```
+
+
+
 ### Glibc-all-in-one
 
 多版本libc
@@ -191,8 +199,9 @@ jshiro@ubuntu:~/Desktop/ctf/smashes$ ldd ./elf
 sudo ln ld-x.xx.so /lib64/ld-x.xx.so
 #生成符号连接以使gdb能够调试，若未设置跳转到pwndbg调试解决问题
 
-patchelf --set-interpreter ld-x.xx.so elf #来修改文件ld.so
-patchelf --replace-needed old_libc.so new_libc.so elf  #来修改文件libc.so
+# libc 和 ld 都需要有可执行权限
+patchelf --set-interpreter ld-x.xx.so elf # 来修改文件ld.so
+patchelf --replace-needed old_libc.so new_libc.so elf  # 来修改文件libc.so
 #尽量使用相对路径
 
 # 可成功执行
@@ -1077,6 +1086,10 @@ s = strtok(a, " "); // 将a字符串按" "分割返回第一个子字符串
 
 int execve(const char *__path, char *const __argv[], char *const __envp[]);
 // glibc包装了execl(),execlp(),execle(),execv(),execvp()5个exec API, 参数区别, 最终还是execve()
+
+void *calloc(size_t num, size_t size); // 动态分配内存并初始化其内容为零, 分配num个元素, 每个大小size字节
+
+qmemcpy(dest_memory, source_data, size); // 将size大小的源数据放入目标内存中
 ```
 
 **mmap**
@@ -1277,55 +1290,239 @@ N: 无法安全地用该源进行更新，所以默认禁用该源。
 
 ## ELF文件
 
-Executable and Linking Format 可执行和链接的格式
+Executable and Linking Format 可执行和链接的文件格式，其文件结构、常数、变量类型定义在`/usr/include/elf.h`中
 
 |         |      | 可执行程序 | 动态链接库 | 静态链接库 |
 | ------- | ---- | ---------- | ---------- | ---------- |
 | Windows | PE   | .exe       | .dll       | .lib       |
 | Linux   | ELF  | .out       | .so        | .a         |
 
-![img](/img/pwn_note.zh-cn.assets/-17284429785727.assets)
+**ELF文件类型**
 
-![img](/img/pwn_note.zh-cn.assets/-17284429785738.assets)
+- 可执行文件`ET_EXEC`：可直接执行，在操作系统运行
+- 共享目标文件`ET_DYN`：可被动态链接的共享库，运行时与其他程序动态链接，后缀`.so`
+- 可重定位文件`ET_REL`：编译器生成的目标文件，用于将多个目标文件链接到一个可执行文件或共享库中，后缀`.o`，静态链接库`.a`也可归为该类
+- 核心转储文件`ET_CORE`：操作系统在程序崩溃或错误生成的快照，用于调试
 
-![img](/img/pwn_note.zh-cn.assets/-17284429785739.assets)
+<img src="/img/pwn_note.zh-cn.assets/image-20241101184751998.png" alt="image-20241101184751998" style="zoom: 67%;" />
 
-![img](/img/pwn_note.zh-cn.assets/-172844297857310.assets)
+**文件头ELF header**
 
-![img](/img/pwn_note.zh-cn.assets/-172844297857311.assets)
+记录ELF文件组织结构，32位为例
+
+```C
+/* The ELF file header.  This appears at the start of every ELF file.  */
+#define EI_NIDENT (16)
+ 
+typedef struct
+{
+    unsigned char e_ident[EI_NIDENT]; /* Magic number and other info */
+	/*
+		1-4 bytes: ELFMAG即x7fELF
+		5 byte: ELF文件类型->ELFCLASS32(1)32位, ELFCLASS64(2)64位
+		6 byte: ELF字节序, 0无效格式, 1小端, 2大端
+		7 byte: ELF版本, 1即1.2版本
+		8-16 bytes: 无定义0
+	*/
+    Elf32_Half    e_type;         /* Object file type ELF 文件类型 */
+    Elf32_Half    e_machine;      /* Architecture EM_开头*/
+    Elf32_Word    e_version;      /* Object file version */
+    Elf32_Addr    e_entry;        /* Entry point virtual address 程序入口*/
+    /* RVA:内存中地址相对于模块基址的偏移; FOA:文件中某数据相对于文件开头的偏移 */
+    Elf32_Off e_phoff;        /* Program header table file offset 程序头表的文件偏移*/
+    Elf32_Off e_shoff;        /* Section header table file offset 节表的文件偏移*/
+    Elf32_Word    e_flags;        /* Processor-specific flags */
+    Elf32_Half    e_ehsize;       /* ELF header size in bytes ELF文件头大小*/
+    // 程序头表
+    Elf32_Half    e_phentsize;        /* Program header table entry size 每个表项大小*/
+    Elf32_Half    e_phnum;        /* Program header table entry count 表项数量*/
+    // 节表
+    Elf32_Half    e_shentsize;        /* Section header table entry size 每个表项大小*/
+    Elf32_Half    e_shnum;        /* Section header table entry count 表项数量*/
+    Elf32_Half    e_shstrndx;     /* Section header string table index 字符串表的索引*/
+} Elf32_Ehdr;
+```
+
+
+
+**程序头表Program header table**
+
+告诉系统如何创建进程，可执行文件、共享库文件有，目标文件没有，由`Elf*_Phdr`组成的数组
+
+```c
+/* Program segment header.  */
+typedef struct
+{
+    Elf32_Word    p_type;         /* Segment type */
+    Elf32_Off p_offset;       	  /* Segment file offset */
+    Elf32_Addr    p_vaddr;        /* Segment virtual address */
+    Elf32_Addr    p_paddr;        /* Segment physical address ELF还没装载不知道物理地址作为保留字段, 通常和p_vaddr一样*/
+    Elf32_Word    p_filesz;       /* Segment size in file */
+    Elf32_Word    p_memsz;        /* Segment size in memory */
+    Elf32_Word    p_flags;        /* Segment flags 可读可写可执行等*/
+    Elf32_Word    p_align;        /* Segment alignment */
+} Elf32_Phdr;
+```
+
+**节头表Section header table**
+
+记录ELF节区信息，用于链接的目标文件必须拥有此结构，固定长度的`Elf*_Shdr`结构体数组用来存放节相关信息
+
+```c
+/* Section header.  */
+typedef struct
+{
+    Elf32_Word    sh_name;        /* Section name(string tbl index)节名在字符串表中索引*/
+    Elf32_Word    sh_type;        /* Section type 节类型*/
+//SHT_PROGBITS(1)代码段, SHT_PROGBITS(2)数据段, SHT_SYMTAB(2)符号表, SHT_STRTAB(3)字符串表
+    Elf32_Word    sh_flags;       /* Section flags */
+    Elf32_Addr    sh_addr;        /* Section virtual addr at execution 
+    								指定了节在可执行文件内存中加载地址*/
+    Elf32_Off sh_offset;      	  /* Section file offset 节在文件中偏移量*/
+    Elf32_Word    sh_size;        /* Section size in bytes 节大小*/
+    Elf32_Word    sh_link;        /* Link to another section */
+    Elf32_Word    sh_info;        /* Additional section information */
+    Elf32_Word    sh_addralign;       /* Section alignment */
+    Elf32_Word    sh_entsize;     /* Entry size if section holds table */
+} Elf32_Shdr;
+```
+
+![image-20241101190727706](/img/pwn_note.zh-cn.assets/image-20241101190727706.png)
 
 **段（segment）与节（section)**
 
-1. 段用于进程的内存区域的rwx权限划分
-2. 节用于ELF文件编译链接时与在磁盘上存储时的文件结构的组织
+1. **段**：用于进程的内存区域的rwx权限划分，在加载和执行时被OS来管理内存和地址映射，提供对应虚拟内存的逻辑映射
+2. **节**：不参与内存的加载和执行，而用于链接器Linker和调试器Debugger对文件符号解析即重定位操作，提供对应文件的逻辑映射
 
 - 代码段 Text Segment 包含函数代码与只读数据
-  - `.text`节：
-  - `.rodata`节：read only只读数据节
+  - `.text`节：代码节，存储程序可执行指令
+  - `.rodata`节：read only只读数据节，只读常量
   - `.hash`节
   - `.dynsym`节
   - `.dynstr`节
   - `.plt`节
   - `.rel.got`节
 - 数据段 Data Segment 包含可读可写数据
-  - `.data`节：已初始化的全局变量，占用文件实际内存空间
-  - `.dynamic`节
+  - `.data`节：已初始化的全局变量、静态变量，占用文件实际内存空间
+  - `.dynamic`节：动态节，存储动态链接信息，包括动态链接器需要的重定位表、共享对象名称、版本信息等
   - `.got`节
   - `.got.plt`节
-  - `.bss`节：（Block Started by Symbol）未初始化的全局变量，不占用文件实际内存空间，运行才分配
+  - `.bss`节：（Block Started by Symbol）未初始化的全局变量和静态变量，不占用文件实际内存空间，运行才分配空间初始化为0
 - 栈段 Stack Segment
   - 局部变量，指针
+
+**链接相关节**
+
+- 静态链接相关
+  - `.symtab`节：符号表节，存储符号表信息：函数、变量、其他符号的名称、类型、地址等
+  - `.strtab`节：字符串表节，存储字符串数据：节名称、符号名称，被多个其他节引用
+  - `.rel.text`或`.rela.text`节：代码重定位节，链接时修正代码中符号引用
+  - `.rel.data`或`.rela.data`节：数据重定位节，链接时修正数据段中符号引用
+- 其他
+  - `.note`节：注释节，存储注释或调试信息
+
+- 动态链接相关
+
+  - `.interp`节：解释器interpreter，保存字符串`/lib64/ld-linux-x86-64.so.2`，可执行文件所需动态链接器路径
+
+  - `.dynamic`节：由`ELF*_Dyn`组成的结构体数组
+
+    - ```c
+      /* Dynamic section entry.  */
+      typedef struct{
+          Elf32_Sword   d_tag;          /* Dynamic entry type */
+          union{
+              Elf32_Word d_val;         /* Integer value */
+              Elf32_Addr d_ptr;         /* Address value */
+          } d_un;
+      } Elf32_Dyn;
+      ```
+
+    - `DT_SYMTAB`指定符号表地址，`DT_STRTAB`指定字符串表地址，`DT_REL/DT_RELA`：指定重定位表地址
+
+  - `.dynsym`节：动态符号表，由`Elf*_Sym`构成的结构体数组，只保存与动态链接相关符号
+
+    - 同时拥有`.symtab`保存所有符号，辅助表：动态符号字符串表`.dynstr`，符号哈希表`.hash`
+
+  - `.rel.dyn/.rel.data`节：动态链接重定位表，动态链接运行时才将导入符号的引用进行修正，共享对象重定位在装载时完成
+
+    - ```c
+      /* Relocation table entry without addend (in section of type SHT_REL).  */
+      typedef struct{
+          Elf32_Addr    r_offset;       /* Address 需要重定位的位置的偏移值 */
+          Elf32_Word    r_info;         /* Relocation type and symbol index */
+                          // 低 8 位表示符号重定位类型
+                          // 高 24 位表示该符号在符号表中索引
+      } Elf32_Rel;
+      ```
+
+    - `.rel.dyn`对数据引用修正，修正位置位于`.got`及数据段
+
+    - `.rel.plt`对函数引用修正，修正位置位于`.got.plt`
+
 
 **三个ELF表**
 
 1. **PLT（Procedure Linkage Table）:**
-   1. `elf.plt['system']` 通常是用于调用共享库中的函数的入口点。PLT 中的代码负责将控制转移到真正的函数地址，这是通过动态链接的方式实现的。因此，PLT 中的地址是一个入口点，负责实际跳转到共享库中的函数。
+   1. `elf.plt['system']` 通常是用于调用共享库中函数的入口点。PLT 中的代码负责将控制转移到真正的函数地址，这是通过动态链接的方式实现的。因此，PLT 中的地址是一个入口点，负责实际跳转到共享库中的函数。
    1. 调用外部函数的一组跳转表，每个函数对应一个入口，包含可执行代码，覆盖返回地址为plt地址可最终跳转导向到got表中的函数地址处
+   1. 未开启`FULL RELRO`，PLT 表在 `.plt`
+   1. 开启`FULL RELRO`，PLT 表在 `.plt.sec` ：GOT 表装载时已完成重定位且不可写所以不存在延迟绑定，PLT 直接根据 GOT 表存储的函数地址进行跳转
 2. **Symbol Table:**
    1. `elf.symbols['system']` 返回的是 ELF 文件中符号表中 `system` 函数的地址。这个地址是在编译时确定的，是链接时的静态地址。在编译时，链接器会将符号解析为实际的地址。
 3. **GOT（Global Offset Table）:**
    1. `elf.got['system']` 返回的是 ELF 文件中的 GOT 表中 `system` 函数的入口地址。全局表存储外部函数或库函数真实地址，GOT 表中的地址是一个指针，指向共享库/动态链接器中的真实函数地址。在运行时，当程序第一次调用一个共享库中的函数时，PLT 中的代码会更新 GOT 表中的地址，将其设置为实际函数的地址
    1. 不用于直接调用，只保存了实际函数地址，不是可执行的指令，覆盖返回地址不用got表地址覆盖
+   1. ELF 将 GOT 拆分成 `.got` 和 `.got.plt` ， `.got` 保存全局变量引用的地址，`.got.plt` 保存函数引用的地址
+
+## 共享库
+
+命名规则：`libname.so.x.y.z`，xyz:主版本号、次版本号、发布版本号
+
+**SO-NAME**
+
+- 每个共享库都有一个对应的 SO-NAME，依赖某个共享库的模块在编译、链接和运行时使用共享库的 SO-NAME 而不使用详细版本号
+- 系统会为每个共享库在它所在的目录创建一个跟 SO-NAME 相同的并且指向它的软链接（Symbol Link）
+- 稍高版本的 libc 的 `libc.so.6` 本身就是动态库，不是符号链接，动态链接文件中 `.dynamic` 段中 `DT_NEED` 类型字段就是 SO-NAME
+
+```bash
+# 动态库
+$ ls -l /lib/x86_64-linux-gnu/libc.so.6
+lrwxrwxrwx 1 root root 12 May  1  2024 /lib/x86_64-linux-gnu/libc.so.6 -> libc-2.31.so # glibc 2.31
+-rwxr-xr-x 1 root root 2029592 May  1  2024 /lib/x86_64-linux-gnu/libc-2.31.so
+
+-rwxr-xr-x 1 root root 2125328  8月  8 22:47 /lib/x86_64-linux-gnu/libc.so.6 # glibc 2.39
+
+# 动态链接器
+$ ls -al /lib64/ld-linux-x86-64.so.2
+lrwxrwxrwx 1 root root 32 May  1  2024 /lib64/ld-linux-x86-64.so.2 -> /lib/x86_64-linux-gnu/ld-2.31.so
+
+lrwxrwxrwx 1 root root 44  8月  8 22:47 /lib64/ld-linux-x86-64.so.2 -> ../lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+```
+
+**共享库系统路径**
+
+1. `/lib`：包含OS核心组件所需共享库文件，与内核相关
+2. `/usr/lib`：包含OS提供的额外共享库文件，GUI、网络库、数据库驱动程序
+3. `/usr/local/lib`：安装本地软件库文件默认位置，用户手动编译安装软件
+
+**更改共享库**
+
+环境变量
+
+- `LD_LIBRARY_PATH`：为进程设置，则启动时动态链接器会首先查找该环境变量指定的目录，会导致地址布局差异
+
+```python
+sh = process("./lib/ld.so --preload libdl.so.2 ./pwn".split(), env={"LD_LIBRARY_PATH": "./lib/"})
+```
+
+- `LD_PRELOAD`：指定预先装载的共享库，无论是否依赖都装载，也会导致地址布局差异
+
+```python
+process("./lib/ld.so ./pwn".split(), env={"LD_PRELOAD": "./lib/libc.so.6"})
+```
+
+- `LD_DEBUG`：可以打开动态链接器的调试功能
 
 ## 进程
 
@@ -1407,6 +1604,10 @@ gcc a.o b.o -o out.elf
 
 每次程序地址加载变化，需要生成重定位表，以便在可执行文件在加载和执行时进行正确的符号重定位
 
+#### 动态链接
+
+运行时才链接
+
 ### 装载
 
 1. 输入`./elf`，用户层bash进程调用`fork()`系统调用创建新进程，新进程调用`execve()`系统调用执行elf文件，以全新程序替代当前运行程序；原先bash进程返回等待新进程结束后，继续等待用户命令
@@ -1417,7 +1618,7 @@ gcc a.o b.o -o out.elf
    - 找动态链接的`.interp`段设置动态链接器路径
    - 根据程序头表，对ELF进行映射：代码、数据、只读数据
    - 初始化进程环境
-   - 系统调用返回地址修改为ELF入口地址【**静态链接**入口是文件头`e_entry`所指地址；**动态链接**入口是**动态链接器**】
+   - 系统调用返回地址修改为ELF入口地址【**静态链接**入口是文件头`e_entry`所指地址；**动态链接**入口是**动态链接器ld**】
 5. `load_XX`函数执行完毕返回最初`sys_execve()`返回用户态，EIP寄存器跳转到ELF程序入口地址，执行新程序
 
 ### 执行
@@ -1654,9 +1855,12 @@ else{return -1;}
 
 `eip`：存储即将执行的程序指令的地址
 
-<img src="/img/pwn_note.zh-cn.assets/image-20241028185516810.png" alt="image-20241028185516810" style="zoom:50%;" />
+- 32位栈的**三层嵌套**调用演示：`main -> func1 -> func2`
 
-上图中，arg1,2,3是Callee函数的参数，但在Caller函数栈帧中
+- arg1,2,3是func1函数的参数，但在main函数栈帧中
+- 当局部变量是数组`v[2]`时，索引低的`v[0]`靠近rsp，地址更低，索引高的`v[1]`靠近rbp，地址更高
+
+<img src="/img/pwn_note.zh-cn.assets/image-20241102182719351.png" alt="image-20241102182719351" style="zoom:67%;" />
 
 **函数开头及结尾**
 
@@ -1669,14 +1873,6 @@ leave
 retn
 #等价于 pop eip，实际没有该指令
 ```
-
-<img src="/img/pwn_note.zh-cn.assets/-17284464998302.assets" alt="img" style="zoom:50%;" />
-
-32位栈的**三层嵌套**调用演示：
-
-![image-20241013134352978](/img/pwn_note.zh-cn.assets/image-20241013134352978.png)
-
-**注**：当局部变量是数组`v[2]`时，索引低的`v[0]`靠近rsp，地址更低，索引高的`v[1]`靠近rbp，地址更高
 
 **压栈**
 
@@ -1694,7 +1890,7 @@ retn
 **传参**
 
 - **系统调用syscall**参数传递
-  - x86_32：参数小于等于6个，ebx,ecx,edx,esi,edi,ebp中；大于6个，全部参数放在一块连续内存区域，ebx保存指向该区域的指针
+  - x86_32：参数小于等于6个，ebx,ecx,edx,esi,edi,ebp中；大于6个，全部参数放在一块连续内存区域，ebx保存指向该区域的指针，eax存系统调用号
     - 使用`int 0x80`
   - x86_64：参数小于等于6个，rdi,rsi,rdx,r10,r8,r9；大于6个，全部参数放在一块连续内存区域，rbx保存指向该区域的指针
     - 使用`syscall`，rax放每个system call函数对应的索引
@@ -2016,6 +2212,25 @@ puts(free_hook)        //输出flag
 
 - 采用prctl函数调用
 - 使用seccomp库函数
+
+**prctl**——系统调用，控制和修改进程的行为和属性，决定系统调用
+
+```C
+#include <sys/prctl.h>
+int prctl(int option, unsigned long arg2, unsigned long arg3, unsigned long arg4, unsigned long arg5);
+```
+
+**IDA**显示
+
+```c
+prctl(38, 1LL, 0LL, 0LL, 0LL); 
+// arg1: #define PR_SET_NO_NEW_PRIVS 38 
+// arg2: no_new_privs=1 无法使用execve() 继承到子进程
+
+prctl(22, 2LL, &v);
+// arg1: #define PR_SET_SECCOMP	22
+// arg2: #define SECCOMP_MODE_FILTER 2 BPF过滤:对syscall的限制通过arg3的Berkeley Packet Filter相关结构体定义
+```
 
 **seccomp**
 

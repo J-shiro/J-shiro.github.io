@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://J-shiro.github.io/zh-cn/</loc>
-    <lastmod>2024-10-24T00:00:00+00:00</lastmod>
+    <lastmod>2024-11-01T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -15,8 +15,11 @@
                 href="https://J-shiro.github.io/zh-cn/"
                 />
   </url><url>
+    <loc>https://J-shiro.github.io/zh-cn/categories/ai/</loc>
+    <lastmod>2024-11-01T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://J-shiro.github.io/zh-cn/categories/</loc>
-    <lastmod>2024-10-24T00:00:00+00:00</lastmod>
+    <lastmod>2024-11-01T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -28,8 +31,14 @@
                 href="https://J-shiro.github.io/zh-cn/categories/"
                 />
   </url><url>
+    <loc>https://J-shiro.github.io/zh-cn/p/langchain%E7%AC%94%E8%AE%B0/</loc>
+    <lastmod>2024-11-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://J-shiro.github.io/zh-cn/categories/notes/</loc>
+    <lastmod>2024-11-01T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://J-shiro.github.io/zh-cn/post/</loc>
-    <lastmod>2024-10-24T00:00:00+00:00</lastmod>
+    <lastmod>2024-11-01T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -47,13 +56,7 @@
     <loc>https://J-shiro.github.io/zh-cn/p/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95/</loc>
     <lastmod>2024-10-24T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://J-shiro.github.io/zh-cn/categories/ai/</loc>
-    <lastmod>2024-10-12T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://J-shiro.github.io/zh-cn/p/nlp%E7%AC%94%E8%AE%B0/</loc>
-    <lastmod>2024-10-12T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://J-shiro.github.io/zh-cn/categories/notes/</loc>
     <lastmod>2024-10-12T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://J-shiro.github.io/zh-cn/p/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E7%AC%94%E8%AE%B0/</loc>

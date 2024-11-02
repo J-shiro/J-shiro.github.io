@@ -311,7 +311,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 86 分钟
+                    阅读时长: 92 分钟
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    42831 字
+                    45696 字
                 </time>
             </div>
         
@@ -524,6 +524,15 @@
 </span></span><span class="line"><span class="cl"><span class="n">p</span> <span class="o">=</span> <span class="n">process</span><span class="p">([</span><span class="s2">&#34;/path/to/ld.so&#34;</span><span class="p">,</span> <span class="s2">&#34;./test&#34;</span><span class="p">],</span> <span class="n">env</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;LD_PRELOAD&#34;</span><span class="p">:</span><span class="s2">&#34;/path/to/libc.so.6&#34;</span><span class="p">})</span>    
 </span></span></code></pre></td></tr></table>
 </div>
+</div><h3 id="checksec">checksec</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">checksec --file<span class="o">={</span>file_name<span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
 </div><h3 id="glibc-all-in-one">Glibc-all-in-one</h3>
 <p>多版本libc</p>
 <div class="highlight"><div class="chroma">
@@ -596,22 +605,24 @@
 </div><p>改变程序的链接库路径，使用工具修改libc文件</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">sudo ln ld-x.xx.so /lib64/ld-x.xx.so
 </span></span><span class="line"><span class="cl"><span class="c1">#生成符号连接以使gdb能够调试，若未设置跳转到pwndbg调试解决问题</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">patchelf --set-interpreter ld-x.xx.so elf <span class="c1">#来修改文件ld.so</span>
-</span></span><span class="line"><span class="cl">patchelf --replace-needed old_libc.so new_libc.so elf  <span class="c1">#来修改文件libc.so</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># libc 和 ld 都需要有可执行权限</span>
+</span></span><span class="line"><span class="cl">patchelf --set-interpreter ld-x.xx.so elf <span class="c1"># 来修改文件ld.so</span>
+</span></span><span class="line"><span class="cl">patchelf --replace-needed old_libc.so new_libc.so elf  <span class="c1"># 来修改文件libc.so</span>
 </span></span><span class="line"><span class="cl"><span class="c1">#尽量使用相对路径</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># 可成功执行</span>
@@ -2094,6 +2105,10 @@
 </span><span class="lnt">20
 </span><span class="lnt">21
 </span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="kt">long</span> <span class="nf">strtol</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">str</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">endptr</span><span class="p">,</span> <span class="kt">int</span> <span class="n">base</span><span class="p">);</span> <span class="c1">// 将str指向的字符数组转换为长整型
@@ -2118,6 +2133,10 @@
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
 </span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">execve</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">__path</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="k">const</span> <span class="n">__argv</span><span class="p">[],</span> <span class="kt">char</span> <span class="o">*</span><span class="k">const</span> <span class="n">__envp</span><span class="p">[]);</span>
 </span></span><span class="line"><span class="cl"><span class="c1">// glibc包装了execl(),execlp(),execle(),execv(),execvp()5个exec API, 参数区别, 最终还是execve()
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="o">*</span><span class="nf">calloc</span><span class="p">(</span><span class="n">size_t</span> <span class="n">num</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">size</span><span class="p">);</span> <span class="c1">// 动态分配内存并初始化其内容为零, 分配num个元素, 每个大小size字节
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">qmemcpy</span><span class="p">(</span><span class="n">dest_memory</span><span class="p">,</span> <span class="n">source_data</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span> <span class="c1">// 将size大小的源数据放入目标内存中
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>mmap</strong></p>
@@ -2411,7 +2430,7 @@
 </div>
 </div><p>解决: <code>sudo apt-key adv --keyserver ``keyserver.ubuntu.com`` --recv-keys 3B4FE6ACC0B21F32</code></p>
 <h2 id="elf文件">ELF文件</h2>
-<p>Executable and Linking Format 可执行和链接的格式</p>
+<p>Executable and Linking Format 可执行和链接的文件格式，其文件结构、常数、变量类型定义在<code>/usr/include/elf.h</code>中</p>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -2439,66 +2458,174 @@
 </tr>
 </tbody>
 </table></div>
-<p><img src="/img/pwn_note.zh-cn.assets/-17284429785727.assets"
+<p><strong>ELF文件类型</strong></p>
+<ul>
+<li>可执行文件<code>ET_EXEC</code>：可直接执行，在操作系统运行</li>
+<li>共享目标文件<code>ET_DYN</code>：可被动态链接的共享库，运行时与其他程序动态链接，后缀<code>.so</code></li>
+<li>可重定位文件<code>ET_REL</code>：编译器生成的目标文件，用于将多个目标文件链接到一个可执行文件或共享库中，后缀<code>.o</code>，静态链接库<code>.a</code>也可归为该类</li>
+<li>核心转储文件<code>ET_CORE</code>：操作系统在程序崩溃或错误生成的快照，用于调试</li>
+</ul>
+<img src="/img/pwn_note.zh-cn.assets/image-20241101184751998.png" alt="image-20241101184751998" style="zoom: 67%;" />
+<p><strong>文件头ELF header</strong></p>
+<p>记录ELF文件组织结构，32位为例</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="cm">/* The ELF file header.  This appears at the start of every ELF file.  */</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#define EI_NIDENT (16)
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span> 
+</span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">e_ident</span><span class="p">[</span><span class="n">EI_NIDENT</span><span class="p">];</span> <span class="cm">/* Magic number and other info */</span>
+</span></span><span class="line"><span class="cl">	<span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">		1-4 bytes: ELFMAG即x7fELF
+</span></span></span><span class="line"><span class="cl"><span class="cm">		5 byte: ELF文件类型-&gt;ELFCLASS32(1)32位, ELFCLASS64(2)64位
+</span></span></span><span class="line"><span class="cl"><span class="cm">		6 byte: ELF字节序, 0无效格式, 1小端, 2大端
+</span></span></span><span class="line"><span class="cl"><span class="cm">		7 byte: ELF版本, 1即1.2版本
+</span></span></span><span class="line"><span class="cl"><span class="cm">		8-16 bytes: 无定义0
+</span></span></span><span class="line"><span class="cl"><span class="cm">	*/</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Half</span>    <span class="n">e_type</span><span class="p">;</span>         <span class="cm">/* Object file type ELF 文件类型 */</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Half</span>    <span class="n">e_machine</span><span class="p">;</span>      <span class="cm">/* Architecture EM_开头*/</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Word</span>    <span class="n">e_version</span><span class="p">;</span>      <span class="cm">/* Object file version */</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Addr</span>    <span class="n">e_entry</span><span class="p">;</span>        <span class="cm">/* Entry point virtual address 程序入口*/</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* RVA:内存中地址相对于模块基址的偏移; FOA:文件中某数据相对于文件开头的偏移 */</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Off</span> <span class="n">e_phoff</span><span class="p">;</span>        <span class="cm">/* Program header table file offset 程序头表的文件偏移*/</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Off</span> <span class="n">e_shoff</span><span class="p">;</span>        <span class="cm">/* Section header table file offset 节表的文件偏移*/</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Word</span>    <span class="n">e_flags</span><span class="p">;</span>        <span class="cm">/* Processor-specific flags */</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Half</span>    <span class="n">e_ehsize</span><span class="p">;</span>       <span class="cm">/* ELF header size in bytes ELF文件头大小*/</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 程序头表
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">Elf32_Half</span>    <span class="n">e_phentsize</span><span class="p">;</span>        <span class="cm">/* Program header table entry size 每个表项大小*/</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Half</span>    <span class="n">e_phnum</span><span class="p">;</span>        <span class="cm">/* Program header table entry count 表项数量*/</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 节表
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">Elf32_Half</span>    <span class="n">e_shentsize</span><span class="p">;</span>        <span class="cm">/* Section header table entry size 每个表项大小*/</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Half</span>    <span class="n">e_shnum</span><span class="p">;</span>        <span class="cm">/* Section header table entry count 表项数量*/</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Half</span>    <span class="n">e_shstrndx</span><span class="p">;</span>     <span class="cm">/* Section header string table index 字符串表的索引*/</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">Elf32_Ehdr</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>程序头表Program header table</strong></p>
+<p>告诉系统如何创建进程，可执行文件、共享库文件有，目标文件没有，由<code>Elf*_Phdr</code>组成的数组</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cm">/* Program segment header.  */</span>
+</span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Word</span>    <span class="n">p_type</span><span class="p">;</span>         <span class="cm">/* Segment type */</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Off</span> <span class="n">p_offset</span><span class="p">;</span>       	  <span class="cm">/* Segment file offset */</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Addr</span>    <span class="n">p_vaddr</span><span class="p">;</span>        <span class="cm">/* Segment virtual address */</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Addr</span>    <span class="n">p_paddr</span><span class="p">;</span>        <span class="cm">/* Segment physical address ELF还没装载不知道物理地址作为保留字段, 通常和p_vaddr一样*/</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Word</span>    <span class="n">p_filesz</span><span class="p">;</span>       <span class="cm">/* Segment size in file */</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Word</span>    <span class="n">p_memsz</span><span class="p">;</span>        <span class="cm">/* Segment size in memory */</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Word</span>    <span class="n">p_flags</span><span class="p">;</span>        <span class="cm">/* Segment flags 可读可写可执行等*/</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Word</span>    <span class="n">p_align</span><span class="p">;</span>        <span class="cm">/* Segment alignment */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">Elf32_Phdr</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>节头表Section header table</strong></p>
+<p>记录ELF节区信息，用于链接的目标文件必须拥有此结构，固定长度的<code>Elf*_Shdr</code>结构体数组用来存放节相关信息</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cm">/* Section header.  */</span>
+</span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Word</span>    <span class="n">sh_name</span><span class="p">;</span>        <span class="cm">/* Section name(string tbl index)节名在字符串表中索引*/</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Word</span>    <span class="n">sh_type</span><span class="p">;</span>        <span class="cm">/* Section type 节类型*/</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//SHT_PROGBITS(1)代码段, SHT_PROGBITS(2)数据段, SHT_SYMTAB(2)符号表, SHT_STRTAB(3)字符串表
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">Elf32_Word</span>    <span class="n">sh_flags</span><span class="p">;</span>       <span class="cm">/* Section flags */</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Addr</span>    <span class="n">sh_addr</span><span class="p">;</span>        <span class="cm">/* Section virtual addr at execution 
+</span></span></span><span class="line"><span class="cl"><span class="cm">    								指定了节在可执行文件内存中加载地址*/</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Off</span> <span class="n">sh_offset</span><span class="p">;</span>      	  <span class="cm">/* Section file offset 节在文件中偏移量*/</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Word</span>    <span class="n">sh_size</span><span class="p">;</span>        <span class="cm">/* Section size in bytes 节大小*/</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Word</span>    <span class="n">sh_link</span><span class="p">;</span>        <span class="cm">/* Link to another section */</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Word</span>    <span class="n">sh_info</span><span class="p">;</span>        <span class="cm">/* Additional section information */</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Word</span>    <span class="n">sh_addralign</span><span class="p">;</span>       <span class="cm">/* Section alignment */</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Word</span>    <span class="n">sh_entsize</span><span class="p">;</span>     <span class="cm">/* Entry size if section holds table */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">Elf32_Shdr</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/img/pwn_note.zh-cn.assets/image-20241101190727706.png"
 	
 	
 	
 	loading="lazy"
 	
-		alt="img"
-	
-	
-></p>
-<p><img src="/img/pwn_note.zh-cn.assets/-17284429785738.assets"
-	
-	
-	
-	loading="lazy"
-	
-		alt="img"
-	
-	
-></p>
-<p><img src="/img/pwn_note.zh-cn.assets/-17284429785739.assets"
-	
-	
-	
-	loading="lazy"
-	
-		alt="img"
-	
-	
-></p>
-<p><img src="/img/pwn_note.zh-cn.assets/-172844297857310.assets"
-	
-	
-	
-	loading="lazy"
-	
-		alt="img"
-	
-	
-></p>
-<p><img src="/img/pwn_note.zh-cn.assets/-172844297857311.assets"
-	
-	
-	
-	loading="lazy"
-	
-		alt="img"
+		alt="image-20241101190727706"
 	
 	
 ></p>
 <p><strong>段（segment）与节（section)</strong></p>
 <ol>
-<li>段用于进程的内存区域的rwx权限划分</li>
-<li>节用于ELF文件编译链接时与在磁盘上存储时的文件结构的组织</li>
+<li><strong>段</strong>：用于进程的内存区域的rwx权限划分，在加载和执行时被OS来管理内存和地址映射，提供对应虚拟内存的逻辑映射</li>
+<li><strong>节</strong>：不参与内存的加载和执行，而用于链接器Linker和调试器Debugger对文件符号解析即重定位操作，提供对应文件的逻辑映射</li>
 </ol>
 <ul>
 <li>代码段 Text Segment 包含函数代码与只读数据
 <ul>
-<li><code>.text</code>节：</li>
-<li><code>.rodata</code>节：read only只读数据节</li>
+<li><code>.text</code>节：代码节，存储程序可执行指令</li>
+<li><code>.rodata</code>节：read only只读数据节，只读常量</li>
 <li><code>.hash</code>节</li>
 <li><code>.dynsym</code>节</li>
 <li><code>.dynstr</code>节</li>
@@ -2508,11 +2635,11 @@
 </li>
 <li>数据段 Data Segment 包含可读可写数据
 <ul>
-<li><code>.data</code>节：已初始化的全局变量，占用文件实际内存空间</li>
-<li><code>.dynamic</code>节</li>
+<li><code>.data</code>节：已初始化的全局变量、静态变量，占用文件实际内存空间</li>
+<li><code>.dynamic</code>节：动态节，存储动态链接信息，包括动态链接器需要的重定位表、共享对象名称、版本信息等</li>
 <li><code>.got</code>节</li>
 <li><code>.got.plt</code>节</li>
-<li><code>.bss</code>节：（Block Started by Symbol）未初始化的全局变量，不占用文件实际内存空间，运行才分配</li>
+<li><code>.bss</code>节：（Block Started by Symbol）未初始化的全局变量和静态变量，不占用文件实际内存空间，运行才分配空间初始化为0</li>
 </ul>
 </li>
 <li>栈段 Stack Segment
@@ -2521,12 +2648,111 @@
 </ul>
 </li>
 </ul>
+<p><strong>链接相关节</strong></p>
+<ul>
+<li>
+<p>静态链接相关</p>
+<ul>
+<li><code>.symtab</code>节：符号表节，存储符号表信息：函数、变量、其他符号的名称、类型、地址等</li>
+<li><code>.strtab</code>节：字符串表节，存储字符串数据：节名称、符号名称，被多个其他节引用</li>
+<li><code>.rel.text</code>或<code>.rela.text</code>节：代码重定位节，链接时修正代码中符号引用</li>
+<li><code>.rel.data</code>或<code>.rela.data</code>节：数据重定位节，链接时修正数据段中符号引用</li>
+</ul>
+</li>
+<li>
+<p>其他</p>
+<ul>
+<li><code>.note</code>节：注释节，存储注释或调试信息</li>
+</ul>
+</li>
+<li>
+<p>动态链接相关</p>
+<ul>
+<li>
+<p><code>.interp</code>节：解释器interpreter，保存字符串<code>/lib64/ld-linux-x86-64.so.2</code>，可执行文件所需动态链接器路径</p>
+</li>
+<li>
+<p><code>.dynamic</code>节：由<code>ELF*_Dyn</code>组成的结构体数组</p>
+<ul>
+<li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cm">/* Dynamic section entry.  */</span>
+</span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Sword</span>   <span class="n">d_tag</span><span class="p">;</span>          <span class="cm">/* Dynamic entry type */</span>
+</span></span><span class="line"><span class="cl">    <span class="k">union</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Elf32_Word</span> <span class="n">d_val</span><span class="p">;</span>         <span class="cm">/* Integer value */</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Elf32_Addr</span> <span class="n">d_ptr</span><span class="p">;</span>         <span class="cm">/* Address value */</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="n">d_un</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">Elf32_Dyn</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><code>DT_SYMTAB</code>指定符号表地址，<code>DT_STRTAB</code>指定字符串表地址，<code>DT_REL/DT_RELA</code>：指定重定位表地址</p>
+</li>
+</ul>
+</li>
+<li>
+<p><code>.dynsym</code>节：动态符号表，由<code>Elf*_Sym</code>构成的结构体数组，只保存与动态链接相关符号</p>
+<ul>
+<li>同时拥有<code>.symtab</code>保存所有符号，辅助表：动态符号字符串表<code>.dynstr</code>，符号哈希表<code>.hash</code></li>
+</ul>
+</li>
+<li>
+<p><code>.rel.dyn/.rel.data</code>节：动态链接重定位表，动态链接运行时才将导入符号的引用进行修正，共享对象重定位在装载时完成</p>
+<ul>
+<li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cm">/* Relocation table entry without addend (in section of type SHT_REL).  */</span>
+</span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Addr</span>    <span class="n">r_offset</span><span class="p">;</span>       <span class="cm">/* Address 需要重定位的位置的偏移值 */</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Elf32_Word</span>    <span class="n">r_info</span><span class="p">;</span>         <span class="cm">/* Relocation type and symbol index */</span>
+</span></span><span class="line"><span class="cl">                    <span class="c1">// 低 8 位表示符号重定位类型
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                    <span class="c1">// 高 24 位表示该符号在符号表中索引
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span> <span class="n">Elf32_Rel</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><code>.rel.dyn</code>对数据引用修正，修正位置位于<code>.got</code>及数据段</p>
+</li>
+<li>
+<p><code>.rel.plt</code>对函数引用修正，修正位置位于<code>.got.plt</code></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 <p><strong>三个ELF表</strong></p>
 <ol>
 <li><strong>PLT（Procedure Linkage Table）:</strong>
 <ol>
-<li><code>elf.plt['system']</code> 通常是用于调用共享库中的函数的入口点。PLT 中的代码负责将控制转移到真正的函数地址，这是通过动态链接的方式实现的。因此，PLT 中的地址是一个入口点，负责实际跳转到共享库中的函数。</li>
+<li><code>elf.plt['system']</code> 通常是用于调用共享库中函数的入口点。PLT 中的代码负责将控制转移到真正的函数地址，这是通过动态链接的方式实现的。因此，PLT 中的地址是一个入口点，负责实际跳转到共享库中的函数。</li>
 <li>调用外部函数的一组跳转表，每个函数对应一个入口，包含可执行代码，覆盖返回地址为plt地址可最终跳转导向到got表中的函数地址处</li>
+<li>未开启<code>FULL RELRO</code>，PLT 表在 <code>.plt</code></li>
+<li>开启<code>FULL RELRO</code>，PLT 表在 <code>.plt.sec</code> ：GOT 表装载时已完成重定位且不可写所以不存在延迟绑定，PLT 直接根据 GOT 表存储的函数地址进行跳转</li>
 </ol>
 </li>
 <li><strong>Symbol Table:</strong>
@@ -2538,9 +2764,81 @@
 <ol>
 <li><code>elf.got['system']</code> 返回的是 ELF 文件中的 GOT 表中 <code>system</code> 函数的入口地址。全局表存储外部函数或库函数真实地址，GOT 表中的地址是一个指针，指向共享库/动态链接器中的真实函数地址。在运行时，当程序第一次调用一个共享库中的函数时，PLT 中的代码会更新 GOT 表中的地址，将其设置为实际函数的地址</li>
 <li>不用于直接调用，只保存了实际函数地址，不是可执行的指令，覆盖返回地址不用got表地址覆盖</li>
+<li>ELF 将 GOT 拆分成 <code>.got</code> 和 <code>.got.plt</code> ， <code>.got</code> 保存全局变量引用的地址，<code>.got.plt</code> 保存函数引用的地址</li>
 </ol>
 </li>
 </ol>
+<h2 id="共享库">共享库</h2>
+<p>命名规则：<code>libname.so.x.y.z</code>，xyz:主版本号、次版本号、发布版本号</p>
+<p><strong>SO-NAME</strong></p>
+<ul>
+<li>每个共享库都有一个对应的 SO-NAME，依赖某个共享库的模块在编译、链接和运行时使用共享库的 SO-NAME 而不使用详细版本号</li>
+<li>系统会为每个共享库在它所在的目录创建一个跟 SO-NAME 相同的并且指向它的软链接（Symbol Link）</li>
+<li>稍高版本的 libc 的 <code>libc.so.6</code> 本身就是动态库，不是符号链接，动态链接文件中 <code>.dynamic</code> 段中 <code>DT_NEED</code> 类型字段就是 SO-NAME</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 动态库</span>
+</span></span><span class="line"><span class="cl">$ ls -l /lib/x86_64-linux-gnu/libc.so.6
+</span></span><span class="line"><span class="cl">lrwxrwxrwx <span class="m">1</span> root root <span class="m">12</span> May  <span class="m">1</span>  <span class="m">2024</span> /lib/x86_64-linux-gnu/libc.so.6 -&gt; libc-2.31.so <span class="c1"># glibc 2.31</span>
+</span></span><span class="line"><span class="cl">-rwxr-xr-x <span class="m">1</span> root root <span class="m">2029592</span> May  <span class="m">1</span>  <span class="m">2024</span> /lib/x86_64-linux-gnu/libc-2.31.so
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">-rwxr-xr-x <span class="m">1</span> root root <span class="m">2125328</span>  8月  <span class="m">8</span> 22:47 /lib/x86_64-linux-gnu/libc.so.6 <span class="c1"># glibc 2.39</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 动态链接器</span>
+</span></span><span class="line"><span class="cl">$ ls -al /lib64/ld-linux-x86-64.so.2
+</span></span><span class="line"><span class="cl">lrwxrwxrwx <span class="m">1</span> root root <span class="m">32</span> May  <span class="m">1</span>  <span class="m">2024</span> /lib64/ld-linux-x86-64.so.2 -&gt; /lib/x86_64-linux-gnu/ld-2.31.so
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">lrwxrwxrwx <span class="m">1</span> root root <span class="m">44</span>  8月  <span class="m">8</span> 22:47 /lib64/ld-linux-x86-64.so.2 -&gt; ../lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>共享库系统路径</strong></p>
+<ol>
+<li><code>/lib</code>：包含OS核心组件所需共享库文件，与内核相关</li>
+<li><code>/usr/lib</code>：包含OS提供的额外共享库文件，GUI、网络库、数据库驱动程序</li>
+<li><code>/usr/local/lib</code>：安装本地软件库文件默认位置，用户手动编译安装软件</li>
+</ol>
+<p><strong>更改共享库</strong></p>
+<p>环境变量</p>
+<ul>
+<li><code>LD_LIBRARY_PATH</code>：为进程设置，则启动时动态链接器会首先查找该环境变量指定的目录，会导致地址布局差异</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">sh</span> <span class="o">=</span> <span class="n">process</span><span class="p">(</span><span class="s2">&#34;./lib/ld.so --preload libdl.so.2 ./pwn&#34;</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span> <span class="n">env</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;LD_LIBRARY_PATH&#34;</span><span class="p">:</span> <span class="s2">&#34;./lib/&#34;</span><span class="p">})</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>LD_PRELOAD</code>：指定预先装载的共享库，无论是否依赖都装载，也会导致地址布局差异</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">process</span><span class="p">(</span><span class="s2">&#34;./lib/ld.so ./pwn&#34;</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span> <span class="n">env</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;LD_PRELOAD&#34;</span><span class="p">:</span> <span class="s2">&#34;./lib/libc.so.6&#34;</span><span class="p">})</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>LD_DEBUG</code>：可以打开动态链接器的调试功能</li>
+</ul>
 <h2 id="进程">进程</h2>
 <p><img src="/img/pwn_note.zh-cn.assets/image-20241029142856545.png"
 	
@@ -2669,6 +2967,8 @@
 </div>
 </div><p><strong>生成重定位表</strong></p>
 <p>每次程序地址加载变化，需要生成重定位表，以便在可执行文件在加载和执行时进行正确的符号重定位</p>
+<h4 id="动态链接">动态链接</h4>
+<p>运行时才链接</p>
 <h3 id="装载">装载</h3>
 <ol>
 <li>输入<code>./elf</code>，用户层bash进程调用<code>fork()</code>系统调用创建新进程，新进程调用<code>execve()</code>系统调用执行elf文件，以全新程序替代当前运行程序；原先bash进程返回等待新进程结束后，继续等待用户命令</li>
@@ -2680,7 +2980,7 @@
 <li>找动态链接的<code>.interp</code>段设置动态链接器路径</li>
 <li>根据程序头表，对ELF进行映射：代码、数据、只读数据</li>
 <li>初始化进程环境</li>
-<li>系统调用返回地址修改为ELF入口地址【<strong>静态链接</strong>入口是文件头<code>e_entry</code>所指地址；<strong>动态链接</strong>入口是<strong>动态链接器</strong>】</li>
+<li>系统调用返回地址修改为ELF入口地址【<strong>静态链接</strong>入口是文件头<code>e_entry</code>所指地址；<strong>动态链接</strong>入口是<strong>动态链接器ld</strong>】</li>
 </ul>
 </li>
 <li><code>load_XX</code>函数执行完毕返回最初<code>sys_execve()</code>返回用户态，EIP寄存器跳转到ELF程序入口地址，执行新程序</li>
@@ -3083,8 +3383,18 @@
 <p><code>ebp</code>：存储当前函数状态的基地址</p>
 <p><code>esp</code>：存储函数调用栈的栈顶地址</p>
 <p><code>eip</code>：存储即将执行的程序指令的地址</p>
-<img src="/img/pwn_note.zh-cn.assets/image-20241028185516810.png" alt="image-20241028185516810" style="zoom:50%;" />
-<p>上图中，arg1,2,3是Callee函数的参数，但在Caller函数栈帧中</p>
+<ul>
+<li>
+<p>32位栈的<strong>三层嵌套</strong>调用演示：<code>main -&gt; func1 -&gt; func2</code></p>
+</li>
+<li>
+<p>arg1,2,3是func1函数的参数，但在main函数栈帧中</p>
+</li>
+<li>
+<p>当局部变量是数组<code>v[2]</code>时，索引低的<code>v[0]</code>靠近rsp，地址更低，索引高的<code>v[1]</code>靠近rbp，地址更高</p>
+</li>
+</ul>
+<img src="/img/pwn_note.zh-cn.assets/image-20241102182719351.png" alt="image-20241102182719351" style="zoom:67%;" />
 <p><strong>函数开头及结尾</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -3106,20 +3416,7 @@
 </span></span><span class="line"><span class="cl">#等价于 pop eip，实际没有该指令
 </span></span></code></pre></td></tr></table>
 </div>
-</div><img src="/img/pwn_note.zh-cn.assets/-17284464998302.assets" alt="img" style="zoom:50%;" />
-<p>32位栈的<strong>三层嵌套</strong>调用演示：</p>
-<p><img src="/img/pwn_note.zh-cn.assets/image-20241013134352978.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="image-20241013134352978"
-	
-	
-></p>
-<p><strong>注</strong>：当局部变量是数组<code>v[2]</code>时，索引低的<code>v[0]</code>靠近rsp，地址更低，索引高的<code>v[1]</code>靠近rbp，地址更高</p>
-<p><strong>压栈</strong></p>
+</div><p><strong>压栈</strong></p>
 <ol>
 <li>被调用函数参数<strong>逆序</strong>压入栈内，esp→（arg1, arg2,&hellip;,argn）</li>
 <li>将<strong>调用函数进行调用之后的下一条指令地址</strong>作为<strong>返回地址</strong>压入栈内，即<strong>调用函数</strong>的 <strong>eip</strong> 信息得以保存
@@ -3140,7 +3437,7 @@
 <li>
 <p><strong>系统调用syscall</strong>参数传递</p>
 <ul>
-<li>x86_32：参数小于等于6个，ebx,ecx,edx,esi,edi,ebp中；大于6个，全部参数放在一块连续内存区域，ebx保存指向该区域的指针
+<li>x86_32：参数小于等于6个，ebx,ecx,edx,esi,edi,ebp中；大于6个，全部参数放在一块连续内存区域，ebx保存指向该区域的指针，eax存系统调用号
 <ul>
 <li>使用<code>int 0x80</code></li>
 </ul>
@@ -3679,7 +3976,39 @@
 <li>采用prctl函数调用</li>
 <li>使用seccomp库函数</li>
 </ul>
-<p><strong>seccomp</strong></p>
+<p><strong>prctl</strong>——系统调用，控制和修改进程的行为和属性，决定系统调用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/prctl.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="kt">int</span> <span class="nf">prctl</span><span class="p">(</span><span class="kt">int</span> <span class="n">option</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">arg2</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">arg3</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">arg4</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">arg5</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>IDA</strong>显示</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">prctl</span><span class="p">(</span><span class="mi">38</span><span class="p">,</span> <span class="mi">1LL</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl"><span class="c1">// arg1: #define PR_SET_NO_NEW_PRIVS 38 
+</span></span></span><span class="line"><span class="cl"><span class="c1">// arg2: no_new_privs=1 无法使用execve() 继承到子进程
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">prctl</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">2LL</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">v</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// arg1: #define PR_SET_SECCOMP	22
+</span></span></span><span class="line"><span class="cl"><span class="c1">// arg2: #define SECCOMP_MODE_FILTER 2 BPF过滤:对syscall的限制通过arg3的Berkeley Packet Filter相关结构体定义
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>seccomp</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -7418,6 +7747,25 @@
             
                 
 <article class="has-image">
+    <a href="/zh-cn/p/langchain%E7%AC%94%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/img/ai_note.jpg" loading="lazy" data-key="" data-hash="/img/ai_note.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">LangChain笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
     <a href="/zh-cn/p/nlp%E7%AC%94%E8%AE%B0/">
         
         
@@ -7487,25 +7835,6 @@
 
         <div class="article-details">
             <h2 class="article-title">计算机视觉笔记</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
-    <a href="/zh-cn/p/fuzzing%E7%AC%94%E8%AE%B0/">
-        
-        
-            <div class="article-image">
-                
-                    <img src="/img/note.jpg" loading="lazy" data-key="" data-hash="/img/note.jpg"/>
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Fuzzing笔记</h2>
         </div>
     </a>
 </article>
@@ -7592,7 +7921,9 @@
         
             
         
-        共 109.81k 字 · 共 17篇文章
+            
+        
+        共 112.78k 字 · 共 18篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -7793,6 +8124,7 @@
       <ol>
         <li><a href="#docker">Docker</a></li>
         <li><a href="#pwndocker">Pwndocker</a></li>
+        <li><a href="#checksec">checksec</a></li>
         <li><a href="#glibc-all-in-one">Glibc-all-in-one</a></li>
         <li><a href="#libcsearcher">LibcSearcher</a></li>
         <li><a href="#patchelf">Patchelf</a></li>
@@ -7826,12 +8158,14 @@
       </ol>
     </li>
     <li><a href="#elf文件">ELF文件</a></li>
+    <li><a href="#共享库">共享库</a></li>
     <li><a href="#进程">进程</a>
       <ol>
         <li><a href="#编译">编译</a></li>
         <li><a href="#链接">链接</a>
           <ol>
             <li><a href="#静态链接">静态链接</a></li>
+            <li><a href="#动态链接">动态链接</a></li>
           </ol>
         </li>
         <li><a href="#装载">装载</a></li>

@@ -6,7 +6,17 @@
         <description>Recent content in AI on J-shiro&#39;s 博客</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Sat, 12 Oct 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://J-shiro.github.io/zh-cn/categories/ai/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 01 Nov 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://J-shiro.github.io/zh-cn/categories/ai/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>LangChain笔记</title>
+        <link>https://J-shiro.github.io/zh-cn/p/langchain%E7%AC%94%E8%AE%B0/</link>
+        <pubDate>Fri, 01 Nov 2024 00:00:00 +0000</pubDate>
+        
+        <guid>https://J-shiro.github.io/zh-cn/p/langchain%E7%AC%94%E8%AE%B0/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/img/ai_note.jpg" alt="Featured image of post LangChain笔记" /&gt;&lt;p&gt;LangChain是一个基于大语言模型（LLMs）用于构建端到端语言模型应用的框架&lt;/p&gt;
+&lt;p&gt;组件：模型（Models）、提示模板（Prompts）、数据检索（Indexes）、记忆（Memory）、链（Chains）、代理（Agents）&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>NLP笔记</title>
         <link>https://J-shiro.github.io/zh-cn/p/nlp%E7%AC%94%E8%AE%B0/</link>
         <pubDate>Sat, 12 Oct 2024 00:00:00 +0000</pubDate>
