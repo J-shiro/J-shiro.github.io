@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    2845 字
+                    2962 字
                 </time>
             </div>
         
@@ -473,6 +473,7 @@
 	
 ></p>
 <h3 id="词嵌入模型">词嵌入模型</h3>
+<p>将文字或词语转换为一系列数字，通常是一个向量。词嵌入类似一个为每个词分配的数字列表，这些数字不随机，而是捕获了这个词的含义和它在文本中的上下文，使得语义上相似或相关的词在数字空间中比较接近</p>
 <p><strong>词向量表示</strong></p>
 <ul>
 <li>one-hot编码两两单词相乘为0</li>
@@ -481,6 +482,8 @@
 </ul>
 <p><strong>相似度——类比推理</strong></p>
 <p>如：男生与女生对应国王和皇后，t-SAE算法以非线性方式映射到2维空间，将会把类比关系打破</p>
+<p><strong>欧氏距离</strong></p>
+<p>两个向量各个对应维度差的平方和的平方根</p>
 <p><strong>余弦相似度(相似函数)</strong></p>
 <ul>
 <li>$\arg \max sim(e_w,e_{king}-e_{man}+e_{woman})\sim(u,v)=\frac{u^Tv}{||u||_2\cdot||v||_2}$，实则求 u 和 v 之间的角$\phi$的余弦值，<code>0~180:1~-1</code></li>
@@ -880,7 +883,7 @@
         
             
         
-        共 112.78k 字 · 共 18篇文章
+        共 115.77k 字 · 共 18篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---

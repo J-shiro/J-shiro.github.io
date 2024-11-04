@@ -311,7 +311,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 92 分钟
+                    阅读时长: 96 分钟
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    45696 字
+                    47681 字
                 </time>
             </div>
         
@@ -1247,6 +1247,11 @@
 </span><span class="lnt">86
 </span><span class="lnt">87
 </span><span class="lnt">88
+</span><span class="lnt">89
+</span><span class="lnt">90
+</span><span class="lnt">91
+</span><span class="lnt">92
+</span><span class="lnt">93
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="c1">#下断点</span>
@@ -1287,6 +1292,7 @@
 </span></span><span class="line"><span class="cl"><span class="n">u</span> <span class="mh">0xabc</span> <span class="c1"># 显示汇编码</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">backtrace</span> <span class="c1"># bt显示函数调用关系</span>
+</span></span><span class="line"><span class="cl"><span class="n">k</span> <span class="c1"># 查看函数</span>
 </span></span><span class="line"><span class="cl"><span class="k">return</span> <span class="c1"># 从函数出来</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># core文件在程序段错误时会产生，通过ulimit命令开启</span>
@@ -1295,6 +1301,7 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">#寻找 &lt;正则&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="n">search</span> <span class="n">xxx</span>
+</span></span><span class="line"><span class="cl"><span class="n">search</span> <span class="o">-</span><span class="n">p</span> <span class="mh">0xabcdef</span> <span class="c1"># 寻找数据</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">x</span><span class="o">/</span><span class="mi">10</span><span class="n">gx</span> <span class="err">$</span><span class="n">rsp</span><span class="o">+</span><span class="mh">0x10</span>  <span class="c1"># 查看寄存器内容</span>
 </span></span><span class="line"><span class="cl">
@@ -1333,6 +1340,9 @@
 </span></span><span class="line"><span class="cl"><span class="n">libc</span> <span class="c1"># libc基址</span>
 </span></span><span class="line"><span class="cl"><span class="n">got</span>  <span class="c1"># 查看got表</span>
 </span></span><span class="line"><span class="cl"><span class="n">plt</span>  <span class="c1"># 查看plt表</span>
+</span></span><span class="line"><span class="cl"><span class="n">canary</span> <span class="c1"># 查看canary</span>
+</span></span><span class="line"><span class="cl"><span class="n">tls</span> <span class="c1"># 查看tls</span>
+</span></span><span class="line"><span class="cl"><span class="n">p</span> <span class="o">*</span><span class="p">(</span><span class="n">struct</span> <span class="n">pthread</span><span class="o">*</span><span class="p">)</span><span class="n">address</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nb">set</span> <span class="n">detach</span><span class="o">-</span><span class="n">on</span><span class="o">-</span><span class="n">fork</span> <span class="n">off</span> <span class="c1"># 同时调试父进程与子进程</span>
 </span></span><span class="line"><span class="cl">
@@ -1358,7 +1368,7 @@
 </span></span><span class="line"><span class="cl"><span class="c1"># n：表示要显示的内存单元个数</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># f：表示显示方式    x:十六进制    d:十进制    u:十进制无符号整型    o:八进制</span>
 </span></span><span class="line"><span class="cl"><span class="c1">#                   t:二进制    a:十六进制    i:指令地址格式    c:字符格式</span>
-</span></span><span class="line"><span class="cl"><span class="c1">#                   f:浮点数格式 c:字符串形式</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#                   f:浮点数格式 s:字符串形式</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># u：表示一个地址单元的长度    b:单字节    h:双字节    w:四字节    g:八字节</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">x/10gx address 	<span class="c1"># 一般</span>
@@ -1662,10 +1672,12 @@
 </span><span class="lnt">5
 </span><span class="lnt">6
 </span><span class="lnt">7
+</span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">-S 				<span class="c1"># 汇编</span>
 </span></span><span class="line"><span class="cl">-g 				<span class="c1"># gdb调试时显示c源代码而不是汇编代码</span>
+</span></span><span class="line"><span class="cl">-pthread		<span class="c1"># 使用多线程</span>
 </span></span><span class="line"><span class="cl">--static 		<span class="c1"># 静态链接</span>
 </span></span><span class="line"><span class="cl">-Wall -Wextra 	<span class="c1"># 开启告警</span>
 </span></span><span class="line"><span class="cl">
@@ -2326,7 +2338,7 @@
 <p><strong>The NX bits</strong></p>
 <p>No-eXecute，编译时决定是否生效，操作系统实现，在内存页的标识中增加“执行”位，可表示该内存页是否可以执行——无法向栈写shellcode，栈不可执行，无法使用shellcode，可利用ROP绕过</p>
 <p><strong>ASLR</strong></p>
-<p>Address Space Layout Randomization：地址空间分布随机化，影响ELF的加载地址，但前提是ELF开PIE</p>
+<p>Address Space Layout Randomization：地址空间分布随机化，系统级别随机化，影响ELF的加载地址，使得地址每次加载都随机不同</p>
 <p>程序装载时生效</p>
 <ul>
 <li><code>/proc/sys/kernel/randomize_va_space = 0</code>：无随机化</li>
@@ -2335,11 +2347,7 @@
 </ul>
 <p>会在For Kernel下开始偏移随机的量，使得栈的起始地址随机</p>
 <p><strong>PIE</strong></p>
-<p>position-independent executable，地址无关可执行，不开则加载到固定位置</p>
-<ul>
-<li>针对代码段（.text）、数据段（.data）、未初始化全局变量段（.bss）等固定地址的一个防护技术</li>
-<li>开启PIE保护，每次加载程序时都<strong>变换加载地址，使text、bss、data地址随机化</strong></li>
-</ul>
+<p>position-independent executable，地址无关可执行，每次加载程序时都变换加载地址，不开则加载到固定位置，针对主模块的随机，针对代码段（.text）、数据段（.data）、未初始化全局变量段（.bss）等固定地址的一个防护技术</p>
 <p>注：</p>
 <ul>
 <li>
@@ -2349,9 +2357,24 @@
 <p>绕过：部分写地址，利用栈上已有的地址，只修改最后两个字节，因为地址最后三个数字就是实际地址的最后三个数字</p>
 </li>
 </ul>
+<p><strong>区别</strong></p>
+<ul>
+<li>关闭 PIE
+<ul>
+<li>关闭 ASLR：主模块加载地址固定（0x400000）所有模块加载地址固定</li>
+<li>开启 ASLR：主模块加载地址固定（0x400000） 其他模块加载地址不固定</li>
+</ul>
+</li>
+<li>开启 PIE
+<ul>
+<li>关闭 ASLR：所有模块加载地址固定 主模块地址（主模块基址 0x55xxxxxxxxxx且固定)</li>
+<li>开启 ASLR：所有模块加载地址不固定</li>
+</ul>
+</li>
+</ul>
 <p><strong>Canary</strong></p>
 <blockquote>
-<p>有canary栈溢出无法执行，在函数入口处从fs(32位)/gs(64位)寄存器读取一个值，IDA中可分析识别出canary</p>
+<p>有canary栈溢出无法执行，在函数入口处从fs(32位)/gs(64位)寄存器偏移处读取一个值，实际读取TLS中的<code>stack_guard</code>，IDA中可分析识别出canary</p>
 </blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -2382,16 +2405,12 @@
 <td>执行ret前检查canary</td>
 </tr>
 <tr>
-<td></td>
+<td>&hellip;&hellip;</td>
 <td></td>
 </tr>
 <tr>
 <td>s</td>
 <td>esp</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
 </tr>
 </tbody>
 </table></div>
@@ -2400,7 +2419,7 @@
 <p>（Relocation Read Only：重定位表（即.got和.plt表）只读）</p>
 <p>No relro：got表可写，（<code>init.array</code>、<code>fini.array</code>、<code>got.plt</code>均可读可写）</p>
 <p>部分relro：got表可写，（<code>ini.array</code>、<code>fini.array</code>可读不可写，<code>got.plt</code>可读可写）</p>
-<p>完全relro：got表不可写，只读，无法被覆盖，大大增加程序启动时间（均不可读不可写）</p>
+<p>完全relro：got表不可写，只读，无法被覆盖，大大增加程序启动时间（均不可写）</p>
 <p><strong>RWX</strong></p>
 <p>checksec查看<strong>可读可写可执行</strong>的区域：Has RWX segments</p>
 <h3 id="问题解决">问题解决</h3>
@@ -2629,16 +2648,26 @@
 <li><code>.hash</code>节</li>
 <li><code>.dynsym</code>节</li>
 <li><code>.dynstr</code>节</li>
-<li><code>.plt</code>节</li>
+<li><code>.plt</code>节（Procedure Linkage Table, 进程链接表）：包含一些代码
+<ul>
+<li>调用链接器来解析某个外部函数的地址, 并填充到.got.plt中, 然后跳转到该函数</li>
+<li>直接在.got.plt中查找并跳转到对应外部函数(如果已经填充过)</li>
+</ul>
+</li>
 <li><code>.rel.got</code>节</li>
 </ul>
 </li>
 <li>数据段 Data Segment 包含可读可写数据
 <ul>
 <li><code>.data</code>节：已初始化的全局变量、静态变量，占用文件实际内存空间</li>
-<li><code>.dynamic</code>节：动态节，存储动态链接信息，包括动态链接器需要的重定位表、共享对象名称、版本信息等</li>
+<li><code>.dynamic</code>节：动态节，存储动态链接信息，包括动态链接器需要的重定位表位置、依赖的共享对象名称、共享对象初始化代码的地址、动态链接符号表的位置、版本信息等</li>
 <li><code>.got</code>节</li>
-<li><code>.got.plt</code>节</li>
+<li><code>.got.plt</code>节（.plt的GOT全局偏移表）：保存全局函数真实地址
+<ul>
+<li>如果在之前查找过该符号，内容为外部函数的具体地址</li>
+<li>如果没查找过, 则内容为跳转回.plt的代码, 并执行查找</li>
+</ul>
+</li>
 <li><code>.bss</code>节：（Block Started by Symbol）未初始化的全局变量和静态变量，不占用文件实际内存空间，运行才分配空间初始化为0</li>
 </ul>
 </li>
@@ -2760,9 +2789,10 @@
 <li><code>elf.symbols['system']</code> 返回的是 ELF 文件中符号表中 <code>system</code> 函数的地址。这个地址是在编译时确定的，是链接时的静态地址。在编译时，链接器会将符号解析为实际的地址。</li>
 </ol>
 </li>
-<li><strong>GOT（Global Offset Table）:</strong>
+<li><strong>GOT（Global Offset Table，全局偏移表）:</strong>
 <ol>
 <li><code>elf.got['system']</code> 返回的是 ELF 文件中的 GOT 表中 <code>system</code> 函数的入口地址。全局表存储外部函数或库函数真实地址，GOT 表中的地址是一个指针，指向共享库/动态链接器中的真实函数地址。在运行时，当程序第一次调用一个共享库中的函数时，PLT 中的代码会更新 GOT 表中的地址，将其设置为实际函数的地址</li>
+<li>保存全局变量/外部符号地址</li>
 <li>不用于直接调用，只保存了实际函数地址，不是可执行的指令，覆盖返回地址不用got表地址覆盖</li>
 <li>ELF 将 GOT 拆分成 <code>.got</code> 和 <code>.got.plt</code> ， <code>.got</code> 保存全局变量引用的地址，<code>.got.plt</code> 保存函数引用的地址</li>
 </ol>
@@ -2921,6 +2951,16 @@
 	
 ></p>
 <h4 id="静态链接">静态链接</h4>
+<p><img src="/img/pwn_note.zh-cn.assets/-172844297857412.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -2968,7 +3008,73 @@
 </div><p><strong>生成重定位表</strong></p>
 <p>每次程序地址加载变化，需要生成重定位表，以便在可执行文件在加载和执行时进行正确的符号重定位</p>
 <h4 id="动态链接">动态链接</h4>
+<p><img src="/img/pwn_note.zh-cn.assets/-172844297857413.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
 <p>运行时才链接</p>
+<p><strong>装载时重定位</strong></p>
+<p>加载时将模块中相关地址修改为正确的值，模块装载到不同位置会导致模块代码段内容改变，无法实现共享库复用，浪费内存</p>
+<p><strong>地址无关代码(PIC, Position-independent Code)</strong></p>
+<p>把指令中那些需要被修改的部分分离，与数据部分放一起，指令部分保持不变，数据部分每个进程拥有一个副本</p>
+<ul>
+<li>模块内部函数调用、数据访问：<code>[rip + xxx]</code>实现引用</li>
+<li>模块间函数调用、数据访问：数据段建立一个指向变量的指针数组<strong>全局偏移表(Global Offset Table, GOT)</strong>，
+<ul>
+<li>共享模块被加载，若某全局变量在可执行文件中拥有副本，动态链接器把GOT中相应地址指向该副本，若变量在共享模块被初始化，动态链接器需将该初始化值复制到程序主模块中的变量副本</li>
+<li>若该全局变量在主模块中无副本，GOT相应地址指向共享模块内部的该变量副本</li>
+</ul>
+</li>
+</ul>
+<p><strong>延迟绑定</strong></p>
+<ul>
+<li>
+<p>当函数第一次被用到时才由动态链接器进行绑定（符号查找、重定位等）</p>
+</li>
+<li>
+<p><code>link_map</code>：保存进程载入的动态链接库</p>
+</li>
+<li>
+<p><code>dl_runtime_resolve</code>：装载器中用于解析动态链接库中函数的实际地址的函数</p>
+</li>
+</ul>
+<p><code>.text</code>节中调用libc动态链接库中puts函数<code>call puts@plt</code>，取代码段中<code>.plt</code>节(plt表中每一项是一个调用函数的表项)</p>
+<p><strong>首次调用puts函数</strong></p>
+<ol>
+<li>跳转到<code>.plt</code>中puts表项</li>
+<li>【<code>jmp *(puts@GOT)</code>】跳转到<code>.got.plt</code>中记录的地址</li>
+<li><code>.got.plt</code>未解析该函数地址，存的是<code>.plt</code>对应函数地址【<code>puts@plt+&quot;1&quot;/6</code>】，跳回<code>.plt</code>中</li>
+<li>执行【<code>push index</code>】和【<code>jmp PLT0</code>】，index是puts在plt表中对应索引</li>
+<li>跳转到PLT0执行【<code>push *(GOT+4)</code>】，表示用到哪个动态链接库<code>link_map</code>，执行【<code>jmp *(GOT+8)</code>】跳到GOT表</li>
+<li>进入<code>_dl_runtime_resolve</code>函数解析puts函数实际地址
+<ol>
+<li>用第一个参数<code>link_map</code>访问<code>.dynamic</code>，取出<code>.dynstr, .dynsym, .rel.plt</code>指针，分别运算求出符号名字符串指针、当前符号表项指针、当前函数重定位表项指针</li>
+<li>动态链接库查找该函数地址</li>
+</ol>
+</li>
+<li>填入到<code>.got.plt</code>中</li>
+<li>调用puts函数</li>
+</ol>
+<img src="/img/pwn_note.zh-cn.assets/image-20241103171751750.png" alt="image-20241103171751750" style="zoom:67%;" />
+<p><strong>再次调用puts函数</strong></p>
+<ol>
+<li>跳转到<code>.plt</code>中puts表项</li>
+<li>跳转到<code>.got.plt</code></li>
+<li>从<code>.got.plt</code>跳转到<code>puts</code>真实地址</li>
+</ol>
+<img src="/img/pwn_note.zh-cn.assets/image-20241103171805836.png" alt="image-20241103171805836" style="zoom:67%;" />
+<p><strong>动态链接过程</strong></p>
+<ul>
+<li><strong>动态链接器自举</strong>：自身重定位，OS将进程控制权交给动态链接器，自举代码找自己的GOT，第一个入口即为<code>.dynamic</code>段，获取本身的重定位表和符号表，进行重定位</li>
+<li><strong>装载共享对象</strong>：动态链接器将可执行文件和本身符号表合并为全局符号表，然后寻找共享对象，将其名字放入装载集合中，找到相应文件读取ELF文件头和<code>.dynamic</code>段的相应代码段和数据段映射到进程空间</li>
+<li><strong>重定位和初始化</strong>：重新遍历可执行文件和每个共享对象的重定位表，修正GOT/PLT中位置；若共享对象有<code>.init</code>段，动态链接器执行实现对象中C++全局/静态对象构造初始化，<code>.fini</code>段用于进程退出实现C++全局对象析构操作，不执行进程可执行文件的<code>.init</code>段</li>
+</ul>
 <h3 id="装载">装载</h3>
 <ol>
 <li>输入<code>./elf</code>，用户层bash进程调用<code>fork()</code>系统调用创建新进程，新进程调用<code>execve()</code>系统调用执行elf文件，以全新程序替代当前运行程序；原先bash进程返回等待新进程结束后，继续等待用户命令</li>
@@ -2986,7 +3092,86 @@
 <li><code>load_XX</code>函数执行完毕返回最初<code>sys_execve()</code>返回用户态，EIP寄存器跳转到ELF程序入口地址，执行新程序</li>
 </ol>
 <h3 id="执行">执行</h3>
-<p><img src="/img/pwn_note.zh-cn.assets/-172844297857412.assets"
+<p><strong>初始化栈</strong></p>
+<ul>
+<li>OS在进程启动前将系统环境变量和进程运行参数提前保存在进程虚拟空间栈中，静态程序<code>_start</code>处寄存器基本为0，动态程序寄存器大多为垃圾数据</li>
+</ul>
+<img src="/img/pwn_note.zh-cn.assets/image-20241104201214504.png" alt="image-20241104201214504" style="zoom:50%;" />
+<ol>
+<li>
+<p>rsp指向<strong>命令行参数个数</strong>【argc】</p>
+</li>
+<li>
+<p>指向各个命令行参数字符串的指针数组【argv】，以0结尾</p>
+</li>
+<li>
+<p>指向环境变量字符串的指针数组【envp】，以0结尾</p>
+</li>
+<li>
+<p>辅助信息数组：OS将其提供给动态链接器</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint32_t</span> <span class="n">a_type</span><span class="p">;</span>      <span class="cm">/* Entry type */</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 可执行文件文件描述符，程序头表地址及每个条目大小、条目数量，页面大小，共享对象基址，OS标志位，程序入口地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">union</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    	<span class="kt">uint32_t</span> <span class="n">a_val</span><span class="p">;</span>       <span class="cm">/* Integer value */</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="n">a_un</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">Elf32_auxv_t</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<img src="/img/pwn_note.zh-cn.assets/image-20241104203131933.png" alt="image-20241104203131933"  />
+<img src="/img/pwn_note.zh-cn.assets/-172844664601225.assets" alt="img" style="zoom:67%;" />
+<ul>
+<li>
+<p>运行程序时，shell 调用  linux 系统调用 <code>execve()</code> 设置一个堆栈，将 <code>argc</code> 、 <code>argv</code> 和 <code>envp</code> 压入其中</p>
+</li>
+<li>
+<p>文件描述 0、1 和 2（<code>stdin</code> 、<code>stdout</code> 、<code>stderr</code>）保留为 shell 设置的值，动态链接器完成重定位工作</p>
+</li>
+<li>
+<p>调用 <code>_start()</code> 设置 <code>___libc_start_main</code> 函数所需参数</p>
+</li>
+<li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">STATIC</span> <span class="kt">int</span>
+</span></span><span class="line"><span class="cl"><span class="n">LIBC_START_MAIN</span> <span class="p">(</span><span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="n">main</span><span class="p">)</span> <span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">MAIN_AUXVEC_DECL</span><span class="p">),</span> <span class="c1">// main函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                 <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> 
+</span></span><span class="line"><span class="cl">                 <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                 <span class="n">__typeof</span> <span class="p">(</span><span class="n">main</span><span class="p">)</span> <span class="n">init</span><span class="p">,</span> 		<span class="c1">// main 调用前的初始化工作, 默认是 __libc_csu_init 函数指针
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                 <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">fini</span><span class="p">)</span> <span class="p">(</span><span class="kt">void</span><span class="p">),</span>		<span class="c1">// main 结束后的收尾工作, 默认是 __libc_csu_fini 函数指针
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                 <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">rtld_fini</span><span class="p">)</span> <span class="p">(</span><span class="kt">void</span><span class="p">),</span> 	<span class="c1">// 动态加载有关的收尾工作, 动态链接默认是 _dl_fini 函数指针
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                 <span class="kt">void</span> <span class="o">*</span><span class="n">stack_end</span><span class="p">)</span> 			<span class="c1">// 栈底的地址
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<p><strong>__libc_start_main</strong>：<code>csu/libc-start.c</code>中</p>
+<p><strong>__libc_csu_init</strong>： <code>csu/elf-init.c</code>中</p>
+<p>linux程序执行流程：</p>
+<p><img src="/img/pwn_note.zh-cn.assets/-172844664601226.assets"
 	
 	
 	
@@ -2996,65 +3181,26 @@
 	
 	
 ></p>
-<p><img src="/img/pwn_note.zh-cn.assets/-172844297857413.assets"
-	
-	
-	
-	loading="lazy"
-	
-		alt="img"
-	
-	
-></p>
-<p><img src="/img/pwn_note.zh-cn.assets/-172844297857415.assets"
-	
-	
-	
-	loading="lazy"
-	
-		alt="img"
-	
-	
-></p>
-<ul>
-<li><code>.dynamic</code>：保存了动态链接器所需要的基本信息，比如依赖于哪些共享对象、动态链接符号表的位置、动态链接重定位表的位置、共享对象初始化代码的地址等。</li>
-<li><code>.got</code>（Global Offset Table，全局偏移表）：保存全局变量/外部符号地址</li>
-<li><code>.got.plt</code>（.plt的GOT全局偏移表）：保存全局函数真实地址
-<ul>
-<li>如果在之前查找过该符号，内容为外部函数的具体地址</li>
-<li>如果没查找过, 则内容为跳转回.plt的代码, 并执行查找</li>
-</ul>
-</li>
-<li><code>.plt</code>（Procedure Linkage Table, 进程链接表）：包含一些代码
-<ul>
-<li>调用链接器来解析某个外部函数的地址, 并填充到.got.plt中, 然后跳转到该函数</li>
-<li>直接在.got.plt中查找并跳转到对应外部函数(如果已经填充过)</li>
-</ul>
-</li>
-</ul>
-<p><strong>动态链接过程</strong></p>
-<ol>
-<li>.text节中，调用 libc 动态链接库 中的 foo 函数<code>call foo@plt</code>；然后去代码段中的.plt节（plt表中每一项都是一个调用函数的表项）</li>
-<li>进程首次调用foo函数：
-<ol>
-<li>跳转到<code>.plt</code>中的foo表项，<code>.plt</code>中的代码立即跳转到<code>.got.plt</code>中记录的地址【<code>jmp *(foo@GOT</code>】，若<code>.got.plt</code>还未解析该函数地址，存的是<code>.plt</code>的对应函数的地址【foo@plt+&ldquo;1&rdquo;/6】，所以会跳回到<code>.plt</code>中</li>
-<li>执行<code>push index</code> 和 <code>jmp PLT0</code>，index是foo在plt表中对应的索引</li>
-<li>跳转到PLT0后执行<code>push *(GOT+4)</code> （表示用到哪个动态链接库）和 <code>jmp *(GOT+8)</code>（进入<code>dl_runtime_resolve</code>函数解析foo函数实际地址填入<code>.got.plt</code>中）</li>
-</ol>
-</li>
-<li>进程再次调用foo函数：
-<ol>
-<li>跳转到<code>.plt</code>中的foo表项，跳转到<code>.got.plt</code>，并直接从<code>.got.plt</code>跳转到foo的真实地址</li>
-</ol>
-</li>
-</ol>
+<p><strong>exit中的hook</strong>：<code>/stdlib/exit.c</code>中</p>
 <h3 id="虚拟空间">虚拟空间</h3>
 <p>虚拟内存mmap段中的动态链接库仅在物理内存中装载一份</p>
 <ul>
-<li>每个进程有自己虚拟地址空间，由连续虚拟地址组成，不直接访问物理内存地址}</li>
+<li>每个进程有自己虚拟地址空间，由连续虚拟地址组成，不直接访问物理内存地址</li>
 <li>OS将其分为多个区域【代码段：可执行程序机器指令；数据段：静态及全局变量<code>.bss .data ...</code>；动态链接段】</li>
-<li>加载器将这些短从ELF文件复制到响应虚拟内存地址，通过页表建立虚拟和物理内存地址映射关系</li>
+<li>加载器将这些短从ELF文件复制到相应虚拟内存地址，通过页表建立虚拟和物理内存地址映射关系</li>
 </ul>
+<h2 id="tls结构体">TLS结构体</h2>
+<p>线程可访问进程内存所有数据，全局变量若用<code>__thread</code>修饰则为线程私有的TLS数据，即每个线程都在自己所属TLS中单独存一份该变量副本</p>
+<p><strong>私有数据</strong>：局部变量、函数参数、TLS数据（线程局部存储Thread Local Storage）</p>
+<p><strong>共享数据</strong>：全局变量、堆上数据、函数中静态变量、程序代码、打开文件</p>
+<ul>
+<li><code>.tdata</code>节记录已初始化的 TLS 数据；<code>.tbss</code>节记录未初始化的 TLS 数据，ELF中不占空间</li>
+<li>2节加载到内存中合并为一个段程序头表中这个段的 <code>p_type</code> 为 <code>PT_TLS(7)</code></li>
+</ul>
+<p>每一个线程中每一个使用了 TLS 功能的模块都拥有一个 TLS Block，<code>dtv</code> 数组中的每一项都是 TLS Block 的入口，程序使用 <code>dlopen</code> 函数或者 <code>dlfree</code> 函数加载或者卸载一个具备 TLS 变量的模块</p>
+<img src="/img/pwn_note.zh-cn.assets/image-20241103213151137.png" alt="image-20241103213151137" style="zoom: 67%;" />
+<p><strong>主线程TLS初始化</strong>： <code>main</code> 开始前调用 <code>__libc_setup_tls</code> 初始化 TLS，遍历找到段调用<code>brk</code>为TLS数据和<code>pthread</code>结构体分配内存，然后初始化<code>dtv</code>数组，</p>
+<p><strong>创建线程时TLS初始化</strong>：<code>pthread_create</code> 调用 <code>__pthread_create_2_1</code> 函数，该函数中调用<code>allocate_stack</code>中的<code>mmap</code> 为线程分配栈空间，初始化栈底为一个 <code>pthread</code> 结构体并将指针 <code>pd</code> 指向该结构体。最后调用 <code>_dl_allocate_tls</code> 函数为 TCB 创建 <code>dtv</code> 数组， fs 寄存器不能在用户态修改</p>
 <h2 id="终端处理">终端处理</h2>
 <p>① 只有<code>echo</code>命令</p>
 <div class="highlight"><div class="chroma">
@@ -5771,27 +5917,6 @@
 	
 	
 ></p>
-<p><img src="/img/pwn_note.zh-cn.assets/-172844664601225.assets"
-	
-	
-	
-	loading="lazy"
-	
-		alt="img"
-	
-	
-></p>
-<p>linux程序执行流程：</p>
-<p><img src="/img/pwn_note.zh-cn.assets/-172844664601226.assets"
-	
-	
-	
-	loading="lazy"
-	
-		alt="img"
-	
-	
-></p>
 <p><strong>全局变量</strong></p>
 <p>当存在<strong>比较时</strong>可判断该变量是否为全局变量(<code>i</code>)，一般在bss段，若是则可以直接获取其地址进行格式化字符串覆盖绕过<strong>比较</strong></p>
 <div class="highlight"><div class="chroma">
@@ -7923,7 +8048,7 @@
         
             
         
-        共 112.78k 字 · 共 18篇文章
+        共 115.77k 字 · 共 18篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -8173,6 +8298,7 @@
         <li><a href="#虚拟空间">虚拟空间</a></li>
       </ol>
     </li>
+    <li><a href="#tls结构体">TLS结构体</a></li>
     <li><a href="#终端处理">终端处理</a></li>
     <li><a href="#随机数">随机数</a>
       <ol>
