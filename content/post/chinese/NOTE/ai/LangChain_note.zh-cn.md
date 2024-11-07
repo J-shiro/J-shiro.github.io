@@ -117,6 +117,31 @@ input = prompt.format(something=["XX"], price="50")
 model.invoke(input)
 ```
 
+**Llama模型**
+
+```python
+# HuggingFace 调用Llama
+from transformers import AutoTokenizer, AutoModelForCausalLM
+
+# 分词器
+tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-chat-hf")
+
+# device_map 将预训练模型自动加载到可用的硬件设备上
+model = AutoModelForCausalLM.from_pretrained(
+          "meta-llama/Llama-2-7b-chat-hf", 
+          device_map = 'auto')  
+
+# 分词器将提示转化为模型可以理解的格式并将其移动到GPU上, pt返回PyTorch张量
+prompt = "xxx?"
+inputs = tokenizer(prompt, return_tensors="pt").to("cuda")
+
+outputs = model.generate(inputs["input_ids"], max_new_tokens=2000)
+# 令牌解码成文本
+response = tokenizer.decode(outputs[0], skip_special_tokens=True)
+```
+
+
+
 ### 输出解析
 
 言语转换为结构化的数据结构
@@ -144,6 +169,8 @@ parsed_output["xxx"] = 'xxx' #也可直接赋值加入内容
 # {'description': 'xxxx', 'reason': 'xxxxx', 'xxx': 'xxx'}
 ```
 
+**Pydantic（JSON）解析器**
+
 ## 提示工程
 
 **提示框架**，LangChain中提供String（StringPromptTemplate）和Chat（BaseChatPromptTemplate）两种基本类型模板
@@ -153,15 +180,93 @@ parsed_output["xxx"] = 'xxx' #也可直接赋值加入内容
 - 提示输入prompt input：具体问题变量
 - 输出指示器output indicator：标记要生成的文本的开始
 
+### 提示模版类型
+
+**① PromptTemplate**
+
 ```python
-# PromptTemplate 提示模板类的构造函数
+from langchain import PromptTemplate
+# 常用String提示模版
+template = """xx{product}xxx"""
+prompt = PromptTemplate.from_template(template)
+print(prompt.format(product="input_something"))
+
+# 提示模板类的构造函数
 prompt = PromptTemplate(
-    input_variables=["test2", "test1"], 
-    template="你是xxx, 对于{arg1}的{arg2}, xxx?"
+    input_variables=["test1", "test2"], 
+    template="你是xxx, 对于{test1}的{test2}, xxx?"
 )
-print(prompt.format(test2="xx", test1="xx"))
-
-# ChatPromptTemplate
-
+print(prompt.format(test1="xx", test2="xx"))
 ```
+
+**② ChatPromptTemplate**
+
+```python
+# 常用Chat提示模板, 组合各种角色消息模板
+
+# 模板的构建
+system_template = "xx{product}xx"
+system_message_prompt = SystemMessagePromptTemplate.from_template(system_template)
+
+human_template = "xxx{product_detail}。"
+human_message_prompt = HumanMessagePromptTemplate.from_template(human_template)
+
+prompt_template = ChatPromptTemplate.from_messages(
+    [system_message_prompt, human_message_prompt]
+)
+
+# 格式化提示消息生成提示
+prompt = prompt_template.format_prompt(
+    product="xxx", product_detail="xxx"
+).to_messages()
+```
+
+**③ FewShotPromptTemplate**
+
+- 少样本提示模板，模仿示例写出新文案
+
+- Few-Shot(少样本)、One-Shot(单样本)、 Zero-Shot(零样本)：让机器学习模型在极少量甚至无示例情况下学习到新概念或类别
+
+```python
+# 创建示例样本
+samples = [
+	{
+		"key1": "xx",
+		"key2": "yy"
+	},
+	{
+		"key1": "zz",
+		"key2": "qq"
+	}
+]
+
+# 创建提示模板
+template="键1: {key1}\n 键2: {key2}"
+prompt_sample = PromptTemplate(input_variables=["key1", "key2"], template = template)
+
+# 创建FewShotPromptTemplate对象
+prompt = FewShotPromptTemplate(
+	examples = samples,
+    example_prompt=prompt_sample,
+    suffix="{key1}{key2}",
+    input_variables=["key1", "key2"]
+)
+```
+
+### CoT
+
+- 思维链，Chain of Thought，用于引导模型推理
+- Few-Shot CoT提示中提供CoT示例，Zero-Shot CoT让模型一步一步思考
+
+```python
+cot_template = """将包含一些对话推导示例"""
+system_prompt_cot = SystemMessagePromptTemplate.from_template(cot_template)
+```
+
+### TOT
+
+- 思维树，Tree of Thoughts
+- 为任务定义具体思维步骤及每个步骤候选项数量
+
+![image-20241106201642021](/img/LangChain_note.zh-cn.assets/image-20241106201642021.png)
 

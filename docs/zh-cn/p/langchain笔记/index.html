@@ -311,7 +311,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 2 分钟
+                    阅读时长: 4 分钟
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    1000 字
+                    1656 字
                 </time>
             </div>
         
@@ -509,6 +509,49 @@
 </span></span><span class="line"><span class="cl"><span class="n">model</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
 </span></span></code></pre></td></tr></table>
 </div>
+</div><p><strong>Llama模型</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># HuggingFace 调用Llama</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">AutoModelForCausalLM</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 分词器</span>
+</span></span><span class="line"><span class="cl"><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&#34;meta-llama/Llama-2-7b-chat-hf&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># device_map 将预训练模型自动加载到可用的硬件设备上</span>
+</span></span><span class="line"><span class="cl"><span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;meta-llama/Llama-2-7b-chat-hf&#34;</span><span class="p">,</span> 
+</span></span><span class="line"><span class="cl">          <span class="n">device_map</span> <span class="o">=</span> <span class="s1">&#39;auto&#39;</span><span class="p">)</span>  
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 分词器将提示转化为模型可以理解的格式并将其移动到GPU上, pt返回PyTorch张量</span>
+</span></span><span class="line"><span class="cl"><span class="n">prompt</span> <span class="o">=</span> <span class="s2">&#34;xxx?&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">inputs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&#34;pt&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&#34;cuda&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&#34;input_ids&#34;</span><span class="p">],</span> <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 令牌解码成文本</span>
+</span></span><span class="line"><span class="cl"><span class="n">response</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">skip_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
 </div><h3 id="输出解析">输出解析</h3>
 <p>言语转换为结构化的数据结构</p>
 <div class="highlight"><div class="chroma">
@@ -557,7 +600,8 @@
 </span></span><span class="line"><span class="cl"><span class="c1"># {&#39;description&#39;: &#39;xxxx&#39;, &#39;reason&#39;: &#39;xxxxx&#39;, &#39;xxx&#39;: &#39;xxx&#39;}</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="提示工程">提示工程</h2>
+</div><p><strong>Pydantic（JSON）解析器</strong></p>
+<h2 id="提示工程">提示工程</h2>
 <p><strong>提示框架</strong>，LangChain中提供String（StringPromptTemplate）和Chat（BaseChatPromptTemplate）两种基本类型模板</p>
 <ul>
 <li>指令instruction：告诉模型任务做啥，怎么做</li>
@@ -565,29 +609,171 @@
 <li>提示输入prompt input：具体问题变量</li>
 <li>输出指示器output indicator：标记要生成的文本的开始</li>
 </ul>
+<h3 id="提示模版类型">提示模版类型</h3>
+<p><strong>① PromptTemplate</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">langchain</span> <span class="kn">import</span> <span class="n">PromptTemplate</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 常用String提示模版</span>
+</span></span><span class="line"><span class="cl"><span class="n">template</span> <span class="o">=</span> <span class="s2">&#34;&#34;&#34;xx</span><span class="si">{product}</span><span class="s2">xxx&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">prompt</span> <span class="o">=</span> <span class="n">PromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">prompt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">product</span><span class="o">=</span><span class="s2">&#34;input_something&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 提示模板类的构造函数</span>
+</span></span><span class="line"><span class="cl"><span class="n">prompt</span> <span class="o">=</span> <span class="n">PromptTemplate</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">input_variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&#34;test1&#34;</span><span class="p">,</span> <span class="s2">&#34;test2&#34;</span><span class="p">],</span> 
+</span></span><span class="line"><span class="cl">    <span class="n">template</span><span class="o">=</span><span class="s2">&#34;你是xxx, 对于</span><span class="si">{test1}</span><span class="s2">的</span><span class="si">{test2}</span><span class="s2">, xxx?&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">prompt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">test1</span><span class="o">=</span><span class="s2">&#34;xx&#34;</span><span class="p">,</span> <span class="n">test2</span><span class="o">=</span><span class="s2">&#34;xx&#34;</span><span class="p">))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>② ChatPromptTemplate</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 常用Chat提示模板, 组合各种角色消息模板</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 模板的构建</span>
+</span></span><span class="line"><span class="cl"><span class="n">system_template</span> <span class="o">=</span> <span class="s2">&#34;xx</span><span class="si">{product}</span><span class="s2">xx&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">system_message_prompt</span> <span class="o">=</span> <span class="n">SystemMessagePromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span><span class="n">system_template</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">human_template</span> <span class="o">=</span> <span class="s2">&#34;xxx</span><span class="si">{product_detail}</span><span class="s2">。&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">human_message_prompt</span> <span class="o">=</span> <span class="n">HumanMessagePromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span><span class="n">human_template</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">prompt_template</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span><span class="n">system_message_prompt</span><span class="p">,</span> <span class="n">human_message_prompt</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 格式化提示消息生成提示</span>
+</span></span><span class="line"><span class="cl"><span class="n">prompt</span> <span class="o">=</span> <span class="n">prompt_template</span><span class="o">.</span><span class="n">format_prompt</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">product</span><span class="o">=</span><span class="s2">&#34;xxx&#34;</span><span class="p">,</span> <span class="n">product_detail</span><span class="o">=</span><span class="s2">&#34;xxx&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span><span class="o">.</span><span class="n">to_messages</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>③ FewShotPromptTemplate</strong></p>
+<ul>
+<li>
+<p>少样本提示模板，模仿示例写出新文案</p>
+</li>
+<li>
+<p>Few-Shot(少样本)、One-Shot(单样本)、 Zero-Shot(零样本)：让机器学习模型在极少量甚至无示例情况下学习到新概念或类别</p>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 创建示例样本</span>
+</span></span><span class="line"><span class="cl"><span class="n">samples</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="s2">&#34;key1&#34;</span><span class="p">:</span> <span class="s2">&#34;xx&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="s2">&#34;key2&#34;</span><span class="p">:</span> <span class="s2">&#34;yy&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">},</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="s2">&#34;key1&#34;</span><span class="p">:</span> <span class="s2">&#34;zz&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="s2">&#34;key2&#34;</span><span class="p">:</span> <span class="s2">&#34;qq&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建提示模板</span>
+</span></span><span class="line"><span class="cl"><span class="n">template</span><span class="o">=</span><span class="s2">&#34;键1: </span><span class="si">{key1}</span><span class="se">\n</span><span class="s2"> 键2: </span><span class="si">{key2}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">prompt_sample</span> <span class="o">=</span> <span class="n">PromptTemplate</span><span class="p">(</span><span class="n">input_variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&#34;key1&#34;</span><span class="p">,</span> <span class="s2">&#34;key2&#34;</span><span class="p">],</span> <span class="n">template</span> <span class="o">=</span> <span class="n">template</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建FewShotPromptTemplate对象</span>
+</span></span><span class="line"><span class="cl"><span class="n">prompt</span> <span class="o">=</span> <span class="n">FewShotPromptTemplate</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">	<span class="n">examples</span> <span class="o">=</span> <span class="n">samples</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">example_prompt</span><span class="o">=</span><span class="n">prompt_sample</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">suffix</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">{key1}{key2}</span><span class="s2">&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">input_variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&#34;key1&#34;</span><span class="p">,</span> <span class="s2">&#34;key2&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="cot">CoT</h3>
+<ul>
+<li>思维链，Chain of Thought，用于引导模型推理</li>
+<li>Few-Shot CoT提示中提供CoT示例，Zero-Shot CoT让模型一步一步思考</li>
+</ul>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># PromptTemplate 提示模板类的构造函数</span>
-</span></span><span class="line"><span class="cl"><span class="n">prompt</span> <span class="o">=</span> <span class="n">PromptTemplate</span><span class="p">(</span>
-</span></span><span class="line"><span class="cl">    <span class="n">input_variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&#34;test2&#34;</span><span class="p">,</span> <span class="s2">&#34;test1&#34;</span><span class="p">],</span> 
-</span></span><span class="line"><span class="cl">    <span class="n">template</span><span class="o">=</span><span class="s2">&#34;你是xxx, 对于</span><span class="si">{arg1}</span><span class="s2">的</span><span class="si">{arg2}</span><span class="s2">, xxx?&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">prompt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">test2</span><span class="o">=</span><span class="s2">&#34;xx&#34;</span><span class="p">,</span> <span class="n">test1</span><span class="o">=</span><span class="s2">&#34;xx&#34;</span><span class="p">))</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># ChatPromptTemplate</span>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">cot_template</span> <span class="o">=</span> <span class="s2">&#34;&#34;&#34;将包含一些对话推导示例&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">system_prompt_cot</span> <span class="o">=</span> <span class="n">SystemMessagePromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span><span class="n">cot_template</span><span class="p">)</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div>
+</div><h3 id="tot">TOT</h3>
+<ul>
+<li>思维树，Tree of Thoughts</li>
+<li>为任务定义具体思维步骤及每个步骤候选项数量</li>
+</ul>
+<p><img src="/img/LangChain_note.zh-cn.assets/image-20241106201642021.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20241106201642021"
+	
+	
+></p>
+
 </section>
 
 
@@ -799,7 +985,7 @@
         
             
         
-        共 115.77k 字 · 共 18篇文章
+        共 121.22k 字 · 共 18篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -1003,7 +1189,13 @@
         <li><a href="#输出解析">输出解析</a></li>
       </ol>
     </li>
-    <li><a href="#提示工程">提示工程</a></li>
+    <li><a href="#提示工程">提示工程</a>
+      <ol>
+        <li><a href="#提示模版类型">提示模版类型</a></li>
+        <li><a href="#cot">CoT</a></li>
+        <li><a href="#tot">TOT</a></li>
+      </ol>
+    </li>
   </ol>
 </nav>
         </div>
