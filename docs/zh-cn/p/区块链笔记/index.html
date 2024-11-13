@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    237 字
+                    233 字
                 </time>
             </div>
         
@@ -345,14 +345,66 @@
 <p><strong>交易</strong></p>
 <p><code>Transaction Fee</code>：付给处理此次交易的矿工的费用</p>
 <p><code>Gas Price</code>：交易中每个执行单元的费用</p>
-<p><strong>运作机制</strong>**<code>https://andersbrownworth.com/blockchain/hash</code>**</p>
+<p><strong>运作机制</strong></p>
+<p><code>https://andersbrownworth.com/blockchain/hash</code></p>
 <ul>
 <li>使用<strong>Keccak256</strong>哈希算法</li>
 <li>矿工(miner)：将不断试错找到一个<code>Nonce</code>来使得<code>Block</code>、<code>Nonce</code>以及<code>Data</code>进行哈希后以<code>0000</code>开头</li>
 <li><strong>ECDSA算法</strong>根据<strong>私钥</strong>创建<strong>公钥</strong>，私钥创建签名**，**公钥验证签名</li>
 <li><strong>账户地址</strong>由公钥衍生出来</li>
 </ul>
-
+<h2 id="solidity">Solidity</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-solidity" data-lang="solidity"><span class="line"><span class="cl"><span class="k">pragma solidity</span> <span class="o">^</span><span class="mi">0</span><span class="p">.</span><span class="mi">4</span><span class="p">.</span><span class="n">xx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">contract</span> <span class="nc">xxx</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">xxxx</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="工具">工具</h2>
+<h3 id="solc-select">solc-select</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pip3 install solc-select
+</span></span><span class="line"><span class="cl">solc-select install 0.x.xx
+</span></span><span class="line"><span class="cl">solc-select use 0.x.xx
+</span></span><span class="line"><span class="cl">solc --version
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="mythril">Mythril</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">myth analyze contract.sol
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="slither">Slither</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">slither contract.sol --json res.json
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 
@@ -564,7 +616,7 @@
         
             
         
-        共 122.59k 字 · 共 18篇文章
+        共 128.93k 字 · 共 18篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -761,6 +813,14 @@
             <nav id="TableOfContents">
   <ol>
     <li><a href="#基础知识">基础知识</a></li>
+    <li><a href="#solidity">Solidity</a></li>
+    <li><a href="#工具">工具</a>
+      <ol>
+        <li><a href="#solc-select">solc-select</a></li>
+        <li><a href="#mythril">Mythril</a></li>
+        <li><a href="#slither">Slither</a></li>
+      </ol>
+    </li>
   </ol>
 </nav>
         </div>

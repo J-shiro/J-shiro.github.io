@@ -33,9 +33,52 @@ Web3
 
 `Gas Price`：交易中每个执行单元的费用
 
-**运作机制****`https://andersbrownworth.com/blockchain/hash`**
+**运作机制**
+
+`https://andersbrownworth.com/blockchain/hash`
 
 - 使用**Keccak256**哈希算法
 - 矿工(miner)：将不断试错找到一个`Nonce`来使得`Block`、`Nonce`以及`Data`进行哈希后以`0000`开头
 - **ECDSA算法**根据**私钥**创建**公钥**，私钥创建签名**，**公钥验证签名
 - **账户地址**由公钥衍生出来
+
+## Solidity
+
+```solidity
+pragma solidity ^0.4.xx;
+
+contract xxx {
+	xxxx
+}
+```
+
+
+
+## 工具
+
+### solc-select
+
+```bash
+pip3 install solc-select
+solc-select install 0.x.xx
+solc-select use 0.x.xx
+solc --version
+```
+
+
+
+### Mythril
+
+```bash
+myth analyze contract.sol
+```
+
+
+
+### Slither
+
+```bash
+slither contract.sol --json res.json
+```
+
+
