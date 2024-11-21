@@ -345,7 +345,7 @@ system_prompt_cot = SystemMessagePromptTemplate.from_template(cot_template)
 
 老版本存在多种调用
 
-```
+```python
 result = llm_chain(dict) # __call__直接调用
 llm_chain.run() # run调用
 result = llm_chain.predict(xx="xx") # predict调用
@@ -621,3 +621,239 @@ agent = PlanAndExecute(planner=planner, executor=executor, verbose=True)
 
 agent.invoke("xx?")
 ```
+
+**工具**
+
+```python
+tools = load_tools(["arxiv"],) # 论文研究
+```
+
+### 自治代理
+
+**Auto-GPT**
+
+- 互联网集成、实时数据访问、自我提示，短期记忆保存上下文，多模态可处理文本、图像
+
+## RAG
+
+Retrieval-Augmented Generation，检索增强生成
+
+- **检索**：对于给定的输入从大型文档集合中查找文档，基于密集向量搜索
+- **上下文编码**：将文档与原始输入一起编码
+- **生成**：模型生成输出
+
+### 文档加载
+
+```python
+# TextLoader
+loader = TextLoader("./x.txt", encoding="utf8")
+# CSVLoader
+# HTMLLoader
+# JSONLoader
+# MarkdownLoader
+# PDFLoader
+```
+
+### 文本转换
+
+长文档分割成小的块，适合模型的上下文窗口
+
+### 文本分割器
+
+1. 将文本分成小的、有语义意义的块（句子），将小块组合成更大的块直到达到一定大小形成块
+2. 创建新的文本块与块有重叠来保持块之间上下文
+
+### 文本嵌入
+
+LLM来对文本块做嵌入（Embeddings），创建一段文本的向量表示，使可以在向量空间中思考文本并执行语义搜索操作，在向量空间查找最相似的文本片段
+
+Langchain中Embeddings类设计用于与文本嵌入模型交互
+
+```python
+from langchain_community.embeddings import OpenAIEmbeddings
+embeddings_model = OpenAIEmbeddings()
+```
+
+- `embed_documents`方法：为文档创建嵌入，接收多个文本输入，一次性将文档转换为向量表示
+
+- ```python
+  embeddings = embeddings_model.embed_documents(
+  	[
+  		"a",
+  		"b",
+  		"c",
+  	]
+  ) # return [1,2,3,4]
+  ```
+
+  
+
+- `embed_query`方法：为查询创建嵌入，接收一个文本作为输入，为用户的搜索查询
+
+- ```python
+  embedded_query = embeddings_model.embed_query("a?")
+  ```
+
+### 存储嵌入
+
+**缓存存储**：CacheBackedEmbeddings是一个支持缓存的嵌入式包装器，嵌入缓存在键值存储中：对文本进行哈希处理作为键
+
+**缓存策略**
+
+- InMemoryStore：内存中缓存，用于单元测试
+- LocalFileStore：本地文件系统存储
+- RedisStore：在Redis数据库中缓存嵌入，高速可扩展
+
+```python
+store = InMemoryStore()
+embedder = CacheBackedEmbeddings.from_bytes_store(
+	underlying_embeddings, # 实际生成文本嵌入的工具
+    store, # 嵌入的缓存位置
+    namespace=underlying_embeddings.model # 嵌入缓存的命名空间
+)
+embeddings = embdder.embed_documents(["first", "second"]) # embbeder为文本生成嵌入，结果向量存储在内存存储中
+```
+
+**向量存储**：通过向量数据库（Vector Store）保存
+
+### 数据检索
+
+通过非结构化查询返回相关文档，向量存储检索器支持向量检索
+
+```python
+index = VectorstoreIndexCreator(embedding=embeddings).from_loaders([loader])
+# 创建索引来查询检索
+query = "xxx是什么？"
+result = index.query(llm=llm, question=query)
+```
+
+## 回调
+
+**回调函数**
+
+函数A作为参数传给函数B，在函数B内部调用执行A，常用于处理异步操作
+
+**异步操作**
+
+```python
+import asyncio
+
+async def main():
+	task1 = asyncio.create_task(xx)
+	await task1
+
+asyncio.run(main())
+```
+
+事件触发时`CallbackManager`会在处理器上调用适当方法，可通过`BaseCallbackHandler`和`AsyncCallbackHandler`来自定义回调函数
+
+```python
+# 创建同步回调处理器
+class MySyncHandler(BaseCallbackHandler):
+    def on_llm_new_token(self, token: str, **kwargs) -> None:
+        print(f"获取数据: token: {token}") # 新 token 生成时打印
+
+# 创建异步回调处理器
+class MyAsyncHandler(AsyncCallbackHandler):
+    async def on_llm_start(self, serialized: Dict[str, Any], prompts: List[str], **kwargs: Any) -> None:
+        ... # 开始时调用
+
+    async def on_llm_end(self, response: LLMResult, **kwargs: Any) -> None:
+        ... # 结束时调用
+
+# 主要的异步函数
+async def main():
+    mychat = ChatOpenAI(
+        model='xxx',
+        max_tokens=100,
+        streaming=True,
+        callbacks=[MyFlowerShopSyncHandler(), MyFlowerShopAsyncHandler()],
+    )
+    # 异步生成聊天回复
+    await mychat.agenerate([[HumanMessage(content="xx？")]])
+
+# 运行主异步函数
+asyncio.run(main())
+```
+
+**令牌计数器**
+
+`get_openai_callback`上下文管理器，监控与AI交互的token数量
+
+```python
+# 初始化对话链
+conversation = ConversationChain(llm=llm, memory=ConversationBufferMemory())
+
+# 使用context manager进行token counting
+with get_openai_callback() as cb:
+    conversation("1")
+    conversation("2")
+
+print("\n总计使用的tokens:", cb.total_tokens)
+```
+
+**异步交互令牌计数**
+
+```python
+async def A():
+    with get_openai_callback() as cb:
+        await asyncio.gather( # await挂起执行
+            # 3 个异步调用llm.agenerate(...)
+            *[llm.agenerate(messages=[[HumanMessage(content="aaaa?")]]) for _ in range(3)]
+        )
+    print(cb.total_tokens)
+
+asyncio.run(A())
+```
+
+
+
+## 应用
+
+### 数据库应用
+
+**Chain 查询**
+
+```python
+db = SQLDatabase.from_uri("sqlite:///test.db") # 连接数据库
+# 温度0: 模型输出更具确定性
+llm = ChatOpenAI(model=os.environ["LLM_MODELEND"], temperature=0, verbose=True)
+db_chain = SQLDatabaseChain.from_llm(llm, db, verbose=True)
+response = db_chain.run("xxx？")
+```
+
+**Agent 查询数据库**：具有纠错能力
+
+```python
+db = SQLDatabase.from_uri("sqlite:///test.db")
+llm = ...
+# 创建SQL Agent
+agent_executor = create_sql_agent(
+    llm=llm,
+    toolkit=SQLDatabaseToolkit(db=db, llm=llm),
+    verbose=True,
+    agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+)
+
+questions = ["q1?","q2?",]
+
+for question in questions:
+    response = agent_executor.invoke(question)
+```
+
+### CAMEL
+
+CAMEL交流式代理框架通过角色扮演、启示式提示框架来引导代理交流过程
+
+```python
+# 生成系统消息
+assistant_sys_template = SystemMessagePromptTemplate.from_template(
+    template=assistant_inception_prompt
+)
+assistant_sys_msg = assistant_sys_template.format_messages(
+    assistant_role_name='xxx',
+    user_role_name='yyy',
+    task=task,
+)[0]
+```
+

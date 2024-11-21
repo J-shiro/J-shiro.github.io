@@ -12,33 +12,8 @@
         <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
         
         <guid>https://J-shiro.github.io/zh-cn/p/fuzzing%E7%AC%94%E8%AE%B0/</guid>
-        <description>&lt;img src="https://J-shiro.github.io/img/note.jpg" alt="Featured image of post Fuzzing笔记" /&gt;&lt;p&gt;模糊测试&lt;strong&gt;通用流程&lt;/strong&gt;：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;被测系统要动态运行，被测工具和被测系统建立联系&lt;/li&gt;
-&lt;li&gt;测试工具根据变异算法对原始测试用例进行变异&lt;/li&gt;
-&lt;li&gt;测试工具将生成的测试用例发送给被测系统的入口&lt;/li&gt;
-&lt;li&gt;测试工具监控被测系统的运行状态&lt;/li&gt;
-&lt;li&gt;测试工具若发现缺陷，记录&lt;/li&gt;
-&lt;li&gt;重复直至测试结束&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;过程：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;种子选择&lt;/li&gt;
-&lt;li&gt;随机变异&lt;/li&gt;
-&lt;li&gt;覆盖&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;&lt;strong&gt;框架&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;fuzz首先读取种子内容，让目标程序运行解析&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;变异样本&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;对已知输入样本修改，产生新的、可能触发程序异常的输入&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;变异策略&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;翻转：将二进制随机一个比特位01变化&lt;/p&gt;
-&lt;h2 id=&#34;基础知识&#34;&gt;基础知识&lt;/h2&gt;
-&lt;h2 id=&#34;魔数&#34;&gt;魔数&lt;/h2&gt;
-&lt;p&gt;文件格式都有所谓的魔数，即文件开头的特定字节序列，标识文件格式&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;jpg文件格式&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;开头为&lt;code&gt;FFD8&lt;/code&gt;，结尾为&lt;code&gt;FFD9&lt;/code&gt;&lt;/p&gt;
-&lt;h2 id=&#34;afl&#34;&gt;AFL++&lt;/h2&gt;
+        <description>&lt;img src="https://J-shiro.github.io/img/note.jpg" alt="Featured image of post Fuzzing笔记" /&gt;&lt;h2 id=&#34;工具&#34;&gt;工具&lt;/h2&gt;
+&lt;h3 id=&#34;afl&#34;&gt;AFL++&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;编译&lt;/strong&gt;获取可被测试的程序&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -74,7 +49,13 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;可在&lt;code&gt;crashes&lt;/code&gt;目录中查看成功测试&lt;/p&gt;
-&lt;h2 id=&#34;浏览器fuzz&#34;&gt;浏览器fuzz&lt;/h2&gt;
+&lt;h2 id=&#34;图片&#34;&gt;图片&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;魔数&lt;/strong&gt;：文件格式都有所谓的魔数，即文件开头的特定字节序列，标识文件格式&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;jpg文件格式&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;开头为&lt;code&gt;FFD8&lt;/code&gt;，结尾为&lt;code&gt;FFD9&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;变异策略&#34;&gt;变异策略&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;翻转&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;浏览器&#34;&gt;浏览器&lt;/h2&gt;
 &lt;h3 id=&#34;chrome架构&#34;&gt;Chrome架构&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;浏览器漏洞分类：RCE、Sandbox Escape&lt;/li&gt;
