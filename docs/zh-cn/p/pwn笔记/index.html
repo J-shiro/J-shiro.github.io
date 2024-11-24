@@ -311,7 +311,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 126 分钟
+                    阅读时长: 122 分钟
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    62795 字
+                    60785 字
                 </time>
             </div>
         
@@ -8767,77 +8767,7 @@
 	
 	
 ></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">static</span> <span class="kt">void</span>
-</span></span><span class="line"><span class="cl"><span class="nf">tcache_init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="n">mstate</span> <span class="n">ar_ptr</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">  <span class="kt">void</span> <span class="o">*</span><span class="n">victim</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">  <span class="k">const</span> <span class="n">size_t</span> <span class="n">bytes</span> <span class="o">=</span> <span class="k">sizeof</span> <span class="p">(</span><span class="n">tcache_perthread_struct</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"> 
-</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">tcache_shutting_down</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"> 
-</span></span><span class="line"><span class="cl">  <span class="n">arena_get</span> <span class="p">(</span><span class="n">ar_ptr</span><span class="p">,</span> <span class="n">bytes</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">  <span class="n">victim</span> <span class="o">=</span> <span class="n">_int_malloc</span> <span class="p">(</span><span class="n">ar_ptr</span><span class="p">,</span> <span class="n">bytes</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">victim</span> <span class="o">&amp;&amp;</span> <span class="n">ar_ptr</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="n">ar_ptr</span> <span class="o">=</span> <span class="n">arena_get_retry</span> <span class="p">(</span><span class="n">ar_ptr</span><span class="p">,</span> <span class="n">bytes</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">      <span class="n">victim</span> <span class="o">=</span> <span class="n">_int_malloc</span> <span class="p">(</span><span class="n">ar_ptr</span><span class="p">,</span> <span class="n">bytes</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl"> 
-</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">ar_ptr</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="n">__libc_lock_unlock</span> <span class="p">(</span><span class="n">ar_ptr</span><span class="o">-&gt;</span><span class="n">mutex</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"> 
-</span></span><span class="line"><span class="cl">  <span class="cm">/* In a low memory situation, we may not be able to allocate memory
-</span></span></span><span class="line"><span class="cl"><span class="cm">     - in which case, we just keep trying later.  However, we
-</span></span></span><span class="line"><span class="cl"><span class="cm">     typically do this very early, so either there is sufficient
-</span></span></span><span class="line"><span class="cl"><span class="cm">     memory, or there isn&#39;t enough memory to do non-trivial
-</span></span></span><span class="line"><span class="cl"><span class="cm">     allocations anyway.  */</span>
-</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">victim</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="n">tcache</span> <span class="o">=</span> <span class="p">(</span><span class="n">tcache_perthread_struct</span> <span class="o">*</span><span class="p">)</span> <span class="n">victim</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">      <span class="n">memset</span> <span class="p">(</span><span class="n">tcache</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span> <span class="p">(</span><span class="n">tcache_perthread_struct</span><span class="p">));</span> <span class="c1">// 初始化为0
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>stash机制</strong></p>
+<p><strong>stash机制</strong></p>
 <p>申请在tcache范围时，先tcache直到空，再去bin找；tcache为空，ptmalloc在其他bin中找，若fastbin/smallbin/unsorted bin有size符合的chunk，填入tcache直到塞满，之后从tcache中取或直接返回找到的chunk（<strong>此时chunk在bin中和tcache中顺序颠倒</strong>）</p>
 <p><strong>安全检查</strong></p>
 <ul>
@@ -8867,6 +8797,124 @@
 <li>large bin最小的一组chunk中的第一个chunk的<code>fd_nextsize</code>连接最大的chunk，最大的chunk的<code>bk_nextsize</code>相反</li>
 </ul>
 <img src="/img/pwn_note.zh-cn.assets/image-20241118201403530.png" alt="image-20241118201403530" style="zoom:80%;" />
+<h3 id="unlink">Unlink</h3>
+<ul>
+<li><strong>条件</strong>：有堆溢出或off by null，且可以泄露出指针数组地址</li>
+<li><code>free</code>时和目前<strong>物理相邻的 free chunk 合并为新堆块</strong>，避免碎片化内存，将某一个空闲 chunk 从其所处的双向链表中脱链</li>
+<li><strong>释放堆时会判断当前 chunk 的相邻 chunk 是否为空闲状态，若是则会进行堆合并。合并时会将空闲 chunk 从 bin 中 unlink，并将合并后的 chunk 添加到 unsorted bin 中。堆合并分为向前合并和向后合并</strong></li>
+</ul>
+<p><strong>漏洞点：堆溢出</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="o">*</span><span class="p">(</span><span class="o">&amp;</span><span class="n">RecordList</span> <span class="o">+</span> <span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="n">v1</span><span class="p">);</span> <span class="c1">// v1 &lt; 0x81 Create函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">read</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="o">&amp;</span><span class="n">RecordList</span> <span class="o">+</span> <span class="n">v1</span><span class="p">),</span> <span class="mh">0x100uLL</span><span class="p">);</span> <span class="c1">// change函数
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>溢出长度足够大，在已申请的堆中<strong>伪造一块已经释放过的堆</strong>，当free其前或后面的堆块时会触发unlink，使得伪造的部分会指向一个我们指定的地方，允许我们修改</p>
+<p><strong>绕过</strong></p>
+<p><strong>2.23</strong></p>
+<ol>
+<li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">if</span><span class="p">(</span><span class="n">__builtin_expect</span><span class="p">(</span><span class="n">FD</span><span class="o">-&gt;</span><span class="n">bk</span> <span class="o">!=</span> <span class="n">P</span> <span class="o">||</span> <span class="n">BK</span><span class="o">-&gt;</span><span class="n">fd</span> <span class="o">!=</span> <span class="n">P</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>伪造fake chunk，将指针数组作为chunk绕过</p>
+</li>
+<li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">in_smallbin_range</span><span class="p">(</span><span class="n">chunksize_nomask</span><span class="p">(</span><span class="n">P</span><span class="p">))</span> <span class="o">&amp;&amp;</span> <span class="n">__builtin_expect</span><span class="p">(</span><span class="n">P</span><span class="o">-&gt;</span><span class="n">fd_nextsize</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">__builtin_expect</span><span class="p">(</span><span class="n">P</span><span class="o">-&gt;</span><span class="n">fd_nextsize</span><span class="o">-&gt;</span><span class="n">bk_nextsize</span> <span class="o">!=</span> <span class="n">P</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">||</span>              
+</span></span><span class="line"><span class="cl">        <span class="n">__builtin_expect</span><span class="p">(</span><span class="n">P</span><span class="o">-&gt;</span><span class="n">bk_nextsize</span><span class="o">-&gt;</span><span class="n">fd_nextsize</span> <span class="o">!=</span> <span class="n">P</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>使fake chunk属于small bin范围绕过</p>
+</li>
+<li>
+<p>为了使chunk2与fake chunk合并，chunk2的size的PREV_INUSE位为0，且chunk2大小不能在fast bin范围</p>
+</li>
+</ol>
+<p><strong>2.27</strong></p>
+<ol>
+<li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">__builtin_expect</span> <span class="p">(</span><span class="n">chunksize</span><span class="p">(</span><span class="n">P</span><span class="p">)</span> <span class="o">!=</span> <span class="n">prev_size</span> <span class="p">(</span><span class="n">next_chunk</span><span class="p">(</span><span class="n">P</span><span class="p">)),</span> <span class="mi">0</span><span class="p">))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>需要将伪造的chunk的size设置为与下一个chunk的prev_size位相等，2.27也可以设prev_size和size为0</p>
+</li>
+</ol>
+<p><strong>原理</strong></p>
+<p><img src="/img/pwn_note.zh-cn.assets/image-20241124144320139.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20241124144320139"
+	
+	
+></p>
+<ul>
+<li>释放 chunk2 使得与 fake chunk 合并，最终使得目标 P1 指向P1 - 0x18，即P1中内容为P1-0x18的地址，fake chunk进入unsorted bin中</li>
+<li>此时向P1中写数据，实际是向P1指向的指针数组的第一项内写数据，可以写入<code>__free_hook</code>地址，再向指针数组第一项内写数据即向<code>__free_hook</code>所在地址写数据，写入<code>system</code>函数地址，此时free一个写了<code>/bin/sh</code>内容的堆块可以get shell</li>
+</ul>
+<p><strong>老版本利用：无对 chunk 的 size 检查和双向链表检查</strong></p>
+<img src="/img/pwn_note.zh-cn.assets/-172844676894983.assets" alt="img" style="zoom: 33%;" />
+<p><strong>free(Q)时</strong></p>
+<ul>
+<li>前向合并，前chunk use，不合并</li>
+<li>后向合并，后chunk free，合并，对<code>N</code>进行<code>unlink</code></li>
+</ul>
+<p><strong>unlink执行效果——64位</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">FD</span><span class="o">=</span><span class="n">P</span><span class="o">-&gt;</span><span class="n">fd</span> <span class="o">=</span> <span class="n">target</span> <span class="n">addr</span> <span class="o">-</span> <span class="mh">0x18</span>
+</span></span><span class="line"><span class="cl"><span class="n">BK</span><span class="o">=</span><span class="n">P</span><span class="o">-&gt;</span><span class="n">bk</span> <span class="o">=</span> <span class="n">expect</span> <span class="n">value</span> <span class="c1">// 变式: = target addr - 0x10
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">FD</span><span class="o">-&gt;</span><span class="n">bk</span> <span class="o">=</span> <span class="n">BK</span><span class="err">，即</span> <span class="o">*</span><span class="p">((</span><span class="n">target</span> <span class="n">addr</span> <span class="o">-</span> <span class="mh">0x18</span><span class="p">)</span> <span class="o">+</span> <span class="mh">0x18</span><span class="p">)</span> <span class="o">=</span> <span class="n">BK</span> <span class="o">=</span> <span class="n">expect</span> <span class="n">value</span> <span class="c1">// 任意地址写
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">BK</span><span class="o">-&gt;</span><span class="n">fd</span> <span class="o">=</span> <span class="n">FD</span><span class="err">，即</span> <span class="o">*</span><span class="p">(</span><span class="n">expect</span> <span class="n">value</span> <span class="o">+</span> <span class="mh">0x10</span><span class="p">)</span> <span class="o">=</span> <span class="n">FD</span> <span class="o">=</span> <span class="n">target</span> <span class="n">addr</span> <span class="o">-</span> <span class="mh">0x18</span> 
+</span></span><span class="line"><span class="cl">     <span class="c1">// 变式: = *(target addr) 即第四步将是任意地址写, 目标地址内容更改为(目标地址-0x18)
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>实现**任意地址写：**向可写地址<code>target addr</code>中写入<code>expect value</code>，<strong>其中expect value + 0x10 地址具有可写的权限</strong></li>
+<li>此时可以将存储<code>malloc</code>地址的<code>recordlist[2]</code>内容覆盖为恶意地址<code>recordlist[2]-0x18=recordlist[0]</code>，修改可以将malloc数组全部指针修改为其他的地址并通过<code>change</code>写入恶意内容</li>
+</ul>
+<img src="/img/pwn_note.zh-cn.assets/-172844676894984.assets" alt="img" style="zoom:50%;" />
+<p>构造链模版<strong>不完全RELRO泄露libc基址+getshell</strong></p>
+<ul>
+<li>
+<p>编辑<code>r[2]</code>覆写为<code>free</code>函数的<code>got</code>表，再编辑<code>r[0]</code>把free函数的got表覆写为<code>puts</code>函数的<code>plt</code>表，编辑<code>r[2]</code>使得<code>r[0]</code>覆写为<code>puts</code>函数的<code>got</code>表，<code>free(r[0]) = puts_plt(puts_got)</code>输出puts真实地址，获取<strong>libc基址</strong></p>
+</li>
+<li>
+<p>同样的方法，将<code>free</code>函数的<code>got</code>表覆写为<code>system</code>函数的真实地址，<code>free</code>写有&quot;/bin/sh&quot;的堆</p>
+</li>
+</ul>
 <h3 id="uaf">UAF</h3>
 <p><strong>Use after free</strong>：内存块被释放之后再次被使用，关键在于<strong>指针未被设置为NULL</strong>，即原先指针并没有消失，只是由fastbins或tcache中新增出了指针将chunk连成链表</p>
 <p><strong>漏洞点：</strong></p>
@@ -8969,7 +9017,7 @@
 	
 	
 ></p>
-<h4 id="double-free">Double free</h4>
+<h3 id="double-free">Double free</h3>
 <p>glibc-2.23</p>
 <ul>
 <li>堆上某块内存被释放后，未将指向该堆块的指针清零，对该内存进行再次free，达成任意地址写，<strong>注：不可以直接连续两次free，会被<code>_int_free</code>检测到fastbin double free</strong></li>
@@ -9000,28 +9048,42 @@
 ></p>
 <p>调用 malloc 返回 chunk1 ，修改 chunk1 内容来修改其 fd 指针指向恶意地址，在第四次 malloc 可实现在任意地址分配 fastbin 块，后续利用malloc_hook劫持为one_gadget：<strong><code>fastbin Arbitrary Alloc</code></strong></p>
 <h3 id="fast-bin-attack">fast bin attack</h3>
-<p><strong>任意地址写</strong></p>
-<p>Fastbin attack：修改fastbin指针指向伪造的fake_chunk</p>
-<p><img src="/img/pwn_note.zh-cn.assets/-172844676894972.assets"
-	
-	
-	
-	loading="lazy"
-	
-		alt="img"
-	
-	
-></p>
-<ol>
-<li>先堆叠2和4，释放2到fastbin，用4填写入fd为fake chunk地址，size最后一位须设置为1</li>
-<li>申请一次为2，申请第二次为fakechunk，即可以在fakechunk处任意读写</li>
-</ol>
 <h4 id="arbitrary-alloc">Arbitrary Alloc</h4>
+<p><strong>条件</strong></p>
 <ul>
-<li>劫持fastbin到任何地址（bss, heap, data, stack），可覆盖<code>malloc_hook</code>地址为<code>one_gadget</code>，然后执行malloc劫持获得shell</li>
-<li>使用<strong>字节错位</strong>来实现直接分配 <strong>fastbin</strong> 到**_malloc_hook** 的位置，64位程序中fastbin范围【0x20-0x80】，此时<code>0x7f403c467aed</code>的地址后的<code>0x000000000000007f</code>错位出了合理的<code>chunk</code>中的<code>size</code>域，<code>0x7f</code>在计算fastbin index时，属于chunk大小为0x70的，而chunk又包含了0x10的header，<strong>因此选择malloc构造时选择分配0x60或0x68的fastbin，最后fastbin attack时同样申请0x60或0x68的chunk</strong></li>
-<li>伪造堆块<code>fake_chunk</code>绕过检查机制：<code>size</code>位需要<code>0xnf</code>(111)而非<code>0xn1</code>(001)</li>
+<li>劫持fastbin中chunk的<strong>fd</strong>指针指向伪造的fake_chunk，最终覆盖<code>malloc_hook</code>地址为<code>one_gadget</code>，然后执行malloc劫持获得shell</li>
+<li>需要UAF或堆溢出使得可以对free的堆块编辑更改fd指针</li>
 </ul>
+<p><strong>利用</strong></p>
+<ol>
+<li>申请0123四个堆块，释放2到fastbin，然后申请4来堆叠2和4chunk，用4填写入fd为fake chunk地址，size最后一位须设置为1</li>
+<li>申请一次为2，申请第二次为fakechunk，即可以在fakechunk处任意读写，fakechunk可以为malloc-0x23等相关地址</li>
+<li>若可以在uaf后直接编写free后的chunk也可以不堆叠，申请01两个堆块，释放0修改0的fd，最终申请两次</li>
+</ol>
+<p><strong>绕过检查</strong>：</p>
+<ol>
+<li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#define SIZE_BITS (PREV_INUSE | IS_MMAPPED | NON_MAIN_ARENA)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define chunksize(p) ((p)-&gt;size &amp; ~(SIZE_BITS)) </span><span class="c1">// 将最后三位置0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">#define fastbin_index(sz) ((((unsigned int) (sz)) &gt;&gt; (SIZE_SZ == 8 ? 4 : 3)) - 2) </span><span class="c1">// 右移4位即低4位无用
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">idx</span> <span class="o">=</span> <span class="n">fastbin_index</span><span class="p">(</span><span class="n">nb</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">__builtin_expect</span><span class="p">(</span><span class="n">fastbin_index</span><span class="p">(</span><span class="n">chunksize</span><span class="p">(</span><span class="n">victim</span><span class="p">))</span> <span class="o">!=</span> <span class="n">idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="c1">// 该比较使得0x7f与0x70右移4位后效果一致
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>size不考虑低3比特，且libc或栈地址多为0x7f开头，因此可通过截取0x7f用0x70的fastbin将内存申请出来</p>
+</li>
+<li>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -9039,7 +9101,7 @@
 </span><span class="lnt">13
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">static</span> <span class="kt">void</span> <span class="nf">do_check_remalloced_chunk</span><span class="p">(</span><span class="n">mstate</span> <span class="n">av</span><span class="p">,</span> <span class="n">mchunkptr</span> <span class="n">p</span><span class="p">,</span> <span class="n">INTERNAL_SIZE_T</span> <span class="n">s</span><span class="p">)</span>
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">static</span> <span class="kt">void</span> <span class="nf">do_check_remalloced_chunk</span><span class="p">(</span><span class="n">mstate</span> <span class="n">av</span><span class="p">,</span> <span class="n">mchunkptr</span> <span class="n">p</span><span class="p">,</span> <span class="n">INTERNAL_SIZE_T</span> <span class="n">s</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="n">INTERNAL_SIZE_T</span> <span class="n">sz</span> <span class="o">=</span> <span class="n">chunksize_nomask</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="p">(</span><span class="n">PREV_INUSE</span> <span class="o">|</span> <span class="n">NON_MAIN_ARENA</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">chunk_is_mmapped</span><span class="p">(</span><span class="n">p</span><span class="p">))</span> <span class="c1">// p 为 1 绕过检查
@@ -9054,7 +9116,14 @@
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><code>gdb</code>调用具体细节</p>
+</div><p><code>size</code>位需要<code>0xnf</code>(111)而非<code>0xn1</code>(001)</p>
+</li>
+</ol>
+<ul>
+<li><strong>字节错位</strong>，64位程序中fastbin范围【0x20-0x80】，此时<code>0x7f403c467aed</code>的地址（__malloc_hook - 0x23）后的<code>0x000000000000007f</code>错位出了合理<code>chunk</code>中的<code>size</code>域，修改fastbin 的 fd 指针指向该地址</li>
+<li><code>0x7f</code>在计算fastbin index时，属于chunk大小为0x70的，而chunk又包含了0x10的header，因此选择malloc构造时选择分配0x60或0x68的fastbin，申请2次0x60或0x68的fake chunk实现对<code>__realloc_hook</code>和<code>__malloc_hook</code>的控制</li>
+</ul>
+<p><code>gdb</code>调用具体细节</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -9087,18 +9156,22 @@
 </span></span><span class="line"><span class="cl"><span class="c1">//想要劫持的 __malloc_hook 地址
 </span></span></span></code></pre></td></tr></table>
 </div>
-</div><p>劫持malloc_hook构造的payload填入的位置为【malloc_hook地址 - 0x23 + 0x10】或者【malloc_hook地址 - 0x23】，即修改fd指向该位置，data进入的位置是在<code>prev_size</code>和<code>size</code>域后面的，一般直接填入<code>b&quot;a&quot; * 0x13 + p64(one_gadget)</code>，0x13换为需要的padding</p>
-<p><img src="/img/pwn_note.zh-cn.assets/-172844676894973.assets"
+</div><p>劫持<code>__malloc_hook</code>构造的payload填入的位置为【malloc_hook地址 - 0x23 + 0x10】或者【malloc_hook地址 - 0x23】，即修改fd指向该位置，data进入的位置是在<code>prev_size</code>和<code>size</code>域后面的，一般直接填入<code>b&quot;a&quot; * 0x13 + p64(one_gadget)</code>，0x13为需要的padding</p>
+<p><img src="/img/pwn_note.zh-cn.assets/image-20241125005030065.png"
 	
 	
 	
 	loading="lazy"
 	
-		alt="img"
+		alt="image-20241125005030065"
 	
 	
 ></p>
-<p>存在one_gadget有条件的情况需要使用<strong>realloc，realloc中有许多push操作以及调整rsp的操作</strong>，</p>
+<p><strong>realloc劫持</strong></p>
+<ul>
+<li>存在one_gadget有条件的情况需要使用<strong>realloc，realloc中有许多push操作以及调整rsp的操作</strong></li>
+<li>如要求<code>[rsp+0x30]</code>必须为NULL或者是0，通过realloc来调整栈帧，rsp在栈上，通过push增加栈的高度</li>
+</ul>
 <p><img src="/img/pwn_note.zh-cn.assets/-172844676894974.assets"
 	
 	
@@ -9109,45 +9182,22 @@
 	
 	
 ></p>
-<p>如要求<code>[rsp+0x30]</code>必须为NULL或者是0，通过realloc来调整栈帧，rsp在栈上，通过push增加栈的高度，使得[rsp+0x30]区域为NULL即可；</p>
-<ul>
-<li>最多抬高栈帧为(0x8*6+0x38)=0x68，由于多call了一次（call了realloc函数，然后又去call one_gadget，但是原本只有一次call one_gadget），<strong>因此多执行了一次压栈指令，所以若直接执行realloc函数，栈帧抬高了0x70字节（即将原本的rsp变成了rsp-0x70）</strong></li>
-<li><strong>假设不执行push指令，跳过，那么执行一次realloc函数最少抬高0x40个字节（sub rsp,0x38让rsp-0x38再加上call时的压栈指令0x8）</strong></li>
-<li><strong>为了满足one_gadget的条件，只要rsp-0x40与rsp-0x70之间存在一个为0的内存单元，就可以控制realloc函数中push的数量来满足条件</strong></li>
-<li><em>以</em>*[rsp+0x30]=NULL<strong>这个条件为例，加上rsp-0x40与rsp-0x70这个范围。即最后要在</strong>rsp-0x10与rsp-0x40之间**找一块值为0的内存单元*</li>
-</ul>
-<p>此处的+0xc表示只进行一次push，即rsp+0x30-0x8(push)-0x38(sub)-0x8(call) = rsp-0x18上为一块值为0的内存单元</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
-</span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">payload</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;a&#34;</span> <span class="o">*</span> <span class="p">(</span><span class="mh">0x13</span> <span class="o">-</span> <span class="mh">0x8</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">one_gadget</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">realloc_addr</span> <span class="o">+</span> <span class="mh">0xc</span><span class="p">)</span> 
-</span></span><span class="line"><span class="cl"><span class="c1"># 去realloc中通过push、pop操作（即 rsp+0x30-5*8==null) 来满足条件</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 最后将one_gadget写入realloc_hook中</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># +0xc表示只进行一次push，即rsp+0x30-0x8(push)-0x38(sub)-0x8(call) = rsp-0x18上为一块值为0的内存单元</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><img src="/img/pwn_note.zh-cn.assets/-172844676894975.assets"
-	
-	
-	
-	loading="lazy"
-	
-		alt="img"
-	
-	
-></p>
-<ol>
-<li><strong>malloc发现malloc_hook不为空，去调用malloc_hook里面的realloc+0xc</strong></li>
-<li><strong>realloc发现realloc_hook不为空，可以执行realloc下面一系列push操作，调节栈帧满足one_gadget的条件</strong>
-<ol>
-<li><em>执行realloc时，会判断__realloc_hook是否为空，如果不为空，则执行__realloc_hook指向的内容</em></li>
+</div><ol>
+<li><strong>malloc发现malloc_hook不为空，调用malloc_hook里面的realloc+0xc，执行realloc下面一系列push操作，调节栈帧满足one_gadget的条件</strong></li>
+<li><strong>realloc判断realloc_hook是否为空，不为空则执行realloc_hook指向的one_gadget，获取shell</strong></li>
 </ol>
-</li>
-<li><strong>最后调用realloc_hook中的one_gadeget，获取shell</strong></li>
-</ol>
+<p><strong>malloc报错触发</strong></p>
+<p>通过<code>double free</code>来触发malloc报错，其最后也会执行malloc，此时栈结构也进行了改变，可能达成one_gadget条件</p>
 <h3 id="tcache-bin-attack">Tcache bin attack</h3>
 <ol>
 <li>一般利用UAF需要<code>malloc(0x80)</code>然后经过7次<code>free(0)</code>填充完<code>tcache bin</code>，<strong>注：每次free(0)需要修改edit(0)改fd和bk为0，否则fd将会是堆块地址中部分数值，使得不可循环free</strong></li>
@@ -9514,77 +9564,6 @@
 	
 	
 ></p>
-<h3 id="unlink">Unlink</h3>
-<ul>
-<li><code>free</code>时和目前<strong>物理相邻的 free chunk 合并为新堆块</strong>，避免碎片化内存，将某一个空闲 chunk 从其所处的双向链表中脱链</li>
-<li><strong>释放堆时会判断当前 chunk 的相邻 chunk 是否为空闲状态，若是则会进行堆合并。合并时会将空闲 chunk 从 bin 中 unlink，并将合并后的 chunk 添加到 unsorted bin 中。堆合并分为向前合并和向后合并。</strong></li>
-</ul>
-<p><strong>漏洞点：堆溢出</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="o">*</span><span class="p">(</span><span class="o">&amp;</span><span class="n">RecordList</span> <span class="o">+</span> <span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="n">v1</span><span class="p">);</span> <span class="c1">// v1 &lt; 0x81 Create函数
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">read</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="o">&amp;</span><span class="n">RecordList</span> <span class="o">+</span> <span class="n">v1</span><span class="p">),</span> <span class="mh">0x100uLL</span><span class="p">);</span> <span class="c1">// change函数
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><p>溢出长度足够大，在已申请的堆中<strong>伪造一块已经释放过的堆</strong>，当free其前或后面的堆块时会触发unlink，使得伪造的部分会指向一个我们指定的地方，允许我们修改</p>
-<p><strong>老版本利用：无对 chunk 的 size 检查和双向链表检查</strong></p>
-<p><img src="/img/pwn_note.zh-cn.assets/-172844676894983.assets"
-	
-	
-	
-	loading="lazy"
-	
-		alt="img"
-	
-	
-></p>
-<p><strong>free(Q)时</strong></p>
-<ul>
-<li>前向合并，前chunk use，不合并</li>
-<li>后向合并，后chunk free，合并，对<code>N</code>进行<code>unlink</code></li>
-</ul>
-<p><strong>unlink执行效果——64位</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">FD</span><span class="o">=</span><span class="n">P</span><span class="o">-&gt;</span><span class="n">fd</span> <span class="o">=</span> <span class="n">target</span> <span class="n">addr</span> <span class="o">-</span> <span class="mh">0x18</span>
-</span></span><span class="line"><span class="cl"><span class="n">BK</span><span class="o">=</span><span class="n">P</span><span class="o">-&gt;</span><span class="n">bk</span> <span class="o">=</span> <span class="n">expect</span> <span class="n">value</span> <span class="c1">// 变式: = target addr - 0x10
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">FD</span><span class="o">-&gt;</span><span class="n">bk</span> <span class="o">=</span> <span class="n">BK</span><span class="err">，即</span> <span class="o">*</span><span class="p">((</span><span class="n">target</span> <span class="n">addr</span> <span class="o">-</span> <span class="mh">0x18</span><span class="p">)</span> <span class="o">+</span> <span class="mh">0x18</span><span class="p">)</span> <span class="o">=</span> <span class="n">BK</span> <span class="o">=</span> <span class="n">expect</span> <span class="n">value</span> <span class="c1">// 任意地址写
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">BK</span><span class="o">-&gt;</span><span class="n">fd</span> <span class="o">=</span> <span class="n">FD</span><span class="err">，即</span> <span class="o">*</span><span class="p">(</span><span class="n">expect</span> <span class="n">value</span> <span class="o">+</span> <span class="mh">0x10</span><span class="p">)</span> <span class="o">=</span> <span class="n">FD</span> <span class="o">=</span> <span class="n">target</span> <span class="n">addr</span> <span class="o">-</span> <span class="mh">0x18</span> 
-</span></span><span class="line"><span class="cl">     <span class="c1">// 变式: = *(target addr) 即第四步将是任意地址写, 目标地址内容更改为(目标地址-0x18)
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><ul>
-<li>实现**任意地址写：**向可写地址<code>target addr</code>中写入<code>expect value</code>，<strong>其中expect value + 0x10 地址具有可写的权限</strong></li>
-<li>此时可以将存储<code>malloc</code>地址的<code>recordlist[2]</code>内容覆盖为恶意地址<code>recordlist[2]-0x18=recordlist[0]</code>，修改可以将malloc数组全部指针修改为其他的地址并通过<code>change</code>写入恶意内容</li>
-</ul>
-<p><img src="/img/pwn_note.zh-cn.assets/-172844676894984.assets"
-	
-	
-	
-	loading="lazy"
-	
-		alt="img"
-	
-	
-></p>
-<p>构造链模版<strong>不完全RELRO泄露libc基址+getshell</strong></p>
-<ol>
-<li>编辑<code>r[2]</code>覆写为<code>free</code>函数的<code>got</code>表，再编辑<code>r[0]</code>把free函数的got表覆写为<code>puts</code>函数的<code>plt</code>表，编辑<code>r[2]</code>使得<code>r[0]</code>覆写为<code>puts</code>函数的<code>got</code>表，<code>free(r[0]) = puts_plt(puts_got)</code>输出puts真实地址，获取<strong>libc基址</strong></li>
-</ol>
-<ul>
-<li>同样的方法，将<code>free</code>函数的<code>got</code>表覆写为<code>system</code>函数的真实地址，<code>free</code>写有&quot;/bin/sh&quot;的堆</li>
-</ul>
 <h3 id="off-by-one">Off-by-one</h3>
 <p>更改后一块的<code>size</code>位，用于合并堆块造成堆块重叠</p>
 <h3 id="off-by-null">Off-by-null</h3>
@@ -9629,7 +9608,7 @@
 </div>
 </div><p>利用实现unsorted bin泄露方法：</p>
 <p>构造0,1,2,3共四个堆块，修改0号堆块内容溢出一字节到1堆块更改大小覆盖1和2堆块，此时1和2堆块被系统误认为为一个堆块，释放1堆块，将会有一个合并chunk进入unsorted bin（进入的<strong>前提</strong>为<strong>1和2堆块相加的大小要大于0x80</strong>），再申请一个堆块（和1堆块大小相等），此时unsorted bin分割导致只存有2堆块，2堆块的fd和bk都指向一个地址，访问2堆块可以泄露相关main_arena的地址</p>
-<h3 id="house-of系列">House of系列</h3>
+<h3 id="house-of">House of</h3>
 <h4 id="house-of-strom">House of strom</h4>
 <p>glibc-2.27及之前版本</p>
 <h4 id="house-of-orange">House of orange</h4>
@@ -9691,401 +9670,7 @@
 <p><strong>适用场景如图：</strong></p>
 <p>需要对不可控的中间区域进行利用</p>
 <img src="/img/pwn_note.zh-cn.assets/-1728446804381104.assets" alt="img" style="zoom:50%;" />
-<h4 id="house-of-apple1">House of Apple1</h4>
-<p>高版本libc-2.39利用，保护全开，仅使用一次<code>largebin attack</code>并限制读写次数的条件下进行<code>FSOP</code>利用</p>
-<p><strong>条件</strong></p>
-<ol>
-<li>从<code>main</code>返回或能调用<code>exit</code>函数</li>
-<li>能泄露出<code>heap</code>地址和<code>libc</code>地址</li>
-<li>能使用一次<code>largebin attack</code></li>
-</ol>
-<ul>
-<li>调用链：<code>exit </code>&gt; <code>fcloseall </code>&gt; <code>_IO_clenup </code>&gt; <code>_IO_flush_all_lockp </code>&gt; <code>_IO_OVERFLOW</code></li>
-<li>最终遍历<code>_IO_list_all</code>存放的每个<code>IO_FILE</code>结构体，满足条件则调用每个结构体中<code>vtable-&gt;_overflow</code>函数指针指向的函数</li>
-</ul>
-<p><strong>劫持<code>_wide_data</code>：</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">_IO_FILE_complete</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">_IO_FILE</span> <span class="n">_file</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">  <span class="n">__off64_t</span> <span class="n">_offset</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">  <span class="cm">/* Wide character stream stuff.  */</span>
-</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">_IO_codecvt</span> <span class="o">*</span><span class="n">_codecvt</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">_IO_wide_data</span> <span class="o">*</span><span class="n">_wide_data</span><span class="p">;</span> <span class="c1">// 劫持这个变量, 在_IO_FILE中偏移为0xa0
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">struct</span> <span class="n">_IO_FILE</span> <span class="o">*</span><span class="n">_freeres_list</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">  <span class="kt">void</span> <span class="o">*</span><span class="n">_freeres_buf</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">  <span class="n">size_t</span> <span class="n">__pad5</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">_mode</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">  <span class="cm">/* Make sure we don&#39;t get into trouble again.  */</span>
-</span></span><span class="line"><span class="cl">  <span class="kt">char</span> <span class="n">_unused2</span><span class="p">[</span><span class="mi">15</span> <span class="o">*</span> <span class="k">sizeof</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="k">sizeof</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span> <span class="o">-</span> <span class="k">sizeof</span> <span class="p">(</span><span class="n">size_t</span><span class="p">)];</span>
-</span></span><span class="line"><span class="cl"><span class="p">};</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>通过<code>_IO_wstrn_overflow</code>达到控制<code>_wide_data</code>改为<strong>已知的堆地址</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">static</span> <span class="n">wint_t</span>
-</span></span><span class="line"><span class="cl"><span class="nf">_IO_wstrn_overflow</span> <span class="p">(</span><span class="n">FILE</span> <span class="o">*</span><span class="n">fp</span><span class="p">,</span> <span class="n">wint_t</span> <span class="n">c</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="cm">/* When we come to here this means the user supplied buffer is
-</span></span></span><span class="line"><span class="cl"><span class="cm">     filled.  But since we must return the number of characters which
-</span></span></span><span class="line"><span class="cl"><span class="cm">     would have been written in total we must provide a buffer for
-</span></span></span><span class="line"><span class="cl"><span class="cm">     further use.  We can do this by writing on and on in the overflow
-</span></span></span><span class="line"><span class="cl"><span class="cm">     buffer in the _IO_wstrnfile structure.  */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">_IO_wstrnfile</span> <span class="o">*</span><span class="n">snf</span> <span class="o">=</span> <span class="p">(</span><span class="n">_IO_wstrnfile</span> <span class="o">*</span><span class="p">)</span> <span class="n">fp</span><span class="p">;</span> <span class="c1">// fp强制转换为_IO_wstrnfile *指针
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span> 
-</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">fp</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_IO_buf_base</span> <span class="o">!=</span> <span class="n">snf</span><span class="o">-&gt;</span><span class="n">overflow_buf</span><span class="p">)</span> <span class="c1">// 一般都是成立的
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="n">_IO_wsetb</span> <span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">snf</span><span class="o">-&gt;</span><span class="n">overflow_buf</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">         <span class="n">snf</span><span class="o">-&gt;</span><span class="n">overflow_buf</span> <span class="o">+</span> <span class="p">(</span><span class="k">sizeof</span> <span class="p">(</span><span class="n">snf</span><span class="o">-&gt;</span><span class="n">overflow_buf</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">                      <span class="o">/</span> <span class="k">sizeof</span> <span class="p">(</span><span class="n">wchar_t</span><span class="p">)),</span> <span class="mi">0</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">                      
-</span></span><span class="line"><span class="cl">      <span class="c1">// 对_wide_data赋值 利用点
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_IO_write_base</span> <span class="o">=</span> <span class="n">snf</span><span class="o">-&gt;</span><span class="n">overflow_buf</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">      <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_IO_read_base</span> <span class="o">=</span> <span class="n">snf</span><span class="o">-&gt;</span><span class="n">overflow_buf</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">      <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_IO_read_ptr</span> <span class="o">=</span> <span class="n">snf</span><span class="o">-&gt;</span><span class="n">overflow_buf</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">      <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_IO_read_end</span> <span class="o">=</span> <span class="p">(</span><span class="n">snf</span><span class="o">-&gt;</span><span class="n">overflow_buf</span>
-</span></span><span class="line"><span class="cl">                      <span class="o">+</span> <span class="p">(</span><span class="k">sizeof</span> <span class="p">(</span><span class="n">snf</span><span class="o">-&gt;</span><span class="n">overflow_buf</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">                     <span class="o">/</span> <span class="k">sizeof</span> <span class="p">(</span><span class="n">wchar_t</span><span class="p">)));</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl"> 
-</span></span><span class="line"><span class="cl">  <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_IO_write_ptr</span> <span class="o">=</span> <span class="n">snf</span><span class="o">-&gt;</span><span class="n">overflow_buf</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">  <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_IO_write_end</span> <span class="o">=</span> <span class="n">snf</span><span class="o">-&gt;</span><span class="n">overflow_buf</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"> 
-</span></span><span class="line"><span class="cl">  <span class="cm">/* Since we are not really interested in storing the characters
-</span></span></span><span class="line"><span class="cl"><span class="cm">     which do not fit in the buffer we simply ignore it.  */</span>
-</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">c</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>有时需要绕过<code>_IO_wsetb</code>函数里的<code>free</code>：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="kt">void</span>
-</span></span><span class="line"><span class="cl"><span class="nf">_IO_wsetb</span> <span class="p">(</span><span class="n">FILE</span> <span class="o">*</span><span class="n">f</span><span class="p">,</span> <span class="n">wchar_t</span> <span class="o">*</span><span class="n">b</span><span class="p">,</span> <span class="n">wchar_t</span> <span class="o">*</span><span class="n">eb</span><span class="p">,</span> <span class="kt">int</span> <span class="n">a</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">f</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_IO_buf_base</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="p">(</span><span class="n">f</span><span class="o">-&gt;</span><span class="n">_flags2</span> <span class="o">&amp;</span> <span class="n">_IO_FLAGS2_USER_WBUF</span><span class="p">))</span>
-</span></span><span class="line"><span class="cl">    <span class="n">free</span> <span class="p">(</span><span class="n">f</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_IO_buf_base</span><span class="p">);</span> <span class="c1">// 其不为0的时候不要执行到这里
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">f</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_IO_buf_base</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">  <span class="n">f</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_IO_buf_end</span> <span class="o">=</span> <span class="n">eb</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">a</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="n">f</span><span class="o">-&gt;</span><span class="n">_flags2</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="n">_IO_FLAGS2_USER_WBUF</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">  <span class="k">else</span>
-</span></span><span class="line"><span class="cl">    <span class="n">f</span><span class="o">-&gt;</span><span class="n">_flags2</span> <span class="o">|=</span> <span class="n">_IO_FLAGS2_USER_WBUF</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><code>_IO_wstrnfile</code>结构体</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">_IO_str_fields</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="n">_IO_alloc_type</span> <span class="n">_allocate_buffer_unused</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">  <span class="n">_IO_free_type</span> <span class="n">_free_buffer_unused</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">};</span>
-</span></span><span class="line"><span class="cl"> 
-</span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">_IO_streambuf</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="n">FILE</span> <span class="n">_f</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">  <span class="k">const</span> <span class="k">struct</span> <span class="n">_IO_jump_t</span> <span class="o">*</span><span class="n">vtable</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">};</span>
-</span></span><span class="line"><span class="cl"> 
-</span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">_IO_strfile_</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">_IO_streambuf</span> <span class="n">_sbf</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">_IO_str_fields</span> <span class="n">_s</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">_IO_strfile</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"> 
-</span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="n">_IO_strfile</span> <span class="n">f</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">  <span class="cm">/* This is used for the characters which do not fit in the buffer
-</span></span></span><span class="line"><span class="cl"><span class="cm">     provided by the user.  */</span>
-</span></span><span class="line"><span class="cl">  <span class="kt">char</span> <span class="n">overflow_buf</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">_IO_strnfile</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"> 
-</span></span><span class="line"><span class="cl"> 
-</span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="n">_IO_strfile</span> <span class="n">f</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">  <span class="cm">/* This is used for the characters which do not fit in the buffer
-</span></span></span><span class="line"><span class="cl"><span class="cm">     provided by the user.  */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">wchar_t</span> <span class="n">overflow_buf</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span> <span class="c1">// overflow_buf在_IO_FILE的编译为0xf0
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span> <span class="n">_IO_wstrnfile</span><span class="p">;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><code>struct _IO_wide_data</code>结构体</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">_IO_wide_data</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="n">wchar_t</span> <span class="o">*</span><span class="n">_IO_read_ptr</span><span class="p">;</span>    <span class="cm">/* Current read pointer */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">wchar_t</span> <span class="o">*</span><span class="n">_IO_read_end</span><span class="p">;</span>    <span class="cm">/* End of get area. */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">wchar_t</span> <span class="o">*</span><span class="n">_IO_read_base</span><span class="p">;</span>   <span class="cm">/* Start of putback+get area. */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">wchar_t</span> <span class="o">*</span><span class="n">_IO_write_base</span><span class="p">;</span>  <span class="cm">/* Start of put area. */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">wchar_t</span> <span class="o">*</span><span class="n">_IO_write_ptr</span><span class="p">;</span>   <span class="cm">/* Current put pointer. */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">wchar_t</span> <span class="o">*</span><span class="n">_IO_write_end</span><span class="p">;</span>   <span class="cm">/* End of put area. */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">wchar_t</span> <span class="o">*</span><span class="n">_IO_buf_base</span><span class="p">;</span>    <span class="cm">/* Start of reserve area. */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">wchar_t</span> <span class="o">*</span><span class="n">_IO_buf_end</span><span class="p">;</span>     <span class="cm">/* End of reserve area. */</span>
-</span></span><span class="line"><span class="cl">  <span class="cm">/* The following fields are used to support backing up and undo. */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">wchar_t</span> <span class="o">*</span><span class="n">_IO_save_base</span><span class="p">;</span>   <span class="cm">/* Pointer to start of non-current get area. */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">wchar_t</span> <span class="o">*</span><span class="n">_IO_backup_base</span><span class="p">;</span> <span class="cm">/* Pointer to first valid character of
-</span></span></span><span class="line"><span class="cl"><span class="cm">                   backup area */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">wchar_t</span> <span class="o">*</span><span class="n">_IO_save_end</span><span class="p">;</span>    <span class="cm">/* Pointer to end of non-current get area. */</span>
-</span></span><span class="line"><span class="cl"> 
-</span></span><span class="line"><span class="cl">  <span class="n">__mbstate_t</span> <span class="n">_IO_state</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">  <span class="n">__mbstate_t</span> <span class="n">_IO_last_state</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">_IO_codecvt</span> <span class="n">_codecvt</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">  <span class="n">wchar_t</span> <span class="n">_shortbuf</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">  <span class="k">const</span> <span class="k">struct</span> <span class="n">_IO_jump_t</span> <span class="o">*</span><span class="n">_wide_vtable</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">};</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>在堆上伪造一个<code>_IO_FILE</code>结构体，地址为<code>A</code>，将<code>A + 0xd8</code>替换为<code>_IO_wstrn_jumps</code>地址，<code>A + 0xc0</code>设置为<code>B</code>，并设置其他成员以便能调用到<code>_IO_OVERFLOW</code>。<code>exit</code>函数会一路调用到<code>_IO_wstrn_overflow</code>函数，并将<code>B</code>至<code>B + 0x38</code>的地址区域的内容都替换为<code>A + 0xf0</code>或者<code>A + 0x1f0</code>。</p>
-<h4 id="house-of-apple2">House of Apple2</h4>
-<p>只能<strong>写一次</strong>的情况，得到libc基址后：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">system_addr</span> <span class="o">=</span> <span class="n">libc_base</span> <span class="o">+</span> <span class="n">libc</span><span class="o">.</span><span class="n">symbols</span><span class="p">[</span><span class="s1">&#39;system&#39;</span><span class="p">]</span>
-</span></span><span class="line"><span class="cl"><span class="n">_IO_list_all_addr</span> <span class="o">=</span> <span class="n">libc_base</span> <span class="o">+</span> <span class="n">libc</span><span class="o">.</span><span class="n">symbols</span><span class="p">[</span><span class="s1">&#39;_IO_list_all&#39;</span><span class="p">]</span>
-</span></span><span class="line"><span class="cl"><span class="n">_IO_wfile_jumps_addr</span> <span class="o">=</span> <span class="n">libc_base</span> <span class="o">+</span> <span class="n">libc</span><span class="o">.</span><span class="n">symbols</span><span class="p">[</span><span class="s1">&#39;_IO_wfile_jumps&#39;</span><span class="p">]</span>
-</span></span><span class="line"><span class="cl"><span class="n">_lock</span> <span class="o">=</span> <span class="n">libc_base</span> <span class="o">+</span> <span class="n">libc</span><span class="o">.</span><span class="n">symbols</span><span class="p">[</span><span class="s1">&#39;_IO_list_all&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mh">0xa8</span> <span class="c1">#_IO_stdfile_2_lock</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>利用<code>_IO_wfile_overflow</code>函数控制程序执行流</strong></p>
-<p><code>fp</code>指代<code>_IO_FILE</code>结构体变量，对<code>fp</code>的设置如下：</p>
-<ul>
-<li><code>_flags</code>设置为<code>~(2 | 0x8 | 0x800)</code>，如果不需要控制<code>rdi</code>，设置为<code>0</code>即可；如果需要获得<code>shell</code>，可设置为<code> sh;</code>，前面有两个空格</li>
-<li><code>vtable</code>设置为<code>_IO_wfile_jumps/_IO_wfile_jumps_mmap/_IO_wfile_jumps_maybe_mmap</code>地址（加减偏移），使其能成功调用<code>_IO_wfile_overflow</code>即可</li>
-<li><code>_wide_data</code>设置为可控堆地址<code>A</code>，即满足<code>*(fp + 0xa0) = A</code></li>
-<li><code>_wide_data-&gt;_IO_write_base</code>设置为<code>0</code>，即满足<code>*(A + 0x18) = 0</code></li>
-<li><code>_wide_data-&gt;_IO_buf_base</code>设置为<code>0</code>，即满足<code>*(A + 0x30) = 0</code></li>
-<li><code>_wide_data-&gt;_wide_vtable</code>设置为可控堆地址<code>B</code>，即满足<code>*(A + 0xe0) = B</code></li>
-<li><code>_wide_data-&gt;_wide_vtable-&gt;doallocate</code>设置为地址<code>C</code>用于劫持<code>RIP</code>，即满足<code>*(B + 0x68) = C</code></li>
-</ul>
-<p><strong>调用链：</strong></p>
-<blockquote>
-<p><code>_IO_wfile_overflow</code>&gt;</p>
-<p><code>_IO_wdoallocbuf</code>&gt;</p>
-<p><code>_IO_WDOALLOCATE</code>&gt;</p>
-<p><code>*(fp-&gt;_wide_data-&gt;_wide_vtable + 0x68)(fp)</code></p>
-</blockquote>
-<p><strong><code>_IO_wfile_overflow</code>函数</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">wint_t</span> <span class="nf">_IO_wfile_overflow</span> <span class="p">(</span><span class="n">FILE</span> <span class="o">*</span><span class="n">f</span><span class="p">,</span> <span class="n">wint_t</span> <span class="n">wch</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">f</span><span class="o">-&gt;</span><span class="n">_flags</span> <span class="o">&amp;</span> <span class="n">_IO_NO_WRITES</span><span class="p">)</span> <span class="cm">/* SET ERROR */</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="n">f</span><span class="o">-&gt;</span><span class="n">_flags</span> <span class="o">|=</span> <span class="n">_IO_ERR_SEEN</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">      <span class="n">__set_errno</span> <span class="p">(</span><span class="n">EBADF</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="n">WEOF</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">  <span class="cm">/* If currently reading or no buffer allocated. */</span>
-</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">((</span><span class="n">f</span><span class="o">-&gt;</span><span class="n">_flags</span> <span class="o">&amp;</span> <span class="n">_IO_CURRENTLY_PUTTING</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="cm">/* Allocate a buffer if needed. */</span>
-</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">f</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_IO_write_base</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="n">_IO_wdoallocbuf</span> <span class="p">(</span><span class="n">f</span><span class="p">);</span><span class="c1">// 需要走到这里
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// ......
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong><code>_IO_wdoallocbuf</code>函数</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">_IO_wdoallocbuf</span> <span class="p">(</span><span class="n">FILE</span> <span class="o">*</span><span class="n">fp</span><span class="p">){</span>
-</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">fp</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_IO_buf_base</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">fp</span><span class="o">-&gt;</span><span class="n">_flags</span> <span class="o">&amp;</span> <span class="n">_IO_UNBUFFERED</span><span class="p">))</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">((</span><span class="n">wint_t</span><span class="p">)</span><span class="n">_IO_WDOALLOCATE</span> <span class="p">(</span><span class="n">fp</span><span class="p">)</span> <span class="o">!=</span> <span class="n">WEOF</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">      <span class="k">return</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">  <span class="n">_IO_wsetb</span> <span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_shortbuf</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">             <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_shortbuf</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="n">libc_hidden_def</span> <span class="p">(</span><span class="n">_IO_wdoallocbuf</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="cp">#define _IO_WDOALLOCATE(FP) WJUMP0 (__doallocate, FP)
-</span></span></span><span class="line"><span class="cl"><span class="cp">#define WJUMP0(FUNC, THIS) (_IO_WIDE_JUMPS_FUNC(THIS)-&gt;FUNC) (THIS)
-</span></span></span><span class="line"><span class="cl"><span class="cp">#define _IO_WIDE_JUMPS_FUNC(THIS) _IO_WIDE_JUMPS(THIS)
-</span></span></span><span class="line"><span class="cl"><span class="cp">#define _IO_WIDE_JUMPS(THIS) \
-</span></span></span><span class="line"><span class="cl"><span class="cp">  _IO_CAST_FIELD_ACCESS ((THIS), struct _IO_FILE, _wide_data)-&gt;_wide_vtable
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="io_file">IO_FILE</h2>
+<h2 id="io_file">IO_FILE</h2>
 <p><code>glibc</code>高版本逐渐移除了<code>__malloc_hook/__free_hook/__realloc_hook</code>等一众<code>hook</code>全局变量，需要利用<code>IO_FILE</code></p>
 <p><strong><code>_IO_FILE_plus</code>结构体</strong></p>
 <div class="highlight"><div class="chroma">
@@ -10267,13 +9852,6 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>当有<code>write</code>和<code>puts</code>时将会把该地址内容一并输出</p>
-<h2 id="fsop">FSOP</h2>
-<p><strong>核心</strong>：</p>
-<ul>
-<li>篡改<code>_IO_list_all</code>和<code>_chain</code>来劫持<code>IO_FILE</code>结构体，使其落在可控内存中，使用<code>_IO_flush_all_lockp</code>来刷新<code>_IO_list_all</code>链表上所有文件流</li>
-<li><code>fflush</code>最终调用了<code>vtable</code>中的<code>_IO_overflow</code>，控制使得<code>vtable</code>中的<code>_IO_overflow</code>函数地址改为<code>system</code>地址，第一个参数是<code>IO_FILE</code>结构体的地址</li>
-<li>使得<code>flags</code>成员为<code>/bin/sh</code>字符串，执行exit函数或libc执行abort流程时或main返回时，触发<code>_IO_flush_all_lockp</code>来拿到shell</li>
-</ul>
 <h2 id="条件竞争">条件竞争</h2>
 <h3 id="double-fetch">Double Fetch</h3>
 <p><strong>漏洞点</strong></p>
@@ -10541,7 +10119,7 @@
         
             
         
-        共 149.04k 字 · 共 19篇文章
+        共 155.07k 字 · 共 19篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -10859,11 +10437,9 @@
             <li><a href="#bin">bin</a></li>
           </ol>
         </li>
-        <li><a href="#uaf">UAF</a>
-          <ol>
-            <li><a href="#double-free">Double free</a></li>
-          </ol>
-        </li>
+        <li><a href="#unlink">Unlink</a></li>
+        <li><a href="#uaf">UAF</a></li>
+        <li><a href="#double-free">Double free</a></li>
         <li><a href="#fast-bin-attack">fast bin attack</a>
           <ol>
             <li><a href="#arbitrary-alloc">Arbitrary Alloc</a></li>
@@ -10881,16 +10457,13 @@
           </ol>
         </li>
         <li><a href="#unsorted-bin-attack">Unsorted bin attack</a></li>
-        <li><a href="#unlink">Unlink</a></li>
         <li><a href="#off-by-one">Off-by-one</a></li>
         <li><a href="#off-by-null">Off-by-null</a></li>
-        <li><a href="#house-of系列">House of系列</a>
+        <li><a href="#house-of">House of</a>
           <ol>
             <li><a href="#house-of-strom">House of strom</a></li>
             <li><a href="#house-of-orange">House of orange</a></li>
             <li><a href="#house-of-spirit">House of spirit</a></li>
-            <li><a href="#house-of-apple1">House of Apple1</a></li>
-            <li><a href="#house-of-apple2">House of Apple2</a></li>
           </ol>
         </li>
       </ol>
@@ -10900,7 +10473,6 @@
         <li><a href="#stdout-leak">stdout Leak</a></li>
       </ol>
     </li>
-    <li><a href="#fsop">FSOP</a></li>
     <li><a href="#条件竞争">条件竞争</a>
       <ol>
         <li><a href="#double-fetch">Double Fetch</a></li>

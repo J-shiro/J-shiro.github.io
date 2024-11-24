@@ -992,6 +992,15 @@ static __always_inline void tcache_put(mchunkptr chunk, size_t tc_idx)
 }
 ```
 
+#### unlink
+
+```c
+#define unlink(AV, P, BK, FD) {
+// 增加 开头加了一个判断：P的 chunk 大小需要等于下一个 chunk 的 prev_size
+    if (__builtin_expect (chunksize(P) != prev_size (next_chunk(P)), 0))
+      malloc_printerr ("corrupted size vs. prev_size");			      
+```
+
 
 
 ## sysmalloc
@@ -1133,7 +1142,7 @@ static void *sysmalloc(INTERNAL_SIZE_T nb, mstate av) // 需要申请的大小ne
       set_head(top(av), (heap->size - sizeof(*heap)) | PREV_INUSE);
 
       /* 释放旧的top chunk,  */
-      old_size = (old_size - MINSIZE) & ~MALLOC_ALIGN_MASK; // 预留两个头来作为标记，防止错误
+      old_size = (old_size - MINSIZE) & ~MALLOC_ALIGN_MASK; // 预留两个chunk和align来作为标记，防止错误
       set_head(chunk_at_offset(old_top, old_size + 2 * SIZE_SZ), 0 | PREV_INUSE);
       if (old_size >= MINSIZE)
       {
@@ -1514,11 +1523,951 @@ int __brk (void *addr) // 目标堆顶地址
 
 ## free
 
+### 2.23
+
+#### __libc_free
+
+```c
+void __libc_free(void *mem)
+{
+  mstate ar_ptr;
+  mchunkptr p;
+
+  void (*hook)(void *, const void *) = atomic_forced_read(__free_hook); // 原子读free_hook
+  if (__builtin_expect(hook != NULL, 0)) // 查看free_hook是否被设置
+  {
+    (*hook)(mem, RETURN_ADDRESS(0)); // 非空则调用该hook
+    return;
+ 
+  if (mem == 0) /* 需要释放的内存为0，free(0)无效 */
+    return;
+
+  p = mem2chunk(mem); // 用户内存指针转换为chunk指针
+
+  if (chunk_is_mmapped(p)) /* 若是mmap申请的内存 */
+  {
+    /* 
+    	no_dyn_threshold初始默认为0, free的堆大小大于mmap阈值且小于默认最大的mmap阈值
+    	说明mmap需求量大，但耗时大，于是调节阈值mmap_threshold来使得倾向于用brk而非mmap
+    	#define DEFAULT_MMAP_THRESHOLD_MAX (4 * 1024 * 1024 * sizeof(long))
+    	trim_threshold 为是否 systrim 减少 ptmalloc 保留内存的参考值
+    */
+    if (!mp_.no_dyn_threshold && p->size > mp_.mmap_threshold && p->size <= DEFAULT_MMAP_THRESHOLD_MAX)
+    {
+      mp_.mmap_threshold = chunksize(p);
+      mp_.trim_threshold = 2 * mp_.mmap_threshold; // 收缩阈值也提高
+      LIBC_PROBE(memory_mallopt_free_dyn_thresholds, 2, mp_.mmap_threshold, mp_.trim_threshold);
+    }
+    munmap_chunk(p); // 调用了__munmap释放映射
+    return;
+  }
+      
+  // 内存由ptmalloc申请的而非mmap申请
+  ar_ptr = arena_for_chunk(p); // 获取arena
+  _int_free(ar_ptr, p, 0); // 调用_int_free进行堆块释放
+}
+```
+
+#### _int_free
+
+```c
+static void _int_free(mstate av, mchunkptr p, int have_lock)
+{
+  INTERNAL_SIZE_T size;     /* 释放的chunk的大小 */
+  mfastbinptr *fb;          /* 对应的fastbin */
+  mchunkptr nextchunk;      /* 内存空间中下一个连续的chunk */
+  INTERNAL_SIZE_T nextsize; /* 下一个chunk大小 */
+  int nextinuse;            /* 下一个chunk是否在使用 */
+  INTERNAL_SIZE_T prevsize; /* 内存空间中上一个连续的chunk */
+  mchunkptr bck;            /* 存储bin链表指针 */
+  mchunkptr fwd;            /* 存储bin链表指针 */
+
+  const char *errstr = NULL;
+  int locked = 0;
+
+  size = chunksize(p); // 获取chunk大小
+  // 检查1：-size强制转换为无符号整型会发生模运算转换为接近地址空间的最大值，通过判断p和-size防止指针越界溢出
+  if (__builtin_expect((uintptr_t)p > (uintptr_t)-size, 0) || __builtin_expect(misaligned_chunk(p), 0))
+  {
+      // 检查2：是否与MALLOC_ALIGN_MASK对齐
+    errstr = "free(): invalid pointer";
+  errout:
+    if (!have_lock && locked)
+      (void)mutex_unlock(&av->mutex);
+    malloc_printerr(check_action, errstr, chunk2mem(p), av);
+    return;
+  }
+  // 若大小比 MINSIZE小或size不对齐，则不能free
+  if (__glibc_unlikely(size < MINSIZE || !aligned_OK(size)))
+  {
+    errstr = "free(): invalid size";
+    goto errout;
+  }
+
+  check_inuse_chunk(av, p);
+    
+  // 在 fastbin 范围内
+  if ((unsigned long)(size) <= (unsigned long)(get_max_fast())
+#if TRIM_FASTBINS
+      && (chunk_at_offset(p, size) != av->top) // 且下一个chunk不是top chunk
+#endif
+  )
+  {		// 若下一个chunk大小小于2*0x8=0x10或大于系统可用的内存，进入报错部分
+    if (__builtin_expect(chunk_at_offset(p, size)->size <= 2 * SIZE_SZ, 0) || 
+        __builtin_expect(chunksize(chunk_at_offset(p, size)) >= av->system_mem, 0))
+    {
+      if (have_lock || // 有互斥锁则直接进入报错
+         	({assert(locked == 0);mutex_lock(&av->mutex);locked = 1; // 无锁则显式上锁之后再检查判断
+            		chunk_at_offset(p, size)->size <= 2 * SIZE_SZ || 
+            		chunksize(chunk_at_offset(p, size)) >= av->system_mem;
+             })
+         )
+      {
+        errstr = "free(): invalid next size (fast)";
+        goto errout;
+      }
+      if (!have_lock)
+      { // 读取分配区所分配的内存总量需要对分配区加锁,检查完以后,释放分配区的锁
+        (void)mutex_unlock(&av->mutex); // 解锁
+        locked = 0;
+      }
+    }
+
+    free_perturb(chunk2mem(p), size - 2 * SIZE_SZ);
+
+    set_fastchunks(av); // 设置arena fastchunk标志位表明有使用fastbin
+    unsigned int idx = fastbin_index(size); // 获取fastbin索引
+    fb = &fastbin(av, idx); // fb指向fastbin的地址
+
+    mchunkptr old = *fb, old2; // old为fastbin中第一个chunk
+    unsigned int old_idx = ~0u;
+    do
+    {
+      if (__builtin_expect(old == p, 0))
+      { // 释放的chunk p和fastbin中第一个chunk是同一个chunk，报错double free
+        errstr = "double free or corruption (fasttop)";
+        goto errout;
+      }
+      if (have_lock && old != NULL)
+        old_idx = fastbin_index(chunksize(old));
+      p->fd = old2 = old; // p的fd指向old，即将p插到第一个chunk位置
+      // *fb = p，即将fastbin的fd指向p
+    } while ((old = catomic_compare_and_exchange_val_rel(fb, p, old2)) != old2);
+
+    if (have_lock && old != NULL && __builtin_expect(old_idx != idx, 0))
+    { // 判断：old的索引是否也是该fastbin对应索引
+      errstr = "invalid fastbin entry (free)";
+      goto errout;
+    }
+  }
+  // 再次判断，若不是mmap的，则是ptmalloc，前向后向合并放入unsorted bin
+  else if (!chunk_is_mmapped(p))
+  {
+    if (!have_lock)
+    {
+      (void)mutex_lock(&av->mutex);
+      locked = 1;
+    }
+
+    nextchunk = chunk_at_offset(p, size); // 找到其下一个chunk
+
+    if (__glibc_unlikely(p == av->top)) // 检查不是释放top chunk
+    {
+      errstr = "double free or corruption (top)";
+      goto errout;
+    }
+    if (__builtin_expect(contiguous(av) && (char *)nextchunk >= ((char *)av->top + chunksize(av->top)), 0))// 若arena连续且下一个chunk地址大于top chunk的结束地址，即已经到top chunk外
+    {
+      errstr = "double free or corruption (out)";
+      goto errout;
+    } // 下一个chunk的prev_inuse未置位表示p是已经释放了的
+    if (__glibc_unlikely(!prev_inuse(nextchunk)))
+    {
+      errstr = "double free or corruption (!prev)";
+      goto errout;
+    }
+	// 获取下一个chunk的大小
+    nextsize = chunksize(nextchunk);
+    if (__builtin_expect(nextchunk->size <= 2 * SIZE_SZ, 0) || __builtin_expect(nextsize >= av->system_mem, 0))
+    { // 大小小于0x10或大于系统内存大小，报错
+      errstr = "free(): invalid next size (normal)";
+      goto errout;
+    }
+    free_perturb(chunk2mem(p), size - 2 * SIZE_SZ);
+
+    // 若p的前一个chunk是空闲的，向前合并
+    if (!prev_inuse(p))
+    {
+      prevsize = p->prev_size;
+      size += prevsize; // 合并后chunk大小
+      p = chunk_at_offset(p, -((long)prevsize)); // p指向前一个chunk
+      unlink(av, p, bck, fwd); // 将两个chunk合并脱链
+    }
+    if (nextchunk != av->top)
+    { // 若下一个chunk不是 top chunk
+      nextinuse = inuse_bit_at_offset(nextchunk, nextsize); // 下一个chunk的下一个chunk的prev_inuse
+      if (!nextinuse) // 表示下一个chunk未使用，空闲，则后向合并
+      {
+        unlink(av, nextchunk, bck, fwd); // 将下一个chunk脱链
+        size += nextsize;
+      }
+      else // 下一个chunk不空闲
+        clear_inuse_bit_at_offset(nextchunk, 0); // 则清除下一个chunk的prev_inuse
+	  
+      // 准备插入合并的chunk到unsorted bin
+      bck = unsorted_chunks(av); // 获取unsorted bin地址
+      fwd = bck->fd; // 获取unsorted bin的fd指向的第一个chunk
+      if (__glibc_unlikely(fwd->bk != bck)) // 判断：fwd的bk是否反向指回bck
+      {
+        errstr = "free(): corrupted unsorted chunks";
+        goto errout;
+      }
+      // 将 p 插入到unsorted bin中
+      p->fd = fwd;
+      p->bk = bck;
+      if (!in_smallbin_range(size))
+      {
+        p->fd_nextsize = NULL;
+        p->bk_nextsize = NULL; // large bin要设置两个nextsize
+      }
+      bck->fd = p;
+      fwd->bk = p; // 此时 p 插入到bin 的 fd 指向的第一个 chunk 位置
+
+      set_head(p, size | PREV_INUSE); // 更新
+      set_foot(p, size);
+
+      check_free_chunk(av, p);
+    }
+    else
+    { // 若下一个chunk是 top chunk
+      size += nextsize;
+      set_head(p, size | PREV_INUSE); // 更新标志
+      av->top = p; // 与p后的top chunk合并，更新p为 top chunk地址
+      check_chunk(av, p);
+    }
+    
+    // 大小大于 65536，进行堆收缩操作
+    if ((unsigned long)(size) >= FASTBIN_CONSOLIDATION_THRESHOLD)
+    {
+      if (have_fastchunks(av))
+        malloc_consolidate(av); // 有fast chunk则将fastbin中chunk合并放入unsorted bin中
+
+      if (av == &main_arena)
+      { // 主线程中，brk申请的
+#ifndef MORECORE_CANNOT_TRIM // top chunk 大小大于 收缩阈值
+        if ((unsigned long)(chunksize(av->top)) >= (unsigned long)(mp_.trim_threshold))
+          systrim(mp_.top_pad, av); // 进行top chunk收缩操作
+#endif
+      }
+      else // 非主线程中，mmap申请的
+      {
+        heap_info *heap = heap_for_ptr(top(av)); // 先找到heap结构体
+        assert(heap->ar_ptr == av);
+        heap_trim(heap, mp_.top_pad);// 进行堆收缩操作
+      }
+    }
+
+    if (!have_lock)
+    {
+      assert(locked);
+      (void)mutex_unlock(&av->mutex); // 解锁
+    }
+  }
+  else // 若是mmap的chunk，则释放映射，类似__libc_free中的检查
+  {
+    munmap_chunk(p);
+  }
+}
+```
+
+#### munmap_chunk
+
+```c
+static void internal_function munmap_chunk(mchunkptr p)
+{
+  INTERNAL_SIZE_T size = chunksize(p); // 获取chunk大小
+  assert(chunk_is_mmapped(p)); // 检查是mmap分配
+    
+  // mmap分配的chunk一般为独立的即p->prev_size为0，因此还是释放一个chunk
+  uintptr_t block = (uintptr_t)p - p->prev_size;  // 获取前一个chunk的指针block
+  size_t total_size = p->prev_size + size; // 计算两个chunk的总大小
+
+  if (__builtin_expect(((block | total_size) & (GLRO(dl_pagesize) - 1)) != 0, 0))
+  { // 检查是否页对齐
+    malloc_printerr(check_action, "munmap_chunk(): invalid pointer", chunk2mem(p), NULL);
+    return;
+  }
+  atomic_decrement(&mp_.n_mmaps); // 减少mmap内存快的计数
+  atomic_add(&mp_.mmapped_mem, -total_size); // 更新mmap分配的总内存量
+
+  __munmap((char *)block, total_size);
+}
+```
+
+#### arena_for_chunk
+
+```c
+#define arena_for_chunk(ptr)
+  (chunk_non_main_arena (ptr) ? heap_for_ptr (ptr)->ar_ptr : &main_arena) 
+// 是main_arena直接返回，否则用heap_for_ptr宏
+
+#define chunk_non_main_arena(p) ((p)->size & NON_MAIN_ARENA)
+
+#define heap_for_ptr(ptr)
+  ((heap_info *) ((unsigned long) (ptr) & ~(HEAP_MAX_SIZE - 1))) // 对ptr对齐找arena
+```
+
+#### systrim
+
+```c
+static int
+systrim(size_t pad, mstate av)
+{
+  long top_size;     /* Amount of top-most memory */
+  long extra;        /* Amount to release */
+  long released;     /* Amount actually released */
+  char *current_brk; /* address returned by pre-check sbrk call */
+  char *new_brk;     /* address returned by post-check sbrk call */
+  size_t pagesize;
+  long top_area;
+
+  pagesize = GLRO(dl_pagesize);
+  top_size = chunksize(av->top);
+
+  top_area = top_size - MINSIZE - 1; // top chunk 大小 - 0x20 - 1
+  if (top_area <= pad) // 若小于则说明 top chunk 本来就没啥空间，直接返回
+    return 0;
+
+  extra = ALIGN_DOWN(top_area - pad, pagesize); // 将主分配区中可以缩小的大小对页面对齐后保存在extra中
+
+  if (extra == 0) // 无可收缩则退出
+    return 0;
+
+  current_brk = (char *)(MORECORE(0)); // 0 即返回当前的堆顶地址
+  if (current_brk == (char *)(av->top) + top_size) // 判断当前堆顶地址就是top chunk地址加上大小后的结束地址(堆顶)
+  {
+    MORECORE(-extra); // 将堆顶往回收缩extra大小
+    void (*hook)(void) = atomic_forced_read(__after_morecore_hook);
+    if (__builtin_expect(hook != NULL, 0))
+      (*hook)();
+    // 新堆顶地址
+    new_brk = (char *)(MORECORE(0));
+    LIBC_PROBE(memory_sbrk_less, 2, new_brk, extra);
+
+    if (new_brk != (char *)MORECORE_FAILURE) // 若brk成功
+    { 
+      released = (long)(current_brk - new_brk); // 获取收缩了的部分，即释放归还给操作系统的内存
+      if (released != 0)
+      {
+        av->system_mem -= released; // 更新系统内存大小
+        set_head(av->top, (top_size - released) | PREV_INUSE); // 更新top chunk的头
+        check_malloc_state(av);
+        return 1;
+      }
+    }
+  }
+  return 0;
+}
+```
+
+#### heap_trim
+
+```c
+static int internal_function heap_trim (heap_info *heap, size_t pad)
+{
+  mstate ar_ptr = heap->ar_ptr;
+  unsigned long pagesz = GLRO (dl_pagesize);
+  mchunkptr top_chunk = top (ar_ptr), p, bck, fwd;
+  heap_info *prev_heap;
+  long new_size, top_size, top_area, extra, prev_size, misalign;
+
+  while (top_chunk == chunk_at_offset (heap, sizeof (*heap)))
+    { // heap结构体地址加上结构体大小若是 top chunk 地址则说明：后续的 top chunk 均为空闲，考虑释放整个 heap
+      // 但需要检查该heap的前一个heap是否有足够空间，否则删除后剩余空间太小
+      /*	结合sysmalloc中非主线程 top chunk 添加的两个chunk+align
+      		【1】[prev_size]
+      		【2】[size]		> (2*SIZE_SZ) | PREV_INUSE
+      		【3】[prev_size]	> (2*SIZE_SZ)
+      		【4】[size]		> 0 | PREV_INUSE
+      		【5】[align]
+      */
+      prev_heap = heap->prev; // 上一个heap堆块
+      prev_size = prev_heap->size - (MINSIZE - 2 * SIZE_SZ); // 上一个堆块大小 - 0x10
+      p = chunk_at_offset (prev_heap, prev_size); 
+      misalign = ((long) p) & MALLOC_ALIGN_MASK;
+      p = chunk_at_offset (prev_heap, prev_size - misalign); // 通过对齐操作使得p指向【3,4】chunk
+      assert (p->size == (0 | PREV_INUSE)); // 判断一下
+      p = prev_chunk (p); // 通过取前一个chunk使得p指向【1,2】chunk
+      
+      // 计算【1,2,3,4,5】大小
+      new_size = chunksize (p) + (MINSIZE - 2 * SIZE_SZ) + misalign;
+      assert (new_size > 0 && new_size < (long) (2 * MINSIZE)); // 安全检查 0 < new_size < 0x40
+      if (!prev_inuse (p)) // 前一个chunk空闲则加上大小
+        new_size += p->prev_size; // 作为新堆块 top chunk大小
+      assert (new_size > 0 && new_size < HEAP_MAX_SIZE); // 安全大小检查
+      if (new_size + (HEAP_MAX_SIZE - prev_heap->size) < pad + MINSIZE + pagesz)
+        break; // 若空间不足够则退出不再释放
+      // 更新
+      ar_ptr->system_mem -= heap->size;
+      arena_mem -= heap->size;
+      LIBC_PROBE (memory_heap_free, 2, heap, heap->size);
+      
+      delete_heap (heap); // 调用宏释放heap
+      heap = prev_heap; // 此时heap变为前一个堆heap chunk
+      if (!prev_inuse (p))
+        {
+          p = prev_chunk (p);
+          unlink (ar_ptr, p, bck, fwd); // 前向合并 脱链
+        }
+      assert (((unsigned long) ((char *) p + new_size) & (pagesz - 1)) == 0);
+      assert (((char *) p + new_size) == ((char *) heap + heap->size));
+      top (ar_ptr) = top_chunk = p; // 更新 top chunk
+      set_head (top_chunk, new_size | PREV_INUSE);
+    }
+
+  top_size = chunksize (top_chunk); // 获取top chunk大小
+  if ((unsigned long)(top_size) < (unsigned long)(mp_.trim_threshold))
+    return 0; // 小于阈值无法收缩，退出
+
+  top_area = top_size - MINSIZE - 1;
+  if (top_area < 0 || (size_t) top_area <= pad) 
+    return 0; // 可收缩值过小，退出
+
+  extra = ALIGN_DOWN(top_area - pad, pagesz);
+  if (extra == 0)
+    return 0; // 对齐后的区域不足以收缩，退出
+
+  if (shrink_heap (heap, extra) != 0) // 释放刚计算的对齐extra
+    return 0;
+
+  ar_ptr->system_mem -= extra;
+  arena_mem -= extra; // 更新
+
+  set_head (top_chunk, (top_size - extra) | PREV_INUSE); // 设置标志
+  return 1;
+}
+```
+
+#### shrink_heap
+
+```c
+static int shrink_heap (heap_info *h, long diff)
+{
+  long new_size;
+
+  new_size = (long) h->size - diff; // 减去 diff 后的新堆的大小
+  if (new_size < (long) sizeof (*h))
+    return -1; // 小于heap结构体大小则退出
+    
+  if (__glibc_unlikely (check_may_shrink_heap ())) // 检查当前系统环境是否支持通过重新映射的方式释放堆空间
+    {
+      if ((char *) MMAP ((char *) h + new_size, diff, PROT_NONE, MAP_FIXED) == (char *) MAP_FAILED)
+        return -2; // 尝试 mmap 将新释放的内存段重新映射为不可访问的内存区域
+
+      h->mprotect_size = new_size; // 更新mprotect记录的映射大小
+    }
+  else // 不支持mmap重新映射则调用madvise系统调用，指示OS回收这些内存
+    __madvise ((char *) h + new_size, diff, MADV_DONTNEED);
+
+  h->size = new_size; // 更新堆大小
+  LIBC_PROBE (memory_heap_less, 2, h, h->size);
+  return 0;
+}
+```
+
+### 2.27
+
+#### __libc_free
+
+```c
+// 增加
+MAYBE_INIT_TCACHE(); // tcache初始化
+```
+
+#### MAYBE_INIT_TCACHE
+
+```c
+# define MAYBE_INIT_TCACHE()
+  if (__glibc_unlikely (tcache == NULL)) 
+    tcache_init();
+
+static void tcache_init(void)
+{
+  mstate ar_ptr; // arena指针
+  void *victim = 0; // 用于存储分配得到的内存块(tcache_perthread_struct)
+  const size_t bytes = sizeof (tcache_perthread_struct); // 分配的字节数
+  
+  // static __thread bool tcache_shutting_down = false;
+  if (tcache_shutting_down) // 若tcache系统关闭则不初始化
+    return;
+
+  arena_get (ar_ptr, bytes); // 获取一个arena用于分配内存
+  victim = _int_malloc (ar_ptr, bytes); // 从 arena 中分配bytes字节的内存块
+  if (!victim && ar_ptr != NULL)
+    {
+      ar_ptr = arena_get_retry (ar_ptr, bytes); // 分配失败重新尝试
+      victim = _int_malloc (ar_ptr, bytes);
+    }
+
+  if (ar_ptr != NULL)
+    __libc_lock_unlock (ar_ptr->mutex); // 使用了某个arena，解锁允许其他线程访问
+
+  if (victim) // 内存分配成功
+    {
+      tcache = (tcache_perthread_struct *) victim; 
+      // victim转换为tcache_perthread_struct指针存在全局变量tcache中
+      memset (tcache, 0, sizeof (tcache_perthread_struct)); // 初始化内存为0
+    }
+}
+```
+
+#### _int_free
+
+```c
+// 增加
+#if USE_TCACHE
+{
+    size_t tc_idx = csize2tidx (size); // 获取tcache的索引
+	// 若 tcache已初始化 + tcache索引在范围内 + tcache的数量此时小于7
+    if (tcache && tc_idx < mp_.tcache_bins && tcache->counts[tc_idx] < mp_.tcache_count)
+    {
+        tcache_put (p, tc_idx);// 将chunk放入tcache中
+        return;
+    }
+}
+#endif
+```
+
+#### tcache_put
+
+```c
+static __always_inline void tcache_put (mchunkptr chunk, size_t tc_idx)
+{
+  tcache_entry *e = (tcache_entry *) chunk2mem (chunk);
+  assert (tc_idx < TCACHE_MAX_BINS);
+  e->next = tcache->entries[tc_idx]; // chunk插入tcache中
+  tcache->entries[tc_idx] = e; // 设置新入口
+  ++(tcache->counts[tc_idx]); // 增加tcache的数量
+}
+```
+
 
 
 ## calloc
+
+### 2.23
+
+#### __libc_calloc
+
+分配一块内存并初始化为零
+
+```c
+void *__libc_calloc(size_t n, size_t elem_size) // n项，每一项大小为elem_size
+{
+  mstate av;
+  mchunkptr oldtop, p;
+  INTERNAL_SIZE_T bytes, sz, csz, oldtopsize;
+  void *mem;
+  unsigned long clearsize;
+  unsigned long nclears;
+  INTERNAL_SIZE_T *d;
+
+  bytes = n * elem_size; // 相乘将需要申请的内存大小转换为以字节为单位
+  // 判断溢出
+#define HALF_INTERNAL_SIZE_T (((INTERNAL_SIZE_T)1) << (8 * sizeof(INTERNAL_SIZE_T) / 2))
+  if (__builtin_expect((n | elem_size) >= HALF_INTERNAL_SIZE_T, 0))
+  {
+    if (elem_size != 0 && bytes / elem_size != n)
+    {
+      __set_errno(ENOMEM); // 发生整数溢出，退出
+      return 0;
+    }
+  }
+
+  void *(*hook)(size_t, const void *) = atomic_forced_read(__malloc_hook); 
+  if (__builtin_expect(hook != NULL, 0)) // 若malloc_hook被定义
+  {
+    sz = bytes;
+    mem = (*hook)(sz, RETURN_ADDRESS(0)); // 调用malloc_hook
+    if (mem == 0) // 失败则退出
+      return 0;
+    return memset(mem, 0, sz); // 并将内存清零
+  }
+  sz = bytes; // 大小赋值
+
+  arena_get(av, sz); // 获取arena
+  if (av)
+  {
+#if MORECORE_CLEARS
+    /* 
+    	由于无论是main_arena控制的堆通过sbrk扩展还是非main_arena通过heap_info向后扩展受保护的内存区域
+      	新扩展的内存区初始值为0，不需要清空，因此后续需要清理的内存大小只清理与 top chunk 重合区域，提升效率
+    */
+    oldtop = top(av); // 获取top chunk
+    oldtopsize = chunksize(top(av)); // 获取 top chunk 头之后可控制的内存大小
+#if MORECORE_CLEARS < 2
+    // 主线程 + top chunk需要清空的内存大小为 top chunk 到原先 heap 区域末尾位置
+    if (av == &main_arena && oldtopsize <  mp_.sbrk_base + av->max_system_mem - (char *)oldtop)
+      oldtopsize = (mp_.sbrk_base + av->max_system_mem - (char *)oldtop);
+#endif
+    // 非主线程
+    if (av != &main_arena)
+    { // top chunk 需要清空的内存大小为 top chunk 到原先 heap_info 受保护区域末尾位置
+      heap_info *heap = heap_for_ptr(oldtop); // 获取heap_info
+      if (oldtopsize < (char *)heap + heap->mprotect_size - (char *)oldtop)
+        oldtopsize = (char *)heap + heap->mprotect_size - (char *)oldtop;
+    }
+#endif
+  }
+  else 
+  { // 无可用的arena，后续_int_malloc会直接mmap获取内存，而mmap获取内存初始值为0，不需要清零
+    oldtop = 0;
+    oldtopsize = 0;
+  }
+  mem = _int_malloc(av, sz); // 在 arena 中尝试分配内存
+
+  assert(!mem || chunk_is_mmapped(mem2chunk(mem)) || // 未申请到内存或mmap获取的内存
+         av == arena_for_chunk(mem2chunk(mem))); // 内存从当前线程对应的arena管理的内存中获取
+  // 未申请到内存且arena不为空
+  if (mem == 0 && av != NULL)
+  {
+    LIBC_PROBE(memory_calloc_retry, 1, sz);
+    av = arena_get_retry(av, sz); // 再次获取arena
+    mem = _int_malloc(av, sz); // 再次申请分配内存
+  }
+
+  if (av != NULL)
+    (void)mutex_unlock(&av->mutex);
+
+  if (mem == 0)
+    return 0; // 申请为0则退出
+
+  p = mem2chunk(mem); // 将申请到的内存转换为chunk地址
+
+  if (chunk_is_mmapped(p))
+  {
+    if (__builtin_expect(perturb_byte, 0))
+      return memset(mem, 0, sz);
+
+    return mem; // 直接返回，因为mmap的内存默认初始化为0
+  }
+  csz = chunksize(p); // 需要清空的堆大小
+
+#if MORECORE_CLEARS
+  if (perturb_byte == 0 && (p == oldtop && csz > oldtopsize))
+  { // 如果是从 top chunk 上切下来的，申请比原先top chunk大小大，则说明原来top chunk扩展
+    // 只需要清零 top chunk 范围的内存
+    csz = oldtopsize;
+  }
+#endif
+
+  d = (INTERNAL_SIZE_T *)mem;
+  clearsize = csz - SIZE_SZ;
+  nclears = clearsize / sizeof(INTERNAL_SIZE_T);
+  assert(nclears >= 3);
+
+  if (nclears > 9)
+    return memset(d, 0, clearsize);// 清零字节数较多，直接调用 memset
+  else // 字节数较少，使用循环展开手动清零，以优化性能
+  {
+    *(d + 0) = 0;
+    *(d + 1) = 0;
+    *(d + 2) = 0;
+    if (nclears > 4)
+    {
+      *(d + 3) = 0;
+      *(d + 4) = 0;
+      if (nclears > 6)
+      {
+        *(d + 5) = 0;
+        *(d + 6) = 0;
+        if (nclears > 8)
+        {
+          *(d + 7) = 0;
+          *(d + 8) = 0;
+        }
+      }
+    }
+  }
+
+  return mem;
+}
+```
 
 
 
 ## realloc
 
+### 2.23
+
+#### __libc_realloc
+
+```c
+void *__libc_realloc(void *oldmem, size_t bytes)
+{
+  mstate ar_ptr;
+  INTERNAL_SIZE_T nb; /* padded request size */
+
+  void *newp; /* 返回的堆块 */
+
+  void *(*hook)(void *, size_t, const void *) = atomic_forced_read(__realloc_hook);
+  if (__builtin_expect(hook != NULL, 0))
+    return (*hook)(oldmem, bytes, RETURN_ADDRESS(0)); // 若realloc_hook被设置则调用
+
+#if REALLOC_ZERO_BYTES_FREES
+  if (bytes == 0 && oldmem != NULL) // 若大小为0即 realloc(0)
+  {
+    __libc_free(oldmem); // 相当于free，将oldmem指针对应堆块释放
+    return 0;
+  }
+#endif
+  if (oldmem == 0) // 若 oldmem 为 NULL，相当于 malloc(bytes)
+    return __libc_malloc(bytes);
+
+  const mchunkptr oldp = mem2chunk(oldmem); // 将chunk转换为对应内存大小
+  const INTERNAL_SIZE_T oldsize = chunksize(oldp); // 获取chunk大小
+
+  if (chunk_is_mmapped(oldp))
+    ar_ptr = NULL; // 若是mmap申请，则arena指针为空
+  else
+    ar_ptr = arena_for_chunk(oldp); // 否则通过该chunk获取arena地址
+
+  if (__builtin_expect((uintptr_t)oldp > (uintptr_t)-oldsize, 0) || // 不超过内存空间，判断溢出
+      __builtin_expect(misaligned_chunk(oldp), 0)) // 该堆块必须关于0x10对齐
+  {
+    malloc_printerr(check_action, "realloc(): invalid pointer", oldmem, ar_ptr);
+    return NULL;
+  }
+  checked_request2size(bytes, nb); // 将申请内存转换为适合内存分配的块大小, 转换为nb大小
+
+  // 若该chunk是mmap的
+  if (chunk_is_mmapped(oldp))
+  {
+    void *newmem;
+
+#if HAVE_MREMAP
+    newp = mremap_chunk(oldp, nb); // 将oldp原来的chunk的大小调整为nb
+    if (newp)
+      return chunk2mem(newp); // 调整成功返回
+#endif
+    if (oldsize - SIZE_SZ >= nb) // 减去头的用户数据大小要大于申请的堆块大小
+      return oldmem;
+
+    // 若 mremap失败，则通过malloc获取内存
+    newmem = __libc_malloc(bytes);
+    if (newmem == 0)
+      return 0;
+	
+    // 将原先内存的数据复制到新内存中
+    memcpy(newmem, oldmem, oldsize - 2 * SIZE_SZ);
+    munmap_chunk(oldp); // 将原先内存释放掉
+    return newmem;
+  }
+    
+  // 若不是mmap的则为ptmalloc申请 
+  (void)mutex_lock(&ar_ptr->mutex); // 上锁
+
+  newp = _int_realloc(ar_ptr, oldp, oldsize, nb); // 调用 _int_realloc 核心函数
+
+  (void)mutex_unlock(&ar_ptr->mutex); // 解锁
+  // 判断三种情况
+  assert(!newp || chunk_is_mmapped(mem2chunk(newp)) ||
+         ar_ptr == arena_for_chunk(mem2chunk(newp)));
+  // realloc 申请没调整成功
+  if (newp == NULL)
+  {
+    LIBC_PROBE(memory_realloc_retry, 2, bytes, oldmem);
+    newp = __libc_malloc(bytes); // 尝试malloc
+    if (newp != NULL)
+    {
+      memcpy(newp, oldmem, oldsize - SIZE_SZ); // 复制数据到新内存
+      _int_free(ar_ptr, oldp, 0); // 释放旧内存
+    }
+  }
+  return newp;
+}
+```
+
+#### int_realloc
+
+用于重新分配内存块，尝试更改内存块大小
+
+```c
+// av指向内存状态的指针，oldp指向内存状态的指针，oldsize当前块的大小，nb请求的新大小
+void * _int_realloc(mstate av, mchunkptr oldp, INTERNAL_SIZE_T oldsize, INTERNAL_SIZE_T nb)
+{
+  mchunkptr newp;          /* 新分配的内存块指针 */
+  INTERNAL_SIZE_T newsize; /* 新内存块大小 */
+  void *newmem;            /* 对应用户内存的指针 */
+
+  mchunkptr next; /* 指向oldp后面的连续内存块 */
+
+  mchunkptr remainder;          /* 新分配内存后剩余的内存块 */
+  unsigned long remainder_size; /* 剩余内存块大小 */
+
+  mchunkptr bck; /* 链表临时变量 */
+  mchunkptr fwd; /* 链表临时变量 */
+
+  unsigned long copysize; /* 需要复制的字节数 */
+  unsigned int ncopies;   /* 需要复制的INTERNAL_SIZE_T字数 */
+  INTERNAL_SIZE_T *s;     /* 复制源的指针 */
+  INTERNAL_SIZE_T *d;     /* 复制目标的指针 */
+
+  const char *errstr = NULL;
+  // 若大小小于0x10或大于系统内存
+  if (__builtin_expect(oldp->size <= 2 * SIZE_SZ, 0) || __builtin_expect(oldsize >= av->system_mem, 0))
+  {
+    errstr = "realloc(): invalid old size";
+  errout:
+    malloc_printerr(check_action, errstr, chunk2mem(oldp), av); // 报错
+    return NULL;
+  }
+
+  check_inuse_chunk(av, oldp);
+  assert(!chunk_is_mmapped(oldp)); // 检查该chunk不是mmap申请的
+
+  next = chunk_at_offset(oldp, oldsize); // 获取下一个chunk
+  INTERNAL_SIZE_T nextsize = chunksize(next); // 下一个chunk大小
+  if (__builtin_expect(next->size <= 2 * SIZE_SZ, 0) || __builtin_expect(nextsize >= av->system_mem, 0))
+  {
+    errstr = "realloc(): invalid next size"; // 安全检查下一个chunk大小
+    goto errout;
+  }
+
+  if ((unsigned long)(oldsize) >= (unsigned long)(nb))
+  { // chunk大小足够大
+    newp = oldp;
+    newsize = oldsize;
+  }
+  else
+  { // chunk大小不足够申请的大小nb，尝试扩展内存
+    if (next == av->top && // 下一个chunk是top chunk
+        (unsigned long)(newsize = oldsize + nextsize) >= (unsigned long)(nb + MINSIZE))
+    { // 且两个chunk大小大于nb+MINSIZE
+      set_head_size(oldp, nb | (av != &main_arena ? NON_MAIN_ARENA : 0));
+      av->top = chunk_at_offset(oldp, nb); // 设置top chunk为oldp偏移nb，即切割一片内存与原堆块合并
+      set_head(av->top, (newsize - nb) | PREV_INUSE);
+      check_inuse_chunk(av, oldp);
+      return chunk2mem(oldp); // 返回合并后堆块
+    } 
+    else if (next != av->top && // 若下一个chunk不是 top chunk
+             !inuse(next) && // 下一个chunk空闲
+             (unsigned long)(newsize = oldsize + nextsize) >= (unsigned long)(nb)) // 两个chunk大小大于nb
+    {
+      newp = oldp; // 后向合并 next
+      unlink(av, next, bck, fwd); // 把下一个chunk脱链，还未返回，后续还需要切割后面的chunk
+    }
+    else // 下一个chunk不是空闲的
+    {
+      newmem = _int_malloc(av, nb - MALLOC_ALIGN_MASK); // 新申请一块内存
+      if (newmem == 0)
+        return 0;
+
+      newp = mem2chunk(newmem); // 内存转换为chunk指针
+      newsize = chunksize(newp); // 获取chunk大小
+
+      if (newp == next) // 之前判断空闲不能判断是否在fastbin，所以此处申请可能为fastbin相连
+      {
+        newsize += oldsize; // 相邻则直接加在一起
+        newp = oldp;
+      }
+      else // 否则拷贝＋释放操作
+      {
+        copysize = oldsize - SIZE_SZ; // 复制的大小
+        s = (INTERNAL_SIZE_T *)(chunk2mem(oldp));
+        d = (INTERNAL_SIZE_T *)(newmem);
+        ncopies = copysize / sizeof(INTERNAL_SIZE_T);
+        assert(ncopies >= 3);
+
+        if (ncopies > 9)
+          memcpy(d, s, copysize); // 大于9直接向d中拷贝copysize大小的s中数据
+
+        else // 否则手动拷贝，一次拷贝8字节优化
+        {
+          *(d + 0) = *(s + 0);
+          *(d + 1) = *(s + 1);
+          *(d + 2) = *(s + 2);
+          if (ncopies > 4)
+          {
+            *(d + 3) = *(s + 3);
+            *(d + 4) = *(s + 4);
+            if (ncopies > 6)
+            {
+              *(d + 5) = *(s + 5);
+              *(d + 6) = *(s + 6);
+              if (ncopies > 8)
+              {
+                *(d + 7) = *(s + 7);
+                *(d + 8) = *(s + 8);
+              }
+            }
+          }
+        }
+
+        _int_free(av, oldp, 1); // 释放之前的chunk
+        check_inuse_chunk(av, newp);
+        return chunk2mem(newp); // 直接返回了
+      }
+    }
+  }
+
+  assert((unsigned long)(newsize) >= (unsigned long)(nb));
+  // 用于切割
+  remainder_size = newsize - nb;
+
+  if (remainder_size < MINSIZE)// 无法切割出一个chunk
+  {
+    set_head_size(newp, newsize | (av != &main_arena ? NON_MAIN_ARENA : 0));
+    set_inuse_bit_at_offset(newp, newsize); // 设置标志位
+  }
+  else// 剩余部分还可以切割一个chunk
+  {
+    remainder = chunk_at_offset(newp, nb); // 切割
+    set_head_size(newp, nb | (av != &main_arena ? NON_MAIN_ARENA : 0));
+    set_head(remainder, remainder_size | PREV_INUSE | (av != &main_arena ? NON_MAIN_ARENA : 0));
+    set_inuse_bit_at_offset(remainder, remainder_size);
+    _int_free(av, remainder, 1); // 释放remainder
+  }
+
+  check_inuse_chunk(av, newp);
+  return chunk2mem(newp);
+}
+```
+
+#### mremap_chunk
+
+调整mmap分配的内存块大小
+
+```c
+static mchunkptr internal_function mremap_chunk(mchunkptr p, size_t new_size)
+{ // 调整由mmap分配的内存块 p 的大小到 new_size
+  size_t pagesize = GLRO(dl_pagesize); // 当前系统页大小
+  INTERNAL_SIZE_T offset = p->prev_size; // 当前块的偏移量，prev_size
+  INTERNAL_SIZE_T size = chunksize(p); // 当前块大小
+  char *cp;
+
+  assert(chunk_is_mmapped(p)); // 确保是mmap分配
+  assert(((size + offset) & (GLRO(dl_pagesize) - 1)) == 0); // 确保块大小加上偏移量是页大小整数倍对齐
+
+  new_size = ALIGN_UP(new_size + offset + SIZE_SZ, pagesize); // 将new_size调整为与系统页对齐
+
+  if (size + offset == new_size) // 若刚好等于调整后则返回
+    return p;
+  // 否则调用系统调用__mremap重新映射内存块，mremap重新分配一块内存并将之前的数据复制到新的内存上
+  cp = (char *)__mremap((char *)p - offset, size + offset, new_size,MREMAP_MAYMOVE);
+
+  if (cp == MAP_FAILED)
+    return 0; // 调整失败
+
+  p = (mchunkptr)(cp + offset); // mremap返回地址cp加上偏移得到新的块指针p
+
+  assert(aligned_OK(chunk2mem(p))); // 地址对齐
+  assert((p->prev_size == offset)); // 偏移量未变
+  set_head(p, (new_size - offset) | IS_MMAPPED); // 更新头信息
+
+  INTERNAL_SIZE_T new; // 更新mmaped_mem信息
+  new = atomic_exchange_and_add(&mp_.mmapped_mem, new_size - size - offset) + new_size - size - offset;
+  atomic_max(&mp_.max_mmapped_mem, new);
+  return p;
+}
+```

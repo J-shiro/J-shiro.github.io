@@ -15,8 +15,6 @@ categories:
 typora-root-url: ..\..\..\..\..\static
 ---
 
-- 字节青训营学习
-
 ## 基本知识
 
 - LangChain是一个基于大语言模型（LLMs）用于构建端到端语言模型应用的框架
