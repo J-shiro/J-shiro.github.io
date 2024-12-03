@@ -84,9 +84,10 @@
 &lt;p&gt;**du：**显示目录及子目录磁盘使用情况，&lt;code&gt;du -h directory&lt;/code&gt;，&lt;code&gt;-h&lt;/code&gt;表示人类可读&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;curl：&lt;/strong&gt; 可查看公网ip地址&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;ps：&lt;/strong&gt;&lt;code&gt;ps -ef | grep xx&lt;/code&gt;查找指定进程格式&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;查看某个文件的绝对路径：&lt;/strong&gt; &lt;code&gt;pwd|awk &#39;{print $1&amp;quot;/file_name&amp;quot;}&#39;&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;查看版本：&lt;/strong&gt;&lt;code&gt;cat /proc/version&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;显示操作系统信息：&lt;/strong&gt;&lt;code&gt;uname -a&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;查看某个文件的绝对路径&lt;/strong&gt;： &lt;code&gt;pwd|awk &#39;{print $1&amp;quot;/file_name&amp;quot;}&#39;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;查看版本&lt;/strong&gt;：&lt;code&gt;cat /proc/version&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;显示操作系统信息&lt;/strong&gt;：&lt;code&gt;uname -a&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;查看磁盘使用情况&lt;/strong&gt;：&lt;code&gt;du -sh&lt;/code&gt;&lt;/p&gt;
 &lt;h2 id=&#34;netstat&#34;&gt;netstat&lt;/h2&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -538,7 +539,24 @@
 &lt;p&gt;bash的配置在&lt;code&gt;~/.bashrc&lt;/code&gt;中&lt;/p&gt;
 &lt;p&gt;git的配置在&lt;code&gt;~/.gitconfig&lt;/code&gt;中&lt;/p&gt;
 &lt;p&gt;vim的配置在&lt;code&gt;~/.vimrc&lt;/code&gt;中&lt;/p&gt;
-</description>
+&lt;h2 id=&#34;压缩&#34;&gt;压缩&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;tar -zvcf a.tar.gz a &lt;span class=&#34;c1&#34;&gt;# 压缩&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;tar -zvxf a.tar.gz  &lt;span class=&#34;c1&#34;&gt;# 解压&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;zip -r a.zip ./* &lt;span class=&#34;c1&#34;&gt;# 压缩&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;unzip -d /xxx a.zip &lt;span class=&#34;c1&#34;&gt;# 解压&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
         </item>
         
     </channel>

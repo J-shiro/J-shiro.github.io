@@ -87,11 +87,13 @@ hyperfine --warmup 3 'fd -e jpg' 'find . -iname "*.jpg"' # 比较 fd 和 find
 
 **ps：**`ps -ef | grep xx`查找指定进程格式
 
-**查看某个文件的绝对路径：** `pwd|awk '{print $1"/file_name"}'`
+**查看某个文件的绝对路径**： `pwd|awk '{print $1"/file_name"}'`
 
-**查看版本：**`cat /proc/version`
+**查看版本**：`cat /proc/version`
 
-**显示操作系统信息：**`uname -a`
+**显示操作系统信息**：`uname -a`
+
+**查看磁盘使用情况**：`du -sh`
 
 ## netstat
 
@@ -443,3 +445,14 @@ bash的配置在`~/.bashrc`中
 git的配置在`~/.gitconfig`中
 
 vim的配置在`~/.vimrc`中
+
+## 压缩
+
+```bash
+tar -zvcf a.tar.gz a # 压缩
+tar -zvxf a.tar.gz  # 解压
+
+zip -r a.zip ./* # 压缩
+unzip -d /xxx a.zip # 解压
+```
+

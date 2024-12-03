@@ -2051,6 +2051,38 @@ static __always_inline void tcache_put (mchunkptr chunk, size_t tc_idx)
 }
 ```
 
+### 2.31
+
+#### _int_free
+
+```c
+// 增加
+#if USE_TCACHE
+ {
+    size_t tc_idx = csize2tidx (size);
+    if (tcache != NULL && tc_idx < mp_.tcache_bins) // tcache已初始化且索引在tcache范围内
+    {	// 内存块地址转换为 tcache_entry 结构体指针
+		tcache_entry *e = (tcache_entry *) chunk2mem (p);
+
+        if (__glibc_unlikely (e->key == tcache)) // tcache为tcacche_perthread_structure的地址
+        {
+            tcache_entry *tmp;
+            LIBC_PROBE (memory_tcache_double_free, 2, e, tc_idx);
+            // 循环检测tcache中是否有与e相等的chunk，可能double free
+            for (tmp = tcache->entries[tc_idx]; tmp; tmp = tmp->next)
+              if (tmp == e)
+                malloc_printerr ("free(): double free detected in tcache 2");
+         }
+        if (tcache->counts[tc_idx] < mp_.tcache_count)
+        { // 将当前内存块放入 tcache 中进行缓存
+            tcache_put (p, tc_idx);
+            return;
+        }
+     }
+}
+#endif
+```
+
 
 
 ## calloc
@@ -2059,7 +2091,7 @@ static __always_inline void tcache_put (mchunkptr chunk, size_t tc_idx)
 
 #### __libc_calloc
 
-分配一块内存并初始化为零
+分配一块内存并初始化为零，calloc申请内存不会从tcache中获取，而是直接从堆块中获取
 
 ```c
 void *__libc_calloc(size_t n, size_t elem_size) // n项，每一项大小为elem_size
@@ -2471,3 +2503,6 @@ static mchunkptr internal_function mremap_chunk(mchunkptr p, size_t new_size)
   return p;
 }
 ```
+
+## IO_FILE
+

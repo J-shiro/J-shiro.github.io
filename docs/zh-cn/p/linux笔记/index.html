@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    4153 字
+                    4199 字
                 </time>
             </div>
         
@@ -408,9 +408,10 @@
 <p>**du：**显示目录及子目录磁盘使用情况，<code>du -h directory</code>，<code>-h</code>表示人类可读</p>
 <p><strong>curl：</strong> 可查看公网ip地址</p>
 <p><strong>ps：</strong><code>ps -ef | grep xx</code>查找指定进程格式</p>
-<p><strong>查看某个文件的绝对路径：</strong> <code>pwd|awk '{print $1&quot;/file_name&quot;}'</code></p>
-<p><strong>查看版本：</strong><code>cat /proc/version</code></p>
-<p><strong>显示操作系统信息：</strong><code>uname -a</code></p>
+<p><strong>查看某个文件的绝对路径</strong>： <code>pwd|awk '{print $1&quot;/file_name&quot;}'</code></p>
+<p><strong>查看版本</strong>：<code>cat /proc/version</code></p>
+<p><strong>显示操作系统信息</strong>：<code>uname -a</code></p>
+<p><strong>查看磁盘使用情况</strong>：<code>du -sh</code></p>
 <h2 id="netstat">netstat</h2>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -862,7 +863,24 @@
 <p>bash的配置在<code>~/.bashrc</code>中</p>
 <p>git的配置在<code>~/.gitconfig</code>中</p>
 <p>vim的配置在<code>~/.vimrc</code>中</p>
-
+<h2 id="压缩">压缩</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tar -zvcf a.tar.gz a <span class="c1"># 压缩</span>
+</span></span><span class="line"><span class="cl">tar -zvxf a.tar.gz  <span class="c1"># 解压</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">zip -r a.zip ./* <span class="c1"># 压缩</span>
+</span></span><span class="line"><span class="cl">unzip -d /xxx a.zip <span class="c1"># 解压</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 
@@ -1076,7 +1094,7 @@
         
             
         
-        共 155.07k 字 · 共 19篇文章
+        共 159.79k 字 · 共 19篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -1294,6 +1312,7 @@
       </ol>
     </li>
     <li><a href="#配置">配置</a></li>
+    <li><a href="#压缩">压缩</a></li>
   </ol>
 </nav>
         </div>

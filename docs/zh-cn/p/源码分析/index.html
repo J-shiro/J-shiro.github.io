@@ -311,7 +311,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 44 分钟
+                    阅读时长: 45 分钟
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    21952 字
+                    22215 字
                 </time>
             </div>
         
@@ -4227,10 +4227,68 @@
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
+</div><h3 id="231">2.31</h3>
+<h4 id="_int_free-2">_int_free</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// 增加
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">#if USE_TCACHE
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">size_t</span> <span class="n">tc_idx</span> <span class="o">=</span> <span class="n">csize2tidx</span> <span class="p">(</span><span class="n">size</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">tcache</span> <span class="o">!=</span> <span class="nb">NULL</span> <span class="o">&amp;&amp;</span> <span class="n">tc_idx</span> <span class="o">&lt;</span> <span class="n">mp_</span><span class="p">.</span><span class="n">tcache_bins</span><span class="p">)</span> <span class="c1">// tcache已初始化且索引在tcache范围内
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">{</span>	<span class="c1">// 内存块地址转换为 tcache_entry 结构体指针
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">tcache_entry</span> <span class="o">*</span><span class="n">e</span> <span class="o">=</span> <span class="p">(</span><span class="n">tcache_entry</span> <span class="o">*</span><span class="p">)</span> <span class="n">chunk2mem</span> <span class="p">(</span><span class="n">p</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">__glibc_unlikely</span> <span class="p">(</span><span class="n">e</span><span class="o">-&gt;</span><span class="n">key</span> <span class="o">==</span> <span class="n">tcache</span><span class="p">))</span> <span class="c1">// tcache为tcacche_perthread_structure的地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">tcache_entry</span> <span class="o">*</span><span class="n">tmp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">LIBC_PROBE</span> <span class="p">(</span><span class="n">memory_tcache_double_free</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">tc_idx</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// 循环检测tcache中是否有与e相等的chunk，可能double free
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="k">for</span> <span class="p">(</span><span class="n">tmp</span> <span class="o">=</span> <span class="n">tcache</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">[</span><span class="n">tc_idx</span><span class="p">];</span> <span class="n">tmp</span><span class="p">;</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">              <span class="k">if</span> <span class="p">(</span><span class="n">tmp</span> <span class="o">==</span> <span class="n">e</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">malloc_printerr</span> <span class="p">(</span><span class="s">&#34;free(): double free detected in tcache 2&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">         <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">tcache</span><span class="o">-&gt;</span><span class="n">counts</span><span class="p">[</span><span class="n">tc_idx</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">mp_</span><span class="p">.</span><span class="n">tcache_count</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span> <span class="c1">// 将当前内存块放入 tcache 中进行缓存
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">tcache_put</span> <span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">tc_idx</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">     <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#endif
+</span></span></span></code></pre></td></tr></table>
+</div>
 </div><h2 id="calloc">calloc</h2>
 <h3 id="223-3">2.23</h3>
 <h4 id="__libc_calloc">__libc_calloc</h4>
-<p>分配一块内存并初始化为零</p>
+<p>分配一块内存并初始化为零，calloc申请内存不会从tcache中获取，而是直接从堆块中获取</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">  1
@@ -5028,7 +5086,8 @@
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div>
+</div><h2 id="io_file">IO_FILE</h2>
+
 </section>
 
 
@@ -5242,7 +5301,7 @@
         
             
         
-        共 155.07k 字 · 共 19篇文章
+        共 159.79k 字 · 共 19篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -5511,6 +5570,11 @@
             <li><a href="#tcache_put-1">tcache_put</a></li>
           </ol>
         </li>
+        <li><a href="#231">2.31</a>
+          <ol>
+            <li><a href="#_int_free-2">_int_free</a></li>
+          </ol>
+        </li>
       </ol>
     </li>
     <li><a href="#calloc">calloc</a>
@@ -5533,6 +5597,7 @@
         </li>
       </ol>
     </li>
+    <li><a href="#io_file">IO_FILE</a></li>
   </ol>
 </nav>
         </div>
