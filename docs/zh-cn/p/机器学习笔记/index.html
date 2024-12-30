@@ -311,7 +311,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 32 分钟
+                    阅读时长: 31 分钟
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    15574 字
+                    15520 字
                 </time>
             </div>
         
@@ -393,7 +393,7 @@
 <li>回归模型：计算训练集与测试集的<strong>代价函数中的平方误差项，比较测试集大小</strong></li>
 <li>分类模型：计算训练集与测试集的<strong>代价函数中的平均损失函数项，主要看测试集和训练集中误分类的分值，即预测的y和实际y不相等的个数</strong></li>
 </ul>
-<p>**标准化：**需要先将数据规格化，即减去平均值并除以标准差，得到[-1, 1]的范围，并且打乱数据</p>
+<p><strong>标准化</strong>：需要先将数据规格化，即减去平均值并除以标准差，得到[-1, 1]的范围，并且打乱数据</p>
 <h3 id="交叉验证"><strong>交叉验证</strong></h3>
 <p><strong>cross validate</strong></p>
 <p>分为：训练集60%、测试集20%、交叉验证集20%，<strong>大数据集时：可分为98%、1%、1%</strong></p>
@@ -501,8 +501,8 @@
 </tbody>
 </table></div>
 <p>两个指标：区分只报单一类别的模型</p>
-<p><strong>精准度：</strong>$precision=\frac{TP}{TP+FP(total,predicted,positive)}$：预测病人得某病，大概率病人确实有该病</p>
-<p><strong>召回率：</strong>$recall=\frac{TP}{TP+FN(total,actual,positive)}$：病人有该病，大概率模型能够识别出来确有该病</p>
+<p><strong>精准度</strong>：$precision=\frac{TP}{TP+FP(total,predicted,positive)}$：预测病人得某病，大概率病人确实有该病</p>
+<p><strong>召回率</strong>：$recall=\frac{TP}{TP+FN(total,actual,positive)}$：病人有该病，大概率模型能够识别出来确有该病</p>
 <p>当$f_{w,b}(x)\gt$threshold阈值，预测为1：</p>
 <p><img src="/img/machine_learning_note.zh-cn.assets/-17284543171625.assets"
 	
@@ -514,7 +514,7 @@
 	
 	
 ></p>
-<p>不使用平均值$\frac{Precision+Recall}{2}$，因为P很低但R很高的情况如：只播报不得病也可能获得高平均值，而通过调和平均值，给<strong>低值</strong>更<strong>多权重</strong>，结合为一个综合指标：<strong>F1 score</strong></p>
+<p>不使用平均值$\frac{Precision+Recall}{2}$，因为P很低但R很高的情况如：只播报不得病也可能获得高平均值，而通过调和平均值，给<strong>低值</strong>更<strong>多权重</strong>，结合为一个综合指标**：F1 score**</p>
 <p>$F_1=\frac{2}{\frac{1}{precision}+\frac{1}{recall}}=\frac{TP}{TP+\frac{FN+FP}{2}}$</p>
 <h3 id="roc曲线">ROC曲线</h3>
 <p>Receiver Operating Characteristic，该曲线是二元分类中的常用评估方法，通过计算各种阈值的 <strong>true positive rate(TPR)</strong> 和 <strong>false positive rate(FPR)</strong> 进行绘制</p>
@@ -596,8 +596,7 @@
 </span></span><span class="line"><span class="cl"> <span class="p">[</span><span class="mi">2</span><span class="p">]]</span> <span class="c1"># 2*1的矩阵</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="tensorflow">TensorFlow</h3>
-<h3 id="pyplot">Pyplot</h3>
+</div><h3 id="pyplot">Pyplot</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -788,8 +787,8 @@
 <p>将范围差异较大的不同特征范围调整到大致范围</p>
 <ol>
 <li>基础归一化：除以最大值缩小值</li>
-<li>均值归一化：<strong>(var - 均值μ)</strong> <strong>/ (max_value - min_value) 转换为范围[-1, 1]</strong></li>
-<li>Z分数归一化(Z-score normalization)：<strong>(var - 均值μ) / 标准差σ 转换为范围[-1, 1]</strong></li>
+<li>均值归一化**：(var - 均值μ)** <strong>/ (max_value - min_value) 转换为范围[-1, 1]</strong></li>
+<li>Z分数归一化(Z-score normalization)<strong>：(var - 均值μ) / 标准差σ 转换为范围[-1, 1]</strong></li>
 </ol>
 <h4 id="多项式回归">多项式回归</h4>
 <ul>
@@ -826,7 +825,7 @@
 <p><strong>有监督</strong>问题</p>
 <h4 id="逻辑回归">逻辑回归</h4>
 <p>logistic regression, 经典二元分类算法，逻辑回归的决策边界可以是<strong>非线性</strong>的，预测一个离散型的因变量</p>
-<p><strong>Sigmoid函数：</strong></p>
+<p><strong>Sigmoid函数</strong>：</p>
 <ul>
 <li>$g(z)=\frac{1}{1+e^{-z}}=P(y=1|x)=\hat y$，<strong>z</strong> 可取任意实数，值域[0, 1]</li>
 <li>线性回归中得到的预测值，可以映射到Sigmoid函数中完成<strong>值</strong>到<strong>概率</strong>的转换——分类</li>
@@ -841,10 +840,10 @@
 	
 	
 ></p>
-<p><strong>预测函数：</strong>$h_{\theta}(x)=g(\theta^Tx)=\frac{1}{1+e^{-\theta^Tx}}$，其中$z=\theta^Tx=\sum_{i=1}^n\theta_ix_i=\theta_0+\theta_1x_1+\cdots+\theta_nx_n$</p>
-<p><strong>注：</strong>$P(y=1|x;\theta)$<strong>中</strong>$\theta$<strong>表示其为影响该概率的参数</strong></p>
+<p><strong>预测函数</strong>：$h_{\theta}(x)=g(\theta^Tx)=\frac{1}{1+e^{-\theta^Tx}}$，其中$z=\theta^Tx=\sum_{i=1}^n\theta_ix_i=\theta_0+\theta_1x_1+\cdots+\theta_nx_n$</p>
+<p><strong>注</strong>：$P(y=1|x;\theta)$<strong>中</strong>$\theta$<strong>表示其为影响该概率的参数</strong></p>
 <p>二分类任务：$\begin{cases}P(y=1|x;\theta)=h_{\theta}(x) \P(y=0|x;\theta)=1-h_{\theta}(x)\end{cases}$，整合：$P(y|x;\theta)=(h_{\theta}(x))^y(1-h_{\theta}(x))^{1-y}$</p>
-<p>对于概率，设定一个阈值a，二分类：<strong>概率大于等于a时，分类为1，当概率小于a时，分类为0</strong></p>
+<p>对于概率，设定一个阈值a，二分类**：概率大于等于a时，分类为1，当概率小于a时，分类为0**</p>
 <p><strong>决策边界</strong></p>
 <ul>
 <li>决策边界是将图形中的所有像素点代入分类器进行划分，假设划分为了0和1两种，则基于等高线划分为0高度和1高度，则可以绘制出决策边界</li>
@@ -885,16 +884,16 @@
 <p>损失函数合并为：$L(f_{w,b}(x^{(i)}), y^{(i)})=-y^{(i)}log(f_{w,b}(x^{(i)}))-(1-y^{(i)})log(1-f_{w,b}(x^{(i)})$</p>
 <p>即此时<strong>代价函数</strong>为：$J(w,b)=\frac{1}{m}\sum^m_{i=1}L(f_{w,b}(x^{(i)}), y^{(i)})\ =-\frac{1}{m}\sum^m_{i=1}[y^{(i)}log(f_{w,b}(x^{(i)}))+(1-y^{(i)})log(1-f_{w,b}(x^{(i)}))]$，<strong>二元分类</strong></p>
 <ul>
-<li><strong>似然函数：</strong>$L(\theta)=\prod_{i=1}^mP(y_i|x_i;\theta)=\prod_{i=1}^m(h_{\theta}(x_i))^{y_i}(1-h_{\theta}(x_i))^{1-y_i}$</li>
-<li><strong>对数似然：</strong>$l(\theta)=logL(\theta)=\sum_{i=1}^m(y_ilogh_{\theta}(x_i)+(1-y_i)log(1-h_{\theta}(x_i)))$</li>
+<li><strong>似然函数</strong>：$L(\theta)=\prod_{i=1}^mP(y_i|x_i;\theta)=\prod_{i=1}^m(h_{\theta}(x_i))^{y_i}(1-h_{\theta}(x_i))^{1-y_i}$</li>
+<li><strong>对数似然</strong>：$l(\theta)=logL(\theta)=\sum_{i=1}^m(y_ilogh_{\theta}(x_i)+(1-y_i)log(1-h_{\theta}(x_i)))$</li>
 <li><strong>梯度上升求最大值</strong>，引入$J(\theta)=-\frac{1}{m}l(\theta$<strong>转换</strong>为<strong>梯度下降任务</strong></li>
-<li><strong>求偏导：</strong>$\frac{\partial}{\partial\theta_j}J(\theta)=\cdots=-\frac{1}{m}\sum_{i=1}^m(y_i-g(\theta^Tx_i))x_i^j$</li>
-<li><strong>参数更新：</strong>$\theta_j&rsquo;:=\theta_j-\alpha\frac{1}{m}\sum_{i=1}^m(h_{\theta}(x_i)-y_i)x_i^j$</li>
+<li><strong>求偏导</strong>：$\frac{\partial}{\partial\theta_j}J(\theta)=\cdots=-\frac{1}{m}\sum_{i=1}^m(y_i-g(\theta^Tx_i))x_i^j$</li>
+<li><strong>参数更新</strong>：$\theta_j&rsquo;:=\theta_j-\alpha\frac{1}{m}\sum_{i=1}^m(h_{\theta}(x_i)-y_i)x_i^j$</li>
 </ul>
-<p><strong>正则化将代价函数变为：</strong>$J(w,b)-\frac{1}{m}\sum^m_{i=1}[y^{(i)}log(f_{w,b}(x^{(i)}))+(1-y^{(i)})log(1-f_{w,b}(x^{(i)}))]+\frac{\lambda}{2m}\sum^n_{j=1}w_j^2$</p>
+<p><strong>正则化将代价函数变为</strong>：$J(w,b)-\frac{1}{m}\sum^m_{i=1}[y^{(i)}log(f_{w,b}(x^{(i)}))+(1-y^{(i)})log(1-f_{w,b}(x^{(i)}))]+\frac{\lambda}{2m}\sum^n_{j=1}w_j^2$</p>
 <p><strong>多分类逻辑回归</strong></p>
 <p>思路：将多分类转换为<strong>多次二分类</strong>，每次分为2类筛选出其中1类，n分类即进行n次二分类，以概率值进行分类</p>
-<p>分类问题的<strong>损失函数：</strong></p>
+<p>分类问题的<strong>损失函数</strong>：</p>
 <p>损失值可以通过作图观察到随着迭代次数增加，逐渐减小趋于稳定</p>
 <ul>
 <li>根据$l(\theta)=logL(\theta)=\sum_{i=1}^m(y_ilogh_{\theta}(x_i)+(1-y_i)log(1-h_{\theta}(x_i)))$计算</li>
@@ -902,13 +901,13 @@
 </ul>
 <h4 id="softmax回归">Softmax回归</h4>
 <p><strong>多类别分类(multi class classification)</strong>——Logistic回归的推广</p>
-<p><strong>Softmax计算概率：</strong></p>
+<p><strong>Softmax计算概率</strong>：</p>
 <p>$\hat P_k=\sigma(s(x))_k=\frac{exp(s_k(x))}{\sum_{j=1}^Kexp(s_j(x))}$，将不同组的得分值 <strong>s</strong> 进行指数化来使得差异更大</p>
 <p>假设<strong>四</strong>个输出：</p>
 <p>$z_1=w_1\cdot x + b_1\\ z_2=w_2\cdot x + b_2\\ z_3=w_3\cdot x + b_3\\ z_4=w_4\cdot x + b_4$，$a_i=\frac{e^{z_i}}{e^{z_1}+e^{z_2}+e^{z_3}+e^{z_4}}=P(y=i|x)$</p>
 <p><strong>损失函数</strong></p>
 <p>$loss(a_1, \cdots, a_N, y)=\begin{cases}-\log{a_1}\quad if\,y=1\\ -\log{a_2}\quad if\,y=2\\ \quad\vdots\\ -\log{a_N}\quad if\,y=N\end{cases}$，使用-log函数来使得概率越接近 **1 ，**损失函数值越小</p>
-<p><strong>损失函数（交叉熵）：</strong>$J(\theta)=-\frac{1}{m}\sum_{i=1}^m\sum_{k=1}^Ky_k^{(i)}log(\hat p_k^{(i)})$</p>
+<p><strong>损失函数（交叉熵）</strong>：$J(\theta)=-\frac{1}{m}\sum_{i=1}^m\sum_{k=1}^Ky_k^{(i)}log(\hat p_k^{(i)})$</p>
 <p>运用到神经网络：输出层将需要 N 个神经元，以分为 N 个类别，Softmax激活功能使得$a_i$与$z_1 \cdots z_N$所有值相关，区别于logistic回归：$a_i$只与$z_i$有关</p>
 <p><strong>多标签分类(multi label classification)</strong>——输入单图像，判断是否有行人，是否有车，是否有公交，向量[1 0 1]</p>
 <p><img src="/img/machine_learning_note.zh-cn.assets/-172845431716316.assets"
@@ -923,15 +922,15 @@
 ></p>
 <h4 id="knn算法">KNN算法</h4>
 <p>K-近邻算法：非参数、有监督的分类回归算法，K为奇数</p>
-<p><strong>解决：<strong>给定一个测试数据，若离它最近的</strong>K</strong>个训练数据大多都属于某一类别，则认为该测试数据也属于该类别</p>
-<p><strong>计算流程：</strong></p>
+<p><strong>解决</strong>：给定一个测试数据，若离它最近的<strong>K</strong>个训练数据大多都属于某一类别，则认为该测试数据也属于该类别</p>
+<p><strong>计算流程</strong>：</p>
 <ol>
 <li>计算已知类别数据集中点与当前点距离，并排序</li>
 <li>选取与当前点距离最小的K个点</li>
 <li>确定前K个点所在类别的出现概率</li>
 <li>返回出现频率最高的类别作为当前点预测分类</li>
 </ol>
-<p><strong>分析：</strong></p>
+<p><strong>分析</strong>：</p>
 <ul>
 <li>无需训练集，计算复杂度与训练集文档数目成正比O(n)</li>
 <li>K值选择、距离度量、分类决策规则是三个基本要素</li>
@@ -968,7 +967,7 @@
 	
 ></p>
 <p>当概率为1或0时纯度最高，熵最小</p>
-<p>**信息增益原理：**特征值X使得类Y的不确定性减少的程度，熵减</p>
+<p><strong>信息增益原理</strong>：特征值X使得类Y的不确定性减少的程度，熵减</p>
 <p>以分类猫狗为例，信息增益：$H(p_1^{root})-(w^{left}H(p_1^{left})+w^{right}H(p_1^{right}))$</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -1022,7 +1021,7 @@
 <li>信息增益</li>
 <li>ID3倾向于选择取值较多的属性作为节点</li>
 </ul>
-<p><strong>过程：</strong></p>
+<p><strong>过程</strong>：</p>
 <p>输入：训练数据集D，特征集A，阈值$\epsilon$</p>
 <p>输出：决策树T</p>
 <p>**（1）**若 D 中所有实例都属于同一个类 $C_k$ ，则 T 为单节点树，将 $C_k$ 作为该节点的类标记，返回 T</p>
@@ -1096,8 +1095,8 @@
 <li>属于Bagging模型</li>
 <li>随机：
 <ul>
-<li>**数据随机采样：**原始数据中进行放回抽样（取得值可能重复），构造新的训练集</li>
-<li>**特征选择随机：**每个节点，选择随机子集k(&lt;n, or $k=\sqrt n$)个特征</li>
+<li><strong>数据随机采样</strong>：原始数据中进行放回抽样（取得值可能重复），构造新的训练集</li>
+<li><strong>特征选择随机</strong>：每个节点，选择随机子集k(&lt;n, or $k=\sqrt n$)个特征</li>
 <li><strong>分别训练多个相同参数的模型，预测时将所有模型结果再进行集成</strong></li>
 </ul>
 </li>
@@ -1165,7 +1164,7 @@
 <li>质心：均值，向量各维取平均</li>
 <li>距离：用<strong>欧几里得距离</strong>和<strong>余弦相似度</strong>（先标准化）</li>
 <li><strong>优化目标</strong>：$min\sum_{i=1}^K\sum_{x\in C_i}dist(c_i,x)^2$</li>
-<li><strong>代价函数/失真函数：</strong>$J(c^{(1)},\cdots,c^{(m)},\mu_1,\cdots,\mu_K)=\frac{1}{m}\sum_{i=1}^m||x^{(i)}-\mu_{c^{(i)}}||^2$</li>
+<li><strong>代价函数/失真函数</strong>：$J(c^{(1)},\cdots,c^{(m)},\mu_1,\cdots,\mu_K)=\frac{1}{m}\sum_{i=1}^m||x^{(i)}-\mu_{c^{(i)}}||^2$</li>
 <li>应用举例：x轴身高，y轴体重，离散点类似线性增加，可用于分类小中大三个簇，K越多，分类越细</li>
 </ul>
 <p><strong>工作过程</strong></p>
@@ -1197,7 +1196,7 @@
 <p><strong>评估指标</strong></p>
 <p><strong>Inertia指标</strong></p>
 <ul>
-<li>定义：<strong>每个样本到质心的距离</strong></li>
+<li>定义**：每个样本到质心的距离**</li>
 <li>可用于<strong>取合适K值（簇的个数）</strong></li>
 <li>随K增大，Inertia指标一定下降，找指标下降过程中<strong>拐点处</strong>的K值【此处拐点指前后的变化率浮动大】</li>
 <li>仅供选择，不一定最准确</li>
@@ -1209,7 +1208,7 @@
 </ul>
 <p>想让$a_i$越小，$b_i$越大，则有：</p>
 <p>$s(i)=\frac{b(i)-a(i)}{max{a(i),b(i)}}=\begin{cases}1-\frac{a(i)}{b(i)},\quad a(i)\lt b(i)\\0,,,,,\quad\quad\quad a(i)=b(i)\\\frac{b(i)}{a(i)}-1,\quad a(i)\gt b(i)\end{cases}$</p>
-<p><strong>结论：</strong></p>
+<p><strong>结论</strong>：</p>
 <ul>
 <li>$s_i$接近1，说明样本i聚类合理</li>
 <li>$s_i$接近-1，说明样本i更应该分类到其他簇</li>
@@ -1238,7 +1237,7 @@
 	
 ></p>
 <p><strong>工作流程</strong></p>
-<p>输入：<strong>数据集</strong>$D$、<strong>指定半径</strong>$\epsilon$、<strong>密度阈值</strong>$MinPts$</p>
+<p>输入**：数据集**$D$、<strong>指定半径</strong>$\epsilon$、<strong>密度阈值</strong>$MinPts$</p>
 <ol>
 <li>所有对象标记 unvisited</li>
 <li>随机选择一个对象p，标记为visited</li>
@@ -1254,7 +1253,7 @@
 <li>接着继续找标记为unvisited的对象，重复3-5</li>
 <li>直到没有标记为unvisited的对象</li>
 </ol>
-<p><strong>参数选择：</strong></p>
+<p><strong>参数选择</strong>：</p>
 <ul>
 <li>选择半径$\epsilon$：根据K-距离找突变的点</li>
 <li>选择 MinPrs：K-距离中的 k 值，一般取小一点</li>
@@ -1519,8 +1518,8 @@
 ></p>
 <p>推荐类似 i 的电影：$small,,||V_m^{(k)}-V_m^{(i)}||^2$</p>
 <p>大数据集高效推荐：检索（Retrieval），排名（Ranking）</p>
-<p>**检索：**生成大量合理项目候选并去除重复项</p>
-<p>**排名：**将候选使用上述神经网络框架预测分数并排名</p>
+<p><strong>检索</strong>：生成大量合理项目候选并去除重复项</p>
+<p><strong>排名</strong>：将候选使用上述神经网络框架预测分数并排名</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -1578,15 +1577,15 @@
 <li>Y为样本类别，X为正例Y=+1；X为负例Y=-1</li>
 </ul>
 </li>
-<li><strong>决策方程：</strong>$y(x)=w^T\Phi(x)+b$，$\Phi(x)$对数据做了变换
+<li><strong>决策方程</strong>：$y(x)=w^T\Phi(x)+b$，$\Phi(x)$对数据做了变换
 <ul>
 <li>$\begin{cases}y(x_i)\gt 0\Leftrightarrow y_i=+1\\ y(x_i)\lt 0\Leftrightarrow y_i=-1\end{cases}\quad\Rightarrow\quad y_i\cdot y(x_i)\gt 0$</li>
 </ul>
 </li>
 </ul>
-<p><strong>优化目标：</strong></p>
+<p><strong>优化目标</strong>：</p>
 <ol>
-<li><strong>点到直线的距离</strong>化简**：**$\frac{y_i\cdot(w^T\cdot \Phi(x_i)+b)}{||w||}$</li>
+<li><strong>点到直线的距离</strong>化简****：$\frac{y_i\cdot(w^T\cdot \Phi(x_i)+b)}{||w||}$</li>
 <li>目标：找到一条线（w和b），使得离该线最近的点能够最远，$\mathop{arg,max}\limits_{w,b} {\frac{1}{||w||}\mathop{min}\limits_{i}[y_i\cdot(w^T\cdot\Phi(x_i)+b]}$</li>
 <li>对式子放缩变换，使得$y_i\cdot(w^T\cdot \Phi(x_i)+b)\ge 1$【约束条件】，则对上式中，由于其中的min函数中的项大于等于1，则只需要考虑<strong>目标函数</strong> $\mathop{arg,max}\limits_{w,b} \frac{1}{||w||}$</li>
 <li>将<strong>求解最大值</strong>转换为<strong>求解最小值</strong>：$max_{w,b}\frac{1}{||w||} \quad\Longrightarrow \quad min_{w,b}\frac{1}{2}w^2$，并用<strong>拉格朗日乘子法</strong>求解</li>
@@ -1649,13 +1648,6 @@
 <li>D由N个单词组成，所以有$P(D|h+)=P(d_1,d_2,\cdots,d_n|h+)=P(d_1|h+)\cdot P(d_2|d_1,h+)\cdot P(d_3|d_2,d_1,h+)\cdots$</li>
 <li>朴素贝叶斯假设特征之间是独立的，则化简为$P(d_1|h+)\cdot P(d_2|h+)\cdot P(d_3|h+)\cdots$，则只要统计$d_i$这个单词在垃圾邮件中出现的概率即可</li>
 </ul>
-<h3 id="数据降维">数据降维</h3>
-<h4 id="pca算法">PCA算法</h4>
-<h2 id="人工智能">人工智能</h2>
-<ol>
-<li>ANI( Artificial Narrow Intelligence )：自动驾驶，网页搜索引擎</li>
-<li>AGI( Artificial General Intelligence )，通用人工智能，基本人类</li>
-</ol>
 
 </section>
 
@@ -1893,7 +1885,7 @@
         
             
         
-        共 159.79k 字 · 共 19篇文章
+        共 173.32k 字 · 共 19篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -2103,7 +2095,6 @@
       <ol>
         <li><a href="#python">python</a></li>
         <li><a href="#numpy">Numpy</a></li>
-        <li><a href="#tensorflow">TensorFlow</a></li>
         <li><a href="#pyplot">Pyplot</a></li>
       </ol>
     </li>
@@ -2155,14 +2146,8 @@
             <li><a href="#邮件过滤">邮件过滤</a></li>
           </ol>
         </li>
-        <li><a href="#数据降维">数据降维</a>
-          <ol>
-            <li><a href="#pca算法">PCA算法</a></li>
-          </ol>
-        </li>
       </ol>
     </li>
-    <li><a href="#人工智能">人工智能</a></li>
   </ol>
 </nav>
         </div>

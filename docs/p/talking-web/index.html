@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='ASU CSE 365, talking web(finish)'><title>Talking Web</title>
+
+<link rel='canonical' href='https://J-shiro.github.io/p/talking-web/'>
+
+<link rel="stylesheet" href="/scss/style.min.b18c0607927efd48b36f5d027b549e77e30ee300e22b6461d063f1df6ea2466b.css"><meta property='og:title' content='Talking Web'>
+<meta property='og:description' content='ASU CSE 365, talking web(finish)'>
+<meta property='og:url' content='https://J-shiro.github.io/p/talking-web/'>
+<meta property='og:site_name' content='J-shiro&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2022-11-17T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-11-17T00:00:00&#43;00:00'/><meta property='og:image' content='https://J-shiro.github.io/p/talking-web/pwncollege.png' />
+<meta name="twitter:title" content="Talking Web">
+<meta name="twitter:description" content="ASU CSE 365, talking web(finish)"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://J-shiro.github.io/p/talking-web/pwncollege.png' />
+    <link rel="shortcut icon" href="https://j-shiro.github.io/img/somebody.png" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu42aab1a06b48994d4eab55119e198264_548369_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">J-shiro&#39;s Blog</a></h1>
+            <h2 class="site-description">Welcome! I will record some of my own hobbies there.//欢迎来到我的博客！</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/J-shiro'
+                        target="_blank"
+                        title="GitHub"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+                <li id="i18n-switch">  
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                    <select name="language" onchange="window.location.href = this.selectedOptions[0].value">
+                        
+                            <option value="https://J-shiro.github.io/" selected>English</option>
+                        
+                            <option value="https://J-shiro.github.io/zh-cn/" >中文</option>
+                        
+                    </select>
+                </li>
+            
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+<main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/talking-web/">
+                <img src="/p/talking-web/pwncollege_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_800x0_resize_box_3.png"
+                        srcset="/p/talking-web/pwncollege_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_800x0_resize_box_3.png 800w, /p/talking-web/pwncollege_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_1600x0_resize_box_3.png 1600w"
+                        width="800" 
+                        height="276" 
+                        loading="lazy"
+                        alt="Featured image of post Talking Web" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/pwn.college/" >
+                Pwn.college
+            </a>
+        
+            <a href="/categories/foreigncourse/" >
+                ForeignCourse
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/talking-web/">Talking Web</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            ASU CSE 365, talking web(finish)
+        </h3>
+        
+    </div>
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Nov 17, 2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    7 minute read
+                </time>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+                <time class="article-words">
+                    1366 字
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="talking-web">Talking Web</h1>
+<p>&mdash;&mdash;&mdash;&ndash;<strong>ASU CSE 365</strong>: Introduction to Cybersecurity</p>
+<h2 id="talking-web-introduction">Talking Web: Introduction</h2>
+<p>static http request:</p>
+<ul>
+<li><code>GET /cat.gif HTTP/1.0</code>—&gt;</li>
+<li><code>HTTP/1.0 200 OK</code>  &lt;—</li>
+</ul>
+<p>dynamic http request:</p>
+<ul>
+<li>
+<p><code>GET /time?tz=UTC HTTP/1.0</code> —&gt;</p>
+</li>
+<li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">HTTP/1.0 200 OK
+</span></span><span class="line"><span class="cl">Content-Type: text/plain
+</span></span><span class="line"><span class="cl">Content-Length: 19
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">2022-01-19 03:14:07 //&lt;——
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h2 id="talking-web-the-internet">Talking Web: The Internet</h2>
+<p>TCP/IP</p>
+<p><img src="/img/pwn_college/lesson/TCPIP.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<ul>
+<li>Link Layer(Physically link computers)</li>
+<li>Internet Layer(Find the right computer:IP、ICMP、ARP)</li>
+<li>Transport Layer(Find the right program:UDP、TCP)</li>
+<li>Application Layer(Talk with the program:HTTP、FTP、SMTP、SSH)</li>
+</ul>
+<h2 id="talking-web-rfc-1945">Talking Web: RFC 1945</h2>
+<p>①Hyper Transfer Protocol: HTTP is an application-level protocol</p>
+<p>②Request-Line = <span style="background: #86cce8">Method SP Request-URI SP HTTP-Version CRLF</span></p>
+<p>SP: space, CRLF: \n</p>
+<ul>
+<li>Method: &ldquo;GET&rdquo;	|	&ldquo;HEAD&rdquo;	|	&ldquo;POST&rdquo;</li>
+</ul>
+<p>③Status-Line = <span style="background: #86cce8">HTTP-Version SP Status-Code SP Reason-Phrase CRLF</span></p>
+<p><strong>Status-Code Definition</strong></p>
+<p>1xx: <strong>Informational</strong>-Not used, but reserved for futrue use</p>
+<p>2xx: <strong>Success</strong>-The action was successfully received, understood, and accepted</p>
+<p>3xx: <strong>Redirection</strong>-Further action must be taken in order to complete the request</p>
+<p>4xx: <strong>Client Error</strong>-The request contains bad syntax or can&rsquo;t be fulfilled</p>
+<p>5xx: <strong>Server Error</strong>-The server failed to fulfill an apparently valid request</p>
+<p><img src="/img/pwn_college/lesson/StatusCode.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>④ GET</p>
+<blockquote>
+<p>GET /greet HTTP/1.0</p>
+<p>Host: hello.example.com</p>
+</blockquote>
+<blockquote>
+<p>HTTP/1.0 200 OK</p>
+<p>Content-Type: text/html; charset=UTF-8</p>
+<p>Content-Length: 39</p>
+<p><code>&lt;html&gt;&lt;body&gt;Hello, World!&lt;/body&gt;&lt;/html&gt;</code></p>
+</blockquote>
+<p>⑤ HEAD</p>
+<blockquote>
+<p>HEAD /greet HTTP/1.0</p>
+<p>Host: hello.example.com</p>
+</blockquote>
+<blockquote>
+<p>HTTP/1.0 200 OK</p>
+<p>Content-Type: text/html; charset=UTF-8</p>
+<p>Content-Length: 39</p>
+</blockquote>
+<p>⑥ POST</p>
+<blockquote>
+<p>POST /greet HTTP/1.0</p>
+<p>Host: hello.example.com</p>
+<p>Content-Length: 11</p>
+<p>Content-Type: application/x-www-form-urlencoded</p>
+<p>name=Connor</p>
+</blockquote>
+<blockquote>
+<p>HTTP/1.0 200 OK</p>
+<p>Content-Length: 0</p>
+</blockquote>
+<h2 id="talking-web-urls-and-encoding">Talking Web: URLs and Encoding</h2>
+<p>① URL: <code>&lt;scheme&gt;://&lt;host&gt;:&lt;port&gt;/&lt;path&gt;?&lt;query&gt;#&lt;fragment&gt;</code></p>
+<p>scheme: Protocol used to access resource</p>
+<p>host: Host that holds resource</p>
+<p>port: Port for program servicing resource</p>
+<p>path: Identifies the specific resource</p>
+<p>query: Information that the resource can use</p>
+<p>fragment: Client information about the resource</p>
+<p>②URL encoding</p>
+<p>SP=%20	#=%23	/=%2F	?=%3F	A=%41</p>
+<p><img src="/img/pwn_college/lesson/URLenCode.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>③ Content-Type: Form</p>
+<p>application/x-www-form-urlencoded	name=xx</p>
+<p>application/json	{&ldquo;name&rdquo;:&ldquo;xx&rdquo;}</p>
+<h2 id="talking-web-state">Talking Web: State</h2>
+<p>① HTTP is a stateless protocol</p>
+<p><strong>solution:</strong> use HTTP Headers for maintaning state</p>
+<ol>
+<li>The server sets a cookie in a response with the header: Set-Cookie</li>
+<li>The client includes the cookie in future requests with the header: Cookie</li>
+</ol>
+<h2 id="babyhttp">babyhttp</h2>
+<p><strong>the challenge python shell</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="ch">#!/opt/pwn.college/python</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">random</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">pathlib</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">shutil</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">hashlib</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">psutil</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">make_response</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">session</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span><span class="c1">#app is an instance of a flask that accepts requests from a web server, the parameter is the __name__(env parameter)--&gt;py file_name/function_name</span>
+</span></span><span class="line"><span class="cl"><span class="n">flag</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&#34;/flag&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">config</span> <span class="o">=</span> <span class="p">(</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&#34;.config&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#__file__:the current file path; /:add ; read_text():read the text file to string</span>
+</span></span><span class="line"><span class="cl"><span class="n">challenge_name</span><span class="p">,</span> <span class="n">client_name</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">split</span><span class="p">()</span><span class="c1">#client_name:used command</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> <span class="c1">#Generates a n-character hexadecimal number</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="s2">&#34;&#34;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="s2">&#34;0123456789abcdef&#34;</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="c1">#_:temp parameter</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">correct</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">assertion_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&#34;Incorrect </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: value `</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">`, should be `</span><span class="si">{</span><span class="n">correct</span><span class="si">}</span><span class="s2">`</span><span class="se">\n</span><span class="s2">&#34;</span> <span class="c1">#f-string</span>
+</span></span><span class="line"><span class="cl">    <span class="k">assert</span> <span class="n">value</span> <span class="o">==</span> <span class="n">correct</span><span class="p">,</span> <span class="n">assertion_message</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">#assert expression (if false:output)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">......</span><span class="c1">#only analyse some of the whole code</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&#34;__main__&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">app</span><span class="o">.</span><span class="n">secret_key</span> <span class="o">=</span> <span class="n">flag</span><span class="c1">#SECRET_KEY major role is to provide a value for all kinds of HASH</span>
+</span></span><span class="line"><span class="cl">    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&#34;127.0.0.1&#34;</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level1: <strong>curl</strong>&mdash;&ndash;&gt; (CommandLine Uniform Resource Locator):   The network request tool used under the terminal</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">USAGE: curl <span class="o">[</span>options...<span class="o">]</span> &lt;url&gt;
+</span></span><span class="line"><span class="cl">-v: output details
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>execute the file and click into the web:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">Incorrect client: value <span class="sb">`</span>/usr/lib/code-server/lib/node<span class="sb">`</span>, should be <span class="sb">`</span>/usr/bin/curl<span class="sb">`</span>
+</span></span><span class="line"><span class="cl">so open a new terminal: <span class="sb">`</span>curl 127.0.0.1:80<span class="sb">`</span> get the flag
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level2: <strong>nc</strong>&mdash;&ndash;&gt;Used to send and to monitor any TCP and UDP data, so we can simulate any client or server</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">nc 127.0.0.1 <span class="m">80</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#Simulate the HTTP request</span>
+</span></span><span class="line"><span class="cl">GET / HTTP/1.1	<span class="c1">#input</span>
+</span></span><span class="line"><span class="cl">host: localhost	<span class="c1">#127.0.0.1 either</span>
+</span></span><span class="line"><span class="cl">-l:listeng		-p:port
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level3: <strong>python</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">python
+</span></span><span class="line"><span class="cl">&gt;&gt;import requests
+</span></span><span class="line"><span class="cl">&gt;&gt;response <span class="o">=</span> requests.get<span class="o">(</span><span class="nv">url</span><span class="o">=</span><span class="s1">&#39;http://127.0.0.1:80&#39;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">&gt;&gt;print<span class="o">(</span>response<span class="o">)</span> <span class="c1">#&lt;Response [200]&gt;</span>
+</span></span><span class="line"><span class="cl">&gt;&gt;print<span class="o">(</span>response.content<span class="o">)</span> <span class="c1">#get the flag</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level4: <strong>curl</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">curl 127.0.0.1:80 
+</span></span><span class="line"><span class="cl"><span class="c1">#Incorrect host: value `127.0.0.1`, should be `xxx`</span>
+</span></span><span class="line"><span class="cl">curl 127.0.0.1:80 -H <span class="s1">&#39;Host:xxx&#39;</span> <span class="c1">#get the flag</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-H :Request custom IP address and specify HOST only for the &#39;HTTP&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level5: <strong>nc</strong></p>
+<p>just change the <code>host: localhost</code> to the <code>host: xxx</code> so that we can get the flag.</p>
+<p>level6: <strong>python</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">python
+</span></span><span class="line"><span class="cl">&gt;&gt;import requests
+</span></span><span class="line"><span class="cl">&gt;&gt;headers<span class="o">={</span><span class="s2">&#34;host&#34;</span>:<span class="s2">&#34;xxx&#34;</span><span class="o">}</span>
+</span></span><span class="line"><span class="cl">&gt;&gt;res<span class="o">=</span>requests.get<span class="o">(</span><span class="s2">&#34;http://127.0.0.1:80&#34;</span>,headers<span class="o">=</span>headers<span class="o">)</span>
+</span></span><span class="line"><span class="cl">&gt;&gt;print<span class="o">(</span>response.text<span class="o">)</span> <span class="c1">#get the flag</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level7: <strong>curl</strong>&mdash;&gt;hint: path</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">curl -v 127.0.0.1/xxx <span class="c1">#get the shell:it&#39;s not explicit so I even didn&#39;t understand the meaning of &#39;path&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level8: <strong>nc</strong></p>
+<p>just change the <code>GET / HTTP/1.1</code> to the <code>GET /xxx HTTP/1.1</code> so that we can get the flag.</p>
+<p>level9: <strong>python</strong></p>
+<p>change the <code>http://127.0.0.1:80</code> to <code>http://127.0.0.1/xxx</code> and get the flag</p>
+<p>level10: <strong>curl</strong>&mdash;&gt;hint:path_encoded</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">curl -v 127.0.0.1/xx%20xx%20xx <span class="c1"># /xx xx xx the blank will be the %20 in the url</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level11: <strong>nc</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">GET /xx%20xx%20xx HTTP/1.1 <span class="c1">#get the flag</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level12: <strong>python</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">res</span><span class="o">=</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;http://127.0.0.1/xx</span><span class="si">%20x</span><span class="s2">x</span><span class="si">%20x</span><span class="s2">x&#34;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level13: <strong>curl</strong>&mdash;&gt;hint: arg</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">curl -v 127.0.0.1:80?a<span class="o">=</span>xxx
+</span></span><span class="line"><span class="cl">curl -v 127.0.0.1:80/?a<span class="o">=</span>xxx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level14: <strong>nc</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">GET /?a<span class="o">=</span>xxx HTTP/1.1 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level15: <strong>python</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">res</span><span class="o">=</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;http://127.0.0.1:80?a=xxx&#34;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level16: <strong>curl</strong>&mdash;&gt;hint:arg_multi</p>
+<p>First, there&rsquo;re some special character escape encodings in urls: <code>&amp;:%26</code> <code>#:%23</code>. Change these character</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">curl -v 127.0.0.1:80?a<span class="o">=</span>xxx<span class="p">&amp;</span><span class="nv">b</span><span class="o">=</span>xxx  <span class="c1">#same as&#39;curl -v 127.0.0.1:80?a=xxx</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#need to transfer meaning</span>
+</span></span><span class="line"><span class="cl">curl -v 127.0.0.1:80?a<span class="o">=</span>xxx<span class="se">\&amp;</span><span class="nv">b</span><span class="o">=</span>xxx	<span class="c1">#get flag</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>another solution:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">curl -X GET -G --data-urlencode <span class="s2">&#34;a=xxx&#34;</span> --data-urlencode <span class="s2">&#34;b=xx#xx xx&amp;xx&#34;</span> -i http://127.0.0.1:80
+</span></span><span class="line"><span class="cl"><span class="c1">#in double quote the &#39;&amp;# &#39; don&#39;t need to change</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-X:--request &lt;command&gt; Specify request command to use</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-G:--get	Put the post data in the URL and use GET</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#--data-urlencode:HTTP POST data url encoded</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-i:--include Include protocol response headers in the output</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level17: <strong>nc</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">nc 127.0.0.1 <span class="m">80</span>
+</span></span><span class="line"><span class="cl">GET /?a<span class="o">=</span>xxx<span class="p">&amp;</span><span class="nv">b</span><span class="o">=</span>xxx HTTP/1.1 <span class="c1">#didn&#39;t use HTTP/1.1 can also get the flag</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level18: <strong>python</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">payload</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span><span class="s1">&#39;xxx&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">:</span><span class="s1">&#39;xx xx&amp;xx#xx&#39;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">res</span><span class="o">=</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;http://127.0.0.1&#34;</span><span class="p">,</span><span class="n">params</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level19: <strong>curl</strong>&mdash;&gt;form, The form property returns a form reference that contains a URL field.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1">#POST</span>
+</span></span><span class="line"><span class="cl">curl 127.0.0.1 -d <span class="s2">&#34;a=xxx&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-d:--data &lt;data&gt;   HTTP POST data</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level20: <strong>nc</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">vim a.txt
+</span></span><span class="line"><span class="cl"><span class="c1">#POST / HTTP/1.1</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#Content-Length: 34 #this counts must be equal to the arguments</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#Content-Type: application/x-www-form-urlencoded #Form data is encoded as name/value pairs. This is the standard encoding format</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#a=xxx</span>
+</span></span><span class="line"><span class="cl">cat a.txt <span class="p">|</span> nc 127.0.0.1 <span class="m">80</span> <span class="c1"># get the flag</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level21: <strong>python</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">para</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span><span class="s1">&#39;xx&#39;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">res</span><span class="o">=</span><span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&#34;http://127.0.0.1&#34;</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">para</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level22: <strong>curl</strong>&mdash;&gt;hint: form_multi</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">curl http://127.0.0.1:80 -d <span class="s2">&#34;a=xx&#34;</span> -d <span class="s2">&#34;b=xx&#34;</span> <span class="c1">#get the flag</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#found that &#39;#&#39; and &#39; &#39; don&#39;t need to change to %23 and %20, but &#39;&amp;&#39; must change</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level23: <strong>nc</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">POST / HTTP/1.1
+</span></span><span class="line"><span class="cl">Content-Length: <span class="m">74</span>
+</span></span><span class="line"><span class="cl">Content-Type: application/x-www-form-urlencoded
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">a</span><span class="o">=</span>xxx<span class="p">&amp;</span><span class="nv">b</span><span class="o">=</span>xxx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level24: <strong>python</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">para</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span><span class="s1">&#39;xx&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">:</span><span class="s1">&#39;xx&#39;</span><span class="p">}</span> <span class="c1">#the &#39;&amp;, ,#&#39; all don&#39;t need to change</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level25: <strong>curl</strong>&mdash;&gt;hint: json</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">curl 127.0.0.1 -H <span class="s2">&#34;Content-Type: application/json&#34;</span> -d <span class="s1">&#39;{&#34;a&#34;:&#34;xxx&#34;}&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level26: <strong>nc</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">POST / HTTP/1.1
+</span></span><span class="line"><span class="cl">Content-Length: <span class="m">57</span>
+</span></span><span class="line"><span class="cl">Content-Type: application/json
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="s2">&#34;a&#34;</span>:<span class="s2">&#34;xxx&#34;</span><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level27: <strong>python</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">json</span><span class="o">,</span><span class="nn">requests</span>
+</span></span><span class="line"><span class="cl"><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;a&#34;</span><span class="p">:</span><span class="s2">&#34;xx&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span><span class="s1">&#39;application/json&#39;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">res</span><span class="o">=</span><span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&#34;http://127.0.0.1&#34;</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level28: <strong>curl</strong>&mdash;&gt;hint: json_multi</p>
+<p>having trouble here!</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># the first try</span>
+</span></span><span class="line"><span class="cl">curl 127.0.0.1 -H <span class="s2">&#34;Content-Type: application/json&#34;</span> -d <span class="s1">&#39;{&#34;a&#34;:&#34;8484e2a3838f64b6943f66c57d0d52a2&#34;,&#34;b&#34;:&#34;{&#39;</span><span class="se">\&#39;</span>c<span class="se">\&#39;</span><span class="s1">&#39;: &#39;</span><span class="se">\&#39;</span>99aa4d7f<span class="se">\&#39;</span><span class="s1">&#39;, &#39;</span><span class="se">\&#39;</span>d<span class="se">\&#39;</span><span class="s1">&#39;: [&#39;</span><span class="se">\&#39;</span>7eb4984c<span class="se">\&#39;</span><span class="s1">&#39;, &#39;</span><span class="se">\&#39;</span>c2c37973<span class="se">\ </span>eb81af72<span class="se">\&amp;</span>b1ffc820<span class="se">\#</span>f4fb51c1<span class="se">\&#39;</span><span class="s1">&#39;]}&#34;}&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">hacker@babyhttp_level28:/challenge$ curl 127.0.0.1 -H <span class="s2">&#34;Content-Type: application/json&#34;</span> -d <span class="s1">&#39;{&#34;a&#34;:&#34;8484e2a3838f64b6943f66c57d0d52a2&#34;,&#34;b&#34;:&#34;{&#39;</span><span class="se">\&#39;</span>c<span class="se">\&#39;</span><span class="s1">&#39;: &#39;</span><span class="se">\&#39;</span>99aa4d7f<span class="se">\&#39;</span><span class="s1">&#39;, &#39;</span><span class="se">\&#39;</span>d<span class="se">\&#39;</span><span class="s1">&#39;: [&#39;</span><span class="se">\&#39;</span>7eb4984c<span class="se">\&#39;</span><span class="s1">&#39;, &#39;</span><span class="se">\&#39;</span>c2c37973<span class="se">\ </span>eb81af72<span class="p">&amp;</span>b1ffc820<span class="se">\#</span>f4fb51c1<span class="se">\&#39;</span><span class="s1">&#39;]}&#34;}&#39;</span>
+</span></span><span class="line"><span class="cl">Incorrect json b: value <span class="o">{</span><span class="s1">&#39;c&#39;</span>: <span class="s1">&#39;99aa4d7f&#39;</span>, <span class="s1">&#39;d&#39;</span>: <span class="o">[</span><span class="s1">&#39;7eb4984c&#39;</span>, <span class="s1">&#39;c2c37973 eb81af72&amp;b1ffc820#f4fb51c1&#39;</span><span class="o">]}</span>, should be <span class="o">{</span><span class="s1">&#39;c&#39;</span>: <span class="s1">&#39;99aa4d7f&#39;</span>, <span class="s1">&#39;d&#39;</span>: <span class="o">[</span><span class="s1">&#39;7eb4984c&#39;</span>, <span class="s1">&#39;c2c37973 eb81af72&amp;b1ffc820#f4fb51c1&#39;</span><span class="o">]}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#question: it is string instead of json, so we need to remove the quotes around the values of b</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># after many tries, get the solution</span>
+</span></span><span class="line"><span class="cl">hacker@babyhttp_level28:/challenge$ curl 127.0.0.1 -H <span class="s2">&#34;Content-Type: application/json&#34;</span> -d <span class="s1">&#39;{&#34;a&#34;:&#34;8484e2a3838f64b6943f66c57d0d52a2&#34;,&#34;b&#34;:{&#34;c&#34;:&#34;99aa4d7f&#34;,&#34;d&#34;:[&#34;7eb4984c&#34;,&#34;c2c37973 eb81af72&amp;b1ffc820#f4fb51c1&#34;]}}&#39;</span>
+</span></span><span class="line"><span class="cl">pwn.college<span class="o">{</span>xxx<span class="o">}</span> <span class="c1">#get the flag</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#and remove the blackslash because it is not neccessory.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#and can&#39;t interchange the quotes!</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level29: <strong>nc</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1">#test.txt</span>
+</span></span><span class="line"><span class="cl">POST / HTTP/1.1
+</span></span><span class="line"><span class="cl">Content-Length: <span class="m">123</span>
+</span></span><span class="line"><span class="cl">Content-Type: application/json
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;a&#34;</span>:<span class="s2">&#34;xx&#34;</span>,
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;b&#34;</span>:<span class="o">{</span><span class="s2">&#34;c&#34;</span>: <span class="s2">&#34;xxx&#34;</span>, <span class="s2">&#34;d&#34;</span>: <span class="o">[</span><span class="s2">&#34;xx&#34;</span>, <span class="s2">&#34;x xx&amp;xxx#xxxx&#34;</span><span class="o">]}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">cat test.txt <span class="p">|</span> nc 127.0.0.1 <span class="m">80</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level30: <strong>python</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;a&#34;</span><span class="p">:</span><span class="s2">&#34;xx&#34;</span><span class="p">,</span><span class="s2">&#34;b&#34;</span><span class="p">:{</span><span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;xx&#39;</span><span class="p">,</span> <span class="s1">&#39;x xx&amp;xxx#xxx&#39;</span><span class="p">]}}</span> <span class="c1">#just change this line</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level31: <strong>curl</strong>&mdash;&gt;hint: redirect</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">curl 127.0.0.1:80
+</span></span><span class="line"><span class="cl">curl 127.0.0.1:80/xxx <span class="c1">#1</span>
+</span></span><span class="line"><span class="cl">curl -L 127.0.0.1:80  <span class="c1">#2	</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-L:-location--&gt;follow redirects</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#--max-redirs options :redirect counts,-l:Always follow the redirect</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level32: <strong>nc</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">nc -v 127.0.0.1 <span class="m">80</span>
+</span></span><span class="line"><span class="cl">GET /xxx HTTP/1.1
+</span></span><span class="line"><span class="cl"><span class="c1">#xxx from the &#34;Location:xxx&#34; of the response headers</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level33: <strong>python</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">res</span><span class="o">=</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;http://127.0.0.1&#34;</span><span class="p">,</span><span class="n">allow_redirects</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level34: <strong>curl</strong>&mdash;&gt;hint: cookie</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">curl 127.0.0.1 -b <span class="s2">&#34;anything&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#&lt;p&gt;You should be redirected automatically to the target URL: &lt;a href=&#34;/&#34;&gt;/&lt;/a&gt;. If not, click the link.</span>
+</span></span><span class="line"><span class="cl">curl 127.0.0.1 -L
+</span></span><span class="line"><span class="cl"><span class="c1">#curl: (47) Maximum (50) redirects followed</span>
+</span></span><span class="line"><span class="cl">curl 127.0.0.1 -L -b <span class="s2">&#34;anything&#34;</span>	<span class="c1">#get flag</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level35: <strong>nc</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">nc -v 127.0.0.1 <span class="m">80</span>
+</span></span><span class="line"><span class="cl">GET / HTTP/1.1
+</span></span><span class="line"><span class="cl">Cookie: <span class="nv">cookie</span><span class="o">=</span>xxx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level36: <strong>python</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;cookie&#34;</span><span class="p">:</span><span class="s2">&#34;anything&#34;</span><span class="p">}</span><span class="c1">#I found that the cookie is no need</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level37: <strong>curl</strong>&mdash;&gt;hint: state</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">curl -L -b <span class="s2">&#34;xx&#34;</span> 127.0.0.1
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level38: <strong>nc</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">nc 127.0.0.1 <span class="m">80</span>
+</span></span><span class="line"><span class="cl">GET / HTTP/1.1
+</span></span><span class="line"><span class="cl">Cookie: <span class="nv">session</span><span class="o">=</span>xxx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>level39: <strong>python</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">res</span><span class="o">=</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;http://127.0.0.1&#34;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/debugging-refresher/">
+        
+        
+            <div class="article-image">
+                <img src="/p/debugging-refresher/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_250x150_fill_box_smart1_3.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post Debugging Refresher"
+                        
+                        data-hash="md5-5dm6QKOrg9PvxuuyEglVkg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Debugging Refresher</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/pwncollege_note7/">
+        
+        
+            <div class="article-image">
+                <img src="/p/pwncollege_note7/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_250x150_fill_box_smart1_3.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post PwnCollege_Note7"
+                        
+                        data-hash="md5-5dm6QKOrg9PvxuuyEglVkg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">PwnCollege_Note7</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/pwncollege_note6/">
+        
+        
+            <div class="article-image">
+                <img src="/p/pwncollege_note6/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_250x150_fill_box_smart1_3.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post PwnCollege_Note6"
+                        
+                        data-hash="md5-5dm6QKOrg9PvxuuyEglVkg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">PwnCollege_Note6</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/intercepting-communication/">
+        
+        
+            <div class="article-image">
+                <img src="/p/intercepting-communication/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_250x150_fill_box_smart1_3.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post Intercepting Communication"
+                        
+                        data-hash="md5-5dm6QKOrg9PvxuuyEglVkg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Intercepting Communication</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/building-a-web-server/">
+        
+        
+            <div class="article-image">
+                <img src="/p/building-a-web-server/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_250x150_fill_box_smart1_3.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post Building a Web Server"
+                        
+                        data-hash="md5-5dm6QKOrg9PvxuuyEglVkg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Building a Web Server</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
+<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet'/>
+<div id="waline" class="waline-container"></div>
+<style>
+    .waline-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+        --waline-font-size: var(--article-font-size);
+    }
+    .waline-container .wl-count {
+        color: var(--card-text-color-main);
+    }
+</style><script>
+    
+    Waline.init({"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://unpkg.com/@waline/emojis@1.0.1/weibo"],"locale":{"admin":"Admin","placeholder":null},"requiredMeta":["name","email","url"],"serverURL":"https://blog-waline-ox87ky1di-j-shiro.vercel.app/"});
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2024 J-shiro&#39;s Blog<br />
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+        共 21.67k 字 · 共 11篇文章
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
+            <span id="busuanzi_container_site_pv"> 总访问量<span id="busuanzi_value_site_pv"></span>次 </span>---
+            <span id="busuanzi_container_page_pv">本文阅读量<span id="busuanzi_value_page_pv"></span>次</span>    
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.13.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+
+    
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/live2d-widget@3.1.4/lib/L2Dwidget.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/live2d-widget@3.1.4/lib/L2Dwidget.0.min.js"></script>
+
+<script type="text/javascript">
+    L2Dwidget.init({
+        model: {
+            scale: 1,
+            hHeadPos: 0.5,
+            vHeadPos: 0.618,
+            jsonPath: 'https://cdn.jsdelivr.net/npm/live2d-widget-model-hibiki@1.0.5/assets/hibiki.model.json',       
+        },
+        display: {
+            superSample: 9,     
+            width: 160,         
+            height: 440,        
+            position: 'left',   
+            hOffset: 130,         
+            vOffset: -50,         
+        },
+        mobile: {
+            show: false,         
+            scale: 1,           
+            motion: true,       
+        },
+        react: {
+            opacityDefault: 1,  
+            opacityOnHover: 1,  
+        },
+    });
+</script>
+
+
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+    <div id="backTop" onclick="backTopFunction()" style="right: 40px; bottom: 40px; display: flex;">
+        <svg xmlns="http://www.w3.org/2000/svg" height="30" width="20" viewBox="0 0 512 512"><title>Caret Up</title>
+            <path d="M414 321.94L274.22 158.82a24 24 0 00-36.44 0L98 321.94c-13.34 15.57-2.28 39.62 18.22 39.62h279.6c20.5 0 31.56-24.05 18.18-39.62z" fill="#adb5bd"></path>
+        </svg>
+        <style type="text/css">
+            #backTop {
+                position: fixed;
+                background-color: #fff;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 0 6px rgba(0,0,0,.12);
+                cursor: pointer;
+                z-index: 5;
+            }
+    
+            #backTop:hover {
+                background-color: #f1f4f8;
+            }
+        </style>
+        <script>
+    
+            window.onscroll = function() {scrollFunction()};
+    
+            function scrollFunction() {console.log(121);
+                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                    document.getElementById("backTop").style.display = "flex";
+                } else {
+                    document.getElementById("backTop").style.display = "none";
+                }
+            }
+    
+    
+            function backTopFunction() {
+                document.body.scrollTop = 0;
+                document.documentElement.scrollTop = 0;
+            }
+        </script>
+    </div>
+    
+
+
+            </main>
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#talking-web-introduction">Talking Web: Introduction</a></li>
+    <li><a href="#talking-web-the-internet">Talking Web: The Internet</a></li>
+    <li><a href="#talking-web-rfc-1945">Talking Web: RFC 1945</a></li>
+    <li><a href="#talking-web-urls-and-encoding">Talking Web: URLs and Encoding</a></li>
+    <li><a href="#talking-web-state">Talking Web: State</a></li>
+    <li><a href="#babyhttp">babyhttp</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+
+    }());
+</script>
+
+<script
+    src="https://cdn.jsdelivr.net/gh/zhixuan2333/gh-blog@v0.1.0/js/nprogress.min.js"
+    integrity="sha384-bHDlAEUFxsRI7JfULv3DTpL2IXbbgn4JHQJibgo5iiXSK6Iu8muwqHANhun74Cqg"
+    crossorigin="anonymous"
+></script>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/zhixuan2333/gh-blog@v0.1.0/css/nprogress.css"
+    integrity="sha384-KJyhr2syt5+4M9Pz5dipCvTrtvOmLk/olWVdfhAp858UCa64Ia5GFpTN7+G4BWpE"
+    crossorigin="anonymous"
+/>
+<script>
+    NProgress.start();
+    document.addEventListener("readystatechange", () => {
+        if (document.readyState === "interactive") NProgress.inc(0.8);
+        if (document.readyState === "complete") NProgress.done();
+    });
+</script>
+
+    </body>
+</html>

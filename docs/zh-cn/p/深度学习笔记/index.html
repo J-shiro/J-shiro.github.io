@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='深度学习 机器学习过程：数据获取、【特征工程】、建立模型、评估应用 特征工程：数据特征决定模型上限，算法和参数用于接近上限 主：计算机视觉 **图像'><title>深度学习笔记</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='深度学习 机器学习过程：数据获取、【特征工程】、建立模型、评估应用 特征工程：数据特征决定模型上限，算法和参数用于接近上限 主**：计算机视觉**'><title>深度学习笔记</title>
 
 <link rel='canonical' href='https://J-shiro.github.io/zh-cn/p/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/'>
 
 <link rel="stylesheet" href="/scss/style.min.b18c0607927efd48b36f5d027b549e77e30ee300e22b6461d063f1df6ea2466b.css"><meta property='og:title' content='深度学习笔记'>
-<meta property='og:description' content='深度学习 机器学习过程：数据获取、【特征工程】、建立模型、评估应用 特征工程：数据特征决定模型上限，算法和参数用于接近上限 主：计算机视觉 **图像'>
+<meta property='og:description' content='深度学习 机器学习过程：数据获取、【特征工程】、建立模型、评估应用 特征工程：数据特征决定模型上限，算法和参数用于接近上限 主**：计算机视觉**'>
 <meta property='og:url' content='https://J-shiro.github.io/zh-cn/p/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/'>
 <meta property='og:site_name' content='J-shiro&#39;s 博客'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-10-12T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2024-10-12T00:00:00&#43;00:00'/><meta property='og:image' content='https://J-shiro.github.io/img/ai_note.jpg' />
 <meta name="twitter:title" content="深度学习笔记">
-<meta name="twitter:description" content="深度学习 机器学习过程：数据获取、【特征工程】、建立模型、评估应用 特征工程：数据特征决定模型上限，算法和参数用于接近上限 主：计算机视觉 **图像"><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="深度学习 机器学习过程：数据获取、【特征工程】、建立模型、评估应用 特征工程：数据特征决定模型上限，算法和参数用于接近上限 主**：计算机视觉**"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://J-shiro.github.io/img/ai_note.jpg' />
     <link rel="shortcut icon" href="https://j-shiro.github.io/img/somebody.png" />
 
@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    2904 字
+                    2950 字
                 </time>
             </div>
         
@@ -340,8 +340,8 @@
 <ul>
 <li>机器学习过程：数据获取、【<strong>特征工程】</strong>、建立模型、评估应用</li>
 <li>特征工程：数据特征决定模型上限，算法和参数用于接近上限</li>
-<li>主：<strong>计算机视觉</strong></li>
-<li>**图像识别：**将图片1000x1000像素展开为一个向量数组作为输入</li>
+<li>主**：计算机视觉**</li>
+<li><strong>图像识别</strong>：将图片1000x1000像素展开为一个向量数组作为输入</li>
 </ul>
 <h3 id="神经网络">神经网络</h3>
 <p><strong>整体框架</strong></p>
@@ -483,7 +483,7 @@
 <li>非线性变化：Sigmoid，Relu，tanh等</li>
 </ul>
 <p>神经网络主要使用 <strong>Relu函数 (Rectified Linerar Unite：线性整流函数，非二元, 更快)</strong> 而不使用Sigmoid函数，Sigmoid函数会出现梯度消失现象( 两端平坦, 导致梯度下降慢, Relu只有一端平坦 )</p>
-<p><strong>Relu函数：</strong>$\sigma(x)=max(0,x)$</p>
+<p><strong>Relu函数</strong>：$\sigma(x)=max(0,x)$</p>
 <p><img src="/img/deep_learning_note.zh-cn.assets/-172845431716545.assets"
 	
 	
@@ -494,7 +494,7 @@
 	
 	
 ></p>
-<p><strong>Leaky ReLU函数：</strong>$\sigma(x)=\begin{cases}x,,,x\gt 0\\alpha x,,,x\le 0\end{cases}$</p>
+<p><strong>Leaky ReLU函数</strong>：$\sigma(x)=\begin{cases}x,,,x\gt 0\\alpha x,,,x\le 0\end{cases}$</p>
 <p><img src="/img/deep_learning_note.zh-cn.assets/-172845431716546.assets"
 	
 	
@@ -505,7 +505,7 @@
 	
 	
 ></p>
-<p><strong>tanh函数：</strong>$\sigma(x)=tanh(x)=\frac{e^x-e^{-x}}{e^x+e^{-x}}$，具有居中数据效果</p>
+<p><strong>tanh函数</strong>：$\sigma(x)=tanh(x)=\frac{e^x-e^{-x}}{e^x+e^{-x}}$，具有居中数据效果</p>
 <p><img src="/img/deep_learning_note.zh-cn.assets/-172845431716547.assets"
 	
 	
@@ -644,7 +644,7 @@
 <p>有大体趋势的多噪声散点图使用：$V_t = \beta V_{t-1} + (1-\beta \theta_t)$做出平滑曲线，相当于取$\frac{1}{1-\beta}$天的平均值</p>
 <p><strong>偏差纠正</strong></p>
 <p>解决初期<strong>指数加权平均</strong>的值与真实值相差过大，使用$\frac{V_t}{1-\beta^t}$</p>
-<p><strong>反向传播门单元：</strong></p>
+<p><strong>反向传播门单元</strong>：</p>
 <ul>
 <li>加法门单元：均等分配</li>
 <li>MAX门单元：给最大的</li>
@@ -660,7 +660,22 @@
 	
 	
 ></p>
-
+<h3 id="pytorch">pytorch</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 使用conda安装gpu支持的torch</span>
+</span></span><span class="line"><span class="cl">conda install cuda -c nvidia/label/cuda-12.4.0
+</span></span><span class="line"><span class="cl">nvcc -V <span class="c1"># 验证</span>
+</span></span><span class="line"><span class="cl">conda install pytorch torchvision torchaudio pytorch-cuda<span class="o">=</span>12.4 -c pytorch -c nvidia
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 
@@ -897,7 +912,7 @@
         
             
         
-        共 159.79k 字 · 共 19篇文章
+        共 173.32k 字 · 共 19篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -1100,6 +1115,7 @@
         <li><a href="#激活函数"><strong>激活函数</strong></a></li>
         <li><a href="#前向传播"><strong>前向传播</strong></a></li>
         <li><a href="#反向传播">反向传播</a></li>
+        <li><a href="#pytorch">pytorch</a></li>
       </ol>
     </li>
   </ol>

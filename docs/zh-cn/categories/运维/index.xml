@@ -12,83 +12,78 @@
         <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
         
         <guid>https://J-shiro.github.io/zh-cn/p/linux%E7%AC%94%E8%AE%B0/</guid>
-        <description>&lt;img src="https://J-shiro.github.io/img/note.jpg" alt="Featured image of post LINUX笔记" /&gt;&lt;h2 id=&#34;一些命令&#34;&gt;一些命令&lt;/h2&gt;
-&lt;p&gt;若不需要&lt;code&gt;-a&lt;/code&gt;这些参数, 可以使用&lt;code&gt;--&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;数据处理&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;9
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;R --slave -e &lt;span class=&#34;s1&#34;&gt;&amp;#39;x &amp;lt;- scan(file=&amp;#34;stdin&amp;#34;, quiet=TRUE); summary(x)&amp;#39;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# --slave: 抑制消息、提示&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# -e: 直接执行表达式&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 从标准输入到x, 并计算显示数据的汇总信息&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;gnuplot -p -e &lt;span class=&#34;s1&#34;&gt;&amp;#39;set boxwidth 0.5; plot &amp;#34;-&amp;#34; using 1:xtic(2) with boxes&amp;#39;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# -p: 保持图形打开&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# -e: 直接执行命令&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 宽度0.5, &amp;#34;-&amp;#34;从标准输入读取数据&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# using 1:xtic(2): 第1列-条形高度, 第2列-x轴刻度标签  boxes条形图&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;strong&gt;性能分析&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;9
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;perf stat stress -c &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# perf: 性能分析和调试工具&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# stat: 收集显示性能统计信息&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# stress: 负载生成工具&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# -c: CPU负载核心数&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;perf report &lt;span class=&#34;c1&#34;&gt;# 生成和查看性能数据的报告&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 精准测试命令执行时间工具&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;hyperfine --warmup &lt;span class=&#34;m&#34;&gt;3&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;fd -e jpg&amp;#39;&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;find . -iname &amp;#34;*.jpg&amp;#34;&amp;#39;&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# 比较 fd 和 find&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# --warmup 3: 预热执行三次后再测试&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;简单命令&#34;&gt;简单命令&lt;/h2&gt;
-&lt;p&gt;**tree：**列举所有文件，类似于&lt;code&gt;ls -R&lt;/code&gt;，递归列举文件&lt;/p&gt;
-&lt;p&gt;**tldr：**连接 &lt;code&gt;command&lt;/code&gt; 可以列举使用该命令的用法&lt;/p&gt;
-&lt;p&gt;**journalctl：**查看和管理 systemd 的日志&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;wc：&lt;/strong&gt;&lt;code&gt;wc -l&lt;/code&gt;，统计文件行数&lt;/p&gt;
-&lt;p&gt;**sort：**排序，&lt;code&gt;sort-nk1,1&lt;/code&gt;，&lt;code&gt;-n&lt;/code&gt;为按数值大小排序，&lt;code&gt;-k1,1&lt;/code&gt;排序键从第1列到第1列&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;unique：&lt;/strong&gt;&lt;code&gt;unique -c&lt;/code&gt;，统计相邻且相同的行出现的次数，&lt;code&gt;-c&lt;/code&gt;在每行前加入次数&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;paste：&lt;/strong&gt;&lt;code&gt;paste -sd,&lt;/code&gt; 多行以逗号分隔合并为单行，&lt;code&gt;-s&lt;/code&gt;串联，&lt;code&gt;-d&lt;/code&gt;指定分隔符&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;bc：&lt;/strong&gt;&lt;code&gt;bc -l&lt;/code&gt;，计算器运算&lt;/p&gt;
-&lt;p&gt;**tee：**从标准输入读取数据，并将数据同时写入到一个或多个文件和标准输出&lt;/p&gt;
-&lt;p&gt;**jobs：**显示终端运行或挂起的后台作业&lt;/p&gt;
-&lt;p&gt;**nohup：**使得一个进程在用户登出或会话终止后仍然继续运行&lt;/p&gt;
-&lt;p&gt;**bg：**将已暂停的后台作业继续运行，&lt;code&gt;bg %1&lt;/code&gt;指定 &lt;code&gt;jobs&lt;/code&gt; 中序号&lt;/p&gt;
-&lt;p&gt;**alias：**命令别名，&lt;code&gt;alias ll=&amp;quot;ls -lah&amp;quot;&lt;/code&gt;及直接&lt;code&gt;alias command&lt;/code&gt;查看命令别名意义&lt;/p&gt;
-&lt;p&gt;**htop：**进程查看器和系统监视器&lt;/p&gt;
-&lt;p&gt;**time：**获取命令执行的真实、用户、系统时间&lt;/p&gt;
-&lt;p&gt;**tac：**最后一行开始，逐行向上显示内容&lt;/p&gt;
-&lt;p&gt;**du：**显示目录及子目录磁盘使用情况，&lt;code&gt;du -h directory&lt;/code&gt;，&lt;code&gt;-h&lt;/code&gt;表示人类可读&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;curl：&lt;/strong&gt; 可查看公网ip地址&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;ps：&lt;/strong&gt;&lt;code&gt;ps -ef | grep xx&lt;/code&gt;查找指定进程格式&lt;/p&gt;
+        <description>&lt;img src="https://J-shiro.github.io/img/note.jpg" alt="Featured image of post LINUX笔记" /&gt;&lt;h2 id=&#34;配置&#34;&gt;配置&lt;/h2&gt;
+&lt;p&gt;bash的配置在&lt;code&gt;~/.bashrc&lt;/code&gt;中&lt;/p&gt;
+&lt;p&gt;git的配置在&lt;code&gt;~/.gitconfig&lt;/code&gt;中&lt;/p&gt;
+&lt;p&gt;vim的配置在&lt;code&gt;~/.vimrc&lt;/code&gt;中&lt;/p&gt;
+&lt;h2 id=&#34;基础命令&#34;&gt;基础命令&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;tree&lt;/strong&gt;：列举所有文件，递归列举文件&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;tldr&lt;/strong&gt;：连接 &lt;code&gt;command&lt;/code&gt; 可以列举使用该命令的用法&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;journalctl&lt;/strong&gt;：查看和管理 systemd 日志&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;alias&lt;/strong&gt;：命令别名，&lt;code&gt;alias command&lt;/code&gt;查看别名意义&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;tac&lt;/strong&gt;：最后一行开始，逐行向上显示内容&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;curl&lt;/strong&gt;： 可查看公网ip地址&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;htop&lt;/strong&gt;：进程查看器和系统监视器&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;wc&lt;/strong&gt;：&lt;code&gt;wc -l file&lt;/code&gt;，统计文件行数&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;time&lt;/strong&gt;：获取命令执行的真实、用户、系统时间&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;paste&lt;/strong&gt;：&lt;code&gt;paste -sd,&lt;/code&gt; 将多个文件对应行合并为一行，以逗号分隔，&lt;code&gt;-s&lt;/code&gt;合并为一行，&lt;code&gt;-d&lt;/code&gt;指定分隔符&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;tee&lt;/strong&gt;：&lt;code&gt;xx | tee file&lt;/code&gt;从标准输入读取数据，并将数据同时写入到一个或多个文件和标准输出&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;nohup&lt;/strong&gt;：&lt;code&gt;nohup python3 xx.py&lt;/code&gt;使得一个进程在用户登出或会话终止后仍然后台继续运行&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;bg&lt;/strong&gt;：将&lt;code&gt;jobs&lt;/code&gt;命令查看的已暂停后台作业继续运行，&lt;code&gt;bg %1&lt;/code&gt;指定 &lt;code&gt;jobs&lt;/code&gt; 中序号&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;od&lt;/strong&gt;：十六进制查看工具，&lt;code&gt;od -c file&lt;/code&gt;&lt;/p&gt;
+&lt;h2 id=&#34;常用命令&#34;&gt;常用命令&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;查看某个文件的绝对路径&lt;/strong&gt;： &lt;code&gt;pwd|awk &#39;{print $1&amp;quot;/file_name&amp;quot;}&#39;&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;查看版本&lt;/strong&gt;：&lt;code&gt;cat /proc/version&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;显示操作系统信息&lt;/strong&gt;：&lt;code&gt;uname -a&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;查看磁盘使用情况&lt;/strong&gt;：&lt;code&gt;du -sh&lt;/code&gt;&lt;/p&gt;
-&lt;h2 id=&#34;netstat&#34;&gt;netstat&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;显示linux内核版本信息&lt;/strong&gt;：&lt;code&gt;uname -asrm                                                                                                                                     &lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;查看目录及子目录磁盘使用情况&lt;/strong&gt;：&lt;code&gt;du -sh directory&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;查找指定进程格式&lt;/strong&gt;：&lt;code&gt;ps -ef | grep xx&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;查看分区挂载情况&lt;/strong&gt;：&lt;code&gt;df&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;链接&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ln &lt;span class=&#34;c1&#34;&gt;# 硬~&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ln -s &lt;span class=&#34;c1&#34;&gt;# 软~&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;压缩&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;tar -zvcf a.tar.gz a &lt;span class=&#34;c1&#34;&gt;# 压缩&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;tar -zvxf a.tar.gz  &lt;span class=&#34;c1&#34;&gt;# 解压&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;zip -r a.zip ./* &lt;span class=&#34;c1&#34;&gt;# 压缩&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;unzip -d /xxx a.zip &lt;span class=&#34;c1&#34;&gt;# 解压&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;命令行命令&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;!!               &lt;span class=&#34;c1&#34;&gt;# 直接替换为上一次使用的命令&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Ctrl + R         &lt;span class=&#34;c1&#34;&gt;# 回溯历史操作&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;readelf -S xxx   &lt;span class=&#34;c1&#34;&gt;# 查看程序.bss段地址&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; -             &lt;span class=&#34;c1&#34;&gt;# 返回到上一次工作目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;若不需要&lt;code&gt;-a&lt;/code&gt;这些参数, 可以使用&lt;code&gt;--&lt;/code&gt;&lt;/p&gt;
+&lt;h2 id=&#34;具体命令&#34;&gt;具体命令&lt;/h2&gt;
+&lt;h3 id=&#34;netstat&#34;&gt;netstat&lt;/h3&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -107,7 +102,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt; -t: 所有的 tcp 协议的端口
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;find&#34;&gt;find&lt;/h2&gt;
+&lt;/div&gt;&lt;h3 id=&#34;find&#34;&gt;find&lt;/h3&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -128,22 +123,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# \; 表示 -exec 操作的结束, \ 是用来转义 ; 的， shell 中 ; 通常是一个命令分隔符&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;locate&#34;&gt;locate&lt;/h2&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;locate filename
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 根据 mlocate.db 数据库查找&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo updatedb
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 用于更新数据库&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;lsof&#34;&gt;lsof&lt;/h2&gt;
+&lt;/div&gt;&lt;h3 id=&#34;lsof&#34;&gt;lsof&lt;/h3&gt;
 &lt;p&gt;列出当前系统打开文件，包括网络连接、设备&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -151,11 +131,11 @@
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;lsof &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep &lt;span class=&#34;s2&#34;&gt;&amp;#34;:4444 .LISTEN&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 列出4444端口监听的进程&lt;/span&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 列出4444端口监听的进程&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;lsof &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep &lt;span class=&#34;s2&#34;&gt;&amp;#34;:4444 .LISTEN&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;ssh&#34;&gt;ssh&lt;/h2&gt;
+&lt;/div&gt;&lt;h3 id=&#34;ssh&#34;&gt;ssh&lt;/h3&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -207,7 +187,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# -a: 递归复制  -v: 显示详细信息  -P: 允许断点续传, 显示传输进度信息&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;strace&#34;&gt;strace&lt;/h2&gt;
+&lt;/div&gt;&lt;h3 id=&#34;strace&#34;&gt;strace&lt;/h3&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -218,44 +198,29 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 使用 strace 只跟踪 ls -l 命令中的 lstat 系统调用, 丢弃输出到/dev/null&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;xargs&#34;&gt;xargs&lt;/h2&gt;
+&lt;/div&gt;&lt;h3 id=&#34;awk&#34;&gt;awk&lt;/h3&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;file1 file2 file3&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; xargs rm
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 将标准输入中的数据转换为命令行参数，并将这些参数传递给指定的命令&lt;/span&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;awk &lt;span class=&#34;s1&#34;&gt;&amp;#39;{print $2}&amp;#39;&lt;/span&gt; file &lt;span class=&#34;c1&#34;&gt;# 输出每行第 2 个字段&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;awk &lt;span class=&#34;s1&#34;&gt;&amp;#39;$1 == 1 &amp;amp;&amp;amp; $2 ~ /^c.*e$/ {print $0}&amp;#39;&lt;/span&gt; file &lt;span class=&#34;c1&#34;&gt;# 第 1 列为 1, 第 2 列满足以c开头以e结尾, $0 输出当前行&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;awk&#34;&gt;awk&lt;/h2&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;awk &lt;span class=&#34;s1&#34;&gt;&amp;#39;{print $2}&amp;#39;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 输出每行第 2 个字段, 默认将空格作为分隔符&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;awk &lt;span class=&#34;s1&#34;&gt;&amp;#39;$1 == 1 &amp;amp;&amp;amp; $2 ~ /^c.*e$/ {print $0}&amp;#39;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 第 1 列为 1, 第 2 列满足以c开头以e结尾, $0 输出当前行&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;grep&#34;&gt;grep&lt;/h2&gt;
+&lt;/div&gt;&lt;h3 id=&#34;grep&#34;&gt;grep&lt;/h3&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;xxx &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep &lt;span class=&#34;s1&#34;&gt;&amp;#39;xxxx&amp;#39;&lt;/span&gt; &amp;gt; ans.txt
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ll -a &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep -E &lt;span class=&#34;s2&#34;&gt;&amp;#34;1|2&amp;#34;&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# 用正则显示含1或含2的目录&lt;/span&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;xxx &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep &lt;span class=&#34;s1&#34;&gt;&amp;#39;xxxx&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;xxx &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep -E &lt;span class=&#34;s2&#34;&gt;&amp;#34;1|2&amp;#34;&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# 正则: 含1或2&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;sed&#34;&gt;sed&lt;/h2&gt;
+&lt;/div&gt;&lt;h3 id=&#34;sed&#34;&gt;sed&lt;/h3&gt;
 &lt;p&gt;流编辑器，用于处理文本，引号内为正则表达式&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -406,21 +371,6 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;fi&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;strong&gt;命令行命令&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;!!               &lt;span class=&#34;c1&#34;&gt;# 直接替换为上一次使用的命令&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Ctrl + R         &lt;span class=&#34;c1&#34;&gt;# 回溯历史操作&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;readelf -S xxx   &lt;span class=&#34;c1&#34;&gt;# 查看程序.bss段地址&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; -             &lt;span class=&#34;c1&#34;&gt;# 返回到上一次工作目录&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;strong&gt;匹配&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -437,51 +387,50 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;h2 id=&#34;vim&#34;&gt;vim&lt;/h2&gt;
-&lt;p&gt;&lt;code&gt;Vim file1 file2 -O&lt;/code&gt;可打开两个文件&lt;/p&gt;
-&lt;p&gt;显示当前文件名：&lt;code&gt;:r! echo %&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;显示当前全局路径：&lt;code&gt;:r! echo %:p&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;格式设置&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;:%!xxd     &lt;span class=&#34;c1&#34;&gt;# 可以用于查看c代码的十六进制编码&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;:%!xxd -r  &lt;span class=&#34;c1&#34;&gt;# 返回/取消&lt;/span&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;:set cindent &lt;span class=&#34;nv&#34;&gt;shiftwidth&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;4&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;:set &lt;span class=&#34;nv&#34;&gt;tabstop&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;strong&gt;补全&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;ctrl + n&lt;/code&gt; 和 &lt;code&gt;ctrl + p&lt;/code&gt;补全单词，&lt;code&gt;ctrl + n&lt;/code&gt;和&lt;code&gt;ctrl + p&lt;/code&gt;上下移动选择补全内容&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;ctrl +x ctrl + f&lt;/code&gt;补全文件名&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;ctrl + x ctrl + o &lt;/code&gt;补全代码，需使用&lt;code&gt;:filetype on&lt;/code&gt;，查看&lt;code&gt;:set filetype + 回车&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;打开两个文件&lt;/strong&gt;：&lt;code&gt;Vim file1 file2 -O&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;寄存器&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;使用&lt;code&gt;&amp;quot;&lt;/code&gt;指定寄存器，包括&lt;code&gt;a-z&lt;/code&gt;，即&lt;code&gt;&amp;quot;bdd&lt;/code&gt;删除当前行到寄存器b中&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;:reg a&lt;/code&gt;查看寄存器a内容&lt;/p&gt;
-&lt;p&gt;复制专用寄存器&lt;code&gt;&amp;quot;0&lt;/code&gt;，系统剪贴板&lt;code&gt;&amp;quot;+&lt;/code&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;使用&lt;code&gt;&amp;quot;&lt;/code&gt;指定寄存器，包括`a-z``&lt;/li&gt;
+&lt;li&gt;``&amp;ldquo;bdd&lt;code&gt;删除当前行到寄存器b中，&lt;/code&gt;:reg a`查看寄存器a内容&lt;/li&gt;
+&lt;li&gt;复制专用寄存器&lt;code&gt;&amp;quot;0&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
 &lt;p&gt;&lt;strong&gt;宏&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;用于批处理，录制：&lt;code&gt;q{register}&lt;/code&gt;开始录制到寄存器，&lt;code&gt;q&lt;/code&gt;结束录制，回放：&lt;code&gt;@{register}&lt;/code&gt;回放命令&lt;/p&gt;
+&lt;p&gt;用于批处理，录制：&lt;code&gt;q{register}&lt;/code&gt;开始录制到寄存器，&lt;code&gt;q&lt;/code&gt;结束录制&lt;/p&gt;
+&lt;p&gt;回放：&lt;code&gt;@{register}&lt;/code&gt;回放命令&lt;/p&gt;
 &lt;p&gt;在命令模式下：&lt;code&gt;:normal @a&lt;/code&gt;全选文本内容后执行a寄存器中命令&lt;/p&gt;
-&lt;h3 id=&#34;normal模式&#34;&gt;Normal模式&lt;/h3&gt;
-&lt;p&gt;字符前插入：&lt;code&gt;i&lt;/code&gt;；字符后插入：&lt;code&gt;a&lt;/code&gt;；换行插入：&lt;code&gt;o&lt;/code&gt;；行末插入：&lt;code&gt;A&lt;/code&gt;；行首插入：&lt;code&gt;I&lt;/code&gt;；行上另起一行插入：&lt;code&gt;O&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;移动：&lt;code&gt;hjkl&lt;/code&gt;左下上右，&lt;code&gt;w&lt;/code&gt;移动到下一个单词开头，&lt;code&gt;b&lt;/code&gt;回到上一个单词开头&lt;/p&gt;
-&lt;p&gt;行间搜索移动：&lt;code&gt;f{char}&lt;/code&gt;移动到char字符上，用&lt;code&gt;;&lt;/code&gt;和&lt;code&gt;,&lt;/code&gt;搜索&lt;strong&gt;下一个&lt;/strong&gt;和&lt;strong&gt;上一个&lt;/strong&gt;，&lt;code&gt;t{char}&lt;/code&gt;移动到char前一个字符，&lt;code&gt;F{char}&lt;/code&gt;反过来搜前面的char字符&lt;/p&gt;
-&lt;p&gt;水平移动：&lt;code&gt;0&lt;/code&gt;移动到行首第一个字符，&lt;code&gt;$&lt;/code&gt;移动到行尾&lt;/p&gt;
-&lt;p&gt;垂直移动：&lt;code&gt;()&lt;/code&gt;句子间移动，&lt;code&gt;{}&lt;/code&gt;段落间移动&lt;/p&gt;
-&lt;p&gt;页面移动：&lt;code&gt;gg/G&lt;/code&gt;移动到文件开头/结尾，&lt;code&gt;ctrl+o&lt;/code&gt;快速返回，&lt;code&gt;H/M/L&lt;/code&gt;跳转到屏幕开头/中间/结尾；&lt;code&gt;ctrl+u&lt;/code&gt;, &lt;code&gt;ctrl+f&lt;/code&gt;上下翻页；&lt;code&gt;zz&lt;/code&gt;把屏幕置为中间&lt;/p&gt;
-&lt;p&gt;删除：&lt;code&gt;x&lt;/code&gt;删除一个字符，&lt;code&gt;daw&lt;/code&gt;删除一个单词，&lt;code&gt;d&lt;/code&gt;和&lt;code&gt;x&lt;/code&gt;可搭配数字执行多次：&lt;code&gt;3x&lt;/code&gt; or &lt;code&gt;3daw&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;修改：&lt;code&gt;r&lt;/code&gt;替换一个字符，&lt;code&gt;s&lt;/code&gt;替换并进入Insert模式，c搭配：&lt;code&gt;ct&amp;quot;&lt;/code&gt;删除&lt;code&gt;&amp;quot;&amp;quot;&lt;/code&gt;内的内容&lt;/p&gt;
+&lt;h3 id=&#34;normal&#34;&gt;Normal&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;字符前插入&lt;/strong&gt;：&lt;code&gt;i&lt;/code&gt;；&lt;strong&gt;字符后插入&lt;/strong&gt;：&lt;code&gt;a&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;行首插入&lt;/strong&gt;：&lt;code&gt;I&lt;/code&gt;；&lt;strong&gt;行末插入&lt;/strong&gt;：&lt;code&gt;A&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;换行插入&lt;/strong&gt;：&lt;code&gt;o&lt;/code&gt;；&lt;strong&gt;行上另起一行插入&lt;/strong&gt;：&lt;code&gt;O&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;移动&lt;/strong&gt;：&lt;code&gt;hjkl&lt;/code&gt;左下上右，&lt;code&gt;w&lt;/code&gt;移动到下一个单词开头，&lt;code&gt;b&lt;/code&gt;回到上一个单词开头&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;撤消&lt;/strong&gt;：&lt;code&gt;u&lt;/code&gt;，&lt;strong&gt;取消撤消&lt;/strong&gt;：&lt;code&gt;ctrl + R&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;快速回跳到原位&lt;/strong&gt;：&lt;code&gt;ctrl+o&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;删除&lt;/strong&gt;：&lt;code&gt;x&lt;/code&gt;删除后一个字符，&lt;code&gt;daw&lt;/code&gt;删除一个单词，&lt;code&gt;d&lt;/code&gt;和&lt;code&gt;x&lt;/code&gt;可搭配数字执行多次：&lt;code&gt;3x&lt;/code&gt; or &lt;code&gt;3daw&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;查找&lt;/strong&gt;：&lt;code&gt;/&lt;/code&gt;或&lt;code&gt;?&lt;/code&gt;进行前向或反向搜索，&lt;code&gt;n/N&lt;/code&gt;跳转到下一个或上一个匹配，&lt;code&gt;*&lt;/code&gt;或&lt;code&gt;#&lt;/code&gt;进行当前单词前向和后向匹配&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;复制&lt;/strong&gt;：&lt;code&gt;y&lt;/code&gt;，&lt;code&gt;yy&lt;/code&gt;复制一行，&lt;code&gt;y2w&lt;/code&gt;复制2个单词，&lt;strong&gt;剪切&lt;/strong&gt;：&lt;code&gt;x&lt;/code&gt;，&lt;strong&gt;粘贴&lt;/strong&gt;：&lt;code&gt;p&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;水平移动&lt;/strong&gt;：&lt;code&gt;0&lt;/code&gt;移动到行首第一个字符，&lt;code&gt;$&lt;/code&gt;移动到行尾&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;垂直移动&lt;/strong&gt;：&lt;code&gt;()&lt;/code&gt;句子间移动，&lt;code&gt;{}&lt;/code&gt;段落间移动&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;修改&lt;/strong&gt;：&lt;code&gt;r&lt;/code&gt;替换一个字符，&lt;code&gt;s&lt;/code&gt;替换并进入Insert模式，c搭配：&lt;code&gt;ct&amp;quot;&lt;/code&gt;删除&lt;code&gt;&amp;quot;&amp;quot;&lt;/code&gt;内的内容&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;行间搜索移动&lt;/strong&gt;：&lt;code&gt;f{char}&lt;/code&gt;移动到char字符上，用&lt;code&gt;;&lt;/code&gt;和&lt;code&gt;,&lt;/code&gt;搜索&lt;strong&gt;下一个&lt;/strong&gt;和&lt;strong&gt;上一个&lt;/strong&gt;，&lt;code&gt;t{char}&lt;/code&gt;移动到char前一个字符，&lt;code&gt;F{char}&lt;/code&gt;反过来搜前面的char字符&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;页面移动&lt;/strong&gt;：&lt;code&gt;gg/G&lt;/code&gt;移动到文件开头/结尾，&lt;code&gt;H/M/L&lt;/code&gt;跳转到屏幕开头/中间/结尾；&lt;code&gt;ctrl+u&lt;/code&gt;, &lt;code&gt;ctrl+f&lt;/code&gt;上下翻页；&lt;code&gt;zz&lt;/code&gt;把屏幕置为中间&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;使用&lt;code&gt;ci&lt;/code&gt;加上一个 &lt;code&gt;&#39;&lt;/code&gt; 或 &lt;code&gt;&amp;lt;&lt;/code&gt; 或 &lt;code&gt;&amp;quot;&lt;/code&gt; 或 &lt;code&gt;《&lt;/code&gt; 都可以删除以此符号包含的文本并进行替换输入&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;查询：&lt;code&gt;/&lt;/code&gt;或&lt;code&gt;?&lt;/code&gt;进行前向或反向搜索，&lt;code&gt;n/N&lt;/code&gt;跳转到下一个或上一个匹配，&lt;code&gt;*&lt;/code&gt;或&lt;code&gt;#&lt;/code&gt;进行当前单词前向和后向匹配&lt;/p&gt;
-&lt;p&gt;复制：&lt;code&gt;y&lt;/code&gt;，&lt;code&gt;yy&lt;/code&gt;复制一行，&lt;code&gt;yiw&lt;/code&gt;复制一个单词，剪切：&lt;code&gt;x&lt;/code&gt;，粘贴：&lt;code&gt;p&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;.&lt;/code&gt;表示重复之前的操作&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;ctrl+o&lt;/code&gt;：回跳到原位&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;重复之前的操作&lt;/strong&gt;：&lt;code&gt;.&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;光标设置&lt;/strong&gt;&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;&lt;code&gt;m{a-z}&lt;/code&gt; 文件内标记，文件内跳转&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;m{a-z}&lt;/code&gt; 文件内标记，文件内跳转，设置标记名为a到z中一个&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;m{A-Z}&lt;/code&gt; 标记文件，不同文件间跳转&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;&lt;strong&gt;光标跳转&lt;/strong&gt;&lt;/p&gt;
@@ -495,7 +444,7 @@
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[number]&amp;lt;command&amp;gt;[text object]
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;number&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&amp;lt;command&amp;gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;text object&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;ul&gt;
@@ -504,42 +453,200 @@
 &lt;li&gt;text object文本对象，&lt;code&gt;w&lt;/code&gt;单词，&lt;code&gt;s&lt;/code&gt;句子，&lt;code&gt;p&lt;/code&gt;段落&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;可以用&lt;code&gt;a&lt;/code&gt;或&lt;code&gt;i&lt;/code&gt;加上字符`(, &amp;lt;, {, [, &amp;ldquo;, ``等选择包括中的内容&lt;/p&gt;
-&lt;h3 id=&#34;command模式&#34;&gt;Command模式&lt;/h3&gt;
-&lt;p&gt;查看文件二进制：&lt;code&gt;:%!xxd&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;取消二进制显示——&lt;code&gt;:%!xxd -r&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;显示行号：&lt;code&gt;:set nu&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;全局替换：&lt;code&gt;:% s/被替换单词/替换为的单词/g&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;替换命令：&lt;code&gt;:[range]s[ubstitute]/{pattern}/{string}/[flags]&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;command&#34;&gt;Command&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;显示行号&lt;/strong&gt;：&lt;code&gt;:set nu&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;全局替换&lt;/strong&gt;：&lt;code&gt;:% s/被替换单词/替换为的单词/g&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;替换命令&lt;/strong&gt;：&lt;code&gt;:[range]s[ubstitute]/{pattern}/{string}/[flags]&lt;/code&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;range：范围，&lt;code&gt;:10,20&lt;/code&gt;表示10-20行，&lt;code&gt;%&lt;/code&gt;表示全部&lt;/li&gt;
 &lt;li&gt;pattern：要替换的模式，string替换后文本&lt;code&gt;/&lt;/code&gt;为空&lt;/li&gt;
 &lt;li&gt;flags：&lt;code&gt;g&lt;/code&gt;全局，&lt;code&gt;c&lt;/code&gt;确认（替换前会进行确认），&lt;code&gt;n&lt;/code&gt;报告匹配到的次数而不替换&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;code&gt;Ctrl + P&lt;/code&gt;：回到上一个命令&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;回到上一个命令&lt;/strong&gt;：&lt;code&gt;: + Ctrl + P&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;显示当前文件名&lt;/strong&gt;：&lt;code&gt;:r! echo %&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;显示当前全局路径&lt;/strong&gt;：&lt;code&gt;:r! echo %:p&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;:%!xxd     &lt;span class=&#34;c1&#34;&gt;# 查看文件十六进制编码&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;:%!xxd -r  &lt;span class=&#34;c1&#34;&gt;# 返回/取消&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;跳转到第n行&lt;/strong&gt;：&lt;code&gt;:n&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Buffer切换&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;:ls&lt;/code&gt;列举当前缓冲区，&lt;code&gt;:b n&lt;/code&gt;跳转到第n个缓冲区，&lt;code&gt;:bpre&lt;/code&gt; &lt;code&gt;:bnext&lt;/code&gt; &lt;code&gt;:bfirst&lt;/code&gt; &lt;code&gt;:blast&lt;/code&gt; &lt;code&gt;:b buffer_name&lt;/code&gt;来切换，&lt;code&gt;:e file_name&lt;/code&gt;打开新的文件进入缓冲区编辑&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;:ls&lt;/code&gt;列举当前缓冲区&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;:b n&lt;/code&gt;跳转到第n个缓冲区&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;:bpre&lt;/code&gt; &lt;code&gt;:bnext&lt;/code&gt; &lt;code&gt;:bfirst&lt;/code&gt; &lt;code&gt;:blast&lt;/code&gt; &lt;code&gt;:b buffer_name&lt;/code&gt;来切换&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;:e file_name&lt;/code&gt;打开新的文件进入缓冲区编辑&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;Window切换&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;左右分屏：&lt;code&gt;vs&lt;/code&gt;或&lt;code&gt;ctrl + w + v&lt;/code&gt;，上下分屏：&lt;code&gt;sp&lt;/code&gt;或&lt;code&gt;ctrl + w + s&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;左右分屏：&lt;code&gt;vs&lt;/code&gt;或&lt;code&gt;ctrl + w + v&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;上下分屏：&lt;code&gt;sp&lt;/code&gt;或&lt;code&gt;ctrl + w + s&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;切换窗口：&lt;code&gt;ctrl + w + w/h/j/k/l&lt;/code&gt; 分别为 循环切换，左，下，上，右窗口&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;标签页tab&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;:tabe file_name&lt;/code&gt;新标签页打开文件，&lt;code&gt;ctrl + w + T&lt;/code&gt;当前窗口移到新标签页，&lt;code&gt;:tabc&lt;/code&gt;关闭当前标签页及其中所有窗口，&lt;code&gt;:tabo&lt;/code&gt;只保留活动标签页&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;:tabn {N}&lt;/code&gt;切到N标签页，&lt;code&gt;:tabn&lt;/code&gt;切到下一标签页，&lt;code&gt;:tabp&lt;/code&gt;切到上一标签页&lt;/p&gt;
-&lt;h3 id=&#34;visual模式&#34;&gt;Visual模式&lt;/h3&gt;
-&lt;p&gt;Normal模式&lt;code&gt;v&lt;/code&gt;进入，&lt;code&gt;V&lt;/code&gt;选择行，&lt;code&gt;ctrl+v&lt;/code&gt;选择方块&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;:tabe file_name&lt;/code&gt;新标签页打开文件&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;ctrl + w + T&lt;/code&gt;当前窗口移到新标签页&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;:tabc&lt;/code&gt;关闭当前标签页及其中所有窗口&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;:tabo&lt;/code&gt;只保留活动标签页&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;:tabn {N}&lt;/code&gt;切到N标签页&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;:tabn&lt;/code&gt;切到下一标签页&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;:tabp&lt;/code&gt;切到上一标签页&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;visual&#34;&gt;Visual&lt;/h3&gt;
+&lt;p&gt;Normal模式按&lt;code&gt;v&lt;/code&gt;进入，&lt;code&gt;V&lt;/code&gt;选择行，&lt;code&gt;ctrl+v&lt;/code&gt;选择方块&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;viw&lt;/code&gt;：选中当前单词，&lt;code&gt;vaw&lt;/code&gt;：选中当前单词及后空格&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;先按Esc 键，确认是在命令的状态下&lt;/li&gt;
-&lt;li&gt;按V 键&lt;/li&gt;
-&lt;li&gt;再按Shift + &amp;lt; ，这是将代码往左&lt;strong&gt;移动&lt;/strong&gt;的；Shift + &amp;gt; 是将代码往右边&lt;strong&gt;移动&lt;/strong&gt;的。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3 id=&#34;insert模式&#34;&gt;Insert模式&lt;/h3&gt;
-&lt;p&gt;&lt;code&gt;ctrl+h&lt;/code&gt;删除上一个字符，&lt;code&gt;ctrl+w&lt;/code&gt;删除上一个单词，&lt;code&gt;ctrl+u&lt;/code&gt;删除当前行光标前内容&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;ctrl+[&lt;/code&gt;切换为Normal模式，&lt;code&gt;gi&lt;/code&gt;快速跳转到最后一次编辑的地方并进入Insert模式&lt;/p&gt;
-&lt;h2 id=&#34;配置&#34;&gt;配置&lt;/h2&gt;
-&lt;p&gt;bash的配置在&lt;code&gt;~/.bashrc&lt;/code&gt;中&lt;/p&gt;
-&lt;p&gt;git的配置在&lt;code&gt;~/.gitconfig&lt;/code&gt;中&lt;/p&gt;
-&lt;p&gt;vim的配置在&lt;code&gt;~/.vimrc&lt;/code&gt;中&lt;/p&gt;
-&lt;h2 id=&#34;压缩&#34;&gt;压缩&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;代码左右移&lt;/strong&gt;：&lt;code&gt;V &amp;amp; Shift + &amp;lt; &amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;insert&#34;&gt;Insert&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;删除上一个字符&lt;/strong&gt;：&lt;code&gt;ctrl+h&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;删除上一个单词&lt;/strong&gt;：&lt;code&gt;ctrl+w&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;删除当前行光标前内容&lt;/strong&gt;：&lt;code&gt;ctrl+u&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;跳转到最后一次编辑的地方并进入Insert模式&lt;/strong&gt;：&lt;code&gt;gi&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;补全&lt;/strong&gt;：&lt;code&gt;ctrl + n&lt;/code&gt; 和 &lt;code&gt;ctrl + p&lt;/code&gt;补全单词，&lt;code&gt;ctrl + n&lt;/code&gt;和&lt;code&gt;ctrl + p&lt;/code&gt;上下移动选择&lt;/p&gt;
+&lt;h2 id=&#34;makefile&#34;&gt;Makefile&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;格式&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;\&lt;/code&gt;用于将一行分解为多行&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-makefile&#34; data-lang=&#34;makefile&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c&#34;&gt;# COMMAND 命令生成TARGET, 其依赖于DEPENDEDS, DEPENDEDS改变, TARGET也重新生成, 后续依赖项也可作为TARGET规则嵌套
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;&amp;lt;TARGET ...&amp;gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &amp;lt;&lt;span class=&#34;n&#34;&gt;DEPENDEDS&lt;/span&gt; ...&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    COMMAND
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;模式规则&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-makefile&#34; data-lang=&#34;makefile&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nf&#34;&gt;&amp;lt;targets ...&amp;gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &amp;lt;&lt;span class=&#34;n&#34;&gt;target&lt;/span&gt;-&lt;span class=&#34;n&#34;&gt;pattern&lt;/span&gt;&amp;gt;: &amp;lt;&lt;span class=&#34;n&#34;&gt;prereq&lt;/span&gt;-&lt;span class=&#34;n&#34;&gt;patterns&lt;/span&gt; ...&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c&#34;&gt;# targets: 目标文件
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c&#34;&gt;# target-pattern: 目标集模式，%匹配任意文件名
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c&#34;&gt;# prereq-patterns: 依赖集模式
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nf&#34;&gt;$(OBJS)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;%.&lt;span class=&#34;n&#34;&gt;o&lt;/span&gt;:%.&lt;span class=&#34;n&#34;&gt;c&lt;/span&gt; &lt;span class=&#34;c&#34;&gt;# 通过命令将.c依赖均生成.o作为OBJS
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;自动变量&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Makefile&#34; data-lang=&#34;Makefile&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;$+&lt;/span&gt;				&lt;span class=&#34;c&#34;&gt;# 所有依赖文件
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$@&lt;/span&gt;				&lt;span class=&#34;c&#34;&gt;# 目标文件名
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$&amp;lt;&lt;/span&gt;				&lt;span class=&#34;c&#34;&gt;# 第一个依赖文件名
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c&#34;&gt;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;$^&lt;/span&gt;				&lt;span class=&#34;c&#34;&gt;# 依赖项中所有不重复文件
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$?&lt;/span&gt;				&lt;span class=&#34;c&#34;&gt;# 依赖中所有被修改过的文件
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$*&lt;/span&gt;				&lt;span class=&#34;c&#34;&gt;# 目标文件名(不包含扩展名)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;object&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;		&lt;span class=&#34;c&#34;&gt;# 使用object对应变量
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-makefile&#34; data-lang=&#34;makefile&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;shell&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;pwd&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;	&lt;span class=&#34;c&#34;&gt;# 获取相对路径
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;预定义变量&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-makefile&#34; data-lang=&#34;makefile&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;CFLAGS&lt;/span&gt;	&lt;span class=&#34;c&#34;&gt;# 编译选项
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c&#34;&gt;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;OBJS&lt;/span&gt;	&lt;span class=&#34;c&#34;&gt;# 依赖文件
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c&#34;&gt;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;TARGET&lt;/span&gt;	&lt;span class=&#34;c&#34;&gt;# 目标文件
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c&#34;&gt;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;CC&lt;/span&gt;		&lt;span class=&#34;c&#34;&gt;# 编译器
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c&#34;&gt;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;RM&lt;/span&gt;		&lt;span class=&#34;c&#34;&gt;# 删除
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c&#34;&gt;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;DIRS&lt;/span&gt;	&lt;span class=&#34;c&#34;&gt;# 目录
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;伪目标&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Makefile&#34; data-lang=&#34;Makefile&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nf&#34;&gt;.PHONY&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;all&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;clean&lt;/span&gt; &lt;span class=&#34;c&#34;&gt;# 伪目标, 强制执行
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;清理&lt;/strong&gt;：使用&lt;code&gt;make clean&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-makefile&#34; data-lang=&#34;makefile&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nf&#34;&gt;clean&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    @-rm &lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;DIR_TARGET&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;*
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;c1&#34;&gt;# @:不回显命令; -:忽略错误, 中断执行; *:目录下所有文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;函数&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-makefile&#34; data-lang=&#34;makefile&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;wildcard&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;pattern&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;					&lt;span class=&#34;c&#34;&gt;# 返回满足pattern的文件列表
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;patsubst&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;pattern&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;replacement&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;text&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;	&lt;span class=&#34;c&#34;&gt;# 将text字符串满足pattern的替换为replacement
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;foreach&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;var&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;list&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;text&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;	&lt;span class=&#34;c&#34;&gt;# list中逐一取出到var, 执行text表达式
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;gdb&#34;&gt;GDB&lt;/h2&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -549,11 +656,11 @@
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;tar -zvcf a.tar.gz a &lt;span class=&#34;c1&#34;&gt;# 压缩&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;tar -zvxf a.tar.gz  &lt;span class=&#34;c1&#34;&gt;# 解压&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;zip -r a.zip ./* &lt;span class=&#34;c1&#34;&gt;# 压缩&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;unzip -d /xxx a.zip &lt;span class=&#34;c1&#34;&gt;# 解压&lt;/span&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;list &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# 输出第1行开始的源代码&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;display xx &lt;span class=&#34;c1&#34;&gt;# 每次运行输出xx的值&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;whatis variable &lt;span class=&#34;c1&#34;&gt;# 查看变量类型&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ptype variable &lt;span class=&#34;c1&#34;&gt;# 查看变量类型结构&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;bt &lt;span class=&#34;c1&#34;&gt;# 调用路径&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;</description>

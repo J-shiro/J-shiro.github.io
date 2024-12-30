@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='一些命令 若不需要-a这些参数, 可以使用-- 数据处理 1 2 3 4 5 6 7 8 9 R --slave -e &amp;#39;x &amp;lt;- scan(file=&amp;#34;stdin&amp;#34;, quiet=TRUE); summary(x)&amp;#39; # --slave: 抑制消息、提示 # -e: 直接执行表达式 # 从标准输入到x, 并'><title>LINUX笔记</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='配置 bash的配置在~/.bashrc中 git的配置在~/.gitconfig中 vim的配置在~/.vimrc中 基础命令 tree：列举所有文'><title>LINUX笔记</title>
 
 <link rel='canonical' href='https://J-shiro.github.io/zh-cn/p/linux%E7%AC%94%E8%AE%B0/'>
 
 <link rel="stylesheet" href="/scss/style.min.b18c0607927efd48b36f5d027b549e77e30ee300e22b6461d063f1df6ea2466b.css"><meta property='og:title' content='LINUX笔记'>
-<meta property='og:description' content='一些命令 若不需要-a这些参数, 可以使用-- 数据处理 1 2 3 4 5 6 7 8 9 R --slave -e &amp;#39;x &amp;lt;- scan(file=&amp;#34;stdin&amp;#34;, quiet=TRUE); summary(x)&amp;#39; # --slave: 抑制消息、提示 # -e: 直接执行表达式 # 从标准输入到x, 并'>
+<meta property='og:description' content='配置 bash的配置在~/.bashrc中 git的配置在~/.gitconfig中 vim的配置在~/.vimrc中 基础命令 tree：列举所有文'>
 <meta property='og:url' content='https://J-shiro.github.io/zh-cn/p/linux%E7%AC%94%E8%AE%B0/'>
 <meta property='og:site_name' content='J-shiro&#39;s 博客'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-10-09T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2024-10-09T00:00:00&#43;00:00'/><meta property='og:image' content='https://J-shiro.github.io/img/note.jpg' />
 <meta name="twitter:title" content="LINUX笔记">
-<meta name="twitter:description" content="一些命令 若不需要-a这些参数, 可以使用-- 数据处理 1 2 3 4 5 6 7 8 9 R --slave -e &amp;#39;x &amp;lt;- scan(file=&amp;#34;stdin&amp;#34;, quiet=TRUE); summary(x)&amp;#39; # --slave: 抑制消息、提示 # -e: 直接执行表达式 # 从标准输入到x, 并"><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="配置 bash的配置在~/.bashrc中 git的配置在~/.gitconfig中 vim的配置在~/.vimrc中 基础命令 tree：列举所有文"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://J-shiro.github.io/img/note.jpg' />
     <link rel="shortcut icon" href="https://j-shiro.github.io/img/somebody.png" />
 
@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    4199 字
+                    4059 字
                 </time>
             </div>
         
@@ -336,83 +336,78 @@
     <section class="article-content">
     
     
-    <h2 id="一些命令">一些命令</h2>
-<p>若不需要<code>-a</code>这些参数, 可以使用<code>--</code></p>
-<p><strong>数据处理</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">R --slave -e <span class="s1">&#39;x &lt;- scan(file=&#34;stdin&#34;, quiet=TRUE); summary(x)&#39;</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># --slave: 抑制消息、提示</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># -e: 直接执行表达式</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 从标准输入到x, 并计算显示数据的汇总信息</span>
-</span></span><span class="line"><span class="cl">gnuplot -p -e <span class="s1">&#39;set boxwidth 0.5; plot &#34;-&#34; using 1:xtic(2) with boxes&#39;</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># -p: 保持图形打开</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># -e: 直接执行命令</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 宽度0.5, &#34;-&#34;从标准输入读取数据</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># using 1:xtic(2): 第1列-条形高度, 第2列-x轴刻度标签  boxes条形图</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>性能分析</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">perf stat stress -c <span class="m">1</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># perf: 性能分析和调试工具</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># stat: 收集显示性能统计信息</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># stress: 负载生成工具</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># -c: CPU负载核心数</span>
-</span></span><span class="line"><span class="cl">perf report <span class="c1"># 生成和查看性能数据的报告</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 精准测试命令执行时间工具</span>
-</span></span><span class="line"><span class="cl">hyperfine --warmup <span class="m">3</span> <span class="s1">&#39;fd -e jpg&#39;</span> <span class="s1">&#39;find . -iname &#34;*.jpg&#34;&#39;</span> <span class="c1"># 比较 fd 和 find</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># --warmup 3: 预热执行三次后再测试</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="简单命令">简单命令</h2>
-<p>**tree：**列举所有文件，类似于<code>ls -R</code>，递归列举文件</p>
-<p>**tldr：**连接 <code>command</code> 可以列举使用该命令的用法</p>
-<p>**journalctl：**查看和管理 systemd 的日志</p>
-<p><strong>wc：</strong><code>wc -l</code>，统计文件行数</p>
-<p>**sort：**排序，<code>sort-nk1,1</code>，<code>-n</code>为按数值大小排序，<code>-k1,1</code>排序键从第1列到第1列</p>
-<p><strong>unique：</strong><code>unique -c</code>，统计相邻且相同的行出现的次数，<code>-c</code>在每行前加入次数</p>
-<p><strong>paste：</strong><code>paste -sd,</code> 多行以逗号分隔合并为单行，<code>-s</code>串联，<code>-d</code>指定分隔符</p>
-<p><strong>bc：</strong><code>bc -l</code>，计算器运算</p>
-<p>**tee：**从标准输入读取数据，并将数据同时写入到一个或多个文件和标准输出</p>
-<p>**jobs：**显示终端运行或挂起的后台作业</p>
-<p>**nohup：**使得一个进程在用户登出或会话终止后仍然继续运行</p>
-<p>**bg：**将已暂停的后台作业继续运行，<code>bg %1</code>指定 <code>jobs</code> 中序号</p>
-<p>**alias：**命令别名，<code>alias ll=&quot;ls -lah&quot;</code>及直接<code>alias command</code>查看命令别名意义</p>
-<p>**htop：**进程查看器和系统监视器</p>
-<p>**time：**获取命令执行的真实、用户、系统时间</p>
-<p>**tac：**最后一行开始，逐行向上显示内容</p>
-<p>**du：**显示目录及子目录磁盘使用情况，<code>du -h directory</code>，<code>-h</code>表示人类可读</p>
-<p><strong>curl：</strong> 可查看公网ip地址</p>
-<p><strong>ps：</strong><code>ps -ef | grep xx</code>查找指定进程格式</p>
+    <h2 id="配置">配置</h2>
+<p>bash的配置在<code>~/.bashrc</code>中</p>
+<p>git的配置在<code>~/.gitconfig</code>中</p>
+<p>vim的配置在<code>~/.vimrc</code>中</p>
+<h2 id="基础命令">基础命令</h2>
+<p><strong>tree</strong>：列举所有文件，递归列举文件</p>
+<p><strong>tldr</strong>：连接 <code>command</code> 可以列举使用该命令的用法</p>
+<p><strong>journalctl</strong>：查看和管理 systemd 日志</p>
+<p><strong>alias</strong>：命令别名，<code>alias command</code>查看别名意义</p>
+<p><strong>tac</strong>：最后一行开始，逐行向上显示内容</p>
+<p><strong>curl</strong>： 可查看公网ip地址</p>
+<p><strong>htop</strong>：进程查看器和系统监视器</p>
+<p><strong>wc</strong>：<code>wc -l file</code>，统计文件行数</p>
+<p><strong>time</strong>：获取命令执行的真实、用户、系统时间</p>
+<p><strong>paste</strong>：<code>paste -sd,</code> 将多个文件对应行合并为一行，以逗号分隔，<code>-s</code>合并为一行，<code>-d</code>指定分隔符</p>
+<p><strong>tee</strong>：<code>xx | tee file</code>从标准输入读取数据，并将数据同时写入到一个或多个文件和标准输出</p>
+<p><strong>nohup</strong>：<code>nohup python3 xx.py</code>使得一个进程在用户登出或会话终止后仍然后台继续运行</p>
+<p><strong>bg</strong>：将<code>jobs</code>命令查看的已暂停后台作业继续运行，<code>bg %1</code>指定 <code>jobs</code> 中序号</p>
+<p><strong>od</strong>：十六进制查看工具，<code>od -c file</code></p>
+<h2 id="常用命令">常用命令</h2>
 <p><strong>查看某个文件的绝对路径</strong>： <code>pwd|awk '{print $1&quot;/file_name&quot;}'</code></p>
 <p><strong>查看版本</strong>：<code>cat /proc/version</code></p>
-<p><strong>显示操作系统信息</strong>：<code>uname -a</code></p>
-<p><strong>查看磁盘使用情况</strong>：<code>du -sh</code></p>
-<h2 id="netstat">netstat</h2>
+<p><strong>显示linux内核版本信息</strong>：<code>uname -asrm                                                                                                                                     </code></p>
+<p><strong>查看目录及子目录磁盘使用情况</strong>：<code>du -sh directory</code></p>
+<p><strong>查找指定进程格式</strong>：<code>ps -ef | grep xx</code></p>
+<p><strong>查看分区挂载情况</strong>：<code>df</code></p>
+<p><strong>链接</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ln <span class="c1"># 硬~</span>
+</span></span><span class="line"><span class="cl">ln -s <span class="c1"># 软~</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>压缩</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tar -zvcf a.tar.gz a <span class="c1"># 压缩</span>
+</span></span><span class="line"><span class="cl">tar -zvxf a.tar.gz  <span class="c1"># 解压</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">zip -r a.zip ./* <span class="c1"># 压缩</span>
+</span></span><span class="line"><span class="cl">unzip -d /xxx a.zip <span class="c1"># 解压</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>命令行命令</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">!!               <span class="c1"># 直接替换为上一次使用的命令</span>
+</span></span><span class="line"><span class="cl">Ctrl + R         <span class="c1"># 回溯历史操作</span>
+</span></span><span class="line"><span class="cl">readelf -S xxx   <span class="c1"># 查看程序.bss段地址</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> -             <span class="c1"># 返回到上一次工作目录</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>若不需要<code>-a</code>这些参数, 可以使用<code>--</code></p>
+<h2 id="具体命令">具体命令</h2>
+<h3 id="netstat">netstat</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -431,7 +426,7 @@
 </span></span><span class="line"><span class="cl"> -t: 所有的 tcp 协议的端口
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="find">find</h2>
+</div><h3 id="find">find</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -452,22 +447,7 @@
 </span></span><span class="line"><span class="cl"><span class="c1"># \; 表示 -exec 操作的结束, \ 是用来转义 ; 的， shell 中 ; 通常是一个命令分隔符</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="locate">locate</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">locate filename
-</span></span><span class="line"><span class="cl"><span class="c1"># 根据 mlocate.db 数据库查找</span>
-</span></span><span class="line"><span class="cl">sudo updatedb
-</span></span><span class="line"><span class="cl"><span class="c1"># 用于更新数据库</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="lsof">lsof</h2>
+</div><h3 id="lsof">lsof</h3>
 <p>列出当前系统打开文件，包括网络连接、设备</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -475,11 +455,11 @@
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">lsof <span class="p">|</span> grep <span class="s2">&#34;:4444 .LISTEN&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 列出4444端口监听的进程</span>
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="c1"># 列出4444端口监听的进程</span>
+</span></span><span class="line"><span class="cl">lsof <span class="p">|</span> grep <span class="s2">&#34;:4444 .LISTEN&#34;</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="ssh">ssh</h2>
+</div><h3 id="ssh">ssh</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -531,7 +511,7 @@
 </span></span><span class="line"><span class="cl"><span class="c1"># -a: 递归复制  -v: 显示详细信息  -P: 允许断点续传, 显示传输进度信息</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="strace">strace</h2>
+</div><h3 id="strace">strace</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -542,44 +522,29 @@
 </span></span><span class="line"><span class="cl"><span class="c1"># 使用 strace 只跟踪 ls -l 命令中的 lstat 系统调用, 丢弃输出到/dev/null</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="xargs">xargs</h2>
+</div><h3 id="awk">awk</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;file1 file2 file3&#34;</span> <span class="p">|</span> xargs rm
-</span></span><span class="line"><span class="cl"><span class="c1"># 将标准输入中的数据转换为命令行参数，并将这些参数传递给指定的命令</span>
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">awk <span class="s1">&#39;{print $2}&#39;</span> file <span class="c1"># 输出每行第 2 个字段</span>
+</span></span><span class="line"><span class="cl">awk <span class="s1">&#39;$1 == 1 &amp;&amp; $2 ~ /^c.*e$/ {print $0}&#39;</span> file <span class="c1"># 第 1 列为 1, 第 2 列满足以c开头以e结尾, $0 输出当前行</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="awk">awk</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">awk <span class="s1">&#39;{print $2}&#39;</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 输出每行第 2 个字段, 默认将空格作为分隔符</span>
-</span></span><span class="line"><span class="cl">awk <span class="s1">&#39;$1 == 1 &amp;&amp; $2 ~ /^c.*e$/ {print $0}&#39;</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 第 1 列为 1, 第 2 列满足以c开头以e结尾, $0 输出当前行</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="grep">grep</h2>
+</div><h3 id="grep">grep</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">xxx <span class="p">|</span> grep <span class="s1">&#39;xxxx&#39;</span> &gt; ans.txt
-</span></span><span class="line"><span class="cl">ll -a <span class="p">|</span> grep -E <span class="s2">&#34;1|2&#34;</span> <span class="c1"># 用正则显示含1或含2的目录</span>
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">xxx <span class="p">|</span> grep <span class="s1">&#39;xxxx&#39;</span>
+</span></span><span class="line"><span class="cl">xxx <span class="p">|</span> grep -E <span class="s2">&#34;1|2&#34;</span> <span class="c1"># 正则: 含1或2</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="sed">sed</h2>
+</div><h3 id="sed">sed</h3>
 <p>流编辑器，用于处理文本，引号内为正则表达式</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -730,21 +695,6 @@
 </span></span><span class="line"><span class="cl"><span class="k">fi</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><strong>命令行命令</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">!!               <span class="c1"># 直接替换为上一次使用的命令</span>
-</span></span><span class="line"><span class="cl">Ctrl + R         <span class="c1"># 回溯历史操作</span>
-</span></span><span class="line"><span class="cl">readelf -S xxx   <span class="c1"># 查看程序.bss段地址</span>
-</span></span><span class="line"><span class="cl"><span class="nb">cd</span> -             <span class="c1"># 返回到上一次工作目录</span>
-</span></span></code></pre></td></tr></table>
-</div>
 </div><p><strong>匹配</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -761,51 +711,50 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="vim">vim</h2>
-<p><code>Vim file1 file2 -O</code>可打开两个文件</p>
-<p>显示当前文件名：<code>:r! echo %</code></p>
-<p>显示当前全局路径：<code>:r! echo %:p</code></p>
+<p><strong>格式设置</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">:%!xxd     <span class="c1"># 可以用于查看c代码的十六进制编码</span>
-</span></span><span class="line"><span class="cl">:%!xxd -r  <span class="c1"># 返回/取消</span>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">:set cindent <span class="nv">shiftwidth</span><span class="o">=</span><span class="m">4</span>
+</span></span><span class="line"><span class="cl">:set <span class="nv">tabstop</span><span class="o">=</span><span class="m">2</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><strong>补全</strong></p>
-<ul>
-<li><code>ctrl + n</code> 和 <code>ctrl + p</code>补全单词，<code>ctrl + n</code>和<code>ctrl + p</code>上下移动选择补全内容</li>
-<li><code>ctrl +x ctrl + f</code>补全文件名</li>
-<li><code>ctrl + x ctrl + o </code>补全代码，需使用<code>:filetype on</code>，查看<code>:set filetype + 回车</code></li>
-</ul>
+</div><p><strong>打开两个文件</strong>：<code>Vim file1 file2 -O</code></p>
 <p><strong>寄存器</strong></p>
-<p>使用<code>&quot;</code>指定寄存器，包括<code>a-z</code>，即<code>&quot;bdd</code>删除当前行到寄存器b中</p>
-<p><code>:reg a</code>查看寄存器a内容</p>
-<p>复制专用寄存器<code>&quot;0</code>，系统剪贴板<code>&quot;+</code></p>
+<ol>
+<li>使用<code>&quot;</code>指定寄存器，包括`a-z``</li>
+<li>``&ldquo;bdd<code>删除当前行到寄存器b中，</code>:reg a`查看寄存器a内容</li>
+<li>复制专用寄存器<code>&quot;0</code></li>
+</ol>
 <p><strong>宏</strong></p>
-<p>用于批处理，录制：<code>q{register}</code>开始录制到寄存器，<code>q</code>结束录制，回放：<code>@{register}</code>回放命令</p>
+<p>用于批处理，录制：<code>q{register}</code>开始录制到寄存器，<code>q</code>结束录制</p>
+<p>回放：<code>@{register}</code>回放命令</p>
 <p>在命令模式下：<code>:normal @a</code>全选文本内容后执行a寄存器中命令</p>
-<h3 id="normal模式">Normal模式</h3>
-<p>字符前插入：<code>i</code>；字符后插入：<code>a</code>；换行插入：<code>o</code>；行末插入：<code>A</code>；行首插入：<code>I</code>；行上另起一行插入：<code>O</code></p>
-<p>移动：<code>hjkl</code>左下上右，<code>w</code>移动到下一个单词开头，<code>b</code>回到上一个单词开头</p>
-<p>行间搜索移动：<code>f{char}</code>移动到char字符上，用<code>;</code>和<code>,</code>搜索<strong>下一个</strong>和<strong>上一个</strong>，<code>t{char}</code>移动到char前一个字符，<code>F{char}</code>反过来搜前面的char字符</p>
-<p>水平移动：<code>0</code>移动到行首第一个字符，<code>$</code>移动到行尾</p>
-<p>垂直移动：<code>()</code>句子间移动，<code>{}</code>段落间移动</p>
-<p>页面移动：<code>gg/G</code>移动到文件开头/结尾，<code>ctrl+o</code>快速返回，<code>H/M/L</code>跳转到屏幕开头/中间/结尾；<code>ctrl+u</code>, <code>ctrl+f</code>上下翻页；<code>zz</code>把屏幕置为中间</p>
-<p>删除：<code>x</code>删除一个字符，<code>daw</code>删除一个单词，<code>d</code>和<code>x</code>可搭配数字执行多次：<code>3x</code> or <code>3daw</code></p>
-<p>修改：<code>r</code>替换一个字符，<code>s</code>替换并进入Insert模式，c搭配：<code>ct&quot;</code>删除<code>&quot;&quot;</code>内的内容</p>
+<h3 id="normal">Normal</h3>
+<p><strong>字符前插入</strong>：<code>i</code>；<strong>字符后插入</strong>：<code>a</code></p>
+<p><strong>行首插入</strong>：<code>I</code>；<strong>行末插入</strong>：<code>A</code></p>
+<p><strong>换行插入</strong>：<code>o</code>；<strong>行上另起一行插入</strong>：<code>O</code></p>
+<p><strong>移动</strong>：<code>hjkl</code>左下上右，<code>w</code>移动到下一个单词开头，<code>b</code>回到上一个单词开头</p>
+<p><strong>撤消</strong>：<code>u</code>，<strong>取消撤消</strong>：<code>ctrl + R</code></p>
+<p><strong>快速回跳到原位</strong>：<code>ctrl+o</code></p>
+<p><strong>删除</strong>：<code>x</code>删除后一个字符，<code>daw</code>删除一个单词，<code>d</code>和<code>x</code>可搭配数字执行多次：<code>3x</code> or <code>3daw</code></p>
+<p><strong>查找</strong>：<code>/</code>或<code>?</code>进行前向或反向搜索，<code>n/N</code>跳转到下一个或上一个匹配，<code>*</code>或<code>#</code>进行当前单词前向和后向匹配</p>
+<p><strong>复制</strong>：<code>y</code>，<code>yy</code>复制一行，<code>y2w</code>复制2个单词，<strong>剪切</strong>：<code>x</code>，<strong>粘贴</strong>：<code>p</code></p>
+<p><strong>水平移动</strong>：<code>0</code>移动到行首第一个字符，<code>$</code>移动到行尾</p>
+<p><strong>垂直移动</strong>：<code>()</code>句子间移动，<code>{}</code>段落间移动</p>
+<p><strong>修改</strong>：<code>r</code>替换一个字符，<code>s</code>替换并进入Insert模式，c搭配：<code>ct&quot;</code>删除<code>&quot;&quot;</code>内的内容</p>
+<p><strong>行间搜索移动</strong>：<code>f{char}</code>移动到char字符上，用<code>;</code>和<code>,</code>搜索<strong>下一个</strong>和<strong>上一个</strong>，<code>t{char}</code>移动到char前一个字符，<code>F{char}</code>反过来搜前面的char字符</p>
+<p><strong>页面移动</strong>：<code>gg/G</code>移动到文件开头/结尾，<code>H/M/L</code>跳转到屏幕开头/中间/结尾；<code>ctrl+u</code>, <code>ctrl+f</code>上下翻页；<code>zz</code>把屏幕置为中间</p>
 <blockquote>
 <p>使用<code>ci</code>加上一个 <code>'</code> 或 <code>&lt;</code> 或 <code>&quot;</code> 或 <code>《</code> 都可以删除以此符号包含的文本并进行替换输入</p>
 </blockquote>
-<p>查询：<code>/</code>或<code>?</code>进行前向或反向搜索，<code>n/N</code>跳转到下一个或上一个匹配，<code>*</code>或<code>#</code>进行当前单词前向和后向匹配</p>
-<p>复制：<code>y</code>，<code>yy</code>复制一行，<code>yiw</code>复制一个单词，剪切：<code>x</code>，粘贴：<code>p</code></p>
-<p><code>.</code>表示重复之前的操作</p>
-<p><code>ctrl+o</code>：回跳到原位</p>
+<p><strong>重复之前的操作</strong>：<code>.</code></p>
 <p><strong>光标设置</strong></p>
 <ol>
-<li><code>m{a-z}</code> 文件内标记，文件内跳转</li>
+<li><code>m{a-z}</code> 文件内标记，文件内跳转，设置标记名为a到z中一个</li>
 <li><code>m{A-Z}</code> 标记文件，不同文件间跳转</li>
 </ol>
 <p><strong>光标跳转</strong></p>
@@ -819,7 +768,7 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">[number]&lt;command&gt;[text object]
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>number<span class="o">]</span>&lt;command&gt;<span class="o">[</span>text object<span class="o">]</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><ul>
@@ -828,42 +777,200 @@
 <li>text object文本对象，<code>w</code>单词，<code>s</code>句子，<code>p</code>段落</li>
 </ul>
 <p>可以用<code>a</code>或<code>i</code>加上字符`(, &lt;, {, [, &ldquo;, ``等选择包括中的内容</p>
-<h3 id="command模式">Command模式</h3>
-<p>查看文件二进制：<code>:%!xxd</code></p>
-<p>取消二进制显示——<code>:%!xxd -r</code></p>
-<p>显示行号：<code>:set nu</code></p>
-<p>全局替换：<code>:% s/被替换单词/替换为的单词/g</code></p>
-<p>替换命令：<code>:[range]s[ubstitute]/{pattern}/{string}/[flags]</code></p>
+<h3 id="command">Command</h3>
+<p><strong>显示行号</strong>：<code>:set nu</code></p>
+<p><strong>全局替换</strong>：<code>:% s/被替换单词/替换为的单词/g</code></p>
+<p><strong>替换命令</strong>：<code>:[range]s[ubstitute]/{pattern}/{string}/[flags]</code></p>
 <ul>
 <li>range：范围，<code>:10,20</code>表示10-20行，<code>%</code>表示全部</li>
 <li>pattern：要替换的模式，string替换后文本<code>/</code>为空</li>
 <li>flags：<code>g</code>全局，<code>c</code>确认（替换前会进行确认），<code>n</code>报告匹配到的次数而不替换</li>
 </ul>
-<p><code>Ctrl + P</code>：回到上一个命令</p>
+<p><strong>回到上一个命令</strong>：<code>: + Ctrl + P</code></p>
+<p><strong>显示当前文件名</strong>：<code>:r! echo %</code></p>
+<p><strong>显示当前全局路径</strong>：<code>:r! echo %:p</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">:%!xxd     <span class="c1"># 查看文件十六进制编码</span>
+</span></span><span class="line"><span class="cl">:%!xxd -r  <span class="c1"># 返回/取消</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>跳转到第n行</strong>：<code>:n</code></p>
 <p><strong>Buffer切换</strong></p>
-<p><code>:ls</code>列举当前缓冲区，<code>:b n</code>跳转到第n个缓冲区，<code>:bpre</code> <code>:bnext</code> <code>:bfirst</code> <code>:blast</code> <code>:b buffer_name</code>来切换，<code>:e file_name</code>打开新的文件进入缓冲区编辑</p>
+<ul>
+<li>
+<p><code>:ls</code>列举当前缓冲区</p>
+</li>
+<li>
+<p><code>:b n</code>跳转到第n个缓冲区</p>
+</li>
+<li>
+<p><code>:bpre</code> <code>:bnext</code> <code>:bfirst</code> <code>:blast</code> <code>:b buffer_name</code>来切换</p>
+</li>
+<li>
+<p><code>:e file_name</code>打开新的文件进入缓冲区编辑</p>
+</li>
+</ul>
 <p><strong>Window切换</strong></p>
-<p>左右分屏：<code>vs</code>或<code>ctrl + w + v</code>，上下分屏：<code>sp</code>或<code>ctrl + w + s</code></p>
+<p>左右分屏：<code>vs</code>或<code>ctrl + w + v</code></p>
+<p>上下分屏：<code>sp</code>或<code>ctrl + w + s</code></p>
 <p>切换窗口：<code>ctrl + w + w/h/j/k/l</code> 分别为 循环切换，左，下，上，右窗口</p>
 <p><strong>标签页tab</strong></p>
-<p><code>:tabe file_name</code>新标签页打开文件，<code>ctrl + w + T</code>当前窗口移到新标签页，<code>:tabc</code>关闭当前标签页及其中所有窗口，<code>:tabo</code>只保留活动标签页</p>
-<p><code>:tabn {N}</code>切到N标签页，<code>:tabn</code>切到下一标签页，<code>:tabp</code>切到上一标签页</p>
-<h3 id="visual模式">Visual模式</h3>
-<p>Normal模式<code>v</code>进入，<code>V</code>选择行，<code>ctrl+v</code>选择方块</p>
+<ul>
+<li>
+<p><code>:tabe file_name</code>新标签页打开文件</p>
+</li>
+<li>
+<p><code>ctrl + w + T</code>当前窗口移到新标签页</p>
+</li>
+<li>
+<p><code>:tabc</code>关闭当前标签页及其中所有窗口</p>
+</li>
+<li>
+<p><code>:tabo</code>只保留活动标签页</p>
+</li>
+<li>
+<p><code>:tabn {N}</code>切到N标签页</p>
+</li>
+<li>
+<p><code>:tabn</code>切到下一标签页</p>
+</li>
+<li>
+<p><code>:tabp</code>切到上一标签页</p>
+</li>
+</ul>
+<h3 id="visual">Visual</h3>
+<p>Normal模式按<code>v</code>进入，<code>V</code>选择行，<code>ctrl+v</code>选择方块</p>
 <p><code>viw</code>：选中当前单词，<code>vaw</code>：选中当前单词及后空格</p>
-<ol>
-<li>先按Esc 键，确认是在命令的状态下</li>
-<li>按V 键</li>
-<li>再按Shift + &lt; ，这是将代码往左<strong>移动</strong>的；Shift + &gt; 是将代码往右边<strong>移动</strong>的。</li>
-</ol>
-<h3 id="insert模式">Insert模式</h3>
-<p><code>ctrl+h</code>删除上一个字符，<code>ctrl+w</code>删除上一个单词，<code>ctrl+u</code>删除当前行光标前内容</p>
-<p><code>ctrl+[</code>切换为Normal模式，<code>gi</code>快速跳转到最后一次编辑的地方并进入Insert模式</p>
-<h2 id="配置">配置</h2>
-<p>bash的配置在<code>~/.bashrc</code>中</p>
-<p>git的配置在<code>~/.gitconfig</code>中</p>
-<p>vim的配置在<code>~/.vimrc</code>中</p>
-<h2 id="压缩">压缩</h2>
+<p><strong>代码左右移</strong>：<code>V &amp; Shift + &lt; &gt;</code></p>
+<h3 id="insert">Insert</h3>
+<p><strong>删除上一个字符</strong>：<code>ctrl+h</code></p>
+<p><strong>删除上一个单词</strong>：<code>ctrl+w</code></p>
+<p><strong>删除当前行光标前内容</strong>：<code>ctrl+u</code></p>
+<p><strong>跳转到最后一次编辑的地方并进入Insert模式</strong>：<code>gi</code></p>
+<p><strong>补全</strong>：<code>ctrl + n</code> 和 <code>ctrl + p</code>补全单词，<code>ctrl + n</code>和<code>ctrl + p</code>上下移动选择</p>
+<h2 id="makefile">Makefile</h2>
+<p><strong>格式</strong></p>
+<p><code>\</code>用于将一行分解为多行</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-makefile" data-lang="makefile"><span class="line"><span class="cl"><span class="c"># COMMAND 命令生成TARGET, 其依赖于DEPENDEDS, DEPENDEDS改变, TARGET也重新生成, 后续依赖项也可作为TARGET规则嵌套
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="nf">&lt;TARGET ...&gt;</span><span class="o">:</span> &lt;<span class="n">DEPENDEDS</span> ...&gt;
+</span></span><span class="line"><span class="cl">    COMMAND
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>模式规则</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-makefile" data-lang="makefile"><span class="line"><span class="cl"><span class="nf">&lt;targets ...&gt;</span><span class="o">:</span> &lt;<span class="n">target</span>-<span class="n">pattern</span>&gt;: &lt;<span class="n">prereq</span>-<span class="n">patterns</span> ...&gt;
+</span></span><span class="line"><span class="cl"><span class="c"># targets: 目标文件
+</span></span></span><span class="line"><span class="cl"><span class="c"># target-pattern: 目标集模式，%匹配任意文件名
+</span></span></span><span class="line"><span class="cl"><span class="c"># prereq-patterns: 依赖集模式
+</span></span></span><span class="line"><span class="cl"><span class="c"></span>
+</span></span><span class="line"><span class="cl"><span class="nf">$(OBJS)</span><span class="o">:</span>%.<span class="n">o</span>:%.<span class="n">c</span> <span class="c"># 通过命令将.c依赖均生成.o作为OBJS
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>自动变量</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Makefile" data-lang="Makefile"><span class="line"><span class="cl"><span class="k">$+</span>				<span class="c"># 所有依赖文件
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="k">$@</span>				<span class="c"># 目标文件名
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="k">$&lt;</span>				<span class="c"># 第一个依赖文件名
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="err">$^</span>				<span class="c"># 依赖项中所有不重复文件
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="k">$?</span>				<span class="c"># 依赖中所有被修改过的文件
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="k">$*</span>				<span class="c"># 目标文件名(不包含扩展名)
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="k">$(</span><span class="nv">object</span><span class="k">)</span>		<span class="c"># 使用object对应变量
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-makefile" data-lang="makefile"><span class="line"><span class="cl"><span class="k">$(</span><span class="nv">shell</span> <span class="nv">pwd</span><span class="k">)</span>	<span class="c"># 获取相对路径
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>预定义变量</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-makefile" data-lang="makefile"><span class="line"><span class="cl"><span class="err">CFLAGS</span>	<span class="c"># 编译选项
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="err">OBJS</span>	<span class="c"># 依赖文件
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="err">TARGET</span>	<span class="c"># 目标文件
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="err">CC</span>		<span class="c"># 编译器
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="err">RM</span>		<span class="c"># 删除
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="err">DIRS</span>	<span class="c"># 目录
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>伪目标</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Makefile" data-lang="Makefile"><span class="line"><span class="cl"><span class="nf">.PHONY</span><span class="o">:</span> <span class="n">all</span> <span class="n">clean</span> <span class="c"># 伪目标, 强制执行
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>清理</strong>：使用<code>make clean</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-makefile" data-lang="makefile"><span class="line"><span class="cl"><span class="nf">clean</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    @-rm <span class="k">$(</span>DIR_TARGET<span class="k">)</span>*
+</span></span><span class="line"><span class="cl">    <span class="c1"># @:不回显命令; -:忽略错误, 中断执行; *:目录下所有文件</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>函数</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-makefile" data-lang="makefile"><span class="line"><span class="cl"><span class="k">$(</span><span class="nv">wildcard</span> <span class="nv">pattern</span><span class="k">)</span>					<span class="c"># 返回满足pattern的文件列表
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="k">$(</span><span class="nv">patsubst</span> <span class="nv">pattern</span>, <span class="nv">replacement</span>, <span class="nv">text</span><span class="k">)</span>	<span class="c"># 将text字符串满足pattern的替换为replacement
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="k">$(</span><span class="nv">foreach</span> <span class="nv">var</span>, <span class="nv">list</span>, <span class="nv">text</span><span class="k">)</span>	<span class="c"># list中逐一取出到var, 执行text表达式
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="gdb">GDB</h2>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -873,11 +980,11 @@
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tar -zvcf a.tar.gz a <span class="c1"># 压缩</span>
-</span></span><span class="line"><span class="cl">tar -zvxf a.tar.gz  <span class="c1"># 解压</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">zip -r a.zip ./* <span class="c1"># 压缩</span>
-</span></span><span class="line"><span class="cl">unzip -d /xxx a.zip <span class="c1"># 解压</span>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">list <span class="m">1</span> <span class="c1"># 输出第1行开始的源代码</span>
+</span></span><span class="line"><span class="cl">display xx <span class="c1"># 每次运行输出xx的值</span>
+</span></span><span class="line"><span class="cl">whatis variable <span class="c1"># 查看变量类型</span>
+</span></span><span class="line"><span class="cl">ptype variable <span class="c1"># 查看变量类型结构</span>
+</span></span><span class="line"><span class="cl">bt <span class="c1"># 调用路径</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div>
@@ -1094,7 +1201,7 @@
         
             
         
-        共 159.79k 字 · 共 19篇文章
+        共 173.32k 字 · 共 19篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -1290,29 +1397,32 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ol>
-    <li><a href="#一些命令">一些命令</a></li>
-    <li><a href="#简单命令">简单命令</a></li>
-    <li><a href="#netstat">netstat</a></li>
-    <li><a href="#find">find</a></li>
-    <li><a href="#locate">locate</a></li>
-    <li><a href="#lsof">lsof</a></li>
-    <li><a href="#ssh">ssh</a></li>
-    <li><a href="#strace">strace</a></li>
-    <li><a href="#xargs">xargs</a></li>
-    <li><a href="#awk">awk</a></li>
-    <li><a href="#grep">grep</a></li>
-    <li><a href="#sed">sed</a></li>
+    <li><a href="#配置">配置</a></li>
+    <li><a href="#基础命令">基础命令</a></li>
+    <li><a href="#常用命令">常用命令</a></li>
+    <li><a href="#具体命令">具体命令</a>
+      <ol>
+        <li><a href="#netstat">netstat</a></li>
+        <li><a href="#find">find</a></li>
+        <li><a href="#lsof">lsof</a></li>
+        <li><a href="#ssh">ssh</a></li>
+        <li><a href="#strace">strace</a></li>
+        <li><a href="#awk">awk</a></li>
+        <li><a href="#grep">grep</a></li>
+        <li><a href="#sed">sed</a></li>
+      </ol>
+    </li>
     <li><a href="#shell">shell</a></li>
     <li><a href="#vim">vim</a>
       <ol>
-        <li><a href="#normal模式">Normal模式</a></li>
-        <li><a href="#command模式">Command模式</a></li>
-        <li><a href="#visual模式">Visual模式</a></li>
-        <li><a href="#insert模式">Insert模式</a></li>
+        <li><a href="#normal">Normal</a></li>
+        <li><a href="#command">Command</a></li>
+        <li><a href="#visual">Visual</a></li>
+        <li><a href="#insert">Insert</a></li>
       </ol>
     </li>
-    <li><a href="#配置">配置</a></li>
-    <li><a href="#压缩">压缩</a></li>
+    <li><a href="#makefile">Makefile</a></li>
+    <li><a href="#gdb">GDB</a></li>
   </ol>
 </nav>
         </div>

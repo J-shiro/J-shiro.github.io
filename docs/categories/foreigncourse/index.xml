@@ -7,12 +7,12 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <lastBuildDate>Sun, 12 Mar 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://J-shiro.github.io/categories/foreigncourse/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>PwnCollege_Note9</title>
-        <link>https://J-shiro.github.io/p/pwncollege_note9/</link>
+        <title>Debugging Refresher</title>
+        <link>https://J-shiro.github.io/p/debugging-refresher/</link>
         <pubDate>Sun, 12 Mar 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/p/pwncollege_note9/</guid>
-        <description>&lt;img src="https://J-shiro.github.io/p/pwncollege_note9/pwncollege.png" alt="Featured image of post PwnCollege_Note9" /&gt;&lt;h1 id=&#34;debugging-refresher&#34;&gt;Debugging Refresher&lt;/h1&gt;
+        <guid>https://J-shiro.github.io/p/debugging-refresher/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/p/debugging-refresher/pwncollege.png" alt="Featured image of post Debugging Refresher" /&gt;&lt;h1 id=&#34;debugging-refresher&#34;&gt;Debugging Refresher&lt;/h1&gt;
 &lt;p&gt;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;&lt;strong&gt;ASU CSE 365&lt;/strong&gt;: System Security&lt;/p&gt;
 &lt;h2 id=&#34;gdb-walkthrough&#34;&gt;GDB Walkthrough&lt;/h2&gt;
 &lt;h2 id=&#34;embryogdb&#34;&gt;embryogdb&lt;/h2&gt;
@@ -170,10 +170,10 @@
 &lt;/blockquote&gt;
 &lt;p&gt;For example, &lt;code&gt;x/8i $rip&lt;/code&gt; will print the next 8 instructions from the current instruction pointer. &lt;code&gt;x/16i main&lt;/code&gt; will print the first 16 instructions of main. You can also use &lt;code&gt;disassemble main&lt;/code&gt;, or &lt;code&gt;disas main&lt;/code&gt; for short, to print all of the instructions of main. Alternatively, &lt;code&gt;x/16gx $rsp&lt;/code&gt; will print the first 16 values on the stack.&lt;code&gt;x/gx $rbp-0x32&lt;/code&gt; will print the local variable stored there on the stack.&lt;/p&gt;
 &lt;p&gt;You will probably want to view your instructions using the CORRECT assembly syntax. You can do that with the command &lt;code&gt;set disassembly-flavor intel&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/p/pwncollege_note9/index.assets/image-20230312223322758.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/p/debugging-refresher/index.assets/image-20230312223322758.png&#34;
 	width=&#34;584&#34;
 	height=&#34;390&#34;
-	srcset=&#34;https://J-shiro.github.io/p/pwncollege_note9/index.assets/image-20230312223322758_hu544900eba48d58c8015d0a744c7eb239_36781_480x0_resize_box_3.png 480w, https://J-shiro.github.io/p/pwncollege_note9/index.assets/image-20230312223322758_hu544900eba48d58c8015d0a744c7eb239_36781_1024x0_resize_box_3.png 1024w&#34;
+	srcset=&#34;https://J-shiro.github.io/p/debugging-refresher/index.assets/image-20230312223322758_hu544900eba48d58c8015d0a744c7eb239_36781_480x0_resize_box_3.png 480w, https://J-shiro.github.io/p/debugging-refresher/index.assets/image-20230312223322758_hu544900eba48d58c8015d0a744c7eb239_36781_1024x0_resize_box_3.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -396,10 +396,10 @@
 &lt;ul&gt;
 &lt;li&gt;In this level we should look carefully at the logic of this program. First we can use &lt;code&gt;display/8i $rip&lt;/code&gt; to find out how the program works:&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/p/pwncollege_note9/index.assets/image-20230319190108201.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/p/debugging-refresher/index.assets/image-20230319190108201.png&#34;
 	width=&#34;617&#34;
 	height=&#34;106&#34;
-	srcset=&#34;https://J-shiro.github.io/p/pwncollege_note9/index.assets/image-20230319190108201_hufcf98f5283a8d6ac4157aec51fd4d05a_12905_480x0_resize_box_3.png 480w, https://J-shiro.github.io/p/pwncollege_note9/index.assets/image-20230319190108201_hufcf98f5283a8d6ac4157aec51fd4d05a_12905_1024x0_resize_box_3.png 1024w&#34;
+	srcset=&#34;https://J-shiro.github.io/p/debugging-refresher/index.assets/image-20230319190108201_hufcf98f5283a8d6ac4157aec51fd4d05a_12905_480x0_resize_box_3.png 480w, https://J-shiro.github.io/p/debugging-refresher/index.assets/image-20230319190108201_hufcf98f5283a8d6ac4157aec51fd4d05a_12905_1024x0_resize_box_3.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20230319190108201&#34;
@@ -549,17 +549,6 @@ harder to get this flag!&lt;/p&gt;
 &lt;/div&gt;&lt;p&gt;&lt;strong&gt;NOTE: This level refers to this &lt;a class=&#34;link&#34; href=&#34;https://www.twitch.tv/videos/1753535070&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;video&lt;/a&gt; and we can find it at &lt;a class=&#34;link&#34; href=&#34;https://discord.com/channels/750635557666816031/888220401933631489/1081331559635886100&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;there&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
-</description>
-        </item>
-        <item>
-        <title>PwnCollege_Note8</title>
-        <link>https://J-shiro.github.io/p/pwncollege_note8/</link>
-        <pubDate>Fri, 10 Mar 2023 00:00:00 +0000</pubDate>
-        
-        <guid>https://J-shiro.github.io/p/pwncollege_note8/</guid>
-        <description>&lt;img src="https://J-shiro.github.io/p/pwncollege_note8/pwncollege.png" alt="Featured image of post PwnCollege_Note8" /&gt;&lt;h1 id=&#34;program-interaction&#34;&gt;Program Interaction&lt;/h1&gt;
-&lt;p&gt;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;&lt;strong&gt;ASU CSE 365&lt;/strong&gt;: System Security&lt;/p&gt;
-&lt;h2 id=&#34;embryoio&#34;&gt;embryoio&lt;/h2&gt;
 </description>
         </item>
         <item>
@@ -2039,12 +2028,12 @@ actual functionality of your code begins. When control flow hits any of these in
 </description>
         </item>
         <item>
-        <title>PwnCollege_Note5</title>
-        <link>https://J-shiro.github.io/p/pwncollege_note5/</link>
+        <title>Intercepting Communication</title>
+        <link>https://J-shiro.github.io/p/intercepting-communication/</link>
         <pubDate>Fri, 10 Feb 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/p/pwncollege_note5/</guid>
-        <description>&lt;img src="https://J-shiro.github.io/p/pwncollege_note5/pwncollege.png" alt="Featured image of post PwnCollege_Note5" /&gt;&lt;h1 id=&#34;intercepting-communication&#34;&gt;Intercepting Communication&lt;/h1&gt;
+        <guid>https://J-shiro.github.io/p/intercepting-communication/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/p/intercepting-communication/pwncollege.png" alt="Featured image of post Intercepting Communication" /&gt;&lt;h1 id=&#34;intercepting-communication&#34;&gt;Intercepting Communication&lt;/h1&gt;
 &lt;p&gt;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;&lt;strong&gt;ASU CSE 365&lt;/strong&gt;: Introduction to Cybersecurity&lt;/p&gt;
 &lt;h2 id=&#34;intercepting-communication-introduction&#34;&gt;Intercepting Communication: Introduction&lt;/h2&gt;
 &lt;p&gt;①network communication&lt;/p&gt;
@@ -2883,12 +2872,12 @@ actual functionality of your code begins. When control flow hits any of these in
 &lt;/div&gt;</description>
         </item>
         <item>
-        <title>PwnCollege_Note4</title>
-        <link>https://J-shiro.github.io/p/pwncollege_note4/</link>
+        <title>Building a Web Server</title>
+        <link>https://J-shiro.github.io/p/building-a-web-server/</link>
         <pubDate>Thu, 22 Dec 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/p/pwncollege_note4/</guid>
-        <description>&lt;img src="https://J-shiro.github.io/p/pwncollege_note4/pwncollege.png" alt="Featured image of post PwnCollege_Note4" /&gt;&lt;h1 id=&#34;building-a-web-server&#34;&gt;Building a Web Server&lt;/h1&gt;
+        <guid>https://J-shiro.github.io/p/building-a-web-server/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/p/building-a-web-server/pwncollege.png" alt="Featured image of post Building a Web Server" /&gt;&lt;h1 id=&#34;building-a-web-server&#34;&gt;Building a Web Server&lt;/h1&gt;
 &lt;p&gt;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;&lt;strong&gt;ASU CSE 365&lt;/strong&gt;: Introduction to Cybersecurity&lt;/p&gt;
 &lt;h2 id=&#34;building-a-web-server-introduction&#34;&gt;Building a Web Server: Introduction&lt;/h2&gt;
 &lt;p&gt;①Computation&lt;/p&gt;
@@ -7304,12 +7293,12 @@ jmp 0x40337c&lt;/p&gt;
 &lt;/div&gt;</description>
         </item>
         <item>
-        <title>PwnCollege_Note2</title>
-        <link>https://J-shiro.github.io/p/pwncollege_note2/</link>
+        <title>Talking Web</title>
+        <link>https://J-shiro.github.io/p/talking-web/</link>
         <pubDate>Thu, 17 Nov 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/p/pwncollege_note2/</guid>
-        <description>&lt;img src="https://J-shiro.github.io/p/pwncollege_note2/pwncollege.png" alt="Featured image of post PwnCollege_Note2" /&gt;&lt;h1 id=&#34;talking-web&#34;&gt;Talking Web&lt;/h1&gt;
+        <guid>https://J-shiro.github.io/p/talking-web/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/p/talking-web/pwncollege.png" alt="Featured image of post Talking Web" /&gt;&lt;h1 id=&#34;talking-web&#34;&gt;Talking Web&lt;/h1&gt;
 &lt;p&gt;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;&lt;strong&gt;ASU CSE 365&lt;/strong&gt;: Introduction to Cybersecurity&lt;/p&gt;
 &lt;h2 id=&#34;talking-web-introduction&#34;&gt;Talking Web: Introduction&lt;/h2&gt;
 &lt;p&gt;static http request:&lt;/p&gt;
@@ -8025,12 +8014,12 @@ jmp 0x40337c&lt;/p&gt;
 &lt;/div&gt;</description>
         </item>
         <item>
-        <title>PwnCollege_Note1</title>
-        <link>https://J-shiro.github.io/p/pwncollege_note1/</link>
+        <title>Program Misuse</title>
+        <link>https://J-shiro.github.io/p/program-misuse/</link>
         <pubDate>Sat, 29 Oct 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/p/pwncollege_note1/</guid>
-        <description>&lt;img src="https://J-shiro.github.io/p/pwncollege_note1/pwncollege.png" alt="Featured image of post PwnCollege_Note1" /&gt;&lt;h1 id=&#34;program-misuse&#34;&gt;Program Misuse&lt;/h1&gt;
+        <guid>https://J-shiro.github.io/p/program-misuse/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/p/program-misuse/pwncollege.png" alt="Featured image of post Program Misuse" /&gt;&lt;h1 id=&#34;program-misuse&#34;&gt;Program Misuse&lt;/h1&gt;
 &lt;p&gt;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;&lt;strong&gt;ASU CSE 365&lt;/strong&gt;: Introduction to Cybersecurity&lt;/p&gt;
 &lt;h2 id=&#34;program-interactionlinux-command-line&#34;&gt;Program Interaction:Linux Command Line&lt;/h2&gt;
 &lt;p&gt;①	&lt;strong&gt;Learning the command line&lt;/strong&gt;&lt;/p&gt;

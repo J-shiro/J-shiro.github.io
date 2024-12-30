@@ -15,9 +15,11 @@ categories:
 typora-root-url: ..\..\..\..\..\static
 ---
 
-## 结构
+## Heap
 
-### malloc_par
+### 结构
+
+#### malloc_par
 
 `malloc.c`中，记录堆管理器的相关参数
 
@@ -76,7 +78,7 @@ static struct malloc_par mp_ =
 };
 ```
 
-### heap_info
+#### heap_info
 
 - **位于堆块的开头**，记录通过mmap从Memory Mapping Segment处申请到的内存块信息，`arena.c`中
 - 为**非主线程**分配内存使用，因为主分配区可以直接使用sbrk扩展，只有一个堆，非主线程的堆是提前分配好的，当该资源用完时需要重新申请内存空间，不连续所以需要记录不同的堆的链接结构
@@ -93,11 +95,11 @@ typedef struct _heap_info
 } heap_info;
 ```
 
-## malloc
+### malloc
 
-### 2.23
+#### 2.23
 
-#### 宏
+##### 宏
 
 ```c
 SIZE_SZ				// sizeof( size_t ) 1字节大小
@@ -106,7 +108,7 @@ MINSIZE 			// ( MIN_CHUNK_SIZE + MALLOC_ALIGN_MASK ) & ~MALLOC_ALIGN_MASK 向下
 MIN_CHUNK_SIZE 		// offsetof( struct malloc_chunk, fd_nextsize ) 0x20字节
 ```
 
-#### __libc_malloc
+##### __libc_malloc
 
 ```c
 void *__libc_malloc (size_t bytes)
@@ -140,7 +142,7 @@ void *__libc_malloc (size_t bytes)
 }
 ```
 
-#### _int_malloc
+##### _int_malloc
 
 **CAS**：从内存位置读取值与期望值比较，相等则更新，不相等则失败重新尝试
 
@@ -577,7 +579,7 @@ static void *_int_malloc (mstate av, size_t bytes)
 } 
 ```
 
-#### checked_request2size
+##### checked_request2size
 
 ```c
 // 可用于prev_size复用
@@ -598,7 +600,7 @@ MINSIZE : ((req) + SIZE_SZ + MALLOC_ALIGN_MASK) & ~MALLOC_ALIGN_MASK)
 
 <img src="/img/source_analyze.zh-cn.assets/image-20241119131202911.png" alt="image-20241119131202911" style="zoom:80%;" />
 
-#### get_max_fast
+##### get_max_fast
 
 ```c
 #define get_max_fast() global_max_fast
@@ -611,28 +613,28 @@ set_max_fast(DEFAULT_MXFAST); // malloc_init_state函数中
 #define DEFAULT_MXFAST (64 * SIZE_SZ / 4) // 64*8/4=128=0x80
 ```
 
-#### fastbin_index
+##### fastbin_index
 
 ```c
 #define fastbin_index(sz) ((((unsigned int)(sz)) >> (SIZE_SZ == 8 ? 4 : 3)) - 2)
 // 64位下 申请size右移4位再减2，最小的size为0x20，则0x20/16-2=0索引
 ```
 
-#### chunk_size
+##### chunk_size
 
 ```c
 #define chunksize(p) ((p)->size & ~(SIZE_BITS)) // 去除3个标志位后得到chunk的size
 #define SIZE_BITS (PREV_INUSE | IS_MMAPPED | NON_MAIN_ARENA)
 ```
 
-#### chunk2mem
+##### chunk2mem
 
 ```c
 #define chunk2mem(p) ((void *)((char *)(p) + 2 * SIZE_SZ))
 // 将指向 prev_size 的指针偏移2个机器字长后指向 fd
 ```
 
-#### in_smallbin_range
+##### in_smallbin_range
 
 ```c
 #define in_smallbin_range(sz) ((unsigned long)(sz) < (unsigned long)MIN_LARGE_SIZE)
@@ -645,7 +647,7 @@ set_max_fast(DEFAULT_MXFAST); // malloc_init_state函数中
 #define MALLOC_ALIGNMENT (2 * SIZE_SZ)
 ```
 
-#### malloc_consolidate
+##### malloc_consolidate
 
 遍历fastbin，合并并放入unsorted bin中
 
@@ -748,7 +750,7 @@ static void malloc_consolidate(mstate av)
 }
 ```
 
-#### malloc_init_state
+##### malloc_init_state
 
 ```c
 static void malloc_init_state(mstate av)
@@ -774,7 +776,7 @@ static void malloc_init_state(mstate av)
 }
 ```
 
-#### unlink
+##### unlink
 
 ```c
 #define unlink(AV, P, BK, FD)
@@ -820,9 +822,21 @@ static void malloc_init_state(mstate av)
   }
 ```
 
-### 2.27
+##### alloc_perturb
 
-#### __libc_malloc
+```c
+static void alloc_perturb(char *p, size_t n)
+{
+  if (__glibc_unlikely(perturb_byte)) // 若perturb_byte不为0
+    memset(p, perturb_byte ^ 0xff, n); // 设置内存为该值的最低1字节，可能导致程序崩溃
+}
+```
+
+
+
+#### 2.27
+
+##### __libc_malloc
 
 主要讲解变化
 
@@ -869,7 +883,7 @@ void *__libc_malloc(size_t bytes)
 }
 ```
 
-#### _int_malloc
+##### _int_malloc
 
 ```c
 // 增加 fastbin中
@@ -918,7 +932,7 @@ void *__libc_malloc(size_t bytes)
 #endif
 ```
 
-#### REMOVE_FB
+##### REMOVE_FB
 
 ```c
 #define REMOVE_FB(fb, victim, pp) // 封装成一个宏,CAS操作
@@ -934,7 +948,7 @@ void *__libc_malloc(size_t bytes)
 
 
 
-#### tcache_init
+##### tcache_init
 
 ```c
 static void tcache_init(void)
@@ -965,7 +979,7 @@ static void tcache_init(void)
 }
 ```
 
-#### tcache_get
+##### tcache_get
 
 ```c
 static __always_inline void *tcache_get(size_t tc_idx)
@@ -979,7 +993,7 @@ static __always_inline void *tcache_get(size_t tc_idx)
 }
 ```
 
-#### tcache_put
+##### tcache_put
 
 ```c
 static __always_inline void tcache_put(mchunkptr chunk, size_t tc_idx)
@@ -992,7 +1006,7 @@ static __always_inline void tcache_put(mchunkptr chunk, size_t tc_idx)
 }
 ```
 
-#### unlink
+##### unlink
 
 ```c
 #define unlink(AV, P, BK, FD) {
@@ -1003,11 +1017,11 @@ static __always_inline void tcache_put(mchunkptr chunk, size_t tc_idx)
 
 
 
-## sysmalloc
+### sysmalloc
 
-### 2.23
+#### 2.23
 
-#### sysmalloc
+##### sysmalloc
 
 ```c
 static void *sysmalloc(INTERNAL_SIZE_T nb, mstate av) // 需要申请的大小need_bytes + mainarena
@@ -1326,14 +1340,14 @@ static void *sysmalloc(INTERNAL_SIZE_T nb, mstate av) // 需要申请的大小ne
 }
 ```
 
-#### MMAP
+##### MMAP
 
 ```c
 #define MMAP(addr, size, prot, flags)
 	__mmap((addr), (size), (prot), (flags) | MAP_ANONYMOUS | MAP_PRIVATE, -1, 0)
 ```
 
-#### initial_top
+##### initial_top
 
 ```c
 // 为方便，unsorted bin在第一次调用时可作为虚假的top chunk
@@ -1341,7 +1355,7 @@ static void *sysmalloc(INTERNAL_SIZE_T nb, mstate av) // 需要申请的大小ne
 #define unsorted_chunks(M) (bin_at(M, 1))
 ```
 
-#### heap_for_ptr
+##### heap_for_ptr
 
 ```c
 #define heap_for_ptr(ptr) 
@@ -1353,7 +1367,7 @@ static void *sysmalloc(INTERNAL_SIZE_T nb, mstate av) // 需要申请的大小ne
 #  define HEAP_MAX_SIZE (1024 * 1024) /* 0x100000，必须是2的幂 */
 ```
 
-#### grow_heap
+##### grow_heap
 
 ```c
 static int grow_heap (heap_info *h, long diff) // diff为差的size
@@ -1384,7 +1398,7 @@ static int grow_heap (heap_info *h, long diff) // diff为差的size
 }
 ```
 
-#### new_heap
+##### new_heap
 
 ```c
 static heap_info *internal_function new_heap (size_t size, size_t top_pad)
@@ -1458,7 +1472,7 @@ static heap_info *internal_function new_heap (size_t size, size_t top_pad)
 }
 ```
 
-#### MORECORE
+##### MORECORE
 
 ```c
 #define MORECORE (*__morecore)
@@ -1521,11 +1535,11 @@ int __brk (void *addr) // 目标堆顶地址
 
 
 
-## free
+### free
 
-### 2.23
+#### 2.23
 
-#### __libc_free
+##### __libc_free
 
 ```c
 void __libc_free(void *mem)
@@ -1568,7 +1582,7 @@ void __libc_free(void *mem)
 }
 ```
 
-#### _int_free
+##### _int_free
 
 ```c
 static void _int_free(mstate av, mchunkptr p, int have_lock)
@@ -1671,7 +1685,7 @@ static void _int_free(mstate av, mchunkptr p, int have_lock)
 
     nextchunk = chunk_at_offset(p, size); // 找到其下一个chunk
 
-    if (__glibc_unlikely(p == av->top)) // 检查不是释放top chunk
+    if (__glibc_unlikely(p == av->top)) // 检查是不是释放top chunk
     {
       errstr = "double free or corruption (top)";
       goto errout;
@@ -1780,7 +1794,7 @@ static void _int_free(mstate av, mchunkptr p, int have_lock)
 }
 ```
 
-#### munmap_chunk
+##### munmap_chunk
 
 ```c
 static void internal_function munmap_chunk(mchunkptr p)
@@ -1804,7 +1818,7 @@ static void internal_function munmap_chunk(mchunkptr p)
 }
 ```
 
-#### arena_for_chunk
+##### arena_for_chunk
 
 ```c
 #define arena_for_chunk(ptr)
@@ -1817,7 +1831,7 @@ static void internal_function munmap_chunk(mchunkptr p)
   ((heap_info *) ((unsigned long) (ptr) & ~(HEAP_MAX_SIZE - 1))) // 对ptr对齐找arena
 ```
 
-#### systrim
+##### systrim
 
 ```c
 static int
@@ -1870,7 +1884,7 @@ systrim(size_t pad, mstate av)
 }
 ```
 
-#### heap_trim
+##### heap_trim
 
 ```c
 static int internal_function heap_trim (heap_info *heap, size_t pad)
@@ -1948,7 +1962,7 @@ static int internal_function heap_trim (heap_info *heap, size_t pad)
 }
 ```
 
-#### shrink_heap
+##### shrink_heap
 
 ```c
 static int shrink_heap (heap_info *h, long diff)
@@ -1975,16 +1989,16 @@ static int shrink_heap (heap_info *h, long diff)
 }
 ```
 
-### 2.27
+#### 2.27
 
-#### __libc_free
+##### __libc_free
 
 ```c
 // 增加
 MAYBE_INIT_TCACHE(); // tcache初始化
 ```
 
-#### MAYBE_INIT_TCACHE
+##### MAYBE_INIT_TCACHE
 
 ```c
 # define MAYBE_INIT_TCACHE()
@@ -2021,7 +2035,7 @@ static void tcache_init(void)
 }
 ```
 
-#### _int_free
+##### _int_free
 
 ```c
 // 增加
@@ -2038,7 +2052,7 @@ static void tcache_init(void)
 #endif
 ```
 
-#### tcache_put
+##### tcache_put
 
 ```c
 static __always_inline void tcache_put (mchunkptr chunk, size_t tc_idx)
@@ -2051,9 +2065,9 @@ static __always_inline void tcache_put (mchunkptr chunk, size_t tc_idx)
 }
 ```
 
-### 2.31
+#### 2.31
 
-#### _int_free
+##### _int_free
 
 ```c
 // 增加
@@ -2085,11 +2099,11 @@ static __always_inline void tcache_put (mchunkptr chunk, size_t tc_idx)
 
 
 
-## calloc
+### calloc
 
-### 2.23
+#### 2.23
 
-#### __libc_calloc
+##### __libc_calloc
 
 分配一块内存并初始化为零，calloc申请内存不会从tcache中获取，而是直接从堆块中获取
 
@@ -2228,11 +2242,11 @@ void *__libc_calloc(size_t n, size_t elem_size) // n项，每一项大小为elem
 
 
 
-## realloc
+### realloc
 
-### 2.23
+#### 2.23
 
-#### __libc_realloc
+##### __libc_realloc
 
 ```c
 void *__libc_realloc(void *oldmem, size_t bytes)
@@ -2320,7 +2334,7 @@ void *__libc_realloc(void *oldmem, size_t bytes)
 }
 ```
 
-#### int_realloc
+##### int_realloc
 
 用于重新分配内存块，尝试更改内存块大小
 
@@ -2466,7 +2480,7 @@ void * _int_realloc(mstate av, mchunkptr oldp, INTERNAL_SIZE_T oldsize, INTERNAL
 }
 ```
 
-#### mremap_chunk
+##### mremap_chunk
 
 调整mmap分配的内存块大小
 
@@ -2505,4 +2519,1088 @@ static mchunkptr internal_function mremap_chunk(mchunkptr p, size_t new_size)
 ```
 
 ## IO_FILE
+
+### 结构
+
+#### _IO_list_all
+
+```c
+// 指向_IO_FILE单链表的链表头
+extern struct _IO_FILE_plus *_IO_list_all;
+```
+
+#### _IO_FILE_plus
+
+```c
+struct _IO_FILE_plus
+{
+  _IO_FILE file;
+  // vtable: 实现文件流操作的虚函数表,包含一组函数指针,指向实现各种IO操作的函数
+  const struct _IO_jump_t *vtable;
+};
+```
+
+#### _IO_FILE
+
+```c
+struct _IO_FILE
+{
+  int _flags;		/* High-order word is _IO_MAGIC; rest is flags. */
+
+  /* The following pointers correspond to the C++ streambuf protocol. */
+  char *_IO_read_ptr;	/* 指针指向当前读到的位置 */
+  char *_IO_read_end;	/* get area的结束，系统读取数据的结尾 */
+  char *_IO_read_base;	/* putback+get area的开始，系统读取数据的开头 */
+  char *_IO_write_base;	/* IO文件缓冲区开头 */
+  char *_IO_write_ptr;	/* 指针指向当前写到的位置 */
+  char *_IO_write_end;	/* IO文件缓冲区结尾 */
+  char *_IO_buf_base;	/* buf缓冲区的开始 */
+  char *_IO_buf_end;	/* buf缓冲区的结束 */
+
+  /* The following fields are used to support backing up and undo. */
+  char *_IO_save_base; /* Pointer to start of non-current get area. */
+  char *_IO_backup_base;  /* Pointer to first valid character of backup area */
+  char *_IO_save_end; /* Pointer to end of non-current get area. */
+
+  struct _IO_marker *_markers;
+
+  struct _IO_FILE *_chain; // 指向下一个_IO_FILE结构体
+
+  int _fileno;
+  int _flags2;
+  __off_t _old_offset;
+  unsigned short _cur_column;
+  signed char _vtable_offset;
+  char _shortbuf[1];
+
+  _IO_lock_t *_lock;
+#ifdef _IO_USE_OLD_IO_FILE
+};
+
+struct _IO_FILE_complete
+{
+  struct _IO_FILE _file;
+#endif
+  __off64_t _offset;
+
+  struct _IO_codecvt *_codecvt;
+  struct _IO_wide_data *_wide_data;
+  struct _IO_FILE *_freeres_list;
+  void *_freeres_buf;
+  size_t __pad5;
+  int _mode;
+  char _unused2[15 * sizeof (int) - 4 * sizeof (void *) - sizeof (size_t)];
+};
+```
+
+**偏移**
+
+```c
+0x0:'_flags',
+0x8:'_IO_read_ptr',
+0x10:'_IO_read_end',
+0x18:'_IO_read_base',
+0x20:'_IO_write_base',
+0x28:'_IO_write_ptr',
+0x30:'_IO_write_end',
+0x38:'_IO_buf_base',
+0x40:'_IO_buf_end',
+0x48:'_IO_save_base',
+0x50:'_IO_backup_base',
+0x58:'_IO_save_end',
+0x60:'_markers',
+0x68:'_chain',
+0x70:'_fileno',
+0x74:'_flags2',
+0x78:'_old_offset',
+0x80:'_cur_column',
+0x82:'_vtable_offset',
+0x83:'_shortbuf',
+0x88:'_lock',
+0x90:'_offset',
+0x98:'_codecvt',
+0xa0:'_wide_data',
+0xa8:'_freeres_list',
+0xb0:'_freeres_buf',
+0xb8:'__pad5',
+0xc0:'_mode',
+0xc4:'_unused2',
+0xd8:'vtable'
+```
+
+#### _IO_jump_t
+
+```c
+struct _IO_jump_t
+{
+    JUMP_FIELD(size_t, __dummy);
+    JUMP_FIELD(size_t, __dummy2);
+    JUMP_FIELD(_IO_finish_t, __finish);
+    JUMP_FIELD(_IO_overflow_t, __overflow);
+    JUMP_FIELD(_IO_underflow_t, __underflow);
+    JUMP_FIELD(_IO_underflow_t, __uflow);
+    JUMP_FIELD(_IO_pbackfail_t, __pbackfail);
+    JUMP_FIELD(_IO_xsputn_t, __xsputn);
+    JUMP_FIELD(_IO_xsgetn_t, __xsgetn);
+    JUMP_FIELD(_IO_seekoff_t, __seekoff);
+    JUMP_FIELD(_IO_seekpos_t, __seekpos);
+    JUMP_FIELD(_IO_setbuf_t, __setbuf);
+    JUMP_FIELD(_IO_sync_t, __sync);
+    JUMP_FIELD(_IO_doallocate_t, __doallocate);
+    JUMP_FIELD(_IO_read_t, __read);
+    JUMP_FIELD(_IO_write_t, __write);
+    JUMP_FIELD(_IO_seek_t, __seek);
+    JUMP_FIELD(_IO_close_t, __close);
+    JUMP_FIELD(_IO_stat_t, __stat);
+    JUMP_FIELD(_IO_showmanyc_t, __showmanyc);
+    JUMP_FIELD(_IO_imbue_t, __imbue);
+#if 0
+    get_column;
+    set_column;
+#endif
+};
+```
+
+#### STD
+
+- 初始情况`_IO_list_all`指向`_IO_2_1_stdin_`，`_IO_2_1_stdout_`，`_IO_2_1_stderr_`三个`_IO_FILE`结构体，开在libc的数据段上
+
+```c
+// stdfiles.c
+DEF_STDFILE(_IO_2_1_stdin_, 0, 0, _IO_NO_WRITES);
+DEF_STDFILE(_IO_2_1_stdout_, 1, &_IO_2_1_stdin_, _IO_NO_READS);
+DEF_STDFILE(_IO_2_1_stderr_, 2, &_IO_2_1_stdout_, _IO_NO_READS+_IO_UNBUFFERED);
+
+struct _IO_FILE_plus *_IO_list_all = &_IO_2_1_stderr_;
+libc_hidden_data_def (_IO_list_all)
+```
+
+```c
+// stdio.c
+// 三个全局指针指向三个结构体
+_IO_FILE *stdin = (FILE *) &_IO_2_1_stdin_;
+_IO_FILE *stdout = (FILE *) &_IO_2_1_stdout_;
+_IO_FILE *stderr = (FILE *) &_IO_2_1_stderr_;
+```
+
+![image-20241206005717674](/img/source_analyze.zh-cn.assets/image-20241206005717674.png)
+
+#### DEF_STDFILE
+
+```c
+// stdfiles.c
+# define DEF_STDFILE(NAME, FD, CHAIN, FLAGS) // 文件流对象名、文件描述符、文件链、标志[只读只写]
+// 锁，保护文件流的并发访问
+ static _IO_lock_t _IO_stdfile_##FD##_lock = _IO_lock_initializer; 
+// 宽字符数据结构
+ static struct _IO_wide_data _IO_wide_data_##FD = { ._wide_vtable = &_IO_wfile_jumps }; 
+// 文件流结构体
+ struct _IO_FILE_plus NAME = {FILEBUF_LITERAL(CHAIN, FLAGS, FD, &_IO_wide_data_##FD), &_IO_file_jumps};
+```
+
+#### _IO_link_in
+
+```c
+// 有文件读写操作，为对应文件创建_IO_FILE结构体，头插法链接到_IO_list_all链表上
+void _IO_link_in (struct _IO_FILE_plus *fp)
+{
+  // _IO_LINKED 标志未被设置, 执行插入操作
+  if ((fp->file._flags & _IO_LINKED) == 0)
+    {
+      // 设置标志位
+      fp->file._flags |= _IO_LINKED;
+#ifdef _IO_MTSAFE_IO
+      // 线程安全操作
+      _IO_cleanup_region_start_noarg (flush_cleanup);
+      _IO_lock_lock (list_all_lock);
+      run_fp = (_IO_FILE *) fp;
+      _IO_flockfile ((_IO_FILE *) fp);
+#endif
+      // 链接到开头
+      fp->file._chain = (_IO_FILE *) _IO_list_all;
+      _IO_list_all = fp;
+#ifdef _IO_MTSAFE_IO
+      // 线程安全操作
+      _IO_funlockfile ((_IO_FILE *) fp);
+      run_fp = NULL;
+      _IO_lock_unlock (list_all_lock);
+      _IO_cleanup_region_end (0);
+#endif
+    }
+}
+libc_hidden_def (_IO_link_in)
+```
+
+
+
+### fopen
+
+#### fopen
+
+```c
+# define fopen(fname, mode) _IO_new_fopen (fname, mode)
+```
+
+#### _IO_new_fopen
+
+```c
+FILE *_IO_new_fopen (const char *filename, const char *mode)
+{
+  return __fopen_internal (filename, mode, 1);
+}
+```
+
+#### __fopen_internal
+
+```c
+FILE *__fopen_internal (const char *filename, const char *mode, int is32)
+{
+  struct locked_FILE
+  {
+    struct _IO_FILE_plus fp;
+    // 若定义了 _IO_MTSAFE_IO 宏，结构体将包含 lock 成员，
+    // 实现条件性编译，针对是否支持多线程安全生成不同的结构体布局
+#ifdef _IO_MTSAFE_IO
+    _IO_lock_t lock;
+#endif
+    struct _IO_wide_data wd;
+  } *new_f = (struct locked_FILE *) malloc (sizeof (struct locked_FILE));
+    // malloc创建locked_FILE结构体
+
+  if (new_f == NULL)
+    return NULL;
+#ifdef _IO_MTSAFE_IO
+  // 初始化多线程锁
+  new_f->fp.file._lock = &new_f->lock;
+#endif
+  // NULL初始化
+  _IO_no_init (&new_f->fp.file, 0, 0, &new_f->wd, &_IO_wfile_jumps);
+  // 设置vtable
+  _IO_JUMPS (&new_f->fp) = &_IO_file_jumps;
+  // 将结构体插入链表中
+  _IO_new_file_init_internal (&new_f->fp);
+  // 执行系统调用打开文件
+  if (_IO_file_fopen ((FILE *) new_f, filename, mode, is32) != NULL)
+    return __fopen_maybe_mmap (&new_f->fp.file);
+
+  _IO_un_link (&new_f->fp);
+  free (new_f);
+  return NULL;
+}
+```
+
+#### _IO_no_init
+
+```c
+// 初始化操作
+void _IO_no_init (FILE *fp, int flags, int orientation,
+	     struct _IO_wide_data *wd, const struct _IO_jump_t *jmp)
+{
+  _IO_old_init (fp, flags);
+  fp->_mode = orientation;
+  if (orientation >= 0)
+    {
+      fp->_wide_data = wd;
+      fp->_wide_data->_IO_buf_base = NULL;
+      fp->_wide_data->_IO_buf_end = NULL;
+      fp->_wide_data->_IO_read_base = NULL;
+      fp->_wide_data->_IO_read_ptr = NULL;
+      fp->_wide_data->_IO_read_end = NULL;
+      fp->_wide_data->_IO_write_base = NULL;
+      fp->_wide_data->_IO_write_ptr = NULL;
+      fp->_wide_data->_IO_write_end = NULL;
+      fp->_wide_data->_IO_save_base = NULL;
+      fp->_wide_data->_IO_backup_base = NULL;
+      fp->_wide_data->_IO_save_end = NULL;
+
+      fp->_wide_data->_wide_vtable = jmp;
+    }
+  else
+    fp->_wide_data = (struct _IO_wide_data *) -1L;
+  fp->_freeres_list = NULL;
+}
+```
+
+#### _IO_old_init
+
+```c
+void _IO_old_init (FILE *fp, int flags)
+{
+  fp->_flags = _IO_MAGIC|flags; // #define _IO_MAGIC 0xFBAD0000 魔数
+  fp->_flags2 = 0;
+  if (stdio_needs_locking)
+    fp->_flags2 |= _IO_FLAGS2_NEED_LOCK;
+  fp->_IO_buf_base = NULL;
+  fp->_IO_buf_end = NULL;
+  fp->_IO_read_base = NULL;
+  fp->_IO_read_ptr = NULL;
+  fp->_IO_read_end = NULL;
+  fp->_IO_write_base = NULL;
+  fp->_IO_write_ptr = NULL;
+  fp->_IO_write_end = NULL;
+  fp->_chain = NULL;
+
+  fp->_IO_save_base = NULL;
+  fp->_IO_backup_base = NULL;
+  fp->_IO_save_end = NULL;
+  fp->_markers = NULL;
+  fp->_cur_column = 0;
+#if _IO_JUMPS_OFFSET
+  fp->_vtable_offset = 0;
+#endif
+#ifdef _IO_MTSAFE_IO
+  if (fp->_lock != NULL)
+    _IO_lock_init (*fp->_lock);
+#endif
+}
+```
+
+#### _IO_new_file_init_internal
+
+```c
+void _IO_new_file_init_internal (struct _IO_FILE_plus *fp)
+{
+  // 设置一些标志
+  fp->file._offset = _IO_pos_BAD;
+  fp->file._flags |= CLOSED_FILEBUF_FLAGS;
+
+  _IO_link_in (fp); // 头插法加到链表中
+  fp->file._fileno = -1;
+}
+```
+
+#### _IO_new_file_fopen
+
+```c
+FILE *_IO_new_file_fopen (FILE *fp, const char *filename, const char *mode, int is32not64)
+{
+  int oflags = 0, omode;
+  int read_write;
+  int oprot = 0666;
+  int i;
+  FILE *result;
+  const char *cs;
+  const char *last_recognized;
+
+  if (_IO_file_is_open (fp))
+    return 0;
+  switch (*mode)
+    {
+    case 'r':
+      omode = O_RDONLY;
+      read_write = _IO_NO_WRITES;
+      break;
+    case 'w':
+      omode = O_WRONLY;
+      oflags = O_CREAT|O_TRUNC;
+      read_write = _IO_NO_READS;
+      break;
+    case 'a':
+      omode = O_WRONLY;
+      oflags = O_CREAT|O_APPEND;
+      read_write = _IO_NO_READS|_IO_IS_APPENDING;
+      break;
+    default:
+      __set_errno (EINVAL);
+      return NULL;
+    }
+  last_recognized = mode;
+  for (i = 1; i < 7; ++i)
+    {
+      switch (*++mode)
+	{
+	case '\0':
+	  break;
+	case '+':
+	  omode = O_RDWR;
+	  read_write &= _IO_IS_APPENDING;
+	  last_recognized = mode;
+	  continue;
+	case 'x':
+	  oflags |= O_EXCL;
+	  last_recognized = mode;
+	  continue;
+	case 'b':
+	  last_recognized = mode;
+	  continue;
+	case 'm':
+	  fp->_flags2 |= _IO_FLAGS2_MMAP;
+	  continue;
+	case 'c':
+	  fp->_flags2 |= _IO_FLAGS2_NOTCANCEL;
+	  continue;
+	case 'e':
+	  oflags |= O_CLOEXEC;
+	  fp->_flags2 |= _IO_FLAGS2_CLOEXEC;
+	  continue;
+	default:
+	  continue;
+	}
+      break;
+    }
+
+  result = _IO_file_open (fp, filename, omode|oflags, oprot, read_write, is32not64);
+
+  if (result != NULL)
+    {
+      cs = strstr (last_recognized + 1, ",ccs=");
+      if (cs != NULL)
+	{
+	  struct gconv_fcts fcts;
+	  struct _IO_codecvt *cc;
+	  char *endp = __strchrnul (cs + 5, ',');
+	  char *ccs = malloc (endp - (cs + 5) + 3);
+
+	  if (ccs == NULL)
+	    {
+	      int malloc_err = errno;
+	      (void) _IO_file_close_it (fp);
+	      __set_errno (malloc_err);
+	      return NULL;
+	    }
+
+	  *((char *) __mempcpy (ccs, cs + 5, endp - (cs + 5))) = '\0';
+	  strip (ccs, ccs);
+
+	  if (__wcsmbs_named_conv (&fcts, ccs[2] == '\0' ? upstr (ccs, cs + 5) : ccs) != 0)
+	    {
+	      (void) _IO_file_close_it (fp);
+	      free (ccs);
+	      __set_errno (EINVAL);
+	      return NULL;
+	    }
+
+	  free (ccs);
+
+	  assert (fcts.towc_nsteps == 1);
+	  assert (fcts.tomb_nsteps == 1);
+
+	  fp->_wide_data->_IO_read_ptr = fp->_wide_data->_IO_read_end;
+	  fp->_wide_data->_IO_write_ptr = fp->_wide_data->_IO_write_base;
+
+	  memset (&fp->_wide_data->_IO_state, '\0', sizeof (__mbstate_t));
+	  memset (&fp->_wide_data->_IO_last_state, '\0', sizeof (__mbstate_t));
+
+	  cc = fp->_codecvt = &fp->_wide_data->_codecvt;
+
+	  cc->__cd_in.step = fcts.towc;
+
+	  cc->__cd_in.step_data.__invocation_counter = 0;
+	  cc->__cd_in.step_data.__internal_use = 1;
+	  cc->__cd_in.step_data.__flags = __GCONV_IS_LAST;
+	  cc->__cd_in.step_data.__statep = &result->_wide_data->_IO_state;
+
+	  cc->__cd_out.step = fcts.tomb;
+
+	  cc->__cd_out.step_data.__invocation_counter = 0;
+	  cc->__cd_out.step_data.__internal_use = 1;
+	  cc->__cd_out.step_data.__flags = __GCONV_IS_LAST | __GCONV_TRANSLIT;
+	  cc->__cd_out.step_data.__statep = &result->_wide_data->_IO_state;
+
+	  _IO_JUMPS_FILE_plus (fp) = fp->_wide_data->_wide_vtable;
+	  result->_mode = 1;
+	}
+    }
+
+  return result;
+}
+libc_hidden_ver (_IO_new_file_fopen, _IO_file_fopen)
+```
+
+#### _IO_file_open
+
+```c
+FILE *_IO_file_open (FILE *fp, const char *filename, int posix_mode, int prot,
+	       int read_write, int is32not64)
+{
+  int fdesc;
+  if (__glibc_unlikely (fp->_flags2 & _IO_FLAGS2_NOTCANCEL))
+    fdesc = __open_nocancel (filename, posix_mode | (is32not64 ? 0 : O_LARGEFILE), prot);
+  else
+    fdesc = __open (filename, posix_mode | (is32not64 ? 0 : O_LARGEFILE), prot);
+  if (fdesc < 0)
+    return NULL;
+  fp->_fileno = fdesc;
+  _IO_mask_flags (fp, read_write,_IO_NO_READS+_IO_NO_WRITES+_IO_IS_APPENDING);
+  if ((read_write & (_IO_IS_APPENDING | _IO_NO_READS)) == (_IO_IS_APPENDING | _IO_NO_READS))
+    {
+      off64_t new_pos = _IO_SYSSEEK (fp, 0, _IO_seek_end);
+      if (new_pos == _IO_pos_BAD && errno != ESPIPE)
+        {
+          __close_nocancel (fdesc);
+          return NULL;
+        }
+    }
+  _IO_link_in ((struct _IO_FILE_plus *) fp);
+  return fp;
+}
+libc_hidden_def (_IO_file_open)
+```
+
+### fread
+
+![image-20241206210233580](/img/source_analyze.zh-cn.assets/image-20241206210233580.png)
+
+#### fread
+
+```c
+#define fread(p, m, n, s) _IO_fread (p, m, n, s)
+```
+
+#### _IO_fread
+
+```c
+size_t _IO_fread (void *buf, size_t size, size_t count, FILE *fp)
+{
+  size_t bytes_requested = size * count;
+  size_t bytes_read;
+  CHECK_FILE (fp, 0);
+  if (bytes_requested == 0)
+    return 0;
+  _IO_acquire_lock (fp);
+  bytes_read = _IO_sgetn (fp, (char *) buf, bytes_requested);
+  _IO_release_lock (fp);
+  return bytes_requested == bytes_read ? count : bytes_read / size;
+}
+libc_hidden_def (_IO_fread)
+```
+
+#### _IO_sgetn
+
+```c
+#define _IO_XSGETN(FP, DATA, N) JUMP2 (__xsgetn, FP, DATA, N)
+#define JUMP2(FUNC, THIS, X1, X2) (_IO_JUMPS_FUNC(THIS)->FUNC) (THIS, X1, X2)
+# define _IO_JUMPS_FUNC(THIS) (IO_validate_vtable (_IO_JUMPS_FILE_plus (THIS)))
+
+size_t _IO_sgetn (FILE *fp, void *data, size_t n)
+{ // 会通过vtable调用不同结构体的函数 _IO_file_xsgetn
+  return _IO_XSGETN (fp, data, n);
+}
+libc_hidden_def (_IO_sgetn)
+```
+
+#### _IO_file_xsgetn
+
+```c
+// 通过文件流fp从文件系统读取最多n字节数据到用户缓冲区data中
+size_t _IO_file_xsgetn(FILE *fp, void *data, size_t n)
+{
+  size_t want, have;
+  ssize_t count;
+  char *s = data; // 指向用户缓冲区data
+  want = n; // 剩余需要读取的字节数，初始为n
+
+  if (fp->_IO_buf_base == NULL)
+  // 文件流缓冲区未初始化
+  {
+    if (fp->_IO_save_base != NULL)
+    {
+      free(fp->_IO_save_base); // 释放备份缓冲区
+      fp->_flags &= ~_IO_IN_BACKUP; // 清除备份模式标志
+    }
+    // 初始化文件流缓冲区
+    _IO_doallocbuf(fp);
+  }
+  
+  // 仍有数据需要读取
+  while (want > 0)
+  {
+    have = fp->_IO_read_end - fp->_IO_read_ptr; // 文件流缓冲区剩余数据大小
+    // 文件流缓冲区大小足够满足需要读取的字节数want
+    if (want <= have)
+    {
+      memcpy(s, fp->_IO_read_ptr, want); // 从文件流缓冲区复制到用户缓冲区
+      fp->_IO_read_ptr += want; // 更新指针
+      want = 0; // 标记读取完成
+    }
+    // 若文件流缓冲区数据不足
+    else
+    {
+      if (have > 0) // 文件流缓冲区中还有部分数据可用
+      {
+        // 先尽可能多的从文件流缓冲区复制到用户缓冲区
+        s = __mempcpy(s, fp->_IO_read_ptr, have);
+        want -= have; // 更新剩余需求
+        fp->_IO_read_ptr += have; // 更新文件流缓冲区读取指针
+      }
+	  // 处于备份模式
+      if (_IO_in_backup(fp))
+      {
+        _IO_switch_to_main_get_area(fp);
+        continue; // 切换备份缓冲区重新尝试读取
+      }
+      // 若文件流缓冲区未满 且 需要读取的数据小于文件流缓冲区总容量
+      if (fp->_IO_buf_base && want < (size_t)(fp->_IO_buf_end - fp->_IO_buf_base))
+      {
+        // underflow 调用系统函数将数据读入文件流缓冲区, 实际调用 _IO_UNDERFLOW
+        // 最终调用 _IO_new_file_underflow 函数
+        if (__underflow(fp) == EOF)
+          break;
+        continue; // 填充完文件流缓冲区，继续尝试读取
+      }
+      // 所需读取的数据大于文件流缓冲区总容量
+      // 重置文件流缓冲区指针
+      _IO_setg(fp, fp->_IO_buf_base, fp->_IO_buf_base, fp->_IO_buf_base);
+      _IO_setp(fp, fp->_IO_buf_base, fp->_IO_buf_base);
+	  
+      // 对齐，若文件流缓冲区大小不小于128字节，则读入长度为文件流缓冲区长度整数倍
+      count = want;
+      if (fp->_IO_buf_base)
+      {
+        size_t block_size = fp->_IO_buf_end - fp->_IO_buf_base;
+        if (block_size >= 128)
+          count -= want % block_size;
+      }
+	  // 直接系统调用读取文件中数据到用户缓冲区中
+      count = _IO_SYSREAD(fp, s, count);
+      if (count <= 0)
+      {
+        if (count == 0)
+          fp->_flags |= _IO_EOF_SEEN;
+        else
+          fp->_flags |= _IO_ERR_SEEN;
+
+        break;
+      }
+	  // 更新
+      s += count;
+      want -= count;
+      if (fp->_offset != _IO_pos_BAD)
+        _IO_pos_adjust(fp->_offset, count);
+    }
+  }
+
+  return n - want;
+}
+libc_hidden_def(_IO_file_xsgetn)
+```
+
+#### _IO_doallocbuf
+
+```c
+void _IO_doallocbuf (FILE *fp)
+{
+  if (fp->_IO_buf_base)
+    return;
+  if (!(fp->_flags & _IO_UNBUFFERED) || fp->_mode > 0)
+    if (_IO_DOALLOCATE (fp) != EOF)
+      return;
+  _IO_setb (fp, fp->_shortbuf, fp->_shortbuf+1, 0);
+}
+libc_hidden_def (_IO_doallocbuf)
+```
+
+#### _IO_new_file_underflow
+
+```c
+int _IO_new_file_underflow(_IO_FILE *fp)
+{
+  _IO_ssize_t count; // 存储从文件中读取的字节数
+#if 0
+  if (fp->_flags & _IO_EOF_SEEN)
+    return (EOF);
+#endif
+
+  if (fp->_flags & _IO_NO_READS) // 文件末尾已经被读取, 表示不允许读取数据
+  {
+    fp->_flags |= _IO_ERR_SEEN;
+    __set_errno(EBADF); // 文件描述符无效
+    return EOF;
+  }
+  // 文件流缓冲区已有数据，直接返回_IO_read_ptr指向的数据
+  if (fp->_IO_read_ptr < fp->_IO_read_end)
+    return *(unsigned char *)fp->_IO_read_ptr;
+
+  // 若文件流没有为读取分配缓冲区
+  if (fp->_IO_buf_base == NULL)
+  {
+    if (fp->_IO_save_base != NULL) // 之前有分配过备份的缓冲区
+    {
+      free(fp->_IO_save_base); // 释放这些缓冲区
+      fp->_flags &= ~_IO_IN_BACKUP;
+    }
+    _IO_doallocbuf(fp); // 分配新文件流缓冲区
+  }
+  // 是否设置 行缓冲 或 无缓冲
+  if (fp->_flags & (_IO_LINE_BUF | _IO_UNBUFFERED))
+  {
+#if 0
+      _IO_flush_all_linebuffered ();
+#else
+    _IO_acquire_lock(_IO_stdout);
+
+    if ((_IO_stdout->_flags & 
+        (_IO_LINKED | _IO_NO_WRITES | _IO_LINE_BUF)) == (_IO_LINKED | _IO_LINE_BUF))
+      _IO_OVERFLOW(_IO_stdout, EOF);// 调用_IO_OVERFLOW函数处理标准输出的溢出情况
+
+    _IO_release_lock(_IO_stdout);
+#endif
+  }
+
+  _IO_switch_to_get_mode(fp); // 切换为读取模式
+  
+  // 设置读写指针均为缓冲区基地址
+  fp->_IO_read_base = fp->_IO_read_ptr = fp->_IO_buf_base;
+  fp->_IO_read_end = fp->_IO_buf_base;
+  fp->_IO_write_base = fp->_IO_write_ptr = fp->_IO_write_end = fp->_IO_buf_base;
+  // 调用系统SYSREAD调用从文件读取数据存储到缓冲区中，返回实际读取的字节数
+  count = _IO_SYSREAD(fp, fp->_IO_buf_base, fp->_IO_buf_end - fp->_IO_buf_base);
+  if (count <= 0)
+  {
+    if (count == 0)
+      fp->_flags |= _IO_EOF_SEEN;
+    else
+      fp->_flags |= _IO_ERR_SEEN, count = 0;
+  }
+  // 读取结束指针移动count字节
+  fp->_IO_read_end += count;
+  if (count == 0) // 未成功读取任何数据
+  {
+    fp->_offset = _IO_pos_BAD;
+    return EOF;
+  }
+  if (fp->_offset != _IO_pos_BAD)
+    _IO_pos_adjust(fp->_offset, count); // 调整文件流的偏移量
+  return *(unsigned char *)fp->_IO_read_ptr; // 返回当前读取指针指向字节
+}
+libc_hidden_ver(_IO_new_file_underflow, _IO_file_underflow)
+```
+
+
+
+### fwrite
+
+<img src="/img/source_analyze.zh-cn.assets/image-20241206205821979.png" alt="image-20241206205821979" style="zoom: 80%;" />
+
+#### fwrite
+
+```c
+#define fwrite(buf, size, count, fp) _IO_fwrite (buf, size, count, fp)
+```
+
+#### _IO_fwrite
+
+```c
+size_t _IO_fwrite (const void *buf, size_t size, size_t count, FILE *fp)
+{
+  size_t request = size * count;
+  size_t written = 0;
+  CHECK_FILE (fp, 0);
+  if (request == 0)
+    return 0;
+  _IO_acquire_lock (fp);
+  if (_IO_vtable_offset (fp) != 0 || _IO_fwide (fp, -1) == -1)
+    written = _IO_sputn (fp, (const char *) buf, request);
+  _IO_release_lock (fp);
+  if (written == request || written == EOF)
+    return count;
+  else
+    return written / size;
+}
+libc_hidden_def (_IO_fwrite)
+```
+
+#### _IO_new_file_xsputn
+
+```c
+// 从用户缓冲区data写入文件流f中
+size_t _IO_new_file_xsputn(FILE *f, const void *data, size_t n)
+{
+  const char *s = (const char *)data; // 用户缓冲区指针
+  size_t to_do = n; // 写入数据长度
+  int must_flush = 0; // 标志是否需要立即刷新文件流缓冲区
+  size_t count = 0; 
+
+  if (n <= 0)
+    return 0;
+  // 判断是否为行缓冲模式，即遇到换行符立即刷新文件流缓冲区
+  if ((f->_flags & _IO_LINE_BUF) && (f->_flags & _IO_CURRENTLY_PUTTING))
+  {
+    // 文件流缓冲区剩余空间大小
+    count = f->_IO_buf_end - f->_IO_write_ptr;
+    if (count >= n) // 若文件流缓冲区能容纳所有数据data
+    {
+      const char *p;
+      for (p = s + n; p > s;) // 从用户数据末尾向前查找换行符
+      {
+        if (*--p == '\n') // 找到换行符
+        {
+          count = p - s + 1; // 只写入到换行符前数据
+          must_flush = 1; // 立即刷新输出数据
+          break;
+        }
+      }
+    }
+  }
+  // 非行缓冲模式，文件流缓冲区仍有可用空间，获取剩余空间count
+  else if (f->_IO_write_end > f->_IO_write_ptr)
+    count = f->_IO_write_end - f->_IO_write_ptr;
+
+  if (count > 0)
+  {
+    if (count > to_do)
+      count = to_do; // 若文件流缓冲区能容纳所有剩余数据
+    // 将数据data写入到文件流缓冲区中
+    f->_IO_write_ptr = __mempcpy(f->_IO_write_ptr, s, count);
+    // 更新
+    s += count;
+    to_do -= count;
+  }
+  // 若需要刷新缓冲区或仍有数据未写
+  if (to_do + must_flush > 0)
+  {
+    size_t block_size, do_write;
+	// 强制输出并刷新清空文件流缓冲区
+    // 实际调用了_IO_new_file_overflow
+    if (_IO_OVERFLOW(f, EOF) == EOF)
+      return to_do == 0 ? EOF : n - to_do;
+	// 对齐
+    block_size = f->_IO_buf_end - f->_IO_buf_base;
+    do_write = to_do - (block_size >= 128 ? to_do % block_size : 0);
+
+    if (do_write)
+    {
+      // 调用new_do_write直接输出数据
+      count = new_do_write(f, s, do_write);
+      to_do -= count;
+      if (count < do_write)
+        return n - to_do;
+    }
+    if (to_do) // 将剩余数据复制到文件流缓冲区
+      to_do -= _IO_default_xsputn(f, s + do_write, to_do);
+  }
+  return n - to_do;
+}
+libc_hidden_ver(_IO_new_file_xsputn, _IO_file_xsputn)
+```
+
+#### _IO_new_file_overflow
+
+```c
+int _IO_new_file_overflow(_IO_FILE *f, int ch)
+{
+  // 检查是否允许写入
+  if (f->_flags & _IO_NO_WRITES)
+  {
+    f->_flags |= _IO_ERR_SEEN;
+    __set_errno(EBADF); // 操作失败，写入错误
+    return EOF;
+  }
+  if ((f->_flags & _IO_CURRENTLY_PUTTING) == 0 || f->_IO_write_base == NULL)
+  { 
+    // 若未分配写入缓冲区
+    if (f->_IO_write_base == NULL)
+    {
+      _IO_doallocbuf(f); // 初始化分配缓冲区
+      _IO_setg(f, f->_IO_buf_base, f->_IO_buf_base, f->_IO_buf_base); // 设置缓冲区起点
+    }
+    // 处理备份缓冲区
+    if (__glibc_unlikely(_IO_in_backup(f)))
+    {
+      size_t nbackup = f->_IO_read_end - f->_IO_read_ptr;
+      _IO_free_backup_area(f);
+      f->_IO_read_base -= MIN(nbackup, f->_IO_read_base - f->_IO_buf_base);
+      f->_IO_read_ptr = f->_IO_read_base;
+    }
+	
+    // 若读取指针到达缓冲区末尾，重置为缓冲区起始位置
+    if (f->_IO_read_ptr == f->_IO_buf_end)
+      f->_IO_read_end = f->_IO_read_ptr = f->_IO_buf_base;
+    // 写入指针和缓冲区指针统一到读取指针位置
+    f->_IO_write_ptr = f->_IO_read_ptr;
+    f->_IO_write_base = f->_IO_write_ptr;
+    f->_IO_write_end = f->_IO_buf_end;
+    f->_IO_read_base = f->_IO_read_ptr = f->_IO_read_end;
+
+    // 文件流进入写入模式
+    f->_flags |= _IO_CURRENTLY_PUTTING;
+    // 文件流处于行缓冲或无缓冲模式
+    if (f->_mode <= 0 && f->_flags & (_IO_LINE_BUF | _IO_UNBUFFERED))
+      f->_IO_write_end = f->_IO_write_ptr;
+  }
+  if (ch == EOF) // 直接将缓冲区内容写入文件，实际调用new_do_write
+    return _IO_do_write(f, f->_IO_write_base, f->_IO_write_ptr - f->_IO_write_base);
+  // 写入指针已到达缓冲区末尾，表示缓冲区已满，调用_IO_do_flush刷新缓冲区
+  if (f->_IO_write_ptr == f->_IO_buf_end)
+    if (_IO_do_flush(f) == EOF)
+      return EOF; // 刷新失败
+  // 将ch写入当前的写入指针位置，写入指针移动
+  *f->_IO_write_ptr++ = ch;
+  // 无缓冲模式/行缓冲模式且写入\n，立即将缓冲区数据写入文件
+  if ((f->_flags & _IO_UNBUFFERED) || ((f->_flags & _IO_LINE_BUF) && ch == '\n'))
+    if (_IO_do_write(f, f->_IO_write_base, f->_IO_write_ptr - f->_IO_write_base) == EOF)
+      return EOF;
+  // 返回写入的字符
+  return (unsigned char)ch;
+}
+libc_hidden_ver(_IO_new_file_overflow, _IO_file_overflow)
+```
+
+
+
+#### new_do_write
+
+```c
+// 调用了系统调用 将data写入fp
+static size_t new_do_write(FILE *fp, const char *data, size_t to_do)
+{
+  size_t count;
+  // 文件流处于追加模式
+  if (fp->_flags & _IO_IS_APPENDING)
+    fp->_offset = _IO_pos_BAD; // 偏移量设置为无效值
+  
+  else if (fp->_IO_read_end != fp->_IO_write_base)
+  { // 读取指针和写入缓冲区基址不相同，需要调整文件偏移量
+    off64_t new_pos = _IO_SYSSEEK(fp, fp->_IO_write_base - fp->_IO_read_end, 1); // 移到写缓冲区基址
+    if (new_pos == _IO_pos_BAD)
+      return 0;
+    fp->_offset = new_pos;
+  }
+  // 系统调用，data指向的to_do字节数据写入文件流fp
+  count = _IO_SYSWRITE(fp, data, to_do);
+  // 若当前流的列信息存在且成功写入数据
+  if (fp->_cur_column && count)
+    // 调整列信息
+    fp->_cur_column = _IO_adjust_column(fp->_cur_column - 1, data, count) + 1;
+  // 重置读缓冲区
+  _IO_setg(fp, fp->_IO_buf_base, fp->_IO_buf_base, fp->_IO_buf_base);
+  // 初始化写入缓冲区
+  fp->_IO_write_base = fp->_IO_write_ptr = fp->_IO_buf_base;
+  fp->_IO_write_end = (fp->_mode <= 0 && (fp->_flags & (_IO_LINE_BUF | _IO_UNBUFFERED))
+                           ? fp->_IO_buf_base
+                           : fp->_IO_buf_end);
+  return count; // 返回写入字节数
+}
+```
+
+
+
+### fclose
+
+#### fclose
+
+```c
+#define fclose(fp) _IO_new_fclose (fp)
+```
+
+#### _IO_new_fclose
+
+```c
+int _IO_new_fclose (FILE *fp)
+{
+  int status;
+
+  CHECK_FILE(fp, EOF);
+
+#if SHLIB_COMPAT (libc, GLIBC_2_0, GLIBC_2_1)
+  if (_IO_vtable_offset (fp) != 0)
+    return _IO_old_fclose (fp);
+#endif
+  if (fp->_flags & _IO_IS_FILEBUF)
+    _IO_un_link ((struct _IO_FILE_plus *) fp); // 将文件结构体从_IO_list_all链表中取下
+
+  _IO_acquire_lock (fp);
+  if (fp->_flags & _IO_IS_FILEBUF)
+    status = _IO_file_close_it (fp); // 关闭文件，释放文件流缓冲区
+  else
+    status = fp->_flags & _IO_ERR_SEEN ? -1 : 0;
+  _IO_release_lock (fp);
+  _IO_FINISH (fp);
+  if (fp->_mode > 0)
+    {
+      struct _IO_codecvt *cc = fp->_codecvt;
+
+      __libc_lock_lock (__gconv_lock);
+      __gconv_release_step (cc->__cd_in.step);
+      __gconv_release_step (cc->__cd_out.step);
+      __libc_lock_unlock (__gconv_lock);
+    }
+  else
+    {
+      if (_IO_have_backup (fp))
+	_IO_free_backup_area (fp);
+    }
+  _IO_deallocate_file (fp);
+  return status;
+}
+```
+
+#### _IO_un_link
+
+```c
+void _IO_un_link (struct _IO_FILE_plus *fp)
+{
+  if (fp->file._flags & _IO_LINKED)
+    {
+      FILE **f;
+#ifdef _IO_MTSAFE_IO
+      _IO_cleanup_region_start_noarg (flush_cleanup);
+      _IO_lock_lock (list_all_lock);
+      run_fp = (FILE *) fp;
+      _IO_flockfile ((FILE *) fp);
+#endif
+      if (_IO_list_all == NULL)
+	;
+      else if (fp == _IO_list_all)
+	_IO_list_all = (struct _IO_FILE_plus *) _IO_list_all->file._chain;
+      else
+	for (f = &_IO_list_all->file._chain; *f; f = &(*f)->_chain)
+	  if (*f == (FILE *) fp)
+	    {
+	      *f = fp->file._chain;
+	      break;
+	    }
+      fp->file._flags &= ~_IO_LINKED;
+#ifdef _IO_MTSAFE_IO
+      _IO_funlockfile ((FILE *) fp);
+      run_fp = NULL;
+      _IO_lock_unlock (list_all_lock);
+      _IO_cleanup_region_end (0);
+#endif
+    }
+}
+libc_hidden_def (_IO_un_link)
+```
+
+#### _IO_new_file_close_it
+
+```c
+int _IO_new_file_close_it(FILE *fp)
+{
+  int write_status;
+  if (!_IO_file_is_open(fp))
+    return EOF;
+
+  if ((fp->_flags & _IO_NO_WRITES) == 0 && (fp->_flags & _IO_CURRENTLY_PUTTING) != 0)
+    write_status = _IO_do_flush(fp);
+  else
+    write_status = 0;
+
+  _IO_unsave_markers(fp);
+
+  int close_status = ((fp->_flags2 & _IO_FLAGS2_NOCLOSE) == 0
+                          ? _IO_SYSCLOSE(fp) // 系统调用关闭文件
+                          : 0);
+  // 释放文件流缓冲区
+  if (fp->_mode > 0)
+  {
+    if (_IO_have_wbackup(fp))
+      _IO_free_wbackup_area(fp);
+    _IO_wsetb(fp, NULL, NULL, 0);
+    _IO_wsetg(fp, NULL, NULL, NULL);
+    _IO_wsetp(fp, NULL, NULL);
+  }
+  _IO_setb(fp, NULL, NULL, 0);
+  _IO_setg(fp, NULL, NULL, NULL);
+  _IO_setp(fp, NULL, NULL);
+
+  _IO_un_link((struct _IO_FILE_plus *)fp);
+  fp->_flags = _IO_MAGIC | CLOSED_FILEBUF_FLAGS;
+  fp->_fileno = -1;
+  fp->_offset = _IO_pos_BAD;
+
+  return close_status ? close_status : write_status;
+}
+libc_hidden_ver(_IO_new_file_close_it, _IO_file_close_it)
+```
 

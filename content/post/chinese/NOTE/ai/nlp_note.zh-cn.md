@@ -23,7 +23,7 @@ typora-root-url: ..\..\..\..\..\static
 
 $T_x^{(i)}$表示第 i 个训练样例的序列长度，$X^{(i)}$表示 i 序列中第 t 个元素，x 表示输入 y 表示输出
 
-**数据表示：**存在单词字典列表，使用`one hot`，即每个单词对应一个等长向量列表，对应单词索引处为1其余为0
+**数据表示**：存在单词字典列表，使用`one hot`，即每个单词对应一个等长向量列表，对应单词索引处为1其余为0
 
 ### 循环神经网络
 
@@ -58,7 +58,7 @@ $a^{<0>}=\vec 0$
 
 训练集为极大**语料库**（corpus），将数据句子**标记化**（tokenize），句子末尾加入**EOS**（End Of Sentence）标记，定位句子结尾，未知单词标记为**<UNK>**（unknown word）标记，$\hat y$对应于已知条件概率P(__|已知)
 
-**损失函数：**$L(\hat y^{\<t>},y^{\<t>})=-\sum_iy_i^{\<t>}\log \hat y_i^{\<t>}$，softmax损失函数
+**损失函数**：$L(\hat y^{\<t>},y^{\<t>})=-\sum_iy_i^{\<t>}\log \hat y_i^{\<t>}$，softmax损失函数
 
 **字符级语言模型，字典为[a,b,c,...,z,A,...,Z]**
 
@@ -68,7 +68,7 @@ $a^{<0>}=\vec 0$
 
 - 解决RNN**梯度消失问题，**$C^{\<t>}$记忆单元来存储记忆，如：需要记住cat是单数，使用was而不是were
 - $\tilde C^{\<t>}=\tanh (W_c[\Gamma_r\cdot C^{\<t-1>},x^{\<t>}]+b_c)$
-- 门控值：**更新门**$\Gamma_u=\sigma(W_u[C^{\<t-1>},x^{\<t>}]+b_u)$，sigmoid使范围为0-1，为0表示不更新$C^{\<t>}$，同样适用于**相关性门**$\Gamma_r$
+- 门控值**：更新门**$\Gamma_u=\sigma(W_u[C^{\<t-1>},x^{\<t>}]+b_u)$，sigmoid使范围为0-1，为0表示不更新$C^{\<t>}$，同样适用于**相关性门**$\Gamma_r$
 - $C^{\<t>}=\Gamma_u\cdot \tilde C^{\<t>}+(1-\Gamma_u)\cdot C^{\<t-1>}$ ，a和c相等
 
 ![img](/img/nlp_note.zh-cn.assets/-172845431716882.assets)
@@ -134,7 +134,7 @@ $a^{<0>}=\vec 0$
 
 ![img](/img/nlp_note.zh-cn.assets/-172845431716887.assets)
 
-不同模型：**CBOW（上下文推词）** 与 **Skipgram（词推上下文）**
+不同模型**：CBOW（上下文推词）** 与 **Skipgram（词推上下文）**
 
 ![img](/img/nlp_note.zh-cn.assets/-172845431716888.assets)
 
