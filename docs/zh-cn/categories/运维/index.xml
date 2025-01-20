@@ -31,6 +31,9 @@
 &lt;p&gt;&lt;strong&gt;nohup&lt;/strong&gt;：&lt;code&gt;nohup python3 xx.py&lt;/code&gt;使得一个进程在用户登出或会话终止后仍然后台继续运行&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;bg&lt;/strong&gt;：将&lt;code&gt;jobs&lt;/code&gt;命令查看的已暂停后台作业继续运行，&lt;code&gt;bg %1&lt;/code&gt;指定 &lt;code&gt;jobs&lt;/code&gt; 中序号&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;od&lt;/strong&gt;：十六进制查看工具，&lt;code&gt;od -c file&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;pstree&lt;/strong&gt;：查看进程关系&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;kill&lt;/strong&gt;：&lt;code&gt; kill -l&lt;/code&gt;查看信号&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;netstat&lt;/strong&gt;：显示网络状态&lt;/p&gt;
 &lt;h2 id=&#34;常用命令&#34;&gt;常用命令&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;查看某个文件的绝对路径&lt;/strong&gt;： &lt;code&gt;pwd|awk &#39;{print $1&amp;quot;/file_name&amp;quot;}&#39;&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;查看版本&lt;/strong&gt;：&lt;code&gt;cat /proc/version&lt;/code&gt;&lt;/p&gt;
@@ -38,6 +41,8 @@
 &lt;p&gt;&lt;strong&gt;查看目录及子目录磁盘使用情况&lt;/strong&gt;：&lt;code&gt;du -sh directory&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;查找指定进程格式&lt;/strong&gt;：&lt;code&gt;ps -ef | grep xx&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;查看分区挂载情况&lt;/strong&gt;：&lt;code&gt;df&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;编译链接线程库&lt;/strong&gt;：&lt;code&gt;-lpthread&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;安装deb文件&lt;/strong&gt;：&lt;code&gt;sudo dpkg -i&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;链接&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;

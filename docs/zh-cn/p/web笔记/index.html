@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='寻找文件：/tmp，env，/etc/passwd 找文件名：find / -name &amp;quot;flag.txt&amp;quot; 工具 HackBar 1 2 3 4 5 devtools X-Forwarded-For: 127.0.0.1 // 只允许本机登录 // 识别通过HTTP代理或负载'><title>WEB笔记</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='寻找文件：/tmp，env，/etc/passwd 找文件名：find / -name &amp;quot;*flag*.txt&amp;quot; 工具 HackBar 1 2 3 4 5 devtools X-Forwarded-For: 127.0.0.1 // 只允许本机登录 // 识别通过HTTP代理或负载'><title>WEB笔记</title>
 
 <link rel='canonical' href='https://J-shiro.github.io/zh-cn/p/web%E7%AC%94%E8%AE%B0/'>
 
 <link rel="stylesheet" href="/scss/style.min.b18c0607927efd48b36f5d027b549e77e30ee300e22b6461d063f1df6ea2466b.css"><meta property='og:title' content='WEB笔记'>
-<meta property='og:description' content='寻找文件：/tmp，env，/etc/passwd 找文件名：find / -name &amp;quot;flag.txt&amp;quot; 工具 HackBar 1 2 3 4 5 devtools X-Forwarded-For: 127.0.0.1 // 只允许本机登录 // 识别通过HTTP代理或负载'>
+<meta property='og:description' content='寻找文件：/tmp，env，/etc/passwd 找文件名：find / -name &amp;quot;*flag*.txt&amp;quot; 工具 HackBar 1 2 3 4 5 devtools X-Forwarded-For: 127.0.0.1 // 只允许本机登录 // 识别通过HTTP代理或负载'>
 <meta property='og:url' content='https://J-shiro.github.io/zh-cn/p/web%E7%AC%94%E8%AE%B0/'>
 <meta property='og:site_name' content='J-shiro&#39;s 博客'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-10-09T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2024-10-09T00:00:00&#43;00:00'/><meta property='og:image' content='https://J-shiro.github.io/img/note.jpg' />
 <meta name="twitter:title" content="WEB笔记">
-<meta name="twitter:description" content="寻找文件：/tmp，env，/etc/passwd 找文件名：find / -name &amp;quot;flag.txt&amp;quot; 工具 HackBar 1 2 3 4 5 devtools X-Forwarded-For: 127.0.0.1 // 只允许本机登录 // 识别通过HTTP代理或负载"><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="寻找文件：/tmp，env，/etc/passwd 找文件名：find / -name &amp;quot;*flag*.txt&amp;quot; 工具 HackBar 1 2 3 4 5 devtools X-Forwarded-For: 127.0.0.1 // 只允许本机登录 // 识别通过HTTP代理或负载"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://J-shiro.github.io/img/note.jpg' />
     <link rel="shortcut icon" href="https://j-shiro.github.io/img/somebody.png" />
 
@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    6522 字
+                    6545 字
                 </time>
             </div>
         
@@ -337,7 +337,7 @@
     
     
     <p>寻找文件：<code>/tmp</code>，<code>env</code>，<code>/etc/passwd</code></p>
-<p>找文件名：<code>find / -name &quot;</code><em><code>flag</code></em><code>.txt&quot;</code></p>
+<p>找文件名：<code>find / -name &quot;*flag*.txt&quot;</code></p>
 <h2 id="工具">工具</h2>
 <h3 id="hackbar">HackBar</h3>
 <div class="highlight"><div class="chroma">
@@ -365,9 +365,11 @@
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ping x:x:x:x <span class="p">;</span> ls
+</span></span><span class="line"><span class="cl">ping xxx <span class="p">|</span> ls
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="python">Python</h2>
@@ -913,7 +915,7 @@
 <p>Linux下命令：</p>
 <ul>
 <li>ls替代：<code>dir</code></li>
-<li>空格绕过：<code>&lt;</code>, <code>${IFS}</code>, <code>$IFS$9</code>, <code>%09</code></li>
+<li>空格绕过：<code>&lt;</code>, <code>${IFS}</code>, <code>$IFS$9</code>, <code>%09</code>, <code>&lt;&gt;</code>, <code>&lt;</code>, <code>%20</code></li>
 <li>cat命令替代：<code>more</code>, <code>tail</code>, <code>head</code>, <code>less</code>, <code>nl</code>, <code>sort</code>, <code>tailf</code></li>
 <li>截断字符替代：<code>&amp;&amp;</code>, <code>||</code>, <code>;</code>, <code>%0a</code>, <code>|</code></li>
 <li>反斜杠绕过：<code>ca\t fl\ag.txt</code></li>
@@ -930,6 +932,15 @@
 <pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nx">shell_exec</span><span class="p">(</span><span class="s2">&#34;nslookup &#34;</span> <span class="o">.</span> <span class="nv">$domain</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="c1">// &amp;quot;为&#34;的html形式
 </span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>若匹配flag，查看目录下文件内容</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat <span class="sb">`</span>ls<span class="sb">`</span> 
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="远程命令执行">远程命令执行</h3>
 <p>RCE，Remote Command Execution</p>
@@ -1252,15 +1263,8 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>构造链的过程：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">__destruct()` &gt; `check()`【payl0ad为1】 &gt; 【what为class001】对象作为函数调用 &gt; `__invoke()` &gt; 【payl0ad为dangerous, a为class001】为不存在的payload赋值 &gt; `__set(payload, dangerous)` &gt; `dangerous(this-&gt;sec)` &gt; 【sec为class003, 作为whaattt执行-&gt;evvval(class003)】 &gt; 对象作为字符串 &gt; `__toString()`返回mystr【mystr为执行的命令】 &gt; `eval(mystr)
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>最终构造的<code>data</code>展开：</p>
+<p><code>__destruct()</code> &gt; <code>check()</code>【payl0ad为1】 &gt; 【what为class001】对象作为函数调用 &gt; <code>__invoke()</code> &gt; 【payl0ad为dangerous, a为class001】为不存在的payload赋值 &gt; <code>__set(payload, dangerous)</code> &gt; <code>dangerous(this-&gt;sec)</code> &gt; 【sec为class003, 作为whaattt执行-&gt;evvval(class003)】 &gt; 对象作为字符串 &gt; <code>__toString()</code>返回mystr【mystr为执行的命令】 &gt; <code>eval(mystr)</code></p>
+<p>最终构造的<code>data</code>展开：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -2018,7 +2022,7 @@
         
             2020 - 
         
-        2024 J-shiro&#39;s 博客<br />
+        2025 J-shiro&#39;s 博客<br />
         
         
             
@@ -2069,7 +2073,9 @@
         
             
         
-        共 173.32k 字 · 共 19篇文章
+            
+        
+        共 186.39k 字 · 共 20篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---

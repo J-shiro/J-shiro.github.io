@@ -17,7 +17,7 @@ typora-root-url: ..\..\..\..\..\static
 
 寻找文件：`/tmp`，`env`，`/etc/passwd`
 
-找文件名：`find / -name "`*`flag`*`.txt"`
+找文件名：`find / -name "*flag*.txt"`
 
 ## 工具
 
@@ -45,6 +45,7 @@ Intruder模块：可以多线程对URL或data中的参数进行**爆破**
 
 ```bash
 ping x:x:x:x ; ls
+ping xxx | ls
 ```
 
 
@@ -381,7 +382,7 @@ php://filter/read=convert.base64-encode/resource=flag.php
 Linux下命令：
 
 - ls替代：`dir`
-- 空格绕过：`<`, `${IFS}`, `$IFS$9`, `%09`
+- 空格绕过：`<`, `${IFS}`, `$IFS$9`, `%09`, `<>`, `<`, `%20`
 - cat命令替代：`more`, `tail`, `head`, `less`, `nl`, `sort`, `tailf`
 - 截断字符替代：`&&`, `||`, `;`, `%0a`, `|`
 - 反斜杠绕过：`ca\t fl\ag.txt`
@@ -392,6 +393,12 @@ Linux下命令：
 ```php
 shell_exec("nslookup " . $domain);
 // &quot;为"的html形式
+```
+
+若匹配flag，查看目录下文件内容
+
+```bash
+cat `ls` 
 ```
 
 
@@ -593,9 +600,7 @@ if(isset($_GET['data'])){
 
 构造链的过程：
 
-```
-__destruct()` > `check()`【payl0ad为1】 > 【what为class001】对象作为函数调用 > `__invoke()` > 【payl0ad为dangerous, a为class001】为不存在的payload赋值 > `__set(payload, dangerous)` > `dangerous(this->sec)` > 【sec为class003, 作为whaattt执行->evvval(class003)】 > 对象作为字符串 > `__toString()`返回mystr【mystr为执行的命令】 > `eval(mystr)
-```
+`__destruct()` > `check()`【payl0ad为1】 > 【what为class001】对象作为函数调用 > `__invoke()` > 【payl0ad为dangerous, a为class001】为不存在的payload赋值 > `__set(payload, dangerous)` > `dangerous(this->sec)` > 【sec为class003, 作为whaattt执行->evvval(class003)】 > 对象作为字符串 > `__toString()`返回mystr【mystr为执行的命令】 > `eval(mystr)`
 
 最终构造的`data`展开：
 

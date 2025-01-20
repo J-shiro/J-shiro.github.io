@@ -2535,7 +2535,7 @@ extern struct _IO_FILE_plus *_IO_list_all;
 struct _IO_FILE_plus
 {
   _IO_FILE file;
-  // vtable: 实现文件流操作的虚函数表,包含一组函数指针,指向实现各种IO操作的函数
+  // vtable: 实现文件流操作的虚函数表,包含一组函数指针,指向实现各种IO操作的函数，不同的对象指向函数可能不同
   const struct _IO_jump_t *vtable;
 };
 ```
@@ -2629,6 +2629,8 @@ struct _IO_FILE_complete
 ```
 
 #### _IO_jump_t
+
+不同的实例对象指向的函数可能不同
 
 ```c
 struct _IO_jump_t
@@ -3602,5 +3604,700 @@ int _IO_new_file_close_it(FILE *fp)
   return close_status ? close_status : write_status;
 }
 libc_hidden_ver(_IO_new_file_close_it, _IO_file_close_it)
+```
+
+### puts
+
+#### _IO_puts
+
+```c
+int _IO_puts(const char *str)
+{
+  int result = EOF;
+  _IO_size_t len = strlen(str);
+  _IO_acquire_lock(_IO_stdout);
+
+  if ((_IO_vtable_offset(_IO_stdout) != 0 || _IO_fwide(_IO_stdout, -1) == -1) 
+    && _IO_sputn(_IO_stdout, str, len) == len
+    && _IO_putc_unlocked('\n', _IO_stdout) != EOF)
+    result = MIN(INT_MAX, len + 1);
+
+  _IO_release_lock(_IO_stdout);
+  return result;
+}
+```
+
+#### _IO_sputn
+
+```c
+// 2.27 宏展开
+((IO_validate_vtable (
+	*(struct _IO_jump_t **) ( // 转换为_IO_jump_t * 类型指针最终传入IO_validate_vtable
+		(void *) &(
+            // 由 char * 转换为 vtable 对应类型
+            *(__typeof__ (((struct _IO_FILE_plus){}).vtable) *)(
+                // 获取_IO_stdout基地址，计算出vtable成员在_IO_stdout结构体地址
+                ((char *) ((_IO_stdout))) + __builtin_offsetof (struct _IO_FILE_plus, vtable)
+            )
+        ) 
+  		+ (_IO_stdout)->_vtable_offset // 一般为0，应对特殊情况偏移
+  	)
+))->__xsputn) (_IO_stdout, str, len);
+```
+
+#### IO_validate_vtable
+
+```c
+// 2.27 检查传入的 vtable 指针是否指向 libc 库中定义的有效的 I/O 操作函数表
+static inline const struct _IO_jump_t *IO_validate_vtable(const struct _IO_jump_t *vtable)
+{
+   // 计算 I/O 操作函数表在内存中总大小
+   uintptr_t section_length = __stop___libc_IO_vtables - __start___libc_IO_vtables;
+   const char *ptr = (const char *)vtable; // 强制转换类型以计算偏移
+   uintptr_t offset = ptr - __start___libc_IO_vtables; // 计算偏移量
+   if (__glibc_unlikely(offset >= section_length)) // 判断是否超过总大小
+      _IO_vtable_check(); // 最终报错
+   return vtable;
+}
+```
+
+#### _IO_vtable_check
+
+```c
+void attribute_hidden _IO_vtable_check (void)
+{
+#ifdef SHARED // 仅共享库模式下编译
+  void (*flag) (void) = atomic_load_relaxed (&IO_accept_foreign_vtables);
+#ifdef PTR_DEMANGLE // 处理函数指针的混淆或解混淆
+  PTR_DEMANGLE (flag); // 解码函数指针flag值
+#endif
+  if (flag == &_IO_vtable_check)
+    return;
+  {
+    Dl_info di; // 存储动态链接器返回的信息，例如符号名和地址
+    struct link_map *l;
+    if (!rtld_active () // 检查运行时动态链接器是否处于活动状态
+        || (_dl_addr (_IO_vtable_check, &di, &l, NULL) != 0
+            && l->l_ns != LM_ID_BASE))
+      return;
+  }
+
+#else // 非共享库模式
+  if (__dlopen != NULL)
+    return;
+#endif
+  __libc_fatal ("Fatal error: glibc detected an invalid stdio handle\n");
+}
+```
+
+#### rtld_active
+
+```c
+#  define GLRO(name) _rtld_local_ro._##name
+
+static inline bool rtld_active (void)
+{
+  return GLRO(dl_init_all_dirs) != NULL;
+}
+```
+
+#### _dl_addr
+
+```c
+int _dl_addr(const void *address, Dl_info *info,
+             struct link_map **mapp, const ElfW(Sym) * *symbolp)
+{
+  const ElfW(Addr) addr = DL_LOOKUP_ADDRESS(address);
+  int result = 0;
+/*
+    libc-lockP.h 关键exit-hook
+    # define __rtld_lock_lock_recursive(NAME) \
+      __libc_maybe_call (__pthread_mutex_lock, (&(NAME).mutex), 0)
+     替换:
+    (({
+        __typeof(__pthread_mutex_lock) *_fn = (__pthread_mutex_lock);
+        _fn != ((void *) 0) ? (*_fn)(&(_dl_load_lock).mutex) : 0;
+    }))
+*/
+  __rtld_lock_lock_recursive(GL(dl_load_lock));
+
+  struct link_map *l = _dl_find_dso_for_object(addr);
+
+  if (l)
+  {
+    determine_info(addr, l, info, mapp, symbolp);
+    result = 1;
+  }
+
+  __rtld_lock_unlock_recursive(GL(dl_load_lock));
+
+  return result;
+}
+libc_hidden_def(_dl_addr)
+```
+
+
+
+### flush
+
+#### _IO_flush_all_lockp
+
+```c
+// l
+int _IO_flush_all_lockp(int do_lock)
+{
+  int result = 0;
+  struct _IO_FILE *fp;
+  int last_stamp;
+
+#ifdef _IO_MTSAFE_IO
+  __libc_cleanup_region_start(do_lock, flush_cleanup, NULL);
+  if (do_lock)
+    _IO_lock_lock(list_all_lock);
+#endif
+
+  last_stamp = _IO_list_all_stamp;
+  fp = (_IO_FILE *)_IO_list_all; // 获取fp
+  while (fp != NULL)
+  {
+    run_fp = fp;
+    if (do_lock)
+      _IO_flockfile(fp);
+
+    if (((fp->_mode <= 0 && fp->_IO_write_ptr > fp->_IO_write_base)
+#if defined _LIBC || defined _GLIBCPP_USE_WCHAR_T
+         || (_IO_vtable_offset(fp) == 0 && fp->_mode > 0 && (fp->_wide_data->_IO_write_ptr > fp->_wide_data->_IO_write_base))
+#endif
+             ) &&
+        _IO_OVERFLOW(fp, EOF) == EOF) // 调用_IO_OVERFLOW， 参数为fp，即_IO_FILE结构体指针
+      result = EOF;
+
+    if (do_lock)
+      _IO_funlockfile(fp);
+    run_fp = NULL;
+
+    if (last_stamp != _IO_list_all_stamp)
+    {
+      /* Something was added to the list.  Start all over again.  */
+      fp = (_IO_FILE *)_IO_list_all;
+      last_stamp = _IO_list_all_stamp;
+    }
+    else
+      fp = fp->_chain;
+  }
+
+#ifdef _IO_MTSAFE_IO
+  if (do_lock)
+    _IO_lock_unlock(list_all_lock);
+  __libc_cleanup_region_end(0);
+#endif
+
+  return result;
+}
+```
+
+
+
+## ld.so
+
+### 结构
+
+#### rtld_global
+
+```c
+struct rtld_global
+{
+#endif
+#ifdef SHARED
+# define DL_NNS 16
+#else
+# define DL_NNS 1
+#endif
+  EXTERN struct link_namespaces
+  {
+    struct link_map *_ns_loaded;
+    unsigned int _ns_nloaded;
+    struct r_scope_elem *_ns_main_searchlist;
+
+    unsigned int _ns_global_scope_alloc;
+    unsigned int _ns_global_scope_pending_adds;
+
+    struct link_map *libc_map;
+    struct unique_sym_table
+    {
+      __rtld_lock_define_recursive (, lock)
+      struct unique_sym
+      {
+	uint32_t hashval;
+	const char *name;
+	const ElfW(Sym) *sym;
+	const struct link_map *map;
+      } *entries;
+      size_t size;
+      size_t n_elements;
+      void (*free) (void *);
+    } _ns_unique_sym_table;
+
+    struct r_debug_extended _ns_debug;
+  } _dl_ns[DL_NNS];
+
+  EXTERN size_t _dl_nns;
+  ......
+```
+
+
+
+#### _rtld_global
+
+可用 gdb 查看`p _rtld_global`
+
+```c
+// glibc-2.38 rtld.c 该变量在 ld.so 内存地址范围内
+
+struct rtld_global _rtld_global =
+  {
+#include <dl-procruntime.c>
+    ._dl_stack_flags = DEFAULT_STACK_PERMS,
+#ifdef _LIBC_REENTRANT
+    ._dl_load_lock = _RTLD_LOCK_RECURSIVE_INITIALIZER,
+    ._dl_load_write_lock = _RTLD_LOCK_RECURSIVE_INITIALIZER,
+    ._dl_load_tls_lock = _RTLD_LOCK_RECURSIVE_INITIALIZER,
+#endif
+    ._dl_nns = 1,
+    ._dl_ns =
+    {
+#ifdef _LIBC_REENTRANT
+      [LM_ID_BASE] = { ._ns_unique_sym_table
+		       = { .lock = _RTLD_LOCK_RECURSIVE_INITIALIZER } }
+#endif
+    }
+  };
+```
+
+#### _dl_ns
+
+```c
+// _dl_ns 为 link_namespaces 结构体 16 项数组
+pwndbg> p &_rtld_global._dl_ns
+$1 = (struct link_namespaces (*)[16]) 0x7ffff7ffd040 <_rtld_local>
+
+pwndbg> p _rtld_global._dl_ns
+$2 = {{
+    _ns_loaded = 0x7ffff7ffe168,
+    _ns_nloaded = 4,
+    _ns_main_searchlist = 0x7ffff7ffe420,
+    _ns_global_scope_alloc = 0,
+    _ns_unique_sym_table = {
+      lock = {
+        mutex = {
+          __data = {
+            __lock = 0,
+            __count = 0,
+            __owner = 0,
+            __nusers = 0,
+            __kind = 1,
+            __spins = 0,
+            __elision = 0,
+            __list = {
+              __prev = 0x0,
+              __next = 0x0
+            }
+          },
+          __size = '\000' <repeats 16 times>, "\001", '\000' <repeats 22 times>,
+          __align = 0
+        }
+      },
+      entries = 0x0,
+      size = 0,
+      n_elements = 0,
+      free = 0x0
+    },
+    _ns_debug = {
+      r_version = 0,
+      r_map = 0x0,
+      r_brk = 0,
+      r_state = RT_CONSISTENT,
+      r_ldbase = 0
+    }
+  }, {
+    _ns_loaded = 0x0,
+    _ns_nloaded = 0,
+    _ns_main_searchlist = 0x0,
+    _ns_global_scope_alloc = 0,
+    _ns_unique_sym_table = {
+      lock = {
+        mutex = {
+          __data = {
+            __lock = 0,
+            __count = 0,
+            __owner = 0,
+            __nusers = 0,
+            __kind = 0,
+            __spins = 0,
+            __elision = 0,
+            __list = {
+              __prev = 0x0,
+              __next = 0x0
+            }
+          },
+          __size = '\000' <repeats 39 times>,
+          __align = 0
+        }
+      },
+      entries = 0x0,
+      size = 0,
+      n_elements = 0,
+      free = 0x0
+    },
+    _ns_debug = {
+      r_version = 0,
+      r_map = 0x0,
+      r_brk = 0,
+      r_state = RT_CONSISTENT,
+      r_ldbase = 0
+    }
+  } <repeats 15 times>}
+```
+
+**第 0 项**
+
+```c
+pwndbg> p _rtld_global._dl_ns[0]
+$9 = {
+  _ns_loaded = 0x7ffff7ffe168, // (struct link_map *) 指向 link_map 结构体的指针
+  _ns_nloaded = 4, // 表示 _ns_nloaded 有多少 link_map 结构体
+  _ns_main_searchlist = 0x7ffff7ffe420,
+  _ns_global_scope_alloc = 0,
+  _ns_unique_sym_table = {
+    lock = {
+      mutex = {
+        __data = {
+          __lock = 0,
+          __count = 0,
+          __owner = 0,
+          __nusers = 0,
+          __kind = 1,
+          __spins = 0,
+          __elision = 0,
+          __list = {
+            __prev = 0x0,
+            __next = 0x0
+          }
+        },
+        __size = '\000' <repeats 16 times>, "\001", '\000' <repeats 22 times>,
+        __align = 0
+      }
+    },
+    entries = 0x0,
+    size = 0,
+    n_elements = 0,
+    free = 0x0
+  },
+  _ns_debug = {
+    r_version = 0,
+    r_map = 0x0,
+    r_brk = 0,
+    r_state = RT_CONSISTENT,
+    r_ldbase = 0
+  }
+}
+```
+
+
+
+#### _dl_nns
+
+```c
+pwndbg> p &_rtld_global._dl_nns
+$3 = (size_t *) 0x7ffff7ffd940 <_rtld_local+2304>
+pwndbg> p _rtld_global._dl_nns
+$4 = 1 // 表明 _dl_ns 数组中有效的项，一般为第0项
+```
+
+
+
+#### link_map
+
+```c
+struct link_map
+{
+   ElfW(Addr) l_addr; // 程序加载的内存基址
+   char *l_name;
+   ElfW(Dyn) * l_ld;
+   struct link_map *l_next, *l_prev; // 双向链表结构，分别指向下一个和前一个link_map结构体
+
+   struct link_map *l_real; // 标识该共享库的真实映射
+
+   Lmid_t l_ns;
+
+   struct libname_list *l_libname;
+   // l_info 指向 ELF 文件的Dynamic节，包括指向 DT_INIT、DT_FINI、DT_FINI_ARRAY 和其他Dynamic节的指针
+   ElfW(Dyn) * l_info[DT_NUM + DT_THISPROCNUM + DT_VERSIONTAGNUM + DT_EXTRANUM + DT_VALNUM + DT_ADDRNUM];
+   const ElfW(Phdr) * l_phdr;
+   ElfW(Addr) l_entry;
+   ElfW(Half) l_phnum;
+   ElfW(Half) l_ldnum;
+
+   struct r_scope_elem l_searchlist;
+
+   struct r_scope_elem l_symbolic_searchlist;
+
+   struct link_map *l_loader;
+
+   struct r_found_version *l_versions;
+   unsigned int l_nversions;
+
+   Elf_Symndx l_nbuckets;
+   Elf32_Word l_gnu_bitmask_idxbits;
+   Elf32_Word l_gnu_shift;
+   const ElfW(Addr) * l_gnu_bitmask;
+   union
+   {
+      const Elf32_Word *l_gnu_buckets;
+      const Elf_Symndx *l_chain;
+   };
+   union
+   {
+      const Elf32_Word *l_gnu_chain_zero;
+      const Elf_Symndx *l_buckets;
+   };
+
+   unsigned int l_direct_opencount;
+   enum
+   {
+      lt_executable,
+      lt_library,
+      lt_loaded
+   } l_type : 2;
+   unsigned int l_dt_relr_ref : 1;
+   unsigned int l_relocated : 1;
+   unsigned int l_init_called : 1;
+   unsigned int l_global : 1;
+   unsigned int l_reserved : 2;
+   unsigned int l_main_map : 1;
+   unsigned int l_visited : 1;
+   unsigned int l_map_used : 1;
+   unsigned int l_map_done : 1;
+   unsigned int l_phdr_allocated : 1;
+   unsigned int l_soname_added : 1;
+   unsigned int l_faked : 1;
+   unsigned int l_need_tls_init : 1;
+   unsigned int l_auditing : 1;
+   unsigned int l_audit_any_plt : 1;
+   unsigned int l_removed : 1;
+   unsigned int l_contiguous : 1;
+   unsigned int l_free_initfini : 1;
+   unsigned int l_ld_readonly : 1;
+   unsigned int l_find_object_processed : 1;
+   bool l_nodelete_active;
+   bool l_nodelete_pending;
+
+#include <link_map.h>
+
+   struct r_search_path_struct l_rpath_dirs;
+
+   struct reloc_result
+   {
+      DL_FIXUP_VALUE_TYPE addr;
+      struct link_map *bound;
+      unsigned int boundndx;
+      uint32_t enterexit;
+      unsigned int flags;
+      unsigned int init;
+   } *l_reloc_result;
+
+   ElfW(Versym) * l_versyms;
+
+   const char *l_origin;
+
+   ElfW(Addr) l_map_start, l_map_end;
+
+   ElfW(Addr) l_text_end;
+
+   struct r_scope_elem *l_scope_mem[4];
+
+   size_t l_scope_max;
+   struct r_scope_elem **l_scope;
+
+   struct r_scope_elem *l_local_scope[2];
+
+   struct r_file_id l_file_id;
+   struct r_search_path_struct l_runpath_dirs;
+
+   struct link_map **l_initfini;
+   struct link_map_reldeps
+   {
+      unsigned int act;
+      struct link_map *list[];
+   } *l_reldeps;
+   unsigned int l_reldepsmax;
+
+   unsigned int l_used;
+
+   ElfW(Word) l_feature_1;
+   ElfW(Word) l_flags_1;
+   ElfW(Word) l_flags;
+
+   int l_idx;
+
+   struct link_map_machine l_mach;
+
+   struct
+   {
+      const ElfW(Sym) * sym;
+      int type_class;
+      struct link_map *value;
+      const ElfW(Sym) * ret;
+   } l_lookup_cache;
+
+   void *l_tls_initimage;
+   size_t l_tls_initimage_size;
+   size_t l_tls_blocksize;
+   size_t l_tls_align;
+   size_t l_tls_firstbyte_offset;
+#ifndef NO_TLS_OFFSET
+#define NO_TLS_OFFSET 0
+#endif
+#ifndef FORCED_DYNAMIC_TLS_OFFSET
+#if NO_TLS_OFFSET == 0
+#define FORCED_DYNAMIC_TLS_OFFSET -1
+#elif NO_TLS_OFFSET == -1
+#define FORCED_DYNAMIC_TLS_OFFSET -2
+#else
+#error "FORCED_DYNAMIC_TLS_OFFSET is not defined"
+#endif
+#endif
+   ptrdiff_t l_tls_offset;
+   size_t l_tls_modid;
+   size_t l_tls_dtor_count;
+   ElfW(Addr) l_relro_addr;
+   size_t l_relro_size;
+
+   unsigned long long int l_serial;
+};
+```
+
+
+
+### 2.38
+
+#### _dl_fini
+
+程序退出或动态库卸载时调用所有已加载共享库（ `.so` 文件）的析构函数
+
+```c
+void _dl_fini (void)
+{
+#ifdef SHARED
+  int do_audit = 0; // 标记是否进行审计操作
+ again: // 用于重试的逻辑
+#endif
+  // GL(dl_nns): 命名空间的数量，一般为 1，此时 ns 为 0
+  for (Lmid_t ns = GL(dl_nns) - 1; ns >= 0; --ns) // 从最后一个命名空间开始遍历所有命名空间
+    {
+      __rtld_lock_lock_recursive (GL(dl_load_lock)); // 加锁
+
+      unsigned int nloaded = GL(dl_ns)[ns]._ns_nloaded; // 当前命名空间中加载的共享对象数量, 即多少个link_map
+      if (nloaded == 0
+#ifdef SHARED
+	  || GL(dl_ns)[ns]._ns_loaded->l_auditing != do_audit
+#endif
+	  )
+	__rtld_lock_unlock_recursive (GL(dl_load_lock)); // 释放锁
+      else
+	{
+#ifdef SHARED
+	  _dl_audit_activity_nsid (ns, LA_ACT_DELETE); // 审计活动标记为删除(LA_ACT_DELETE), 	记录审计日志
+#endif
+
+	  struct link_map *maps[nloaded]; // maps 数组收集当前命名空间中所有加载的共享对象
+
+	  unsigned int i;
+	  struct link_map *l;
+	  assert (nloaded != 0 || GL(dl_ns)[ns]._ns_loaded == NULL);
+      // 遍历链表中每一个link_map结构体
+	  for (l = GL(dl_ns)[ns]._ns_loaded, i = 0; l != NULL; l = l->l_next)
+	    if (l == l->l_real) // 需要指向自身
+	      {
+		assert (i < nloaded);
+
+		maps[i] = l; // 将指针存到 maps 中初始化
+		l->l_idx = i; // 赋值索引
+		++i; // 索引自增
+		++l->l_direct_opencount;
+	      }
+      // 检查	ns = 0, LM_ID_BASE = 0
+	  assert (ns != LM_ID_BASE || i == nloaded);
+	  assert (ns == LM_ID_BASE || i == nloaded || i == nloaded - 1);
+	  unsigned int nmaps = i;
+
+      // 对 maps 数组中共享对象进行排序，确保按正确的顺序调用析构函数
+	  _dl_sort_maps (maps, nmaps, (ns == LM_ID_BASE), true); // 伪造变化可能卡在此处
+
+	  __rtld_lock_unlock_recursive (GL(dl_load_lock));
+
+	  for (i = 0; i < nmaps; ++i) // 遍历maps数组
+	    {
+	      struct link_map *l = maps[i]; // 取出结构体
+
+	      if (l->l_init_called)
+		{
+		  _dl_call_fini (l); // 调用每个加载对象的析构函数
+#ifdef SHARED
+		  _dl_audit_objclose (l);
+#endif
+		}
+	      --l->l_direct_opencount;
+	    }
+
+#ifdef SHARED
+	  _dl_audit_activity_nsid (ns, LA_ACT_CONSISTENT);
+#endif
+	}
+    }
+
+#ifdef SHARED
+  if (! do_audit && GLRO(dl_naudit) > 0)
+    {
+      do_audit = 1;
+      goto again;
+    }
+
+  if (__glibc_unlikely (GLRO(dl_debug_mask) & DL_DEBUG_STATISTICS))
+    _dl_debug_printf ("\nruntime linker statistics:\n"
+		      "           final number of relocations: %lu\n"
+		      "final number of relocations from cache: %lu\n",
+		      GL(dl_num_relocations),
+		      GL(dl_num_cache_relocations));
+#endif
+}
+```
+
+#### _dl_call_fini
+
+```c
+void _dl_call_fini(void *closure_map)
+{
+  struct link_map *map = closure_map;
+
+  if (__glibc_unlikely(GLRO(dl_debug_mask) & DL_DEBUG_IMPCALLS))
+    _dl_debug_printf("\ncalling fini: %s [%lu]\n\n", map->l_name, map->l_ns);
+
+  map->l_init_called = 0;
+
+  ElfW(Dyn) *fini_array = map->l_info[DT_FINI_ARRAY]; // 取出第26项
+  if (fini_array != NULL)
+  {
+    ElfW(Addr) *array = (ElfW(Addr) *)(map->l_addr + fini_array->d_un.d_ptr); // 相加找到array指针数组
+    size_t sz = (map->l_info[DT_FINI_ARRAYSZ]->d_un.d_val / sizeof(ElfW(Addr))); // 第28项获取大小size
+
+    while (sz-- > 0) // 从后往前依次调用array数组中的函数
+      ((fini_t)array[sz])();
+  }
+
+  ElfW(Dyn) *fini = map->l_info[DT_FINI];
+  if (fini != NULL)
+    DL_CALL_DT_FINI(map, ((void *)map->l_addr + fini->d_un.d_ptr));
+}
 ```
 

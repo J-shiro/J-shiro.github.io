@@ -53,6 +53,12 @@ vim的配置在`~/.vimrc`中
 
 **od**：十六进制查看工具，`od -c file`
 
+**pstree**：查看进程关系
+
+**kill**：` kill -l`查看信号
+
+**netstat**：显示网络状态
+
 ## 常用命令
 
 **查看某个文件的绝对路径**： `pwd|awk '{print $1"/file_name"}'`
@@ -66,6 +72,10 @@ vim的配置在`~/.vimrc`中
 **查找指定进程格式**：`ps -ef | grep xx`
 
 **查看分区挂载情况**：`df`
+
+**编译链接线程库**：`-lpthread`
+
+**安装deb文件**：`sudo dpkg -i`
 
 **链接**
 
