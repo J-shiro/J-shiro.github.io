@@ -2576,21 +2576,6 @@ struct _IO_FILE
   _IO_lock_t *_lock;
 #ifdef _IO_USE_OLD_IO_FILE
 };
-
-struct _IO_FILE_complete
-{
-  struct _IO_FILE _file;
-#endif
-  __off64_t _offset;
-
-  struct _IO_codecvt *_codecvt;
-  struct _IO_wide_data *_wide_data;
-  struct _IO_FILE *_freeres_list;
-  void *_freeres_buf;
-  size_t __pad5;
-  int _mode;
-  char _unused2[15 * sizeof (int) - 4 * sizeof (void *) - sizeof (size_t)];
-};
 ```
 
 **偏移**
@@ -2627,6 +2612,101 @@ struct _IO_FILE_complete
 0xc4:'_unused2',
 0xd8:'vtable'
 ```
+
+#### _IO_FILE_complete
+
+```c
+struct _IO_FILE_complete
+{
+  struct _IO_FILE _file;
+  __off64_t _offset;
+  struct _IO_codecvt *_codecvt;
+  struct _IO_wide_data *_wide_data; // 劫持这个变量
+  struct _IO_FILE *_freeres_list;
+  void *_freeres_buf;
+  size_t __pad5;
+  int _mode;
+  char _unused2[15 * sizeof (int) - 4 * sizeof (void *) - sizeof (size_t)];
+};
+```
+
+#### _IO_wstrnfile
+
+```c
+typedef struct{
+  _IO_strfile f;
+  wchar_t overflow_buf[64]; // overflow_buf
+} _IO_wstrnfile;
+```
+
+#### _IO_strnfile
+
+```c
+typedef struct{
+  _IO_strfile f;
+  char overflow_buf[64];
+} _IO_strnfile;
+```
+
+#### _IO_strfile
+
+```c
+typedef struct _IO_strfile_
+{
+  struct _IO_streambuf _sbf;
+  struct _IO_str_fields _s;
+} _IO_strfile;
+```
+
+#### _IO_streambuf
+
+```c
+struct _IO_streambuf
+{
+  FILE _f;
+  const struct _IO_jump_t *vtable;
+};
+```
+
+#### _IO_str_fields
+
+```c
+struct _IO_str_fields
+{
+  _IO_alloc_type _allocate_buffer_unused;
+  _IO_free_type _free_buffer_unused;
+};
+```
+
+#### _IO_wide_data
+
+```c
+// 结构与_IO_FILE很像
+struct _IO_wide_data
+{
+  wchar_t *_IO_read_ptr;	/* Current read pointer */
+  wchar_t *_IO_read_end;	/* End of get area. */
+  wchar_t *_IO_read_base;	/* Start of putback+get area. */
+  wchar_t *_IO_write_base;	/* Start of put area. */
+  wchar_t *_IO_write_ptr;	/* Current put pointer. */
+  wchar_t *_IO_write_end;	/* End of put area. */
+  wchar_t *_IO_buf_base;	/* Start of reserve area. */
+  wchar_t *_IO_buf_end;		/* End of reserve area. */
+  /* The following fields are used to support backing up and undo. */
+  wchar_t *_IO_save_base;	/* Pointer to start of non-current get area. */
+  wchar_t *_IO_backup_base;	/* Pointer to first valid character of
+				   backup area */
+  wchar_t *_IO_save_end;	/* Pointer to end of non-current get area. */
+
+  __mbstate_t _IO_state;
+  __mbstate_t _IO_last_state;
+  struct _IO_codecvt _codecvt;
+  wchar_t _shortbuf[1];
+  const struct _IO_jump_t *_wide_vtable; // vtable表
+};
+```
+
+
 
 #### _IO_jump_t
 
@@ -2700,6 +2780,8 @@ _IO_FILE *stderr = (FILE *) &_IO_2_1_stderr_;
  struct _IO_FILE_plus NAME = {FILEBUF_LITERAL(CHAIN, FLAGS, FD, &_IO_wide_data_##FD), &_IO_file_jumps};
 ```
 
+
+
 #### _IO_link_in
 
 ```c
@@ -2731,6 +2813,29 @@ void _IO_link_in (struct _IO_FILE_plus *fp)
     }
 }
 libc_hidden_def (_IO_link_in)
+```
+
+#### _IO_cookie_file
+
+```c
+struct _IO_cookie_file
+{
+  struct _IO_FILE_plus __fp; // 包含一个FILE结构体和一个_IO_jump_t指针vtable
+  void *__cookie;
+  cookie_io_functions_t __io_functions; // 包含4个函数指针
+};
+```
+
+#### _IO_cookie_io_functions_t
+
+```c
+typedef struct _IO_cookie_io_functions_t
+{
+  cookie_read_function_t *read;		/* Read bytes.  */
+  cookie_write_function_t *write;	/* Write bytes.  */
+  cookie_seek_function_t *seek;		/* Seek/tell file position.  */
+  cookie_close_function_t *close;	/* Close file.  */
+} cookie_io_functions_t;
 ```
 
 
@@ -3743,7 +3848,7 @@ libc_hidden_def(_dl_addr)
 #### _IO_flush_all_lockp
 
 ```c
-// l
+// 程序退出时会调用
 int _IO_flush_all_lockp(int do_lock)
 {
   int result = 0;
@@ -3794,6 +3899,396 @@ int _IO_flush_all_lockp(int do_lock)
 
   return result;
 }
+```
+
+#### _IO_str_overflow
+
+```c
+int _IO_str_overflow (FILE *fp, int c)
+{
+  int flush_only = c == EOF;
+  size_t pos;
+  if (fp->_flags & _IO_NO_WRITES)
+      return flush_only ? 0 : EOF;
+  if ((fp->_flags & _IO_TIED_PUT_GET) && !(fp->_flags & _IO_CURRENTLY_PUTTING))
+    {
+      fp->_flags |= _IO_CURRENTLY_PUTTING;
+      fp->_IO_write_ptr = fp->_IO_read_ptr;
+      fp->_IO_read_ptr = fp->_IO_read_end;
+    }
+  pos = fp->_IO_write_ptr - fp->_IO_write_base;
+  if (pos >= (size_t) (_IO_blen (fp) + flush_only))
+    {
+      if (fp->_flags & _IO_USER_BUF)
+	return EOF;
+      else
+	{
+	  char *new_buf;
+	  char *old_buf = fp->_IO_buf_base;
+	  size_t old_blen = _IO_blen (fp); // _IO_buf_end - _IO_buf_base
+	  size_t new_size = 2 * old_blen + 100; // 获取新大小
+	  if (new_size < old_blen)
+	    return EOF;
+	  new_buf = malloc (new_size); // 使用malloc申请新的内存，从tcache中获取
+	  if (new_buf == NULL)
+	    {
+	      return EOF;
+	    }
+	  if (old_buf)
+	    {
+	      memcpy (new_buf, old_buf, old_blen); // 从old_buf内容拷贝到新的buf中
+	      free (old_buf); // 释放old_buf
+	      fp->_IO_buf_base = NULL;
+	    }
+	  memset (new_buf + old_blen, '\0', new_size - old_blen);
+
+	  _IO_setb (fp, new_buf, new_buf + new_size, 1);
+	  fp->_IO_read_base = new_buf + (fp->_IO_read_base - old_buf);
+	  fp->_IO_read_ptr = new_buf + (fp->_IO_read_ptr - old_buf);
+	  fp->_IO_read_end = new_buf + (fp->_IO_read_end - old_buf);
+	  fp->_IO_write_ptr = new_buf + (fp->_IO_write_ptr - old_buf);
+
+	  fp->_IO_write_base = new_buf;
+	  fp->_IO_write_end = fp->_IO_buf_end;
+	}
+    }
+
+  if (!flush_only)
+    *fp->_IO_write_ptr++ = (unsigned char) c;
+  if (fp->_IO_write_ptr > fp->_IO_read_end)
+    fp->_IO_read_end = fp->_IO_write_ptr;
+  return c;
+}
+libc_hidden_def (_IO_str_overflow)
+```
+
+
+
+#### _IO_fflush
+
+```c
+int _IO_fflush(FILE *fp)
+{
+  if (fp == NULL)
+    return _IO_flush_all(); // 刷新所有打开可用的文件流
+  else
+  { // 处理单个流
+    int result;
+    CHECK_FILE(fp, EOF); // 验证是否有效
+    _IO_acquire_lock(fp);
+/*
+#define _IO_SYNC(FP) JUMP0 (__sync, FP)
+扩展到:
+((IO_validate_vtable ((*(__typeof__ (((struct _IO_FILE_plus){}).vtable) *)(((char *) ((fp))) + __builtin_offsetof (struct _IO_FILE_plus, vtable)))))->__sync) (fp)
+*/
+    result = _IO_SYNC(fp) ? EOF : 0; // 调用vtable中的函数: 文件流的 __sync 函数指针
+    _IO_release_lock(fp);
+    return result;
+  }
+}
+libc_hidden_def(_IO_fflush)
+```
+
+
+
+### printf
+
+#### __fxprintf
+
+```c
+int __fxprintf(FILE *fp, const char *fmt, ...)
+{
+  va_list ap;
+  va_start(ap, fmt);
+  int res = __vfxprintf(fp, fmt, ap, 0);
+  va_end(ap);
+  return res;
+}
+```
+
+#### __vfxprintf
+
+```c
+int __vfxprintf(FILE *fp, const char *fmt, va_list ap,
+                unsigned int mode_flags)
+{
+  if (fp == NULL)
+    fp = stderr;
+  _IO_flockfile(fp);
+  int res = locked_vfxprintf(fp, fmt, ap, mode_flags);
+  _IO_funlockfile(fp);
+  return res;
+}
+```
+
+#### locked_vfxprintf
+
+```c
+// # define vfprintf	__vfprintf_internal
+
+static int
+locked_vfxprintf(FILE *fp, const char *fmt, va_list ap,
+                 unsigned int mode_flags)
+{
+  if (_IO_fwide(fp, 0) <= 0)
+    return __vfprintf_internal(fp, fmt, ap, mode_flags);
+
+  wchar_t *wfmt;
+  mbstate_t mbstate;
+  int res;
+  int used_malloc = 0;
+  size_t len = strlen(fmt) + 1;
+
+  if (__glibc_unlikely(len > SIZE_MAX / sizeof(wchar_t)))
+  {
+    __set_errno(EOVERFLOW);
+    return -1;
+  }
+  if (__libc_use_alloca(len * sizeof(wchar_t)))
+    wfmt = alloca(len * sizeof(wchar_t));
+  else if ((wfmt = malloc(len * sizeof(wchar_t))) == NULL)
+    return -1;
+  else
+    used_malloc = 1;
+
+  memset(&mbstate, 0, sizeof mbstate);
+  res = __mbsrtowcs(wfmt, &fmt, len, &mbstate);
+
+  if (res != -1)
+    res = __vfwprintf_internal(fp, wfmt, ap, mode_flags);
+
+  if (used_malloc)
+    free(wfmt);
+
+  return res;
+}
+```
+
+#### __printf
+
+```c
+int __printf (const char *format, ...)
+{
+  va_list arg;
+  int done;
+
+  va_start (arg, format);
+  done = __vfprintf_internal (stdout, format, arg, 0);
+  va_end (arg);
+
+  return done;
+}
+```
+
+#### __register_printf_function
+
+```c
+int __register_printf_function(int spec, printf_function converter, 
+                               printf_arginfo_function arginfo){
+	return __register_printf_specifier(spec, converter,
+                                       (printf_arginfo_size_function *)arginfo);
+}
+weak_alias(__register_printf_function, register_printf_function)
+```
+
+#### __register_printf_specifier
+
+```c
+int __register_printf_specifier(int spec, printf_function converter,
+                                printf_arginfo_size_function arginfo){
+  // spec: fmt的ascii码, converter与arginfo: 要绑定的函数与参数指针
+  if (spec < 0 || spec > (int)UCHAR_MAX) // UCHAR_MAX: SCHAR_MAX[0x7f] * 2 + 1 = 0xff
+  {
+    __set_errno(EINVAL);
+    return -1;
+  }
+
+  int result = 0;
+  __libc_lock_lock(lock);
+  
+  // 若该表是空的
+  if (__printf_function_table == NULL)
+  {
+    // calloc分配一块内存对arginfo表进行初始化，一次性分配两个指针份的堆块
+    __printf_arginfo_table = (printf_arginfo_size_function **)
+        calloc(UCHAR_MAX + 1, sizeof(void *) * 2);// void * 为8字节，共申请0x10 * 0x100
+    if (__printf_arginfo_table == NULL)
+    {
+      result = -1;
+      goto out;
+    }
+	// 初始化function表，紧邻arginfo表
+    __printf_function_table = (printf_function **)(__printf_arginfo_table + UCHAR_MAX + 1);
+  }
+  // 绑定
+  __printf_function_table[spec] = converter;
+  __printf_arginfo_table[spec] = arginfo;
+
+out:
+  __libc_lock_unlock(lock);
+
+  return result;
+}
+libc_hidden_def(__register_printf_specifier)
+    weak_alias(__register_printf_specifier, register_printf_specifier)
+```
+
+### assert
+
+#### __malloc_assert
+
+```c
+static void
+__malloc_assert (const char *assertion, const char *file, unsigned int line,
+		 const char *function)
+{
+  (void) __fxprintf (NULL, "%s%s%s:%u: %s%sAssertion `%s' failed.\n",
+		     __progname, __progname[0] ? ": " : "",
+		     file, line,
+		     function ? function : "", function ? ": " : "",
+		     assertion);
+  fflush (stderr);
+  abort ();
+}
+```
+
+### cookie
+
+#### _IO_cookie_read
+
+```c
+static ssize_t
+_IO_cookie_read(FILE *fp, void *buf, ssize_t size)
+{
+  // 将fp转换为_IO_cookie_file *类型的cfile结构体
+  struct _IO_cookie_file *cfile = (struct _IO_cookie_file *)fp;
+  // 通过偏移取出存放在read对应对象中的函数指针
+  cookie_read_function_t *read_cb = cfile->__io_functions.read;
+#ifdef PTR_DEMANGLE
+  PTR_DEMANGLE(read_cb); // 进行了加密
+#endif
+
+  if (read_cb == NULL)
+    return -1;
+
+  return read_cb(cfile->__cookie, buf, size); // 调用该指针，传入参数为__cookie
+}
+```
+
+#### _IO_cookie_write
+
+```c
+static ssize_t
+_IO_cookie_write(FILE *fp, const void *buf, ssize_t size)
+{
+  struct _IO_cookie_file *cfile = (struct _IO_cookie_file *)fp;
+  cookie_write_function_t *write_cb = cfile->__io_functions.write;
+#ifdef PTR_DEMANGLE
+  // 对指针进行加密：取出对应函数指针，将函数指针循环右移11位，并与`fs:[0x30]`异或得到真正函数地址
+  PTR_DEMANGLE(write_cb); 
+#endif
+
+  if (write_cb == NULL)
+  {
+    fp->_flags |= _IO_ERR_SEEN;
+    return 0;
+  }
+
+  ssize_t n = write_cb(cfile->__cookie, buf, size);
+  if (n < size)
+    fp->_flags |= _IO_ERR_SEEN;
+
+  return n;
+}
+```
+
+#### _IO_cookie_close
+
+```c
+static int
+_IO_cookie_close(FILE *fp)
+{
+  struct _IO_cookie_file *cfile = (struct _IO_cookie_file *)fp;
+  cookie_close_function_t *close_cb = cfile->__io_functions.close;
+#ifdef PTR_DEMANGLE
+  PTR_DEMANGLE(close_cb);
+#endif
+
+  if (close_cb == NULL)
+    return 0;
+
+  return close_cb(cfile->__cookie);
+}
+```
+
+
+
+#### _IO_cookie_seek
+
+```c
+static off64_t
+_IO_cookie_seek(FILE *fp, off64_t offset, int dir)
+{
+  struct _IO_cookie_file *cfile = (struct _IO_cookie_file *)fp;
+  cookie_seek_function_t *seek_cb = cfile->__io_functions.seek;
+#ifdef PTR_DEMANGLE
+  PTR_DEMANGLE(seek_cb);
+#endif
+
+  return ((seek_cb == NULL || (seek_cb(cfile->__cookie, &offset, dir) == -1) || offset == (off64_t)-1)
+              ? _IO_pos_BAD
+              : offset);
+}
+```
+
+### house of apple
+
+记录相关一些函数
+
+#### _IO_wstrn_overflow
+
+```c
+static wint_t _IO_wstrn_overflow (FILE *fp, wint_t c)
+{
+  // 先将 fp 强制转换为_IO_wstrnfile *指针
+  _IO_wstrnfile *snf = (_IO_wstrnfile *) fp;
+
+  if (fp->_wide_data->_IO_buf_base != snf->overflow_buf) // 一般都成立
+    {
+      _IO_wsetb (fp, snf->overflow_buf,
+		 snf->overflow_buf + (sizeof (snf->overflow_buf)
+				      / sizeof (wchar_t)), 0);
+	  // 成立会对以下四个值赋值为`snf->overflow_buf`或相关偏移值
+      fp->_wide_data->_IO_write_base = snf->overflow_buf;
+      fp->_wide_data->_IO_read_base = snf->overflow_buf;
+      fp->_wide_data->_IO_read_ptr = snf->overflow_buf;
+      fp->_wide_data->_IO_read_end = (snf->overflow_buf
+				      + (sizeof (snf->overflow_buf)
+					 / sizeof (wchar_t)));
+    }
+  // 赋值
+  fp->_wide_data->_IO_write_ptr = snf->overflow_buf;
+  fp->_wide_data->_IO_write_end = snf->overflow_buf;
+
+  return c;
+}
+```
+
+#### _IO_wsetb
+
+```c
+void _IO_wsetb (FILE *f, wchar_t *b, wchar_t *eb, int a)
+{
+  if (f->_wide_data->_IO_buf_base && !(f->_flags2 & _IO_FLAGS2_USER_WBUF))
+    free (f->_wide_data->_IO_buf_base); // 其不为0的时候不要执行到这里
+  f->_wide_data->_IO_buf_base = b;
+  f->_wide_data->_IO_buf_end = eb;
+  if (a)
+    f->_flags2 &= ~_IO_FLAGS2_USER_WBUF;
+  else
+    f->_flags2 |= _IO_FLAGS2_USER_WBUF;
+}
+
 ```
 
 
@@ -4299,5 +4794,25 @@ void _dl_call_fini(void *closure_map)
   if (fini != NULL)
     DL_CALL_DT_FINI(map, ((void *)map->l_addr + fini->d_un.d_ptr));
 }
+```
+
+## TLS
+
+### 结构
+
+#### tcbhead_t
+
+```c
+typedef struct {
+  void *tcb;    /* 指向TCB */
+  dtv_t *dtv;       /* 指向dtv数组 */
+  void *self;   /* 指向自身  */
+  int multiple_threads;
+  int gscope_flag;
+  uintptr_t sysinfo;
+  uintptr_t stack_guard;    /* canary值 */
+  uintptr_t pointer_guard;  /* 用于保护指针 */
+  //...
+} tcbhead_t;
 ```
 

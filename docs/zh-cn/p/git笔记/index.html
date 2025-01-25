@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='命令 从 git 服务器拉取代码 1 git clone xxx.git 配置开发者用户和邮箱，代码每次提交包含配置 1 2 git config user.name xxx git config user.email xx@xx.com 查看文件变动状态 1 git status 添加文件变动到暂存区 1 2 3'><title>GIT笔记</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='命令 从 git 服务器拉取完整仓库代码 1 git clone xxx.git 配置开发者用户和邮箱，代码每次提交包含配置 1 2 3 4 git config user.name xxx git config user.email xx@xx.com cat .git/config # 查看配置 查看文件变动状态 1 git status'><title>GIT笔记</title>
 
 <link rel='canonical' href='https://J-shiro.github.io/zh-cn/p/git%E7%AC%94%E8%AE%B0/'>
 
 <link rel="stylesheet" href="/scss/style.min.b18c0607927efd48b36f5d027b549e77e30ee300e22b6461d063f1df6ea2466b.css"><meta property='og:title' content='GIT笔记'>
-<meta property='og:description' content='命令 从 git 服务器拉取代码 1 git clone xxx.git 配置开发者用户和邮箱，代码每次提交包含配置 1 2 git config user.name xxx git config user.email xx@xx.com 查看文件变动状态 1 git status 添加文件变动到暂存区 1 2 3'>
+<meta property='og:description' content='命令 从 git 服务器拉取完整仓库代码 1 git clone xxx.git 配置开发者用户和邮箱，代码每次提交包含配置 1 2 3 4 git config user.name xxx git config user.email xx@xx.com cat .git/config # 查看配置 查看文件变动状态 1 git status'>
 <meta property='og:url' content='https://J-shiro.github.io/zh-cn/p/git%E7%AC%94%E8%AE%B0/'>
 <meta property='og:site_name' content='J-shiro&#39;s 博客'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='og:image' content='https://J-shiro.github.io/img/note.jpg' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-01-14T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-01-14T00:00:00&#43;00:00'/><meta property='og:image' content='https://J-shiro.github.io/img/note.jpg' />
 <meta name="twitter:title" content="GIT笔记">
-<meta name="twitter:description" content="命令 从 git 服务器拉取代码 1 git clone xxx.git 配置开发者用户和邮箱，代码每次提交包含配置 1 2 git config user.name xxx git config user.email xx@xx.com 查看文件变动状态 1 git status 添加文件变动到暂存区 1 2 3"><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="命令 从 git 服务器拉取完整仓库代码 1 git clone xxx.git 配置开发者用户和邮箱，代码每次提交包含配置 1 2 3 4 git config user.name xxx git config user.email xx@xx.com cat .git/config # 查看配置 查看文件变动状态 1 git status"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://J-shiro.github.io/img/note.jpg' />
     <link rel="shortcut icon" href="https://j-shiro.github.io/img/somebody.png" />
 
@@ -268,6 +268,10 @@
                 notes
             </a>
         
+            <a href="/zh-cn/categories/%E8%BF%90%E7%BB%B4/" >
+                运维
+            </a>
+        
     </header>
     
 
@@ -282,6 +286,19 @@
     
     <footer class="article-time">
         
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jan 14, 2025</time>
+            </div>
+        
 
         
             <div>
@@ -294,7 +311,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 2 分钟
+                    阅读时长: 4 分钟
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -305,7 +322,7 @@
 
 
                 <time class="article-words">
-                    904 字
+                    1610 字
                 </time>
             </div>
         
@@ -320,7 +337,7 @@
     
     
     <h2 id="命令">命令</h2>
-<p>从 git 服务器拉取代码</p>
+<p>从 git 服务器拉取完整仓库代码</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -334,10 +351,14 @@
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git config user.name xxx
 </span></span><span class="line"><span class="cl">git config user.email xx@xx.com
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">cat .git/config <span class="c1"># 查看配置</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>查看文件变动状态</p>
@@ -370,7 +391,8 @@
 </span></span><span class="line"><span class="cl"><span class="c1"># diff: 比较暂存区文件和本地版本库的差异</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>提交文件变动到版本库</p>
+</div><p>此时<code>.git/objects</code>中加入<code>xx/yyyyyyyyy</code>，可通过<code>git cat-file -p xxyyyyyyyyy</code>查看添加的文件内容</p>
+<p>提交文件变动到版本库，若为其他分支会获取一个url用于pull request</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -378,9 +400,40 @@
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git commit -m <span class="s2">&#34;description&#34;</span>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git commit -m <span class="s2">&#34;description&#34;</span> <span class="c1"># 会创建新的tree、blob、commit object</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># --amend 只添加 修改 和 删除 的文件到本地版本库</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># --amend 只添加 修改 和 删除 的文件到本地版本库，修改最近一次commit信息，修改后commit id变化</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>修改最近3个commit</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git rebase -i HEAD~3
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查看悬空的commit</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git fsck --lost-found
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>删除不需要的object，且打包压缩object减少仓库体积</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 先设置reflog防止无操作后数据丢失</span>
+</span></span><span class="line"><span class="cl">git reflog expire --expire<span class="o">=</span>now --all
+</span></span><span class="line"><span class="cl">git gc <span class="nv">prune</span><span class="o">=</span>now <span class="c1"># 修剪多久前对象，默认2周前</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>重命名文件并添加变动到暂存区</p>
@@ -410,13 +463,15 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git push origin branch_name <span class="c1"># orgin: git 服务器地址</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>服务器最新代码拉取到本地</p>
+</div><p>服务器最新代码拉取到本地并与本地代码合并，等价于<code>git fetch + git merge</code></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git pull origin brach_name
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git pull origin brach_name <span class="c1"># main</span>
+</span></span><span class="line"><span class="cl">git pull --rebase <span class="c1"># 等价于 git fetch + git rebase</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>版本提交记录</p>
@@ -433,9 +488,11 @@
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
+</span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git tag publish/0.0.1
+</span></span><span class="line"><span class="cl">git tag -a <span class="c1"># 创建附注标签</span>
 </span></span><span class="line"><span class="cl">git push origin publish/0.0.1
 </span></span></code></pre></td></tr></table>
 </div>
@@ -480,14 +537,17 @@
 </div><p>合并其它分支到当前分支</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 默认合并，分支中的各个节点都加入到master中</span>
@@ -498,6 +558,9 @@
 </span></span><span class="line"><span class="cl">git merge --no-ff
 </span></span><span class="line"><span class="cl"><span class="c1"># 没有冲突的情况下合并，git自动生成提交原因</span>
 </span></span><span class="line"><span class="cl">git merge --no-edit
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># fast-forward：线性不创建新merge结点，命令`--ff-only`</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># three-way merge：三方合并产生新merge结点，命令`--no-ff`</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>栈：保存当前修改或删除的工作进度</p>
@@ -529,6 +592,47 @@
 </span></span><span class="line"><span class="cl">git stash store ID <span class="c1"># 栈真正创建一个记录，文件并未从工作区移除</span>
 </span></span></code></pre></td></tr></table>
 </div>
+</div><p>比较工作区、暂存区、本地版本库间文件差异</p>
+<img src="/img/git.zh-cn.assets/image-20250122215003787.png" alt="image-20250122215003787" style="zoom: 67%;" />
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git diff --stat
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>远程仓库</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git remote -v <span class="c1"># 列出已存在的远程分支</span>
+</span></span><span class="line"><span class="cl">git remote add origin https://github.com/xx/xx.github.com.git <span class="c1"># 添加一个新远程仓库</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>将远程版本库的最新更新取回到本地版本库，不会执行merge操作，会修改refs/remote内分支信息</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git fetch origin xx/0.0.1
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>ssh免密配置访问</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ssh-keygen -t ed25519 -C <span class="s2">&#34;email@example.com&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 秘钥公钥在~/.ssh/id_ed25519及id_ed25519.pub中</span>
+</span></span></code></pre></td></tr></table>
+</div>
 </div><p><strong>.gitignore</strong>中存储需要被忽略而不推送到服务器的文件</p>
 <p><img src="/img/git.zh-cn.assets/image-20250115214715037.png"
 	
@@ -540,6 +644,22 @@
 	
 	
 ></p>
+<h2 id="object">object</h2>
+<ul>
+<li>commit：存储提交信息，一个 commit 对应唯一版本的代码，可找到 tree ID</li>
+<li>tree：存储文件目录信息，可获取不同 blob ID</li>
+<li>blob：存储文件内容</li>
+<li>tag</li>
+</ul>
+<h2 id="refs">Refs</h2>
+<p>Refs中存储对应的commit ID</p>
+<p><code>refs/heads</code> 前缀表示分支，<code>refs/tags</code> 前缀表示标签</p>
+<h2 id="研发">研发</h2>
+<p><strong>github</strong></p>
+<ul>
+<li>一个主干分支，基于Pull Request往主干分支提交代码</li>
+<li>owner外用户Fork创建自己仓库进行开发</li>
+</ul>
 
 </section>
 
@@ -573,6 +693,25 @@
     <h2 class="section-title">相关文章</h2>
     <div class="related-content">
         <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/zh-cn/p/linux%E7%AC%94%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/img/note.jpg" loading="lazy" data-key="" data-hash="/img/note.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">LINUX笔记</h2>
+        </div>
+    </a>
+</article>
+
             
                 
 <article class="has-image">
@@ -645,25 +784,6 @@
 
         <div class="article-details">
             <h2 class="article-title">强化学习笔记</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
-    <a href="/zh-cn/p/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
-        
-        
-            <div class="article-image">
-                
-                    <img src="/img/ai_note.jpg" loading="lazy" data-key="" data-hash="/img/ai_note.jpg"/>
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">深度学习笔记</h2>
         </div>
     </a>
 </article>
@@ -756,7 +876,9 @@
         
             
         
-        共 186.39k 字 · 共 20篇文章
+            
+        
+        共 204.22k 字 · 共 21篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -930,7 +1052,41 @@
 
 
             </main>
-    
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#命令">命令</a></li>
+    <li><a href="#object">object</a></li>
+    <li><a href="#refs">Refs</a></li>
+    <li><a href="#研发">研发</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
 
         </div>
         <script 

