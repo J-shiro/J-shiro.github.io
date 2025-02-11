@@ -311,7 +311,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 66 分钟
+                    阅读时长: 67 分钟
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    32750 字
+                    33096 字
                 </time>
             </div>
         
@@ -5297,13 +5297,98 @@
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">_IO_FILE</span> <span class="n">_file</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">  <span class="n">__off64_t</span> <span class="n">_offset</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">_IO_codecvt</span> <span class="o">*</span><span class="n">_codecvt</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">_IO_wide_data</span> <span class="o">*</span><span class="n">_wide_data</span><span class="p">;</span> <span class="c1">// 劫持这个变量
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">_IO_codecvt</span> <span class="o">*</span><span class="n">_codecvt</span><span class="p">;</span> <span class="c1">// house of apple 3利用
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">struct</span> <span class="n">_IO_wide_data</span> <span class="o">*</span><span class="n">_wide_data</span><span class="p">;</span> <span class="c1">// house of apple 2劫持这个变量
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">struct</span> <span class="n">_IO_FILE</span> <span class="o">*</span><span class="n">_freeres_list</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">  <span class="kt">void</span> <span class="o">*</span><span class="n">_freeres_buf</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">  <span class="n">size_t</span> <span class="n">__pad5</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">_mode</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">  <span class="kt">char</span> <span class="n">_unused2</span><span class="p">[</span><span class="mi">15</span> <span class="o">*</span> <span class="k">sizeof</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="k">sizeof</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span> <span class="o">-</span> <span class="k">sizeof</span> <span class="p">(</span><span class="n">size_t</span><span class="p">)];</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="_io_codecvt">_IO_codecvt</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">_IO_codecvt</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">_IO_iconv_t</span> <span class="n">__cd_in</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">_IO_iconv_t</span> <span class="n">__cd_out</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="_io_iconv_t">_IO_iconv_t</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">__gconv_step</span> <span class="o">*</span><span class="n">step</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">__gconv_step_data</span> <span class="n">step_data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">_IO_iconv_t</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="__gconv_step">__gconv_step</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">__gconv_step</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">__gconv_loaded_object</span> <span class="o">*</span><span class="n">__shlib_handle</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">__modname</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">__counter</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kt">char</span> <span class="o">*</span><span class="n">__from_name</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">char</span> <span class="o">*</span><span class="n">__to_name</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">__gconv_fct</span> <span class="n">__fct</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">__gconv_btowc_fct</span> <span class="n">__btowc_fct</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">__gconv_init_fct</span> <span class="n">__init_fct</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">__gconv_end_fct</span> <span class="n">__end_fct</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">__min_needed_from</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">__max_needed_from</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">__min_needed_to</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">__max_needed_to</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">__stateful</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">void</span> <span class="o">*</span><span class="n">__data</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span></code></pre></td></tr></table>
 </div>
@@ -8388,6 +8473,111 @@
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
+</div><h4 id="__libio_codecvt_in">__libio_codecvt_in</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">enum</span> <span class="n">__codecvt_result</span>
+</span></span><span class="line"><span class="cl"><span class="nf">__libio_codecvt_in</span> <span class="p">(</span><span class="k">struct</span> <span class="n">_IO_codecvt</span> <span class="o">*</span><span class="n">codecvt</span><span class="p">,</span> <span class="n">__mbstate_t</span> <span class="o">*</span><span class="n">statep</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">from_start</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">from_end</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		    <span class="k">const</span> <span class="kt">char</span> <span class="o">**</span><span class="n">from_stop</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		    <span class="n">wchar_t</span> <span class="o">*</span><span class="n">to_start</span><span class="p">,</span> <span class="n">wchar_t</span> <span class="o">*</span><span class="n">to_end</span><span class="p">,</span> <span class="n">wchar_t</span> <span class="o">**</span><span class="n">to_stop</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">enum</span> <span class="n">__codecvt_result</span> <span class="n">result</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">__gconv_step</span> <span class="o">*</span><span class="n">gs</span> <span class="o">=</span> <span class="n">codecvt</span><span class="o">-&gt;</span><span class="n">__cd_in</span><span class="p">.</span><span class="n">step</span><span class="p">;</span> <span class="c1">// // gs 源自第一个参数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">int</span> <span class="n">status</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">size_t</span> <span class="n">dummy</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="n">from_start_copy</span> <span class="o">=</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="n">from_start</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">codecvt</span><span class="o">-&gt;</span><span class="n">__cd_in</span><span class="p">.</span><span class="n">step_data</span><span class="p">.</span><span class="n">__outbuf</span> <span class="o">=</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="n">to_start</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">codecvt</span><span class="o">-&gt;</span><span class="n">__cd_in</span><span class="p">.</span><span class="n">step_data</span><span class="p">.</span><span class="n">__outbufend</span> <span class="o">=</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="n">to_end</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">codecvt</span><span class="o">-&gt;</span><span class="n">__cd_in</span><span class="p">.</span><span class="n">step_data</span><span class="p">.</span><span class="n">__statep</span> <span class="o">=</span> <span class="n">statep</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">__gconv_fct</span> <span class="n">fct</span> <span class="o">=</span> <span class="n">gs</span><span class="o">-&gt;</span><span class="n">__fct</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 若其不为空，用__pointer_guard解密，设置为NULL可绕过解密
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">if</span> <span class="p">(</span><span class="n">gs</span><span class="o">-&gt;</span><span class="n">__shlib_handle</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">PTR_DEMANGLE</span> <span class="p">(</span><span class="n">fct</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 函数指针调用，该宏实际调用fct(gs, ...)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">status</span> <span class="o">=</span> <span class="n">DL_CALL_FCT</span> <span class="p">(</span><span class="n">fct</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">			<span class="p">(</span><span class="n">gs</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">codecvt</span><span class="o">-&gt;</span><span class="n">__cd_in</span><span class="p">.</span><span class="n">step_data</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">from_start_copy</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">			 <span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="n">from_end</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">			 <span class="o">&amp;</span><span class="n">dummy</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="o">*</span><span class="n">from_stop</span> <span class="o">=</span> <span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="n">from_start_copy</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">*</span><span class="n">to_stop</span> <span class="o">=</span> <span class="p">(</span><span class="n">wchar_t</span> <span class="o">*</span><span class="p">)</span> <span class="n">codecvt</span><span class="o">-&gt;</span><span class="n">__cd_in</span><span class="p">.</span><span class="n">step_data</span><span class="p">.</span><span class="n">__outbuf</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">switch</span> <span class="p">(</span><span class="n">status</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">case</span> <span class="nl">__GCONV_OK</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">case</span> <span class="nl">__GCONV_EMPTY_INPUT</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">      <span class="n">result</span> <span class="o">=</span> <span class="n">__codecvt_ok</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">case</span> <span class="nl">__GCONV_FULL_OUTPUT</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">case</span> <span class="nl">__GCONV_INCOMPLETE_INPUT</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">      <span class="n">result</span> <span class="o">=</span> <span class="n">__codecvt_partial</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">default</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">      <span class="n">result</span> <span class="o">=</span> <span class="n">__codecvt_error</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
 </div><h2 id="ldso">ld.so</h2>
 <h3 id="结构-2">结构</h3>
 <h4 id="rtld_global">rtld_global</h4>
@@ -9588,7 +9778,9 @@
         
             
         
-        共 204.22k 字 · 共 21篇文章
+            
+        
+        共 219.82k 字 · 共 22篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -9830,6 +10022,9 @@
             <li><a href="#_io_file_plus">_IO_FILE_plus</a></li>
             <li><a href="#_io_file">_IO_FILE</a></li>
             <li><a href="#_io_file_complete">_IO_FILE_complete</a></li>
+            <li><a href="#_io_codecvt">_IO_codecvt</a></li>
+            <li><a href="#_io_iconv_t">_IO_iconv_t</a></li>
+            <li><a href="#__gconv_step">__gconv_step</a></li>
             <li><a href="#_io_wstrnfile">_IO_wstrnfile</a></li>
             <li><a href="#_io_strnfile">_IO_strnfile</a></li>
             <li><a href="#_io_strfile">_IO_strfile</a></li>
@@ -9927,6 +10122,7 @@
           <ol>
             <li><a href="#_io_wstrn_overflow">_IO_wstrn_overflow</a></li>
             <li><a href="#_io_wsetb">_IO_wsetb</a></li>
+            <li><a href="#__libio_codecvt_in">__libio_codecvt_in</a></li>
           </ol>
         </li>
       </ol>

@@ -57,7 +57,7 @@ vim的配置在`~/.vimrc`中
 
 **kill**：` kill -l`查看信号
 
-**netstat**：显示网络状态
+**netstat**：`-ano`显示网络状态，监听
 
 ## 常用命令
 
@@ -76,6 +76,8 @@ vim的配置在`~/.vimrc`中
 **编译链接线程库**：`-lpthread`
 
 **安装deb文件**：`sudo dpkg -i`
+
+**本地监听某端口**：`nc -l port`
 
 **链接**
 
@@ -532,5 +534,10 @@ ptype variable # 查看变量类型结构
 bt # 调用路径
 ```
 
+## 分析
 
+**寻找命令系统层源码**
 
+- `https://command-not-found.com/`网址获取命令所在apt包名
+- `https://packages.ubuntu.com/`或`https://www.gnu.org/software/`中下载包源码
+- `apt source [package_name]`方法直接获取打过补丁的方法

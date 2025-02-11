@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    4129 字
+                    4295 字
                 </time>
             </div>
         
@@ -357,7 +357,7 @@
 <p><strong>od</strong>：十六进制查看工具，<code>od -c file</code></p>
 <p><strong>pstree</strong>：查看进程关系</p>
 <p><strong>kill</strong>：<code> kill -l</code>查看信号</p>
-<p><strong>netstat</strong>：显示网络状态</p>
+<p><strong>netstat</strong>：<code>-ano</code>显示网络状态，监听</p>
 <h2 id="常用命令">常用命令</h2>
 <p><strong>查看某个文件的绝对路径</strong>： <code>pwd|awk '{print $1&quot;/file_name&quot;}'</code></p>
 <p><strong>查看版本</strong>：<code>cat /proc/version</code></p>
@@ -367,6 +367,7 @@
 <p><strong>查看分区挂载情况</strong>：<code>df</code></p>
 <p><strong>编译链接线程库</strong>：<code>-lpthread</code></p>
 <p><strong>安装deb文件</strong>：<code>sudo dpkg -i</code></p>
+<p><strong>本地监听某端口</strong>：<code>nc -l port</code></p>
 <p><strong>链接</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -992,7 +993,14 @@
 </span></span><span class="line"><span class="cl">bt <span class="c1"># 调用路径</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div>
+</div><h2 id="分析">分析</h2>
+<p><strong>寻找命令系统层源码</strong></p>
+<ul>
+<li><code>https://command-not-found.com/</code>网址获取命令所在apt包名</li>
+<li><code>https://packages.ubuntu.com/</code>或<code>https://www.gnu.org/software/</code>中下载包源码</li>
+<li><code>apt source [package_name]</code>方法直接获取打过补丁的方法</li>
+</ul>
+
 </section>
 
 
@@ -1210,7 +1218,9 @@
         
             
         
-        共 204.22k 字 · 共 21篇文章
+            
+        
+        共 219.82k 字 · 共 22篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -1432,6 +1442,7 @@
     </li>
     <li><a href="#makefile">Makefile</a></li>
     <li><a href="#gdb">GDB</a></li>
+    <li><a href="#分析">分析</a></li>
   </ol>
 </nav>
         </div>

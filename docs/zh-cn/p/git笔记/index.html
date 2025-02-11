@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='命令 从 git 服务器拉取完整仓库代码 1 git clone xxx.git 配置开发者用户和邮箱，代码每次提交包含配置 1 2 3 4 git config user.name xxx git config user.email xx@xx.com cat .git/config # 查看配置 查看文件变动状态 1 git status'><title>GIT笔记</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='命令 从 git 服务器拉取完整仓库代码 1 git clone xxx.git 配置开发者用户和邮箱，代码每次提交包含配置 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 git config user.name xxx git config user.email xx@xx.com cat .git/config # 查看配'><title>GIT笔记</title>
 
 <link rel='canonical' href='https://J-shiro.github.io/zh-cn/p/git%E7%AC%94%E8%AE%B0/'>
 
 <link rel="stylesheet" href="/scss/style.min.b18c0607927efd48b36f5d027b549e77e30ee300e22b6461d063f1df6ea2466b.css"><meta property='og:title' content='GIT笔记'>
-<meta property='og:description' content='命令 从 git 服务器拉取完整仓库代码 1 git clone xxx.git 配置开发者用户和邮箱，代码每次提交包含配置 1 2 3 4 git config user.name xxx git config user.email xx@xx.com cat .git/config # 查看配置 查看文件变动状态 1 git status'>
+<meta property='og:description' content='命令 从 git 服务器拉取完整仓库代码 1 git clone xxx.git 配置开发者用户和邮箱，代码每次提交包含配置 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 git config user.name xxx git config user.email xx@xx.com cat .git/config # 查看配'>
 <meta property='og:url' content='https://J-shiro.github.io/zh-cn/p/git%E7%AC%94%E8%AE%B0/'>
 <meta property='og:site_name' content='J-shiro&#39;s 博客'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-01-14T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-01-14T00:00:00&#43;00:00'/><meta property='og:image' content='https://J-shiro.github.io/img/note.jpg' />
 <meta name="twitter:title" content="GIT笔记">
-<meta name="twitter:description" content="命令 从 git 服务器拉取完整仓库代码 1 git clone xxx.git 配置开发者用户和邮箱，代码每次提交包含配置 1 2 3 4 git config user.name xxx git config user.email xx@xx.com cat .git/config # 查看配置 查看文件变动状态 1 git status"><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="命令 从 git 服务器拉取完整仓库代码 1 git clone xxx.git 配置开发者用户和邮箱，代码每次提交包含配置 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 git config user.name xxx git config user.email xx@xx.com cat .git/config # 查看配"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://J-shiro.github.io/img/note.jpg' />
     <link rel="shortcut icon" href="https://j-shiro.github.io/img/somebody.png" />
 
@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    1610 字
+                    1710 字
                 </time>
             </div>
         
@@ -349,16 +349,40 @@
 </div><p>配置开发者用户和邮箱，代码每次提交包含配置</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git config user.name xxx
 </span></span><span class="line"><span class="cl">git config user.email xx@xx.com
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">cat .git/config <span class="c1"># 查看配置</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 配置代理</span>
+</span></span><span class="line"><span class="cl">git config --global http.proxy 127.0.0.1:7890
+</span></span><span class="line"><span class="cl">git config --global https.proxy 127.0.0.1:7890
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看代理</span>
+</span></span><span class="line"><span class="cl">git config --global --get http.proxy
+</span></span><span class="line"><span class="cl">git config --global --get https.proxy
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 取消</span>
+</span></span><span class="line"><span class="cl">git config --global --unset http.proxy
+</span></span><span class="line"><span class="cl">git config --global --unset https.proxy
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>查看文件变动状态</p>
@@ -392,7 +416,16 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>此时<code>.git/objects</code>中加入<code>xx/yyyyyyyyy</code>，可通过<code>git cat-file -p xxyyyyyyyyy</code>查看添加的文件内容</p>
-<p>提交文件变动到版本库，若为其他分支会获取一个url用于pull request</p>
+<p>列出将要被提交的文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git commit -n
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>提交文件变动到版本库，若为其他分支会获取一个url用于pull request</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -403,6 +436,24 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git commit -m <span class="s2">&#34;description&#34;</span> <span class="c1"># 会创建新的tree、blob、commit object</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># --amend 只添加 修改 和 删除 的文件到本地版本库，修改最近一次commit信息，修改后commit id变化</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查看commit添加的内容</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git ls-files -s
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>删除暂存区的内容</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git rm --cached -r file
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>修改最近3个commit</p>
@@ -878,7 +929,9 @@
         
             
         
-        共 204.22k 字 · 共 21篇文章
+            
+        
+        共 219.82k 字 · 共 22篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---

@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://J-shiro.github.io/zh-cn/</loc>
-    <lastmod>2025-01-25T00:00:00+00:00</lastmod>
+    <lastmod>2025-02-05T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -15,8 +15,11 @@
                 href="https://J-shiro.github.io/zh-cn/"
                 />
   </url><url>
+    <loc>https://J-shiro.github.io/zh-cn/p/c-/</loc>
+    <lastmod>2025-02-05T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://J-shiro.github.io/zh-cn/categories/</loc>
-    <lastmod>2025-01-25T00:00:00+00:00</lastmod>
+    <lastmod>2025-02-05T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -28,14 +31,11 @@
                 href="https://J-shiro.github.io/zh-cn/categories/"
                 />
   </url><url>
-    <loc>https://J-shiro.github.io/zh-cn/p/go/</loc>
-    <lastmod>2025-01-25T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://J-shiro.github.io/zh-cn/categories/language/</loc>
-    <lastmod>2025-01-25T00:00:00+00:00</lastmod>
+    <lastmod>2025-02-05T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://J-shiro.github.io/zh-cn/post/</loc>
-    <lastmod>2025-01-25T00:00:00+00:00</lastmod>
+    <lastmod>2025-02-05T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -46,6 +46,9 @@
                 hreflang="zh-cn"
                 href="https://J-shiro.github.io/zh-cn/post/"
                 />
+  </url><url>
+    <loc>https://J-shiro.github.io/zh-cn/p/go/</loc>
+    <lastmod>2025-01-25T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://J-shiro.github.io/zh-cn/p/git%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2025-01-14T00:00:00+00:00</lastmod>

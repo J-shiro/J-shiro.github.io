@@ -2620,8 +2620,8 @@ struct _IO_FILE_complete
 {
   struct _IO_FILE _file;
   __off64_t _offset;
-  struct _IO_codecvt *_codecvt;
-  struct _IO_wide_data *_wide_data; // 劫持这个变量
+  struct _IO_codecvt *_codecvt; // house of apple 3利用
+  struct _IO_wide_data *_wide_data; // house of apple 2劫持这个变量
   struct _IO_FILE *_freeres_list;
   void *_freeres_buf;
   size_t __pad5;
@@ -2629,6 +2629,55 @@ struct _IO_FILE_complete
   char _unused2[15 * sizeof (int) - 4 * sizeof (void *) - sizeof (size_t)];
 };
 ```
+
+#### _IO_codecvt
+
+```c
+struct _IO_codecvt
+{
+  _IO_iconv_t __cd_in;
+  _IO_iconv_t __cd_out;
+};
+```
+
+#### _IO_iconv_t
+
+```c
+typedef struct
+{
+  struct __gconv_step *step;
+  struct __gconv_step_data step_data;
+} _IO_iconv_t;
+```
+
+#### __gconv_step
+
+```c
+struct __gconv_step
+{
+  struct __gconv_loaded_object *__shlib_handle;
+  const char *__modname;
+  int __counter;
+
+  char *__from_name;
+  char *__to_name;
+
+  __gconv_fct __fct;
+  __gconv_btowc_fct __btowc_fct;
+  __gconv_init_fct __init_fct;
+  __gconv_end_fct __end_fct;
+    
+  int __min_needed_from;
+  int __max_needed_from;
+  int __min_needed_to;
+  int __max_needed_to;
+
+  int __stateful;
+  void *__data;
+};
+```
+
+
 
 #### _IO_wstrnfile
 
@@ -4289,6 +4338,60 @@ void _IO_wsetb (FILE *f, wchar_t *b, wchar_t *eb, int a)
     f->_flags2 |= _IO_FLAGS2_USER_WBUF;
 }
 
+```
+
+#### __libio_codecvt_in
+
+```c
+enum __codecvt_result
+__libio_codecvt_in (struct _IO_codecvt *codecvt, __mbstate_t *statep,
+		    const char *from_start, const char *from_end,
+		    const char **from_stop,
+		    wchar_t *to_start, wchar_t *to_end, wchar_t **to_stop)
+{
+  enum __codecvt_result result;
+
+  struct __gconv_step *gs = codecvt->__cd_in.step; // // gs 源自第一个参数
+  int status;
+  size_t dummy;
+  const unsigned char *from_start_copy = (unsigned char *) from_start;
+
+  codecvt->__cd_in.step_data.__outbuf = (unsigned char *) to_start;
+  codecvt->__cd_in.step_data.__outbufend = (unsigned char *) to_end;
+  codecvt->__cd_in.step_data.__statep = statep;
+
+  __gconv_fct fct = gs->__fct;
+  // 若其不为空，用__pointer_guard解密，设置为NULL可绕过解密
+  if (gs->__shlib_handle != NULL)
+    PTR_DEMANGLE (fct);
+  // 函数指针调用，该宏实际调用fct(gs, ...)
+  status = DL_CALL_FCT (fct,
+			(gs, &codecvt->__cd_in.step_data, &from_start_copy,
+			 (const unsigned char *) from_end, NULL,
+			 &dummy, 0, 0));
+
+  *from_stop = (const char *) from_start_copy;
+  *to_stop = (wchar_t *) codecvt->__cd_in.step_data.__outbuf;
+
+  switch (status)
+    {
+    case __GCONV_OK:
+    case __GCONV_EMPTY_INPUT:
+      result = __codecvt_ok;
+      break;
+
+    case __GCONV_FULL_OUTPUT:
+    case __GCONV_INCOMPLETE_INPUT:
+      result = __codecvt_partial;
+      break;
+
+    default:
+      result = __codecvt_error;
+      break;
+    }
+
+  return result;
+}
 ```
 
 

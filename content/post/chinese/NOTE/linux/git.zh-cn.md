@@ -31,6 +31,18 @@ git config user.name xxx
 git config user.email xx@xx.com
 
 cat .git/config # 查看配置
+
+# 配置代理
+git config --global http.proxy 127.0.0.1:7890
+git config --global https.proxy 127.0.0.1:7890
+
+# 查看代理
+git config --global --get http.proxy
+git config --global --get https.proxy
+
+# 取消
+git config --global --unset http.proxy
+git config --global --unset https.proxy
 ```
 
 查看文件变动状态
@@ -53,12 +65,30 @@ git add -i # 进入交互式
 
 此时`.git/objects`中加入`xx/yyyyyyyyy`，可通过`git cat-file -p xxyyyyyyyyy`查看添加的文件内容
 
+列出将要被提交的文件
+
+```bash
+git commit -n
+```
+
 提交文件变动到版本库，若为其他分支会获取一个url用于pull request
 
 ```bash
 git commit -m "description" # 会创建新的tree、blob、commit object
 
 # --amend 只添加 修改 和 删除 的文件到本地版本库，修改最近一次commit信息，修改后commit id变化
+```
+
+查看commit添加的内容
+
+```bash
+git ls-files -s
+```
+
+删除暂存区的内容
+
+```bash
+git rm --cached -r file
 ```
 
 修改最近3个commit

@@ -65,20 +65,15 @@ solc-select use 0.x.xx
 solc --version
 ```
 
-
-
 ### Mythril
 
 ```bash
 myth analyze contract.sol
 ```
 
-
-
 ### Slither
 
 ```bash
 slither contract.sol --json res.json
 ```
-
 
