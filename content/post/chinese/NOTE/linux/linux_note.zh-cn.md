@@ -79,6 +79,8 @@ vim的配置在`~/.vimrc`中
 
 **本地监听某端口**：`nc -l port`
 
+**深入查看头文件定义**：`find /usr/include | grep xxx.h`
+
 **链接**
 
 ```bash
@@ -105,7 +107,22 @@ readelf -S xxx   # 查看程序.bss段地址
 cd -             # 返回到上一次工作目录
 ```
 
+## 技巧
+
 若不需要`-a`这些参数, 可以使用`--`
+
+```bash
+cat $(some_command) # 可以直接获取命令返回结果内容
+find xxx -type f | xargs cat # xargs
+```
+
+查找标准库结构体
+
+```bash
+grep -r -A 10 "struct name" /usr/include # 额外显示10行
+```
+
+
 
 ## 具体命令
 
@@ -525,6 +542,14 @@ $(foreach var, list, text)	# list中逐一取出到var, 执行text表达式
 ```
 
 ## GDB
+
+调试代码，加入参数
+
+```bash
+gdb --args ./a.out xxx1 xxx2
+```
+
+**命令**
 
 ```bash
 list 1 # 输出第1行开始的源代码

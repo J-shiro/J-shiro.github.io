@@ -322,7 +322,7 @@
 
 
                 <time class="article-words">
-                    4295 字
+                    4384 字
                 </time>
             </div>
         
@@ -368,6 +368,7 @@
 <p><strong>编译链接线程库</strong>：<code>-lpthread</code></p>
 <p><strong>安装deb文件</strong>：<code>sudo dpkg -i</code></p>
 <p><strong>本地监听某端口</strong>：<code>nc -l port</code></p>
+<p><strong>深入查看头文件定义</strong>：<code>find /usr/include | grep xxx.h</code></p>
 <p><strong>链接</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -411,8 +412,28 @@
 </span></span><span class="line"><span class="cl"><span class="nb">cd</span> -             <span class="c1"># 返回到上一次工作目录</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>若不需要<code>-a</code>这些参数, 可以使用<code>--</code></p>
-<h2 id="具体命令">具体命令</h2>
+</div><h2 id="技巧">技巧</h2>
+<p>若不需要<code>-a</code>这些参数, 可以使用<code>--</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat <span class="k">$(</span>some_command<span class="k">)</span> <span class="c1"># 可以直接获取命令返回结果内容</span>
+</span></span><span class="line"><span class="cl">find xxx -type f <span class="p">|</span> xargs cat <span class="c1"># xargs</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查找标准库结构体</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">grep -r -A <span class="m">10</span> <span class="s2">&#34;struct name&#34;</span> /usr/include <span class="c1"># 额外显示10行</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="具体命令">具体命令</h2>
 <h3 id="netstat">netstat</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -977,6 +998,16 @@
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="gdb">GDB</h2>
+<p>调试代码，加入参数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">gdb --args ./a.out xxx1 xxx2
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>命令</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -1220,7 +1251,7 @@
         
             
         
-        共 219.82k 字 · 共 22篇文章
+        共 221.94k 字 · 共 22篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -1419,6 +1450,7 @@
     <li><a href="#配置">配置</a></li>
     <li><a href="#基础命令">基础命令</a></li>
     <li><a href="#常用命令">常用命令</a></li>
+    <li><a href="#技巧">技巧</a></li>
     <li><a href="#具体命令">具体命令</a>
       <ol>
         <li><a href="#netstat">netstat</a></li>
