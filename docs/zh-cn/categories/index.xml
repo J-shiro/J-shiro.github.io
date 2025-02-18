@@ -2,128 +2,128 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Categories on J-shiro&#39;s 博客</title>
-        <link>https://J-shiro.github.io/zh-cn/categories/</link>
+        <link>http://localhost:1313/zh-cn/categories/</link>
         <description>Recent content in Categories on J-shiro&#39;s 博客</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en-us</language>
-        <lastBuildDate>Wed, 05 Feb 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://J-shiro.github.io/zh-cn/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <language>zh-cn</language>
+        <lastBuildDate>Wed, 05 Feb 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/zh-cn/categories/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Language</title>
-        <link>https://J-shiro.github.io/zh-cn/categories/language/</link>
+        <link>http://localhost:1313/zh-cn/categories/language/</link>
         <pubDate>Wed, 05 Feb 2025 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/zh-cn/categories/language/</guid>
+        <guid>http://localhost:1313/zh-cn/categories/language/</guid>
         <description></description>
         </item>
         <item>
-        <title>notes</title>
-        <link>https://J-shiro.github.io/zh-cn/categories/notes/</link>
+        <title>Notes</title>
+        <link>http://localhost:1313/zh-cn/categories/notes/</link>
         <pubDate>Tue, 14 Jan 2025 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/zh-cn/categories/notes/</guid>
+        <guid>http://localhost:1313/zh-cn/categories/notes/</guid>
         <description></description>
         </item>
         <item>
         <title>运维</title>
-        <link>https://J-shiro.github.io/zh-cn/categories/%E8%BF%90%E7%BB%B4/</link>
+        <link>http://localhost:1313/zh-cn/categories/%E8%BF%90%E7%BB%B4/</link>
         <pubDate>Tue, 14 Jan 2025 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/zh-cn/categories/%E8%BF%90%E7%BB%B4/</guid>
+        <guid>http://localhost:1313/zh-cn/categories/%E8%BF%90%E7%BB%B4/</guid>
         <description></description>
         </item>
         <item>
-        <title>pwn</title>
-        <link>https://J-shiro.github.io/zh-cn/categories/pwn/</link>
+        <title>Pwn</title>
+        <link>http://localhost:1313/zh-cn/categories/pwn/</link>
         <pubDate>Tue, 19 Nov 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/zh-cn/categories/pwn/</guid>
+        <guid>http://localhost:1313/zh-cn/categories/pwn/</guid>
         <description></description>
         </item>
         <item>
         <title>AI</title>
-        <link>https://J-shiro.github.io/zh-cn/categories/ai/</link>
+        <link>http://localhost:1313/zh-cn/categories/ai/</link>
         <pubDate>Fri, 01 Nov 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/zh-cn/categories/ai/</guid>
+        <guid>http://localhost:1313/zh-cn/categories/ai/</guid>
         <description></description>
         </item>
         <item>
         <title>Thesis</title>
-        <link>https://J-shiro.github.io/zh-cn/categories/thesis/</link>
+        <link>http://localhost:1313/zh-cn/categories/thesis/</link>
         <pubDate>Thu, 24 Oct 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/zh-cn/categories/thesis/</guid>
+        <guid>http://localhost:1313/zh-cn/categories/thesis/</guid>
         <description></description>
         </item>
         <item>
-        <title>blockchain</title>
-        <link>https://J-shiro.github.io/zh-cn/categories/blockchain/</link>
+        <title>Blockchain</title>
+        <link>http://localhost:1313/zh-cn/categories/blockchain/</link>
         <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/zh-cn/categories/blockchain/</guid>
+        <guid>http://localhost:1313/zh-cn/categories/blockchain/</guid>
         <description></description>
         </item>
         <item>
-        <title>fuzzing</title>
-        <link>https://J-shiro.github.io/zh-cn/categories/fuzzing/</link>
+        <title>Fuzzing</title>
+        <link>http://localhost:1313/zh-cn/categories/fuzzing/</link>
         <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/zh-cn/categories/fuzzing/</guid>
+        <guid>http://localhost:1313/zh-cn/categories/fuzzing/</guid>
         <description></description>
         </item>
         <item>
-        <title>misc</title>
-        <link>https://J-shiro.github.io/zh-cn/categories/misc/</link>
+        <title>Misc</title>
+        <link>http://localhost:1313/zh-cn/categories/misc/</link>
         <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/zh-cn/categories/misc/</guid>
+        <guid>http://localhost:1313/zh-cn/categories/misc/</guid>
         <description></description>
         </item>
         <item>
-        <title>reverse</title>
-        <link>https://J-shiro.github.io/zh-cn/categories/reverse/</link>
+        <title>Reverse</title>
+        <link>http://localhost:1313/zh-cn/categories/reverse/</link>
         <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/zh-cn/categories/reverse/</guid>
+        <guid>http://localhost:1313/zh-cn/categories/reverse/</guid>
         <description></description>
         </item>
         <item>
-        <title>web</title>
-        <link>https://J-shiro.github.io/zh-cn/categories/web/</link>
+        <title>Web</title>
+        <link>http://localhost:1313/zh-cn/categories/web/</link>
         <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/zh-cn/categories/web/</guid>
+        <guid>http://localhost:1313/zh-cn/categories/web/</guid>
         <description></description>
         </item>
         <item>
-        <title>code</title>
-        <link>https://J-shiro.github.io/zh-cn/categories/code/</link>
+        <title>Code</title>
+        <link>http://localhost:1313/zh-cn/categories/code/</link>
         <pubDate>Fri, 18 Nov 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/zh-cn/categories/code/</guid>
+        <guid>http://localhost:1313/zh-cn/categories/code/</guid>
         <description></description>
         </item>
         <item>
-        <title>takenotes</title>
-        <link>https://J-shiro.github.io/zh-cn/categories/takenotes/</link>
+        <title>Takenotes</title>
+        <link>http://localhost:1313/zh-cn/categories/takenotes/</link>
         <pubDate>Fri, 18 Nov 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/zh-cn/categories/takenotes/</guid>
+        <guid>http://localhost:1313/zh-cn/categories/takenotes/</guid>
         <description></description>
         </item>
         <item>
-        <title>pwn_exercise</title>
-        <link>https://J-shiro.github.io/zh-cn/categories/pwn_exercise/</link>
+        <title>Pwn_exercise</title>
+        <link>http://localhost:1313/zh-cn/categories/pwn_exercise/</link>
         <pubDate>Tue, 25 Oct 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/zh-cn/categories/pwn_exercise/</guid>
+        <guid>http://localhost:1313/zh-cn/categories/pwn_exercise/</guid>
         <description></description>
         </item>
         <item>
-        <title>anime</title>
-        <link>https://J-shiro.github.io/zh-cn/categories/anime/</link>
+        <title>Anime</title>
+        <link>http://localhost:1313/zh-cn/categories/anime/</link>
         <pubDate>Sun, 09 Oct 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/zh-cn/categories/anime/</guid>
+        <guid>http://localhost:1313/zh-cn/categories/anime/</guid>
         <description></description>
         </item>
         

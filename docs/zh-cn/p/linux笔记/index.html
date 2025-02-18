@@ -1,18 +1,30 @@
 <!DOCTYPE html>
-<html lang="en-us" dir="ltr">
-    <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='配置 bash的配置在~/.bashrc中 git的配置在~/.gitconfig中 vim的配置在~/.vimrc中 基础命令 tree：列举所有文'><title>LINUX笔记</title>
+<html lang="zh-cn" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='配置 bash的配置在~/.bashrc中
+git的配置在~/.gitconfig中
+vim的配置在~/.vimrc中
+基础命令 tree：列举所有文件，递归列举文件
+'><title>LINUX笔记</title>
 
-<link rel='canonical' href='https://J-shiro.github.io/zh-cn/p/linux%E7%AC%94%E8%AE%B0/'>
+<link rel='canonical' href='http://localhost:1313/zh-cn/p/linux%E7%AC%94%E8%AE%B0/'>
 
 <link rel="stylesheet" href="/scss/style.min.b18c0607927efd48b36f5d027b549e77e30ee300e22b6461d063f1df6ea2466b.css"><meta property='og:title' content='LINUX笔记'>
-<meta property='og:description' content='配置 bash的配置在~/.bashrc中 git的配置在~/.gitconfig中 vim的配置在~/.vimrc中 基础命令 tree：列举所有文'>
-<meta property='og:url' content='https://J-shiro.github.io/zh-cn/p/linux%E7%AC%94%E8%AE%B0/'>
+<meta property='og:description' content='配置 bash的配置在~/.bashrc中
+git的配置在~/.gitconfig中
+vim的配置在~/.vimrc中
+基础命令 tree：列举所有文件，递归列举文件
+'>
+<meta property='og:url' content='http://localhost:1313/zh-cn/p/linux%E7%AC%94%E8%AE%B0/'>
 <meta property='og:site_name' content='J-shiro&#39;s 博客'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-10-09T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2024-10-09T00:00:00&#43;00:00'/><meta property='og:image' content='https://J-shiro.github.io/img/note.jpg' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-10-09T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2024-10-09T00:00:00&#43;00:00'/><meta property='og:image' content='http://localhost:1313/img/note.jpg' />
 <meta name="twitter:title" content="LINUX笔记">
-<meta name="twitter:description" content="配置 bash的配置在~/.bashrc中 git的配置在~/.gitconfig中 vim的配置在~/.vimrc中 基础命令 tree：列举所有文"><meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content='https://J-shiro.github.io/img/note.jpg' />
+<meta name="twitter:description" content="配置 bash的配置在~/.bashrc中
+git的配置在~/.gitconfig中
+vim的配置在~/.vimrc中
+基础命令 tree：列举所有文件，递归列举文件
+"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='http://localhost:1313/img/note.jpg' />
     <link rel="shortcut icon" href="https://j-shiro.github.io/img/somebody.png" />
 
     </head>
@@ -52,13 +64,13 @@
         
             
             <figure class="site-avatar">
-                <a href="/zh-cn">
+                <a href="/zh-cn/">
                 
                     
                     
                     
                         
-                        <img src="/img/avatar_hu42aab1a06b48994d4eab55119e198264_548369_300x0_resize_box_3.png" width="300"
+                        <img src="/img/avatar_hu_a291887a020c52cf.png" width="300"
                             height="300" class="site-logo" loading="lazy" alt="Avatar">
                     
                 
@@ -216,9 +228,9 @@
 
                     <select name="language" onchange="window.location.href = this.selectedOptions[0].value">
                         
-                            <option value="https://J-shiro.github.io/" >English</option>
+                            <option value="http://localhost:1313/" >English</option>
                         
-                            <option value="https://J-shiro.github.io/zh-cn/" selected>中文</option>
+                            <option value="http://localhost:1313/zh-cn/" selected>中文</option>
                         
                     </select>
                 </li>
@@ -265,7 +277,7 @@
     <header class="article-category">
         
             <a href="/zh-cn/categories/notes/" >
-                notes
+                Notes
             </a>
         
             <a href="/zh-cn/categories/%E8%BF%90%E7%BB%B4/" >
@@ -776,8 +788,7 @@
 <p><strong>行间搜索移动</strong>：<code>f{char}</code>移动到char字符上，用<code>;</code>和<code>,</code>搜索<strong>下一个</strong>和<strong>上一个</strong>，<code>t{char}</code>移动到char前一个字符，<code>F{char}</code>反过来搜前面的char字符</p>
 <p><strong>页面移动</strong>：<code>gg/G</code>移动到文件开头/结尾，<code>H/M/L</code>跳转到屏幕开头/中间/结尾；<code>ctrl+u</code>, <code>ctrl+f</code>上下翻页；<code>zz</code>把屏幕置为中间</p>
 <blockquote>
-<p>使用<code>ci</code>加上一个 <code>'</code> 或 <code>&lt;</code> 或 <code>&quot;</code> 或 <code>《</code> 都可以删除以此符号包含的文本并进行替换输入</p>
-</blockquote>
+<p>使用<code>ci</code>加上一个 <code>'</code> 或 <code>&lt;</code> 或 <code>&quot;</code> 或 <code>《</code> 都可以删除以此符号包含的文本并进行替换输入</p></blockquote>
 <p><strong>重复之前的操作</strong>：<code>.</code></p>
 <p><strong>光标设置</strong></p>
 <ol>

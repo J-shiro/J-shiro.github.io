@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="en-us" dir="ltr">
-    <head><meta charset='utf-8'>
+<html lang="zh-cn" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='由于我拙劣的编程能力不能自己手搓，于是分析大佬的代码ing..并学点知识'><title>哲学家进餐问题-c代码分析</title>
 
-<link rel='canonical' href='https://J-shiro.github.io/zh-cn/p/%E5%93%B2%E5%AD%A6%E5%AE%B6%E8%BF%9B%E9%A4%90%E9%97%AE%E9%A2%98-c%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/'>
+<link rel='canonical' href='http://localhost:1313/zh-cn/p/%E5%93%B2%E5%AD%A6%E5%AE%B6%E8%BF%9B%E9%A4%90%E9%97%AE%E9%A2%98-c%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/'>
 
 <link rel="stylesheet" href="/scss/style.min.b18c0607927efd48b36f5d027b549e77e30ee300e22b6461d063f1df6ea2466b.css"><meta property='og:title' content='哲学家进餐问题-c代码分析'>
 <meta property='og:description' content='由于我拙劣的编程能力不能自己手搓，于是分析大佬的代码ing..并学点知识'>
-<meta property='og:url' content='https://J-shiro.github.io/zh-cn/p/%E5%93%B2%E5%AD%A6%E5%AE%B6%E8%BF%9B%E9%A4%90%E9%97%AE%E9%A2%98-c%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/'>
+<meta property='og:url' content='http://localhost:1313/zh-cn/p/%E5%93%B2%E5%AD%A6%E5%AE%B6%E8%BF%9B%E9%A4%90%E9%97%AE%E9%A2%98-c%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/'>
 <meta property='og:site_name' content='J-shiro&#39;s 博客'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2022-11-18T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-11-18T00:00:00&#43;00:00'/><meta property='og:image' content='https://J-shiro.github.io/zh-cn/p/%E5%93%B2%E5%AD%A6%E5%AE%B6%E8%BF%9B%E9%A4%90%E9%97%AE%E9%A2%98-c%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/os-pv.jpg' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2022-11-18T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-11-18T00:00:00&#43;00:00'/><meta property='og:image' content='http://localhost:1313/os-pv.jpg' />
 <meta name="twitter:title" content="哲学家进餐问题-c代码分析">
 <meta name="twitter:description" content="由于我拙劣的编程能力不能自己手搓，于是分析大佬的代码ing..并学点知识"><meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content='https://J-shiro.github.io/zh-cn/p/%E5%93%B2%E5%AD%A6%E5%AE%B6%E8%BF%9B%E9%A4%90%E9%97%AE%E9%A2%98-c%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/os-pv.jpg' />
+    <meta name="twitter:image" content='http://localhost:1313/os-pv.jpg' />
     <link rel="shortcut icon" href="https://j-shiro.github.io/img/somebody.png" />
 
     </head>
@@ -52,13 +52,13 @@
         
             
             <figure class="site-avatar">
-                <a href="/zh-cn">
+                <a href="/zh-cn/">
                 
                     
                     
                     
                         
-                        <img src="/img/avatar_hu42aab1a06b48994d4eab55119e198264_548369_300x0_resize_box_3.png" width="300"
+                        <img src="/img/avatar_hu_a291887a020c52cf.png" width="300"
                             height="300" class="site-logo" loading="lazy" alt="Avatar">
                     
                 
@@ -216,9 +216,9 @@
 
                     <select name="language" onchange="window.location.href = this.selectedOptions[0].value">
                         
-                            <option value="https://J-shiro.github.io/" >English</option>
+                            <option value="http://localhost:1313/" >English</option>
                         
-                            <option value="https://J-shiro.github.io/zh-cn/" selected>中文</option>
+                            <option value="http://localhost:1313/zh-cn/" selected>中文</option>
                         
                     </select>
                 </li>
@@ -253,12 +253,8 @@
     <header class="article-header">
         <div class="article-image">
             <a href="/zh-cn/p/%E5%93%B2%E5%AD%A6%E5%AE%B6%E8%BF%9B%E9%A4%90%E9%97%AE%E9%A2%98-c%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/">
-                <img src="/zh-cn/p/%E5%93%B2%E5%AD%A6%E5%AE%B6%E8%BF%9B%E9%A4%90%E9%97%AE%E9%A2%98-c%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/os-pv_hu814164b0805ad426a57055c766d1fec6_318204_800x0_resize_q75_box.jpg"
-                        srcset="/zh-cn/p/%E5%93%B2%E5%AD%A6%E5%AE%B6%E8%BF%9B%E9%A4%90%E9%97%AE%E9%A2%98-c%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/os-pv_hu814164b0805ad426a57055c766d1fec6_318204_800x0_resize_q75_box.jpg 800w, /zh-cn/p/%E5%93%B2%E5%AD%A6%E5%AE%B6%E8%BF%9B%E9%A4%90%E9%97%AE%E9%A2%98-c%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/os-pv_hu814164b0805ad426a57055c766d1fec6_318204_1600x0_resize_q75_box.jpg 1600w"
-                        width="800" 
-                        height="489" 
-                        loading="lazy"
-                        alt="Featured image of post 哲学家进餐问题-c代码分析" />
+                
+                    <img src="/os-pv.jpg" loading="lazy" alt="Featured image of post 哲学家进餐问题-c代码分析" />
                 
             </a>
         </div>
@@ -269,11 +265,11 @@
     <header class="article-category">
         
             <a href="/zh-cn/categories/takenotes/" >
-                takenotes
+                Takenotes
             </a>
         
             <a href="/zh-cn/categories/code/" >
-                code
+                Code
             </a>
         
     </header>
@@ -359,11 +355,11 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">do</span><span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="n">wait</span><span class="p">(</span><span class="n">chopstick</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
-</span></span><span class="line"><span class="cl">	<span class="n">wait</span><span class="p">(</span><span class="n">chopstick</span><span class="p">[(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="mi">5</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">wait</span><span class="p">(</span><span class="n">chopstick</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">wait</span><span class="p">(</span><span class="n">chopstick</span><span class="p">[(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="mi">5</span><span class="p">]);</span>
 </span></span><span class="line"><span class="cl">	<span class="n">eat</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="n">signal</span><span class="p">(</span><span class="n">chopstick</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
-</span></span><span class="line"><span class="cl">	<span class="n">signal</span><span class="p">(</span><span class="n">chopstick</span><span class="p">[(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="mi">5</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">signal</span><span class="p">(</span><span class="n">chopstick</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">signal</span><span class="p">(</span><span class="n">chopstick</span><span class="p">[(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="mi">5</span><span class="p">]);</span>
 </span></span><span class="line"><span class="cl">	<span class="n">think</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span><span class="k">while</span><span class="p">(</span><span class="n">TRUE</span><span class="p">);</span>
 </span></span></code></pre></td></tr></table>
@@ -389,15 +385,15 @@
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">semaphore</span> <span class="n">chopstick</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">};</span> 
 </span></span><span class="line"><span class="cl"><span class="n">semphore</span> <span class="n">room</span><span class="o">=</span><span class="mi">4</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">Pi</span> <span class="p">(){</span>
+</span></span><span class="line"><span class="cl"><span class="nf">Pi</span> <span class="p">(){</span>
 </span></span><span class="line"><span class="cl">	<span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
-</span></span><span class="line"><span class="cl">		<span class="n">P</span><span class="p">(</span><span class="n">room</span><span class="p">);</span><span class="c1">//只能有四个人进入拿左边的筷子
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">P</span><span class="p">(</span><span class="n">chopstick</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span> <span class="c1">//先拿左筷子
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">P</span><span class="p">(</span><span class="n">chopstick</span><span class="p">[(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="mi">5</span><span class="p">]);</span><span class="c1">//再拿右筷子
+</span></span><span class="line"><span class="cl">		<span class="nf">P</span><span class="p">(</span><span class="n">room</span><span class="p">);</span><span class="c1">//只能有四个人进入拿左边的筷子
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="nf">P</span><span class="p">(</span><span class="n">chopstick</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span> <span class="c1">//先拿左筷子
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="nf">P</span><span class="p">(</span><span class="n">chopstick</span><span class="p">[(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="mi">5</span><span class="p">]);</span><span class="c1">//再拿右筷子
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="err">进餐</span><span class="p">;</span> 
-</span></span><span class="line"><span class="cl">		<span class="n">V</span><span class="p">(</span><span class="n">chopstick</span><span class="p">[(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="mi">5</span><span class="p">];</span> 
-</span></span><span class="line"><span class="cl">		<span class="n">V</span><span class="p">(</span><span class="n">chopstick</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span> 
-</span></span><span class="line"><span class="cl">		<span class="n">V</span><span class="p">(</span><span class="n">room</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">V</span><span class="p">(</span><span class="n">chopstick</span><span class="p">[(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="mi">5</span><span class="p">];</span> 
+</span></span><span class="line"><span class="cl">		<span class="nf">V</span><span class="p">(</span><span class="n">chopstick</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span> 
+</span></span><span class="line"><span class="cl">		<span class="nf">V</span><span class="p">(</span><span class="n">room</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">		<span class="err">思考</span> 
 </span></span><span class="line"><span class="cl">	<span class="p">}</span> 
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
@@ -633,7 +629,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="cp"></span>
 </span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">chopstick</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">};</span>
 </span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">sem_id</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">pid_t</span> <span class="n">philosopher</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">pid_t</span> <span class="n">philosopher</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">//P操作
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">Wait</span><span class="p">(</span><span class="kt">int</span> <span class="n">sem_id</span><span class="p">,</span><span class="kt">int</span> <span class="n">sem_num</span><span class="p">)</span>
@@ -642,10 +638,10 @@
 </span></span><span class="line"><span class="cl">	<span class="n">buf</span><span class="p">.</span><span class="n">sem_num</span> <span class="o">=</span> <span class="n">sem_num</span><span class="p">;</span><span class="c1">//第几个信号量
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">buf</span><span class="p">.</span><span class="n">sem_op</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="c1">//对该信号量执行等待
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">buf</span><span class="p">.</span><span class="n">sem_flg</span> <span class="o">=</span> <span class="n">SEM_UNDO</span><span class="p">;</span><span class="c1">//维护进程对信号量的调整值
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">if</span><span class="p">(</span><span class="n">semop</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="o">&amp;</span><span class="n">buf</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">if</span><span class="p">(</span><span class="nf">semop</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="o">&amp;</span><span class="n">buf</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">	<span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="n">perror</span><span class="p">(</span><span class="s">&#34;wait failed&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">		<span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">perror</span><span class="p">(</span><span class="s">&#34;wait failed&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">	<span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
@@ -657,81 +653,81 @@
 </span></span><span class="line"><span class="cl">	<span class="n">buf</span><span class="p">.</span><span class="n">sem_op</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span><span class="c1">//对该信号量执行挂出
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">buf</span><span class="p">.</span><span class="n">sem_flg</span> <span class="o">=</span> <span class="n">SEM_UNDO</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">	<span class="k">if</span><span class="p">(</span><span class="n">semop</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="o">&amp;</span><span class="n">buf</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span><span class="p">(</span><span class="nf">semop</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="o">&amp;</span><span class="n">buf</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">	<span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="n">perror</span><span class="p">(</span><span class="s">&#34;signal failed&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">		<span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">perror</span><span class="p">(</span><span class="s">&#34;signal failed&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">	<span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">think</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;the philosopher of %d is thinking(pid is %d)</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">getpid</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;the philosopher of %d is thinking(pid is %d)</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="nf">getpid</span><span class="p">());</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">eat</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;the philosopher of %d is eating(pid is %d)</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">getpid</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;the philosopher of %d is eating(pid is %d)</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="nf">getpid</span><span class="p">());</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">Philosophers1</span><span class="p">(</span><span class="kt">int</span> <span class="n">sem_id</span><span class="p">,</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">j</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">	<span class="k">for</span><span class="p">(</span><span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">j</span><span class="o">&lt;</span><span class="mi">2</span><span class="p">;</span><span class="n">j</span><span class="o">++</span><span class="p">){</span>
-</span></span><span class="line"><span class="cl">		<span class="n">think</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">		<span class="n">Wait</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">room</span><span class="p">);</span> 
-</span></span><span class="line"><span class="cl">		<span class="n">Wait</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">chopstick</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span> 
-</span></span><span class="line"><span class="cl">		<span class="n">Wait</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">chopstick</span><span class="p">[(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="mi">5</span><span class="p">]);</span> 
-</span></span><span class="line"><span class="cl">		<span class="n">eat</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">		<span class="n">Signal</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">chopstick</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span> 
-</span></span><span class="line"><span class="cl">		<span class="n">Signal</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">chopstick</span><span class="p">[(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="mi">5</span><span class="p">]);</span> 
-</span></span><span class="line"><span class="cl">		<span class="n">printf</span><span class="p">(</span><span class="s">&#34;the process of %d(pid is %d,ppid is %d)has finished eating</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">getpid</span><span class="p">(),</span><span class="n">getppid</span><span class="p">());</span>
-</span></span><span class="line"><span class="cl">		<span class="n">Signal</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">room</span><span class="p">);</span> 
-</span></span><span class="line"><span class="cl">		<span class="n">fflush</span><span class="p">(</span><span class="n">stdout</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">think</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">Wait</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">room</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl">		<span class="nf">Wait</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">chopstick</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span> 
+</span></span><span class="line"><span class="cl">		<span class="nf">Wait</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">chopstick</span><span class="p">[(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="mi">5</span><span class="p">]);</span> 
+</span></span><span class="line"><span class="cl">		<span class="nf">eat</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">Signal</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">chopstick</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span> 
+</span></span><span class="line"><span class="cl">		<span class="nf">Signal</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">chopstick</span><span class="p">[(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="mi">5</span><span class="p">]);</span> 
+</span></span><span class="line"><span class="cl">		<span class="nf">printf</span><span class="p">(</span><span class="s">&#34;the process of %d(pid is %d,ppid is %d)has finished eating</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="nf">getpid</span><span class="p">(),</span><span class="nf">getppid</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">Signal</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">room</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl">		<span class="nf">fflush</span><span class="p">(</span><span class="n">stdout</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">	<span class="p">}</span>
-</span></span><span class="line"><span class="cl">	<span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="k">if</span><span class="p">((</span><span class="n">sem_id</span> <span class="o">=</span> <span class="n">semget</span><span class="p">(</span><span class="n">IPC_PRIVATE</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="n">SEM_MODE</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span><span class="p">((</span><span class="n">sem_id</span> <span class="o">=</span> <span class="nf">semget</span><span class="p">(</span><span class="n">IPC_PRIVATE</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="n">SEM_MODE</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">	<span class="p">{</span>					
-</span></span><span class="line"><span class="cl">		<span class="n">perror</span><span class="p">(</span><span class="s">&#34;create semaphore failed! </span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">		<span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">perror</span><span class="p">(</span><span class="s">&#34;create semaphore failed! </span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">	<span class="p">}</span>
-</span></span><span class="line"><span class="cl">	<span class="k">if</span><span class="p">(</span><span class="n">semctl</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">mutex</span><span class="p">,</span><span class="n">SETVAL</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span><span class="p">(</span><span class="nf">semctl</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">mutex</span><span class="p">,</span><span class="n">SETVAL</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">	<span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="n">perror</span><span class="p">(</span><span class="s">&#34;sem set value error! </span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">		<span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">perror</span><span class="p">(</span><span class="s">&#34;sem set value error! </span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">	<span class="p">}</span>
 </span></span><span class="line"><span class="cl">	<span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">5</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">semctl</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">chopstick</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">SETVAL</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="nf">semctl</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">chopstick</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">SETVAL</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="n">perror</span><span class="p">(</span><span class="s">&#34;sem set value error! </span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">            <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">perror</span><span class="p">(</span><span class="s">&#34;sem set value error! </span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">	<span class="p">}</span>
-</span></span><span class="line"><span class="cl">	<span class="k">if</span><span class="p">(</span><span class="n">semctl</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">room</span><span class="p">,</span><span class="n">SETVAL</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span><span class="p">(</span><span class="nf">semctl</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">room</span><span class="p">,</span><span class="n">SETVAL</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">	<span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="n">perror</span><span class="p">(</span><span class="s">&#34;sem set value error! </span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">		<span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">perror</span><span class="p">(</span><span class="s">&#34;sem set value error! </span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">	<span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">5</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
-</span></span><span class="line"><span class="cl">        <span class="n">philosopher</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">philosopher</span> <span class="o">=</span> <span class="nf">fork</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">philosopher</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">){</span>
-</span></span><span class="line"><span class="cl">            <span class="n">perror</span><span class="p">(</span><span class="s">&#34;the fork failed&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">			<span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">perror</span><span class="p">(</span><span class="s">&#34;the fork failed&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="nf">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">        <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">philosopher</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
-</span></span><span class="line"><span class="cl">            <span class="n">Philosophers1</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">i</span><span class="p">);</span>       
+</span></span><span class="line"><span class="cl">            <span class="nf">Philosophers1</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">i</span><span class="p">);</span>       
 </span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="n">wait</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">shmctl</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">IPC_RMID</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;finish!!!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">fflush</span><span class="p">(</span><span class="n">stdout</span><span class="p">);</span><span class="c1">//在prinf()后加上fflush(stdout); 强制马上输出，避免错误。
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="nf">wait</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">shmctl</span><span class="p">(</span><span class="n">sem_id</span><span class="p">,</span><span class="n">IPC_RMID</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;finish!!!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">fflush</span><span class="p">(</span><span class="n">stdout</span><span class="p">);</span><span class="c1">//在prinf()后加上fflush(stdout); 强制马上输出，避免错误。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>

@@ -112,3 +112,14 @@ Add images to the markdown: the images need to be placed in path: `/static/img`.
 ```
 
 need to change the root image directory of the typora to the `/static` which is only used for current `.md` file,  and change the reference about the typora to the `/static/img`
+
+## update
+
+update the hugo version
+
+```bash
+scoop update
+scoop install hugo-extended
+# check the new hugo directory and put it into the system environment
+```
+

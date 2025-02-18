@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Pages on J-shiro&#39;s Blog</title>
-        <link>https://J-shiro.github.io/page/</link>
+        <link>http://localhost:1313/page/</link>
         <description>Recent content in Pages on J-shiro&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en-us</language>
-        <lastBuildDate>Tue, 13 Sep 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://J-shiro.github.io/page/index.xml" rel="self" type="application/rss+xml" /><item>
+        <language>en</language>
+        <lastBuildDate>Tue, 13 Sep 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/page/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>About</title>
-        <link>https://J-shiro.github.io/about/</link>
+        <link>http://localhost:1313/about/</link>
         <pubDate>Tue, 13 Sep 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/about/</guid>
+        <guid>http://localhost:1313/about/</guid>
         <description>&lt;p&gt;This is my first time to create a blog.
 Maybe there&amp;rsquo;re something not so good,
 but I will try my best to make it better.
@@ -37,18 +37,18 @@ Learn more and contribute on [GitHub](https://github.com/gohugoio).
         </item>
         <item>
         <title>Archives</title>
-        <link>https://J-shiro.github.io/archives/</link>
+        <link>http://localhost:1313/archives/</link>
         <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/archives/</guid>
+        <guid>http://localhost:1313/archives/</guid>
         <description></description>
         </item>
         <item>
         <title>Links</title>
-        <link>https://J-shiro.github.io/links/</link>
+        <link>http://localhost:1313/links/</link>
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/links/</guid>
+        <guid>http://localhost:1313/links/</guid>
         <description>&lt;!-- To use this feature, add `links` section to frontmatter.
 
 This page&#39;s frontmatter:
@@ -69,10 +69,10 @@ links:
         </item>
         <item>
         <title>Search</title>
-        <link>https://J-shiro.github.io/search/</link>
+        <link>http://localhost:1313/search/</link>
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/search/</guid>
+        <guid>http://localhost:1313/search/</guid>
         <description></description>
         </item>
         

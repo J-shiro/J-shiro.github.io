@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="en-us" dir="ltr">
-    <head><meta charset='utf-8'>
+<html lang="en" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='ASU CSE 365, assembly crash course'><title>PwnCollege_Note3</title>
 
-<link rel='canonical' href='https://J-shiro.github.io/p/pwncollege_note3/'>
+<link rel='canonical' href='http://localhost:1313/p/pwncollege_note3/'>
 
 <link rel="stylesheet" href="/scss/style.min.b18c0607927efd48b36f5d027b549e77e30ee300e22b6461d063f1df6ea2466b.css"><meta property='og:title' content='PwnCollege_Note3'>
 <meta property='og:description' content='ASU CSE 365, assembly crash course'>
-<meta property='og:url' content='https://J-shiro.github.io/p/pwncollege_note3/'>
+<meta property='og:url' content='http://localhost:1313/p/pwncollege_note3/'>
 <meta property='og:site_name' content='J-shiro&#39;s Blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2022-11-29T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-11-29T00:00:00&#43;00:00'/><meta property='og:image' content='https://J-shiro.github.io/p/pwncollege_note3/pwncollege.png' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2022-11-29T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-11-29T00:00:00&#43;00:00'/><meta property='og:image' content='http://localhost:1313/p/pwncollege_note3/pwncollege.png' />
 <meta name="twitter:title" content="PwnCollege_Note3">
 <meta name="twitter:description" content="ASU CSE 365, assembly crash course"><meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content='https://J-shiro.github.io/p/pwncollege_note3/pwncollege.png' />
+    <meta name="twitter:image" content='http://localhost:1313/p/pwncollege_note3/pwncollege.png' />
     <link rel="shortcut icon" href="https://j-shiro.github.io/img/somebody.png" />
 
     </head>
@@ -58,7 +58,7 @@
                     
                     
                         
-                        <img src="/img/avatar_hu42aab1a06b48994d4eab55119e198264_548369_300x0_resize_box_3.png" width="300"
+                        <img src="/img/avatar_hu_a291887a020c52cf.png" width="300"
                             height="300" class="site-logo" loading="lazy" alt="Avatar">
                     
                 
@@ -216,9 +216,9 @@
 
                     <select name="language" onchange="window.location.href = this.selectedOptions[0].value">
                         
-                            <option value="https://J-shiro.github.io/" selected>English</option>
+                            <option value="http://localhost:1313/" selected>English</option>
                         
-                            <option value="https://J-shiro.github.io/zh-cn/" >中文</option>
+                            <option value="http://localhost:1313/zh-cn/" >中文</option>
                         
                     </select>
                 </li>
@@ -253,8 +253,8 @@
     <header class="article-header">
         <div class="article-image">
             <a href="/p/pwncollege_note3/">
-                <img src="/p/pwncollege_note3/pwncollege_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_800x0_resize_box_3.png"
-                        srcset="/p/pwncollege_note3/pwncollege_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_800x0_resize_box_3.png 800w, /p/pwncollege_note3/pwncollege_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_1600x0_resize_box_3.png 1600w"
+                <img src="/p/pwncollege_note3/pwncollege_hu_a5dbf0f5841ad402.png"
+                        srcset="/p/pwncollege_note3/pwncollege_hu_a5dbf0f5841ad402.png 800w, /p/pwncollege_note3/pwncollege_hu_68ef3494951ddcbe.png 1600w"
                         width="800" 
                         height="276" 
                         loading="lazy"
@@ -431,8 +431,7 @@
 <p>drawback2: arithmetic operations have to be signedness-aware</p>
 <blockquote>
 <p>(unsigned) 0b00000000 - 1 = 0 - 1 = 255 == 0b11111111</p>
-<p>(signed) 	 0b00000000 - 1 = 0 - 1 = -1    == 0b10000001</p>
-</blockquote>
+<p>(signed) 	 0b00000000 - 1 = 0 - 1 = -1    == 0b10000001</p></blockquote>
 <ul>
 <li>two&rsquo;s complement</li>
 </ul>
@@ -543,40 +542,40 @@
 <p><strong>From: 0x10000</strong> (for security reasons)</p>
 <p><strong>To: 0x7fffffffffff</strong> (for architecture / OS purposes)</p>
 <div class="table-wrapper"><table>
-<thead>
-<tr>
-<th>0x10000</th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th>0x7fffffffffff</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td>Program Binary Code</td>
-<td></td>
-<td>Dynamically Allocated Memory(managed by libraries)</td>
-<td></td>
-<td>[Dynamically Mapped Memory(requested by process)]</td>
-<td></td>
-<td>Library Code</td>
-<td></td>
-<td>Process Stack</td>
-<td></td>
-<td>OS Helper Regions</td>
-<td></td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th>0x10000</th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th>0x7fffffffffff</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td></td>
+          <td>Program Binary Code</td>
+          <td></td>
+          <td>Dynamically Allocated Memory(managed by libraries)</td>
+          <td></td>
+          <td>[Dynamically Mapped Memory(requested by process)]</td>
+          <td></td>
+          <td>Library Code</td>
+          <td></td>
+          <td>Process Stack</td>
+          <td></td>
+          <td>OS Helper Regions</td>
+          <td></td>
+      </tr>
+  </tbody>
 </table></div>
 <p>②Stack - temporary data storage</p>
 <p>registers and immediates can be pushed to stack <code>push rax</code>, <code>push 0xaabbccdd</code> (even on 64-bit x86, can only push 32-bit immediates)</p>
@@ -762,9 +761,9 @@
 </span></span><span class="line"><span class="cl">	<span class="k">else</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
-</span></span><span class="line"><span class="cl">	<span class="n">check_leet</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">	<span class="n">check_leet</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">	<span class="n">exit</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">check_leet</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">check_leet</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">exit</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
@@ -874,26 +873,26 @@
 <p>a string is a bunch of contiguous bytes in memory, followed by a 0 byte</p>
 <p><code>build a file path for open() on the stackand open /flag file, return the file descriptor number in rax</code></p>
 <div class="table-wrapper"><table>
-<thead>
-<tr>
-<th>rsp</th>
-<th>rsp+1</th>
-<th>rsp+2</th>
-<th>rsp+3</th>
-<th>rsp+4</th>
-<th>rsp+5</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>2f(/)</td>
-<td>66(f)</td>
-<td>6c(l)</td>
-<td>61(a)</td>
-<td>67(g)</td>
-<td>00(\0)</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th>rsp</th>
+          <th>rsp+1</th>
+          <th>rsp+2</th>
+          <th>rsp+3</th>
+          <th>rsp+4</th>
+          <th>rsp+5</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>2f(/)</td>
+          <td>66(f)</td>
+          <td>6c(l)</td>
+          <td>61(a)</td>
+          <td>67(g)</td>
+          <td>00(\0)</td>
+      </tr>
+  </tbody>
 </table></div>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -1128,28 +1127,28 @@
 </div><p>level6: <strong>lower register</strong></p>
 <p>independent access to lower register bytes</p>
 <div class="table-wrapper"><table>
-<thead>
-<tr>
-<th>64bits</th>
-<th>32bits</th>
-<th>16bits</th>
-<th>8bits</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>rax</td>
-<td>eax</td>
-<td>ax</td>
-<td>ah al</td>
-</tr>
-<tr>
-<td>rdi</td>
-<td>edi</td>
-<td>di</td>
-<td>dil</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th>64bits</th>
+          <th>32bits</th>
+          <th>16bits</th>
+          <th>8bits</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>rax</td>
+          <td>eax</td>
+          <td>ax</td>
+          <td>ah al</td>
+      </tr>
+      <tr>
+          <td>rdi</td>
+          <td>edi</td>
+          <td>di</td>
+          <td>dil</td>
+      </tr>
+  </tbody>
 </table></div>
 <p><img src="/img/pwn_college/level6/rax.png"
 	
@@ -1443,8 +1442,7 @@ shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
 <li>At 0x51 write the following code:</li>
 <li>Place the top value on the stack into register rdi</li>
 <li>jmp to the absolute address 0x403000</li>
-</ol>
-</blockquote>
+</ol></blockquote>
 <p>we should use the <code>.rept count ... .endr</code> : Repeat the sequence of lines between the .rept directive and the next .endr directive count times.</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -1481,8 +1479,7 @@ y = [x+4] - [x+8] - [x+12]
 else:
 y = [x+4] * [x+8] * [x+12]
 where:
-x = rdi, y = rax. Assume each dereferenced value is a <strong>signed dword</strong> .</p>
-</blockquote>
+x = rdi, y = rax. Assume each dereferenced value is a <strong>signed dword</strong> .</p></blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -1549,8 +1546,7 @@ x = rdi, y = rax. Assume each dereferenced value is a <strong>signed dword</stro
 0: jmp do_thing_0
 1: jmp do_thing_1
 2: jmp do_thing_2
-default: jmp do_default_thing</p>
-</blockquote>
+default: jmp do_default_thing</p></blockquote>
 <p>reduced else-if</p>
 <p>using jump table: A jump table is a contiguous section of memory that holds addresses of places to jump</p>
 <p>jump table could look like:</p>
@@ -1558,8 +1554,7 @@ default: jmp do_default_thing</p>
 <p>[0x1337] = address of do_thing_0
 [0x1337+0x8] = address of do_thing_1
 [0x1337+0x10] = address of do_thing_2
-[0x1337+0x18] = address of do_default_thing</p>
-</blockquote>
+[0x1337+0x18] = address of do_default_thing</p></blockquote>
 <p><strong>implement:</strong></p>
 <blockquote>
 <p>if rdi is 0:
@@ -1571,16 +1566,14 @@ jmp 0x4031f1
 else if rdi is 3:
 jmp 0x4032b9
 else:
-jmp 0x40337c</p>
-</blockquote>
+jmp 0x40337c</p></blockquote>
 <p><strong>an example jump table:</strong></p>
 <blockquote>
-<p>[0x4041df] = 0x403040 
+<p>[0x4041df] = 0x403040
 [0x4041e7] = 0x4030f7
 [0x4041ef] = 0x4031f1
 [0x4041f7] = 0x4032b9
-[0x4041ff] = 0x40337c</p>
-</blockquote>
+[0x4041ff] = 0x40337c</p></blockquote>
 <p><strong>constraints:</strong></p>
 <ul>
 <li>assume rdi will NOT be negative</li>
@@ -1774,8 +1767,7 @@ jmp 0x40337c</p>
 </div><p><strong>functions</strong></p>
 <p>level22: <strong>function</strong> &mdash;-&gt;a callable segment of code that does not destory control flow. Use the &ldquo;call&rdquo; and &ldquo;ret&rdquo; instructions</p>
 <blockquote>
-<p>ip control 、utilize the stack to save things 、call other functions provided</p>
-</blockquote>
+<p>ip control 、utilize the stack to save things 、call other functions provided</p></blockquote>
 <p>The &ldquo;call&rdquo; instruction pushes the memory address of the next instruction onto the stack and then jumps to the value stored in the first argument.</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -1818,12 +1810,12 @@ jmp 0x40337c</p>
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">str_lower</span><span class="p">(</span><span class="n">src_addr</span><span class="p">)</span><span class="o">:</span>
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="nf">str_lower</span><span class="p">(</span><span class="n">src_addr</span><span class="p">)</span><span class="o">:</span>
 </span></span><span class="line"><span class="cl">    <span class="n">rax</span> <span class="o">=</span> <span class="mi">0</span>
 </span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">src_addr</span> <span class="o">!=</span> <span class="mi">0</span><span class="o">:</span>
 </span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="p">[</span><span class="n">src_addr</span><span class="p">]</span> <span class="o">!=</span> <span class="mh">0x0</span><span class="o">:</span>
 </span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">[</span><span class="n">src_addr</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">90</span><span class="o">:</span>
-</span></span><span class="line"><span class="cl">                <span class="p">[</span><span class="n">src_addr</span><span class="p">]</span> <span class="o">=</span> <span class="n">foo</span><span class="p">([</span><span class="n">src_addr</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">                <span class="p">[</span><span class="n">src_addr</span><span class="p">]</span> <span class="o">=</span> <span class="nf">foo</span><span class="p">([</span><span class="n">src_addr</span><span class="p">])</span>
 </span></span><span class="line"><span class="cl">                <span class="n">rax</span> <span class="o">+=</span> <span class="mi">1</span>
 </span></span><span class="line"><span class="cl">            <span class="n">src_addr</span> <span class="o">+=</span> <span class="mi">1</span>
 </span></span><span class="line"><span class="cl"><span class="c1">//foo is provided at 0x403000. foo takes a single argument as a value
@@ -1936,7 +1928,7 @@ jmp 0x40337c</p>
 </span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">most_common_byte</span><span class="p">(</span><span class="n">src_addr</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span><span class="o">:</span>
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="nf">most_common_byte</span><span class="p">(</span><span class="n">src_addr</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span><span class="o">:</span>
 </span></span><span class="line"><span class="cl">    <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span>
 </span></span><span class="line"><span class="cl">    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
 </span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">size</span><span class="o">-</span><span class="mi">1</span><span class="o">:</span>
@@ -2088,7 +2080,7 @@ jmp 0x40337c</p>
         
         
             <div class="article-image">
-                <img src="/p/debugging-refresher/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_250x150_fill_box_smart1_3.png" 
+                <img src="/p/debugging-refresher/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu_98b89bc9017f0e68.png" 
                         width="250" 
                         height="150" 
                         loading="lazy"
@@ -2112,7 +2104,7 @@ jmp 0x40337c</p>
         
         
             <div class="article-image">
-                <img src="/p/pwncollege_note7/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_250x150_fill_box_smart1_3.png" 
+                <img src="/p/pwncollege_note7/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu_98b89bc9017f0e68.png" 
                         width="250" 
                         height="150" 
                         loading="lazy"
@@ -2136,7 +2128,7 @@ jmp 0x40337c</p>
         
         
             <div class="article-image">
-                <img src="/p/pwncollege_note6/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_250x150_fill_box_smart1_3.png" 
+                <img src="/p/pwncollege_note6/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu_98b89bc9017f0e68.png" 
                         width="250" 
                         height="150" 
                         loading="lazy"
@@ -2160,7 +2152,7 @@ jmp 0x40337c</p>
         
         
             <div class="article-image">
-                <img src="/p/intercepting-communication/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_250x150_fill_box_smart1_3.png" 
+                <img src="/p/intercepting-communication/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu_98b89bc9017f0e68.png" 
                         width="250" 
                         height="150" 
                         loading="lazy"
@@ -2184,7 +2176,7 @@ jmp 0x40337c</p>
         
         
             <div class="article-image">
-                <img src="/p/building-a-web-server/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_250x150_fill_box_smart1_3.png" 
+                <img src="/p/building-a-web-server/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu_98b89bc9017f0e68.png" 
                         width="250" 
                         height="150" 
                         loading="lazy"
@@ -2269,7 +2261,7 @@ jmp 0x40337c</p>
         
             
         
-        共 21.67k 字 · 共 11篇文章
+        共 21.69k 字 · 共 11篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---

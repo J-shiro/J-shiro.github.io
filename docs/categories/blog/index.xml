@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>blog on J-shiro&#39;s Blog</title>
-        <link>https://J-shiro.github.io/categories/blog/</link>
-        <description>Recent content in blog on J-shiro&#39;s Blog</description>
+        <title>Blog on J-shiro&#39;s Blog</title>
+        <link>http://localhost:1313/categories/blog/</link>
+        <description>Recent content in Blog on J-shiro&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en-us</language>
-        <lastBuildDate>Mon, 24 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://J-shiro.github.io/categories/blog/index.xml" rel="self" type="application/rss+xml" /><item>
+        <language>en</language>
+        <lastBuildDate>Mon, 24 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/blog/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>HUGO_blog</title>
-        <link>https://J-shiro.github.io/p/hugo_blog/</link>
+        <link>http://localhost:1313/p/hugo_blog/</link>
         <pubDate>Mon, 24 Oct 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/p/hugo_blog/</guid>
-        <description>&lt;img src="https://J-shiro.github.io/p/hugo_blog/86.jpg" alt="Featured image of post HUGO_blog" /&gt;&lt;h2 id=&#34;git&#34;&gt;git&lt;/h2&gt;
+        <guid>http://localhost:1313/p/hugo_blog/</guid>
+        <description>&lt;img src="http://localhost:1313/p/hugo_blog/86.jpg" alt="Featured image of post HUGO_blog" /&gt;&lt;h2 id=&#34;git&#34;&gt;git&lt;/h2&gt;
 &lt;p&gt;Use the following statement to upload the local file to GitHub.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -158,7 +158,21 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;need to change the root image directory of the typora to the &lt;code&gt;/static&lt;/code&gt; which is only used for current &lt;code&gt;.md&lt;/code&gt; file,  and change the reference about the typora to the &lt;code&gt;/static/img&lt;/code&gt;&lt;/p&gt;
-</description>
+&lt;h2 id=&#34;update&#34;&gt;update&lt;/h2&gt;
+&lt;p&gt;update the hugo version&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;scoop update
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;scoop install hugo-extended
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# check the new hugo directory and put it into the system environment&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
         </item>
         
     </channel>

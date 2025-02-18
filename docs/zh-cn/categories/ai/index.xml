@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>AI on J-shiro&#39;s 博客</title>
-        <link>https://J-shiro.github.io/zh-cn/categories/ai/</link>
+        <link>http://localhost:1313/zh-cn/categories/ai/</link>
         <description>Recent content in AI on J-shiro&#39;s 博客</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en-us</language>
-        <lastBuildDate>Fri, 01 Nov 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://J-shiro.github.io/zh-cn/categories/ai/index.xml" rel="self" type="application/rss+xml" /><item>
+        <language>zh-cn</language>
+        <lastBuildDate>Fri, 01 Nov 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/zh-cn/categories/ai/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>LangChain笔记</title>
-        <link>https://J-shiro.github.io/zh-cn/p/langchain%E7%AC%94%E8%AE%B0/</link>
+        <link>http://localhost:1313/zh-cn/p/langchain%E7%AC%94%E8%AE%B0/</link>
         <pubDate>Fri, 01 Nov 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/zh-cn/p/langchain%E7%AC%94%E8%AE%B0/</guid>
-        <description>&lt;img src="https://J-shiro.github.io/img/ai_note.jpg" alt="Featured image of post LangChain笔记" /&gt;&lt;h2 id=&#34;基本知识&#34;&gt;基本知识&lt;/h2&gt;
+        <guid>http://localhost:1313/zh-cn/p/langchain%E7%AC%94%E8%AE%B0/</guid>
+        <description>&lt;img src="http://localhost:1313/img/ai_note.jpg" alt="Featured image of post LangChain笔记" /&gt;&lt;h2 id=&#34;基本知识&#34;&gt;基本知识&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;LangChain是一个基于大语言模型（LLMs）用于构建端到端语言模型应用的框架&lt;/p&gt;
@@ -552,7 +552,7 @@
 &lt;li&gt;思维树，Tree of Thoughts&lt;/li&gt;
 &lt;li&gt;为任务定义具体思维步骤及每个步骤候选项数量&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/LangChain_note.zh-cn.assets/image-20241106201642021.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/LangChain_note.zh-cn.assets/image-20241106201642021.png&#34;
 	
 	
 	
@@ -1410,11 +1410,11 @@
         </item>
         <item>
         <title>NLP笔记</title>
-        <link>https://J-shiro.github.io/zh-cn/p/nlp%E7%AC%94%E8%AE%B0/</link>
+        <link>http://localhost:1313/zh-cn/p/nlp%E7%AC%94%E8%AE%B0/</link>
         <pubDate>Sat, 12 Oct 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/zh-cn/p/nlp%E7%AC%94%E8%AE%B0/</guid>
-        <description>&lt;img src="https://J-shiro.github.io/img/ai_note.jpg" alt="Featured image of post NLP笔记" /&gt;&lt;h2 id=&#34;nlp&#34;&gt;NLP&lt;/h2&gt;
+        <guid>http://localhost:1313/zh-cn/p/nlp%E7%AC%94%E8%AE%B0/</guid>
+        <description>&lt;img src="http://localhost:1313/img/ai_note.jpg" alt="Featured image of post NLP笔记" /&gt;&lt;h2 id=&#34;nlp&#34;&gt;NLP&lt;/h2&gt;
 &lt;p&gt;自然语言处理Natural language processing (NLP) ，有监督学习&lt;/p&gt;
 &lt;h3 id=&#34;序列模型&#34;&gt;序列模型&lt;/h3&gt;
 &lt;p&gt;$T_x^{(i)}$表示第 i 个训练样例的序列长度，$X^{(i)}$表示 i 序列中第 t 个元素，x 表示输入 y 表示输出&lt;/p&gt;
@@ -1422,7 +1422,7 @@
 &lt;h3 id=&#34;循环神经网络&#34;&gt;循环神经网络&lt;/h3&gt;
 &lt;p&gt;（Recurrent Neural）处理  一维序列化数据&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;前向传播&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/nlp_note.zh-cn.assets/-172845431716878.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/nlp_note.zh-cn.assets/-172845431716878.assets&#34;
 	
 	
 	
@@ -1443,7 +1443,7 @@
 &lt;p&gt;某一时间损失：$L^{&amp;lt;t&amp;gt;}(\hat y^{&amp;lt;t&amp;gt;},y^{&amp;lt;t&amp;gt;})=-y^{&amp;lt;t&amp;gt;}\log \hat y^{&amp;lt;t&amp;gt;}-(1-y^{&amp;lt;t&amp;gt;})\log (1-\hat y^{&amp;lt;t&amp;gt;})$&lt;/p&gt;
 &lt;p&gt;总体损失函数：$L(\hat y, y)=\sum_{t=1}^{T_y}L^{&amp;lt;t&amp;gt;}(\hat y^{&amp;lt;t&amp;gt;},y^{&amp;lt;t&amp;gt;})$，$T_x$和$T_y$可能不同&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;架构类型&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/nlp_note.zh-cn.assets/-172845431716879.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/nlp_note.zh-cn.assets/-172845431716879.assets&#34;
 	
 	
 	
@@ -1453,7 +1453,7 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/nlp_note.zh-cn.assets/-172845431716880.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/nlp_note.zh-cn.assets/-172845431716880.assets&#34;
 	
 	
 	
@@ -1467,7 +1467,7 @@
 &lt;p&gt;训练集为极大&lt;strong&gt;语料库&lt;/strong&gt;（corpus），将数据句子&lt;strong&gt;标记化&lt;/strong&gt;（tokenize），句子末尾加入&lt;strong&gt;EOS&lt;/strong&gt;（End Of Sentence）标记，定位句子结尾，未知单词标记为**&lt;UNK&gt;**（unknown word）标记，$\hat y$对应于已知条件概率P(__|已知)&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;损失函数&lt;/strong&gt;：$L(\hat y^{&amp;lt;t&amp;gt;},y^{&amp;lt;t&amp;gt;})=-\sum_iy_i^{&amp;lt;t&amp;gt;}\log \hat y_i^{&amp;lt;t&amp;gt;}$，softmax损失函数&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;字符级语言模型，字典为[a,b,c,&amp;hellip;,z,A,&amp;hellip;,Z]&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/nlp_note.zh-cn.assets/-172845431716881.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/nlp_note.zh-cn.assets/-172845431716881.assets&#34;
 	
 	
 	
@@ -1484,7 +1484,7 @@
 &lt;li&gt;门控值**：更新门**$\Gamma_u=\sigma(W_u[C^{&amp;lt;t-1&amp;gt;},x^{&amp;lt;t&amp;gt;}]+b_u)$，sigmoid使范围为0-1，为0表示不更新$C^{&amp;lt;t&amp;gt;}$，同样适用于&lt;strong&gt;相关性门&lt;/strong&gt;$\Gamma_r$&lt;/li&gt;
 &lt;li&gt;$C^{&amp;lt;t&amp;gt;}=\Gamma_u\cdot \tilde C^{&amp;lt;t&amp;gt;}+(1-\Gamma_u)\cdot C^{&amp;lt;t-1&amp;gt;}$ ，a和c相等&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/nlp_note.zh-cn.assets/-172845431716882.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/nlp_note.zh-cn.assets/-172845431716882.assets&#34;
 	
 	
 	
@@ -1500,7 +1500,7 @@
 &lt;li&gt;&lt;strong&gt;更新门&lt;/strong&gt;$\Gamma_u=\sigma(W_u[C^{&amp;lt;t-1&amp;gt;},x^{&amp;lt;t&amp;gt;}]+b_u)$，&lt;strong&gt;遗忘门&lt;/strong&gt;$\Gamma_f=\sigma(W_f[C^{&amp;lt;t-1&amp;gt;},x^{&amp;lt;t&amp;gt;}]+b_f)$，&lt;strong&gt;输出门&lt;/strong&gt;$\Gamma_o=\sigma(W_o[C^{&amp;lt;t-1&amp;gt;},x^{&amp;lt;t&amp;gt;}]+b_o)$&lt;/li&gt;
 &lt;li&gt;更新：$C^{&amp;lt;t&amp;gt;}=\Gamma_u\cdot \tilde C^{&amp;lt;t&amp;gt;}+\Gamma_f\cdot C^{&amp;lt;t-1&amp;gt;}$，$a^{&amp;lt;t&amp;gt;}=\Gamma_o\cdot C^{&amp;lt;t&amp;gt;}$，a和c不再相等&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/nlp_note.zh-cn.assets/-172845431716883.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/nlp_note.zh-cn.assets/-172845431716883.assets&#34;
 	
 	
 	
@@ -1511,7 +1511,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;情感分类&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/nlp_note.zh-cn.assets/-172845431716884.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/nlp_note.zh-cn.assets/-172845431716884.assets&#34;
 	
 	
 	
@@ -1526,7 +1526,7 @@
 &lt;li&gt;（bi-directional recurrent neural network, BRNNs）&lt;/li&gt;
 &lt;li&gt;解决单词不能单从前面得出是否是人名&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/nlp_note.zh-cn.assets/-172845431716885.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/nlp_note.zh-cn.assets/-172845431716885.assets&#34;
 	
 	
 	
@@ -1540,7 +1540,7 @@
 &lt;ul&gt;
 &lt;li&gt;Deep RNNs&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/nlp_note.zh-cn.assets/-172845431716886.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/nlp_note.zh-cn.assets/-172845431716886.assets&#34;
 	
 	
 	
@@ -1568,7 +1568,7 @@
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;矩阵嵌入&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;使用单词矩阵与one-hot编码向量相乘获取对应单词的向量，实则一般在&lt;strong&gt;嵌入层&lt;/strong&gt;中直接取对应列即可&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/nlp_note.zh-cn.assets/image-20241012233656947.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/nlp_note.zh-cn.assets/image-20241012233656947.png&#34;
 	
 	
 	
@@ -1581,7 +1581,7 @@
 &lt;h3 id=&#34;词向量模型&#34;&gt;词向量模型&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;Word2Vec模型&lt;/strong&gt;，将文本向量化&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;训练数据&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/nlp_note.zh-cn.assets/-172845431716887.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/nlp_note.zh-cn.assets/-172845431716887.assets&#34;
 	
 	
 	
@@ -1592,7 +1592,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;不同模型**：CBOW（上下文推词）** 与 &lt;strong&gt;Skipgram（词推上下文）&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/nlp_note.zh-cn.assets/-172845431716888.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/nlp_note.zh-cn.assets/-172845431716888.assets&#34;
 	
 	
 	
@@ -1608,7 +1608,7 @@
 &lt;li&gt;中立化：未被定义的词通过映射到避开偏差&lt;/li&gt;
 &lt;li&gt;均匀化：移动相关性别的词使得距离坐标轴相等&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/nlp_note.zh-cn.assets/-172845431716989.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/nlp_note.zh-cn.assets/-172845431716989.assets&#34;
 	
 	
 	
@@ -1635,7 +1635,7 @@
 &lt;li&gt;（Sequence-to-sequence），机器翻译+语音识别&lt;/li&gt;
 &lt;li&gt;先将语言经过编码器，然后经过解码器进行翻译，计算$P(y^{&amp;lt;1&amp;gt;}|x)$&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/nlp_note.zh-cn.assets/-172845431716990.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/nlp_note.zh-cn.assets/-172845431716990.assets&#34;
 	
 	
 	
@@ -1653,7 +1653,7 @@
 &lt;li&gt;$\arg \max_y\frac{1}{T_y^{\alpha}}\sum_{t=1}^{T_y}\log P(y^{&amp;lt;t&amp;gt;}|x,y^{&amp;lt;1&amp;gt;},\cdots ,y^{&amp;lt;t-1&amp;gt;})$，$\alpha$=0.7取部分规范化&lt;/li&gt;
 &lt;li&gt;$P(y^{&amp;lt;1&amp;gt;}\cdots y^{&amp;lt;T_y&amp;gt;}|x)=P(y^{&amp;lt;1&amp;gt;}|x)P(y^{&amp;lt;2&amp;gt;}|x,y^{&amp;lt;1&amp;gt;})\cdots P(y^{&amp;lt;T_y&amp;gt;}|x,y^{&amp;lt;1&amp;gt;},\cdots ,y^{&amp;lt;T_y-1&amp;gt;})$&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/nlp_note.zh-cn.assets/-172845431716991.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/nlp_note.zh-cn.assets/-172845431716991.assets&#34;
 	
 	
 	
@@ -1673,7 +1673,7 @@
 &lt;ul&gt;
 &lt;li&gt;（attention model），会生成多个注意力权重参数$\alpha$总和为1，将在某个词放入多少注意力，$\alpha^{&amp;lt;t, t&amp;rsquo;&amp;gt;}$ 表示生成 t 时需要对 t&amp;rsquo; 花费的注意力是多少&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/nlp_note.zh-cn.assets/-172845431716992.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/nlp_note.zh-cn.assets/-172845431716992.assets&#34;
 	
 	
 	
@@ -1687,7 +1687,7 @@
 &lt;p&gt;同一时间对一句话同时处理，注意力+卷积&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;自注意力机制：并行计算&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;为每个单词计算出一个基于注意力的表达：$A(q,K,V)$，即$A^{&amp;lt;1&amp;gt;},A^{&amp;lt;2&amp;gt;},\cdot$&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/nlp_note.zh-cn.assets/-172845431716993.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/nlp_note.zh-cn.assets/-172845431716993.assets&#34;
 	
 	
 	
@@ -1703,7 +1703,7 @@
 &lt;li&gt;$K^{&amp;lt;i&amp;gt;}=W^K\cdot x^{&amp;lt;i&amp;gt;}$&lt;/li&gt;
 &lt;li&gt;$V^{&amp;lt;i&amp;gt;}=W^V\cdot x^{&amp;lt;i&amp;gt;}$&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/nlp_note.zh-cn.assets/-172845431716994.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/nlp_note.zh-cn.assets/-172845431716994.assets&#34;
 	
 	
 	
@@ -1716,7 +1716,7 @@
 &lt;p&gt;&lt;strong&gt;多头注意力机制：循环并行计算自注意力&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;通过不同矩阵参数集进行重复多次的自注意力计算，用于回答不同问题：when,where,who,how&amp;hellip;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;transformer架构&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/nlp_note.zh-cn.assets/-172845431716995.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/nlp_note.zh-cn.assets/-172845431716995.assets&#34;
 	
 	
 	
@@ -1730,13 +1730,13 @@
         </item>
         <item>
         <title>计算机视觉笔记</title>
-        <link>https://J-shiro.github.io/zh-cn/p/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E7%AC%94%E8%AE%B0/</link>
+        <link>http://localhost:1313/zh-cn/p/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E7%AC%94%E8%AE%B0/</link>
         <pubDate>Sat, 12 Oct 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/zh-cn/p/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E7%AC%94%E8%AE%B0/</guid>
-        <description>&lt;img src="https://J-shiro.github.io/img/ai_note.jpg" alt="Featured image of post 计算机视觉笔记" /&gt;&lt;h2 id=&#34;计算机视觉&#34;&gt;计算机视觉&lt;/h2&gt;
+        <guid>http://localhost:1313/zh-cn/p/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E7%AC%94%E8%AE%B0/</guid>
+        <description>&lt;img src="http://localhost:1313/img/ai_note.jpg" alt="Featured image of post 计算机视觉笔记" /&gt;&lt;h2 id=&#34;计算机视觉&#34;&gt;计算机视觉&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;垂直边缘检测——灰度图&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/cv_note.zh-cn.assets/-172845431716656.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/cv_note.zh-cn.assets/-172845431716656.assets&#34;
 	
 	
 	
@@ -1747,7 +1747,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;N x N * f x f = ( N - f + 1 ) * ( N - f + 1)&lt;/strong&gt;，f 基本为奇数&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/cv_note.zh-cn.assets/-172845431716657.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/cv_note.zh-cn.assets/-172845431716657.assets&#34;
 	
 	
 	
@@ -1774,7 +1774,7 @@
 &lt;p&gt;28&lt;em&gt;28&lt;/em&gt;192的输入，若要减少通道数，使用32个1&lt;em&gt;1&lt;/em&gt;192的滤波器卷积，输出28&lt;em&gt;28&lt;/em&gt;32大小的立方体&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;三维卷积&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;通道=深度&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/cv_note.zh-cn.assets/-172845431716658.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/cv_note.zh-cn.assets/-172845431716658.assets&#34;
 	
 	
 	
@@ -1788,7 +1788,7 @@
 &lt;p&gt;常用于图像数据处理&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;一层架构&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;2个过滤器即2个特征&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/cv_note.zh-cn.assets/-172845431716659.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/cv_note.zh-cn.assets/-172845431716659.assets&#34;
 	
 	
 	
@@ -1808,7 +1808,7 @@
 &lt;/ol&gt;
 &lt;p&gt;&lt;strong&gt;最大池化层(max pooling)&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;最大值采样：f=2，输出对应区域&lt;strong&gt;最大值，若在滤波器中任何地方检测到了特征，保留最大值&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/cv_note.zh-cn.assets/-172845431716660.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/cv_note.zh-cn.assets/-172845431716660.assets&#34;
 	
 	
 	
@@ -1820,7 +1820,7 @@
 &gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;平均池化层(average pooling)&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;均值采样：f=2&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/cv_note.zh-cn.assets/-172845431716661.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/cv_note.zh-cn.assets/-172845431716661.assets&#34;
 	
 	
 	
@@ -1836,7 +1836,7 @@
 &lt;/ol&gt;
 &lt;p&gt;&lt;strong&gt;经典架构&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;LeNet-5&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/cv_note.zh-cn.assets/-172845431716762.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/cv_note.zh-cn.assets/-172845431716762.assets&#34;
 	
 	
 	
@@ -1847,7 +1847,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;AlexNet&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/cv_note.zh-cn.assets/-172845431716763.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/cv_note.zh-cn.assets/-172845431716763.assets&#34;
 	
 	
 	
@@ -1859,7 +1859,7 @@
 &gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;VGG-16&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;结构简单，更关注卷积层，有16层带权重的层&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/cv_note.zh-cn.assets/-172845431716764.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/cv_note.zh-cn.assets/-172845431716764.assets&#34;
 	
 	
 	
@@ -1871,7 +1871,7 @@
 &gt;&lt;/p&gt;
 &lt;h4 id=&#34;卷积残差网络&#34;&gt;卷积残差网络&lt;/h4&gt;
 &lt;p&gt;（conv residual network, ResNet），利用跳跃连接（skip connection），解决梯度爆炸和消失&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/cv_note.zh-cn.assets/-172845431716765.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/cv_note.zh-cn.assets/-172845431716765.assets&#34;
 	
 	
 	
@@ -1882,7 +1882,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;残差神经网络ResNet&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/cv_note.zh-cn.assets/-172845431716766.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/cv_note.zh-cn.assets/-172845431716766.assets&#34;
 	
 	
 	
@@ -1894,7 +1894,7 @@
 &gt;&lt;/p&gt;
 &lt;h4 id=&#34;初始网络&#34;&gt;&lt;strong&gt;初始网络&lt;/strong&gt;&lt;/h4&gt;
 &lt;p&gt;（Inception network），做多次卷积并将结果合并&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/cv_note.zh-cn.assets/-172845431716767.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/cv_note.zh-cn.assets/-172845431716767.assets&#34;
 	
 	
 	
@@ -1906,7 +1906,7 @@
 &gt;&lt;/p&gt;
 &lt;p&gt;计算成本高，计算成本=卷积核的3个参数 x 卷积核所可移动的位置数 x 卷积核数量，若使用1x1卷积先减少通道数/维度化为瓶颈层(bottleneck layer)可大量减少计算成本&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;单模块&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/cv_note.zh-cn.assets/-172845431716768.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/cv_note.zh-cn.assets/-172845431716768.assets&#34;
 	
 	
 	
@@ -1919,7 +1919,7 @@
 &lt;p&gt;重复多次使用该单模块&lt;/p&gt;
 &lt;h4 id=&#34;mobilenets&#34;&gt;MobileNets&lt;/h4&gt;
 &lt;p&gt;&lt;strong&gt;深度可分离卷积（depthwise-separable convolutions）&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/cv_note.zh-cn.assets/-172845431716769.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/cv_note.zh-cn.assets/-172845431716769.assets&#34;
 	
 	
 	
@@ -1931,7 +1931,7 @@
 &gt;&lt;/p&gt;
 &lt;p&gt;成本计算为：3x3x4x4x3 + 1x1x3x4x4x5 远小于一般卷积成本&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;架构&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/cv_note.zh-cn.assets/-172845431716770.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/cv_note.zh-cn.assets/-172845431716770.assets&#34;
 	
 	
 	
@@ -1947,7 +1947,7 @@
 &lt;p&gt;设置$b_x, b_y, b_h, b_w$：横坐标，纵坐标，高，宽，&lt;strong&gt;y&lt;/strong&gt; 向量将包含是否有对象及概率$p_c$、$b_x, b_y, b_h, b_w$、是哪个对象$c_1,c_2,c_3$等&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;地标检测（Landmark detection）&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;全连接层转换为卷积层&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/cv_note.zh-cn.assets/-172845431716771.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/cv_note.zh-cn.assets/-172845431716771.assets&#34;
 	
 	
 	
@@ -1959,7 +1959,7 @@
 &gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;滑动窗口检测（sliding Windows Detection）&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;合并成一个前向传播运算，共享运算&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/cv_note.zh-cn.assets/-172845431716772.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/cv_note.zh-cn.assets/-172845431716772.assets&#34;
 	
 	
 	
@@ -1982,7 +1982,7 @@
 &lt;p&gt;Semantic Segmentation&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;转置卷积（Transpose Convolution）&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;重叠部分叠加相加，padding为1，stride为2，灰色部分不填充，最终将2x2扩展为4x4&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/cv_note.zh-cn.assets/-172845431716773.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/cv_note.zh-cn.assets/-172845431716773.assets&#34;
 	
 	
 	
@@ -1993,7 +1993,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;h3 id=&#34;u-net&#34;&gt;U-Net&lt;/h3&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/cv_note.zh-cn.assets/-172845431716874.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/cv_note.zh-cn.assets/-172845431716874.assets&#34;
 	
 	
 	
@@ -2003,7 +2003,7 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/cv_note.zh-cn.assets/-172845431716875.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/cv_note.zh-cn.assets/-172845431716875.assets&#34;
 	
 	
 	
@@ -2018,7 +2018,7 @@
 &lt;p&gt;&lt;strong&gt;相似方程：d(img1, img2) = 图像差异度&lt;/strong&gt; 与 $\tau$ 比较&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;孪生网络（Siamese network）&lt;/strong&gt;——用相同卷积网络对不同图片处理&lt;/p&gt;
 &lt;p&gt;$d(x^{(1)},x^{(2)})=||f(x^{(1)})-f(x^{(2)})||^2_2$同一个人值极小&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/cv_note.zh-cn.assets/-172845431716876.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/cv_note.zh-cn.assets/-172845431716876.assets&#34;
 	
 	
 	
@@ -2047,7 +2047,7 @@
 &lt;p&gt;$G_{kk&amp;rsquo;}^{[l](S)}=\sum_{i=1}^{n_H^{[l]}}\sum_{j=1}^{n_W^{[l]}}a_{ijk}^{[l](S)}a_{ijk&amp;rsquo;}^{[l](S)},\quad\quad k=1,\cdots ,n_c^{[l]}$&lt;/p&gt;
 &lt;p&gt;$G_{kk&amp;rsquo;}^{[l](G)}=\sum_{i=1}^{n_H^{[l]}}\sum_{j=1}^{n_W^{[l]}}a_{ijk}^{[l](G)}a_{ijk&amp;rsquo;}^{[l](G)},\quad\quad k=1,\cdots ,n_c^{[l]}$&lt;/p&gt;
 &lt;p&gt;$J_{Style}^{[l]}(S,G)=\frac{1}{(\cdots)}||G^{[l][S]}-G^{[l][G]}||_F^2$&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/cv_note.zh-cn.assets/-172845431716877.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/cv_note.zh-cn.assets/-172845431716877.assets&#34;
 	
 	
 	
@@ -2064,11 +2064,11 @@
         </item>
         <item>
         <title>强化学习笔记</title>
-        <link>https://J-shiro.github.io/zh-cn/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+        <link>http://localhost:1313/zh-cn/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
         <pubDate>Sat, 12 Oct 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/zh-cn/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
-        <description>&lt;img src="https://J-shiro.github.io/img/ai_note.jpg" alt="Featured image of post 强化学习笔记" /&gt;&lt;h2 id=&#34;强化学习&#34;&gt;强化学习&lt;/h2&gt;
+        <guid>http://localhost:1313/zh-cn/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+        <description>&lt;img src="http://localhost:1313/img/ai_note.jpg" alt="Featured image of post 强化学习笔记" /&gt;&lt;h2 id=&#34;强化学习&#34;&gt;强化学习&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;奖励函数（reward function）&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;奖励(reward)：R，通过奖励好行为和惩罚坏行为使自动学习，核心要素：(s_start, action, reward(s_start), s_change)&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;回报 （return）&lt;/strong&gt;&lt;/p&gt;
@@ -2076,7 +2076,7 @@
 &lt;p&gt;$return=R_1 \cdot (\gamma) + R_2 \cdot (\gamma)^2 + \cdots + R_n\cdot (\gamma)^n$&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;策略函数(policy)&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;强化学习需要找到策略函数：$\pi(s)=a$来最大化回报&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reinforcement_learning_note.zh-cn.assets/-172845431716541.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reinforcement_learning_note.zh-cn.assets/-172845431716541.assets&#34;
 	
 	
 	
@@ -2105,7 +2105,7 @@
 &lt;p&gt;每个状态不是离散的，通过向量表示：$s=[x,,y,,\theta,,x&amp;rsquo;,,y&amp;rsquo;,,\theta&amp;rsquo;]$可分别表示位置，方向，速度，角度等&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;深度强化学习-学习状态值函数&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;使用神经网络去预测Q函数，选择最大化 Q(s,a) 的动作 a&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reinforcement_learning_note.zh-cn.assets/-172845431716542.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reinforcement_learning_note.zh-cn.assets/-172845431716542.assets&#34;
 	
 	
 	
@@ -2161,7 +2161,7 @@
 &lt;p&gt;反向传播backpropagation：使用随机搜索结果更新搜索树，价值累加，探索次数加一&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reinforcement_learning_note.zh-cn.assets/image-20241009232005644.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reinforcement_learning_note.zh-cn.assets/image-20241009232005644.png&#34;
 	
 	
 	
@@ -2179,11 +2179,11 @@
         </item>
         <item>
         <title>深度学习笔记</title>
-        <link>https://J-shiro.github.io/zh-cn/p/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+        <link>http://localhost:1313/zh-cn/p/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
         <pubDate>Sat, 12 Oct 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/zh-cn/p/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
-        <description>&lt;img src="https://J-shiro.github.io/img/ai_note.jpg" alt="Featured image of post 深度学习笔记" /&gt;&lt;h2 id=&#34;深度学习&#34;&gt;深度学习&lt;/h2&gt;
+        <guid>http://localhost:1313/zh-cn/p/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+        <description>&lt;img src="http://localhost:1313/img/ai_note.jpg" alt="Featured image of post 深度学习笔记" /&gt;&lt;h2 id=&#34;深度学习&#34;&gt;深度学习&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;机器学习过程：数据获取、【&lt;strong&gt;特征工程】&lt;/strong&gt;、建立模型、评估应用&lt;/li&gt;
 &lt;li&gt;特征工程：数据特征决定模型上限，算法和参数用于接近上限&lt;/li&gt;
@@ -2192,7 +2192,7 @@
 &lt;/ul&gt;
 &lt;h3 id=&#34;神经网络&#34;&gt;神经网络&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;整体框架&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/deep_learning_note.zh-cn.assets/-172845431716543.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/deep_learning_note.zh-cn.assets/-172845431716543.assets&#34;
 	
 	
 	
@@ -2225,7 +2225,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;strong&gt;隐藏层工作&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/deep_learning_note.zh-cn.assets/-172845431716544.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/deep_learning_note.zh-cn.assets/-172845431716544.assets&#34;
 	
 	
 	
@@ -2331,7 +2331,7 @@
 &lt;/ul&gt;
 &lt;p&gt;神经网络主要使用 &lt;strong&gt;Relu函数 (Rectified Linerar Unite：线性整流函数，非二元, 更快)&lt;/strong&gt; 而不使用Sigmoid函数，Sigmoid函数会出现梯度消失现象( 两端平坦, 导致梯度下降慢, Relu只有一端平坦 )&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Relu函数&lt;/strong&gt;：$\sigma(x)=max(0,x)$&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/deep_learning_note.zh-cn.assets/-172845431716545.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/deep_learning_note.zh-cn.assets/-172845431716545.assets&#34;
 	
 	
 	
@@ -2342,7 +2342,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Leaky ReLU函数&lt;/strong&gt;：$\sigma(x)=\begin{cases}x,,,x\gt 0\\alpha x,,,x\le 0\end{cases}$&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/deep_learning_note.zh-cn.assets/-172845431716546.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/deep_learning_note.zh-cn.assets/-172845431716546.assets&#34;
 	
 	
 	
@@ -2353,7 +2353,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;tanh函数&lt;/strong&gt;：$\sigma(x)=tanh(x)=\frac{e^x-e^{-x}}{e^x+e^{-x}}$，具有居中数据效果&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/deep_learning_note.zh-cn.assets/-172845431716547.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/deep_learning_note.zh-cn.assets/-172845431716547.assets&#34;
 	
 	
 	
@@ -2373,7 +2373,7 @@
 &lt;p&gt;反向传播中：$dw^{[l]}=(from backprop) + \frac{\lambda}{m}w^{[l]}$&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;DROP-OUT 正则化&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;随机抽取一些神经元训练，解决过拟合，以某一概率选择&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/deep_learning_note.zh-cn.assets/-172845431716648.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/deep_learning_note.zh-cn.assets/-172845431716648.assets&#34;
 	
 	
 	
@@ -2421,7 +2421,7 @@
 &lt;p&gt;输入到输出，从左往右，神经元数逐层减少，计算&lt;strong&gt;激活值&lt;/strong&gt;及&lt;strong&gt;成本&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;使用指数函数扩大差异，再取平均值归一化：$P(Y=k|X=x_i)=\frac{e^{s_k}}{\sum_je^{s_j}}$，其中$s=f(x_i;W)$&lt;/p&gt;
 &lt;p&gt;计算损失值：$L_i=-logP(Y=y_i|X=x_i)$，P越接近1，log后越小&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/deep_learning_note.zh-cn.assets/-172845431716649.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/deep_learning_note.zh-cn.assets/-172845431716649.assets&#34;
 	
 	
 	
@@ -2431,7 +2431,7 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/deep_learning_note.zh-cn.assets/-172845431716650.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/deep_learning_note.zh-cn.assets/-172845431716650.assets&#34;
 	
 	
 	
@@ -2443,7 +2443,7 @@
 &gt;&lt;/p&gt;
 &lt;h3 id=&#34;反向传播&#34;&gt;反向传播&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;梯度下降&lt;/strong&gt; 链式法则：梯度一步步传播，参考偏导来计算 J 关于 w 和 b 参数的&lt;strong&gt;导数，反向的时候需要：正向时的每个中间结点的值都存储在中间结点&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/deep_learning_note.zh-cn.assets/-172845431716651.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/deep_learning_note.zh-cn.assets/-172845431716651.assets&#34;
 	
 	
 	
@@ -2454,7 +2454,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;例子：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/deep_learning_note.zh-cn.assets/-172845431716652.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/deep_learning_note.zh-cn.assets/-172845431716652.assets&#34;
 	
 	
 	
@@ -2464,7 +2464,7 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/deep_learning_note.zh-cn.assets/-172845431716653.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/deep_learning_note.zh-cn.assets/-172845431716653.assets&#34;
 	
 	
 	
@@ -2475,7 +2475,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;逻辑回归反向传播过程&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/deep_learning_note.zh-cn.assets/-172845431716654.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/deep_learning_note.zh-cn.assets/-172845431716654.assets&#34;
 	
 	
 	
@@ -2497,7 +2497,7 @@
 &lt;li&gt;MAX门单元：给最大的&lt;/li&gt;
 &lt;li&gt;乘法门单元：互换&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/deep_learning_note.zh-cn.assets/-172845431716655.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/deep_learning_note.zh-cn.assets/-172845431716655.assets&#34;
 	
 	
 	
@@ -2526,11 +2526,11 @@
         </item>
         <item>
         <title>机器学习笔记</title>
-        <link>https://J-shiro.github.io/zh-cn/p/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+        <link>http://localhost:1313/zh-cn/p/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
         <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/zh-cn/p/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
-        <description>&lt;img src="https://J-shiro.github.io/img/ai_note.jpg" alt="Featured image of post 机器学习笔记" /&gt;&lt;h2 id=&#34;基础&#34;&gt;基础&lt;/h2&gt;
+        <guid>http://localhost:1313/zh-cn/p/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+        <description>&lt;img src="http://localhost:1313/img/ai_note.jpg" alt="Featured image of post 机器学习笔记" /&gt;&lt;h2 id=&#34;基础&#34;&gt;基础&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;笔记相关&lt;/strong&gt;&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;ul&gt;
@@ -2542,8 +2542,7 @@
 &lt;li&gt;&lt;code&gt;&amp;lt;&lt;/code&gt;需要转义为&lt;code&gt;\&amp;lt;&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;[&lt;/code&gt;需要转义为&lt;code&gt;\[&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;先下标再上标&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/blockquote&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
 &lt;p&gt;&lt;strong&gt;灰度图&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;一般为3个数相乘，前两个数是长宽，单位为像素，最后一个数是指RGB通道数，灰度图为1，相乘的结果作为维数，输入值将平展为一列向量&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;均方误差&lt;/strong&gt;&lt;/p&gt;
@@ -2601,7 +2600,7 @@
 &lt;li&gt;第 &lt;strong&gt;i&lt;/strong&gt; 次实验中，取 &lt;strong&gt;ni&lt;/strong&gt; 作为&lt;strong&gt;训练集中的验证集&lt;/strong&gt;，其余为&lt;strong&gt;训练集中的训练集&lt;/strong&gt;&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;K&lt;/strong&gt; 次实验最终取平均&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716996.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716996.assets&#34;
 	
 	
 	
@@ -2615,7 +2614,7 @@
 &lt;p&gt;高偏差：不拟合，$J_{cv}$高，$J_{train}$高，相差不大&lt;/p&gt;
 &lt;p&gt;高方差：过拟合，$J_{cv}$高，$J_{train}$低，后者远小于前者&lt;/p&gt;
 &lt;p&gt;与多项式程度的关系&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-17284543171621.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-17284543171621.assets&#34;
 	
 	
 	
@@ -2626,7 +2625,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;正则化参数$\lambda$影响偏差、方差&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-17284543171622.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-17284543171622.assets&#34;
 	
 	
 	
@@ -2640,7 +2639,7 @@
 &lt;p&gt;需要加入&lt;strong&gt;人类基准表现&lt;/strong&gt;，来判断模型的训练误差$J_{train}$和交叉验证误差$J_{cv}$&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;学习曲线判断偏/方差&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;高偏差下，增加训练集不会有助于模型（例如：使用线性模型拟合二次函数，再多点都不利于拟合）&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-17284543171623.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-17284543171623.assets&#34;
 	
 	
 	
@@ -2651,7 +2650,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;高方差下，增加训练集有助于模型（例如：模型过拟合匹配了四次函数，数据增多使模型逐渐接近四次函数模型）&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-17284543171624.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-17284543171624.assets&#34;
 	
 	
 	
@@ -2674,31 +2673,31 @@
 &lt;p&gt;处理倾斜数据集，使用不同误差度量，而非分类误差&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Confusion Matrix&lt;/strong&gt;&lt;/p&gt;
 &lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;&lt;/th&gt;
-&lt;th&gt;相关(Relevant)，正类&lt;/th&gt;
-&lt;th&gt;无关(NonRelevant)，负类&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;被检索到(Retrieved)&lt;/td&gt;
-&lt;td&gt;&lt;strong&gt;TP&lt;/strong&gt; (true positives)检索到正确的值&lt;/td&gt;
-&lt;td&gt;&lt;strong&gt;FP&lt;/strong&gt; (false positives)检索到错误的值：存伪&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;未被检索到(Not Retrieved&lt;/td&gt;
-&lt;td&gt;&lt;strong&gt;FN&lt;/strong&gt; (false negatives)未检测到正确的值：去真&lt;/td&gt;
-&lt;td&gt;&lt;strong&gt;TN&lt;/strong&gt; (true negatives)未检测到错误的值&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;&lt;/th&gt;
+          &lt;th&gt;相关(Relevant)，正类&lt;/th&gt;
+          &lt;th&gt;无关(NonRelevant)，负类&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;被检索到(Retrieved)&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;TP&lt;/strong&gt; (true positives)检索到正确的值&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;FP&lt;/strong&gt; (false positives)检索到错误的值：存伪&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;未被检索到(Not Retrieved&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;FN&lt;/strong&gt; (false negatives)未检测到正确的值：去真&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;TN&lt;/strong&gt; (true negatives)未检测到错误的值&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;两个指标：区分只报单一类别的模型&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;精准度&lt;/strong&gt;：$precision=\frac{TP}{TP+FP(total,predicted,positive)}$：预测病人得某病，大概率病人确实有该病&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;召回率&lt;/strong&gt;：$recall=\frac{TP}{TP+FN(total,actual,positive)}$：病人有该病，大概率模型能够识别出来确有该病&lt;/p&gt;
 &lt;p&gt;当$f_{w,b}(x)\gt$threshold阈值，预测为1：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-17284543171625.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-17284543171625.assets&#34;
 	
 	
 	
@@ -2717,7 +2716,7 @@
 &lt;li&gt;x轴：FPR = FP / (FP + TN)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;一个好的分类器尽可能&lt;strong&gt;朝左上方&lt;/strong&gt;远离虚线&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-17284543171626.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-17284543171626.assets&#34;
 	
 	
 	
@@ -2814,7 +2813,7 @@
 &lt;p&gt;$\begin{cases}w_j = w_j-\alpha \frac{\partial}{\partial w}J(w,b)\ b=b-\alpha\frac{\partial}{\partial b}J(w,b) \end{cases}$，$\alpha$为学习率，后面一项为 J 关于 w 和 b 的导数，同时更新 w 和 b&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;动量梯度下降——加速梯度下降&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;计算 dw 和 db 的滑动平均值 v ，更新权重时使得梯度下降更平滑&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-17284543171627.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-17284543171627.assets&#34;
 	
 	
 	
@@ -2837,7 +2836,7 @@
 &lt;li&gt;更新参数：$W=W-\alpha\frac{V_{dW}^{correct}}{\sqrt{S_{dW}^{correct}}+\varepsilon}\quad b=b-\alpha\frac{V_{db}^{correct}}{\sqrt{S_{db}^{correct}}+\varepsilon}$&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;使用等高图绘制代价函数，由梯度下降从start到minimum，若每次参数移动方向基本一致，Adam将&lt;strong&gt;提高学习率&lt;/strong&gt;，加快速度&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-17284543171628.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-17284543171628.assets&#34;
 	
 	
 	
@@ -2848,7 +2847,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;当梯度下降呈现下图形式，参数不断来回振荡，Adam将减少学习率，加快速度&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-17284543171639.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-17284543171639.assets&#34;
 	
 	
 	
@@ -2876,7 +2875,7 @@
 &lt;p&gt;Cost function，或&lt;strong&gt;平方误差&lt;/strong&gt;成本(Squared error cost)函数：$J(w, b)=\frac{1}{2m}\cdot\sum_{i-1}^{m}(\hat y^{(i)} - y^{(i)})^2=\frac{1}{2m}\cdot\sum_{i-1}^{m}(f_{w,b}(x^{(i)}) - y^{(i)})^2$，找 w 和 b 使得$J(w,b)$最小，&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;步长/学习率&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;范围 [0, 1]，对结果产生影响，从小选择&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716310.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716310.assets&#34;
 	
 	
 	
@@ -2902,7 +2901,7 @@
 &lt;p&gt;用于解决&lt;strong&gt;过拟合&lt;/strong&gt;，令模型选择更合适的$\theta$值，对&lt;strong&gt;权重参数&lt;/strong&gt;用$\lambda$进行惩罚，减小参数大小，让权重参数尽可能平滑&lt;/p&gt;
 &lt;p&gt;若有 n 个参数 w ，对每个参数都进行惩罚，&lt;strong&gt;线性回归模型&lt;/strong&gt;的代价函数变为：&lt;/p&gt;
 &lt;p&gt;$J(w, b)=\frac{1}{2m}\sum^m_{i=1}(f_{w,b}(x^{(i)})-y^{(i)})^2+\frac{\lambda}{2m}\sum^n_{j=1}w_j^2$，$\lambda\gt0$是正则化参数，第二项为正则化项&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716311.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716311.assets&#34;
 	
 	
 	
@@ -2994,7 +2993,7 @@
 &lt;li&gt;训练集大小极小时，测试集均方差高，训练集均方差低&lt;/li&gt;
 &lt;li&gt;随训练集大小增大，两均方差之差减小&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716312.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716312.assets&#34;
 	
 	
 	
@@ -3024,7 +3023,7 @@
 &lt;li&gt;$g(z)=\frac{1}{1+e^{-z}}=P(y=1|x)=\hat y$，&lt;strong&gt;z&lt;/strong&gt; 可取任意实数，值域[0, 1]&lt;/li&gt;
 &lt;li&gt;线性回归中得到的预测值，可以映射到Sigmoid函数中完成&lt;strong&gt;值&lt;/strong&gt;到&lt;strong&gt;概率&lt;/strong&gt;的转换——分类&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716313.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716313.assets&#34;
 	
 	
 	
@@ -3053,7 +3052,7 @@
 &lt;p&gt;定义&lt;strong&gt;损失函数&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;$$L(f_{w,b}(x^{(i)}), y^{(i)})=\begin{cases}-log(f_{w,b}(x^{(i)}))\quad y^{(i)}=1\\ -log(1-f_{w,b}(x^{(i)}))\quad y^{(i)}=0\end{cases}$$&lt;/p&gt;
 &lt;p&gt;其中f(x)是sigmoid函数，所以取值[0, 1]&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716314.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716314.assets&#34;
 	
 	
 	
@@ -3064,7 +3063,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;预测值接近1时，损失最低，越接近0，损失越高&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716315.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716315.assets&#34;
 	
 	
 	
@@ -3104,7 +3103,7 @@
 &lt;p&gt;&lt;strong&gt;损失函数（交叉熵）&lt;/strong&gt;：$J(\theta)=-\frac{1}{m}\sum_{i=1}^m\sum_{k=1}^Ky_k^{(i)}log(\hat p_k^{(i)})$&lt;/p&gt;
 &lt;p&gt;运用到神经网络：输出层将需要 N 个神经元，以分为 N 个类别，Softmax激活功能使得$a_i$与$z_1 \cdots z_N$所有值相关，区别于logistic回归：$a_i$只与$z_i$有关&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;多标签分类(multi label classification)&lt;/strong&gt;——输入单图像，判断是否有行人，是否有车，是否有公交，向量[1 0 1]&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716316.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716316.assets&#34;
 	
 	
 	
@@ -3131,7 +3130,7 @@
 &lt;li&gt;当对图像进行分类时导致以背景为主导了，而主体才应该为主要成分&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;决策树&#34;&gt;决策树&lt;/h3&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716317.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716317.assets&#34;
 	
 	
 	
@@ -3150,7 +3149,7 @@
 &lt;p&gt;&lt;strong&gt;熵&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;测量纯度，衡量标准，随机变量不确定性的度量&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;公式：各个的概率都要算，i个种类，&lt;/strong&gt;$H(X)=-\sum p_i\cdot \log_{2} p_i,,,,i=1,2,\cdots,n$，&lt;strong&gt;log函数使得概率pi越靠近1，值越小&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716318.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716318.assets&#34;
 	
 	
 	
@@ -3183,7 +3182,7 @@
 &lt;p&gt;&lt;strong&gt;连续特征值&lt;/strong&gt;：离散化，如何取分界点，使用贪婪算法对连续值进行切割二分，然后计算信息增益，选最大值&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;GINI系数&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;$Gini(p)=\sum^K_{k=1}p_k(1-p_k)=1-\sum_{k=1}^Kp_k^2$，选取GINI系数最小的来构建优先决策节点&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716319.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716319.assets&#34;
 	
 	
 	
@@ -3223,7 +3222,7 @@
 &lt;p&gt;**（3）**否则，&lt;strong&gt;计算特征 A 对数据集 D 的信息增益，选择信息增益最大的特征&lt;/strong&gt; $A_g$&lt;/p&gt;
 &lt;p&gt;**（4）**如果 $A_g$ 的信息增益小于阈值 $\epsilon$ ，则置 T 为单节点树，并将 D 中实例数最大的类 $C_k$ 作为该节点的类标记，返回 T【剪枝】&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;（5）否则，对&lt;/strong&gt; $A_g$ &lt;strong&gt;的每一可能值&lt;/strong&gt; $a_i$ &lt;strong&gt;依&lt;/strong&gt; $A_g=a_i$ &lt;strong&gt;将 D 划分为若干非空子集&lt;/strong&gt; $D_i$ &lt;strong&gt;，将&lt;/strong&gt; $D_i$ &lt;strong&gt;中实例数最大的类作为标记，构建子节点&lt;/strong&gt;，由节点及其子节点构成树 T ，返回 T&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716320.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716320.assets&#34;
 	
 	
 	
@@ -3247,7 +3246,7 @@
 &lt;ul&gt;
 &lt;li&gt;**Bagging：并联，**训练多个分类器取平均，$f(x)=\frac{1}{M}\sum_{m=1}^Mf_m(x)$&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716321.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716321.assets&#34;
 	
 	
 	
@@ -3260,7 +3259,7 @@
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;Boosting：串联，&lt;strong&gt;从弱学习器开始加强，通过&lt;/strong&gt;加权&lt;/strong&gt;来训练，大部分情况下，&lt;strong&gt;经过 boosting 得到的结果偏差（bias）更小，&lt;/strong&gt;$F_m(x)=F_{m-1}(x)+argmin_h\sum_{i=1}^nL(y_i,F_{m-1}(x_i)+h(x_i))$&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716422.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716422.assets&#34;
 	
 	
 	
@@ -3273,7 +3272,7 @@
 &lt;ul&gt;
 &lt;li&gt;**Stacking：堆叠，**聚合多个分类或回归模型（KNN, SVM, RF），第一阶段得出各自结果，第二阶段用前一阶段结果训练&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716423.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716423.assets&#34;
 	
 	
 	
@@ -3296,7 +3295,7 @@
 &lt;/li&gt;
 &lt;li&gt;森林：多个决策树并行放一起&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716424.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716424.assets&#34;
 	
 	
 	
@@ -3362,7 +3361,7 @@
 &lt;li&gt;应用举例：x轴身高，y轴体重，离散点类似线性增加，可用于分类小中大三个簇，K越多，分类越细&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;工作过程&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716425.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716425.assets&#34;
 	
 	
 	
@@ -3377,7 +3376,7 @@
 &lt;li&gt;劣势：难确定K，复杂度与样本呈线性关系，难发现形状复杂的簇，初始化不当会导致陷入局部最优值&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Elbow method-肘法：x轴K的值，y轴代价函数值，看图像是否有斜率突变的情况&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716426.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716426.assets&#34;
 	
 	
 	
@@ -3420,7 +3419,7 @@
 &lt;li&gt;&lt;strong&gt;噪声点&lt;/strong&gt;：不属于任何一个类簇的点，从任何一个核心点出发都密度不可达&lt;/li&gt;
 &lt;li&gt;K-距离：给定数据集$P={p(i);,i=0,1,\cdots,n}$，p(i)到P中其他点的距离并且从小到大排序，分别为d(k)，k=1,2,3,&amp;hellip;.，称为K-距离&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716427.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716427.assets&#34;
 	
 	
 	
@@ -3460,7 +3459,7 @@
 &lt;li&gt;数据集：${x^{(1)},x^{(2)},\cdots,x^{(m)}}$，每个$x_i$有 m 个特征$x=[x_1,x_2,\cdots,x_n]$，检测$x_{test}$，以二维即2个特征为例，x轴为x1，y轴为x2，可作图观察点分布&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;密度估计&lt;/strong&gt;：越内部概率越高，越外圈概率越低，计算$x_{test}$概率&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716428.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716428.assets&#34;
 	
 	
 	
@@ -3472,7 +3471,7 @@
 &gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;高斯/正态分布&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;$p(x)=\frac{1}{\sqrt{2\pi}\sigma}e^{\frac{-(x-\mu)^2}{2\sigma^2}}$，轴线与$\mu$有关，宽度与$\sigma$有关&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716429.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716429.assets&#34;
 	
 	
 	
@@ -3499,64 +3498,64 @@
 &lt;h3 id=&#34;推荐系统&#34;&gt;推荐系统&lt;/h3&gt;
 &lt;p&gt;a-d四个人对m1-m5电影评分数据&lt;/p&gt;
 &lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Movie&lt;/th&gt;
-&lt;th&gt;a&lt;/th&gt;
-&lt;th&gt;b&lt;/th&gt;
-&lt;th&gt;c&lt;/th&gt;
-&lt;th&gt;d&lt;/th&gt;
-&lt;th&gt;x1(浪漫电影)&lt;/th&gt;
-&lt;th&gt;x2(动作电影)&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;m1&lt;/td&gt;
-&lt;td&gt;5&lt;/td&gt;
-&lt;td&gt;5&lt;/td&gt;
-&lt;td&gt;0&lt;/td&gt;
-&lt;td&gt;0&lt;/td&gt;
-&lt;td&gt;0.9&lt;/td&gt;
-&lt;td&gt;0&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;m2&lt;/td&gt;
-&lt;td&gt;5&lt;/td&gt;
-&lt;td&gt;?&lt;/td&gt;
-&lt;td&gt;?&lt;/td&gt;
-&lt;td&gt;0&lt;/td&gt;
-&lt;td&gt;1.0&lt;/td&gt;
-&lt;td&gt;0.01&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;m3&lt;/td&gt;
-&lt;td&gt;?&lt;/td&gt;
-&lt;td&gt;4&lt;/td&gt;
-&lt;td&gt;0&lt;/td&gt;
-&lt;td&gt;?&lt;/td&gt;
-&lt;td&gt;0.99&lt;/td&gt;
-&lt;td&gt;0&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;m4&lt;/td&gt;
-&lt;td&gt;0&lt;/td&gt;
-&lt;td&gt;0&lt;/td&gt;
-&lt;td&gt;5&lt;/td&gt;
-&lt;td&gt;4&lt;/td&gt;
-&lt;td&gt;0.1&lt;/td&gt;
-&lt;td&gt;1.0&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;m5&lt;/td&gt;
-&lt;td&gt;0&lt;/td&gt;
-&lt;td&gt;0&lt;/td&gt;
-&lt;td&gt;5&lt;/td&gt;
-&lt;td&gt;?&lt;/td&gt;
-&lt;td&gt;0&lt;/td&gt;
-&lt;td&gt;0.9&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Movie&lt;/th&gt;
+          &lt;th&gt;a&lt;/th&gt;
+          &lt;th&gt;b&lt;/th&gt;
+          &lt;th&gt;c&lt;/th&gt;
+          &lt;th&gt;d&lt;/th&gt;
+          &lt;th&gt;x1(浪漫电影)&lt;/th&gt;
+          &lt;th&gt;x2(动作电影)&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;m1&lt;/td&gt;
+          &lt;td&gt;5&lt;/td&gt;
+          &lt;td&gt;5&lt;/td&gt;
+          &lt;td&gt;0&lt;/td&gt;
+          &lt;td&gt;0&lt;/td&gt;
+          &lt;td&gt;0.9&lt;/td&gt;
+          &lt;td&gt;0&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;m2&lt;/td&gt;
+          &lt;td&gt;5&lt;/td&gt;
+          &lt;td&gt;?&lt;/td&gt;
+          &lt;td&gt;?&lt;/td&gt;
+          &lt;td&gt;0&lt;/td&gt;
+          &lt;td&gt;1.0&lt;/td&gt;
+          &lt;td&gt;0.01&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;m3&lt;/td&gt;
+          &lt;td&gt;?&lt;/td&gt;
+          &lt;td&gt;4&lt;/td&gt;
+          &lt;td&gt;0&lt;/td&gt;
+          &lt;td&gt;?&lt;/td&gt;
+          &lt;td&gt;0.99&lt;/td&gt;
+          &lt;td&gt;0&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;m4&lt;/td&gt;
+          &lt;td&gt;0&lt;/td&gt;
+          &lt;td&gt;0&lt;/td&gt;
+          &lt;td&gt;5&lt;/td&gt;
+          &lt;td&gt;4&lt;/td&gt;
+          &lt;td&gt;0.1&lt;/td&gt;
+          &lt;td&gt;1.0&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;m5&lt;/td&gt;
+          &lt;td&gt;0&lt;/td&gt;
+          &lt;td&gt;0&lt;/td&gt;
+          &lt;td&gt;5&lt;/td&gt;
+          &lt;td&gt;?&lt;/td&gt;
+          &lt;td&gt;0&lt;/td&gt;
+          &lt;td&gt;0.9&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;ul&gt;
 &lt;li&gt;$n_u$人数，$n_m$电影数，$r(i,j)=1/0$用户 j 是否给电影 i 打分，$y^{(i,j)}$用户 j 对 i 的打分值，$w^{(j)},b^{(j)}$用户 j 的参数，$x^{(i)}$电影 i 的特征向量&lt;/li&gt;
@@ -3565,7 +3564,7 @@
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;成本函数&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;对单个用户 j&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716430.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716430.assets&#34;
 	
 	
 	
@@ -3576,7 +3575,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;对所有用户&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716431.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716431.assets&#34;
 	
 	
 	
@@ -3587,7 +3586,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;假设已知参数w和b，x1和x2特征值未知，可以通过成本函数推测特征值&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716432.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716432.assets&#34;
 	
 	
 	
@@ -3597,7 +3596,7 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716433.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716433.assets&#34;
 	
 	
 	
@@ -3613,7 +3612,7 @@
 &lt;li&gt;&lt;strong&gt;多个用户合作评价同一部电影，可以猜测什么是适合该电影的功能，以及猜测尚未评价同一部电影的用户如何评价&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;上述成本函数结合：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716434.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716434.assets&#34;
 	
 	
 	
@@ -3684,7 +3683,7 @@
 &lt;li&gt;预测 j 对 i 的评分由 wx+b 更改为 $V_u^{(j)}\cdot V_m^{(i)}$，分别从$X_u^{(j)}$和$X_m^{(i)}$计算得来，且包含评分数字相同&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;神经网络架构&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716435.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716435.assets&#34;
 	
 	
 	
@@ -3700,7 +3699,7 @@
 &lt;li&gt;32位向量$v_m^{(i)}$描述电影 i 的特征$x_m^{(i)}$&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;成本函数&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716536.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716536.assets&#34;
 	
 	
 	
@@ -3742,7 +3741,7 @@
 &lt;li&gt;解决：选取最好的决策边界；特征数据本身难分&lt;/li&gt;
 &lt;li&gt;选出离边界点最远的&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716537.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716537.assets&#34;
 	
 	
 	
@@ -3754,7 +3753,7 @@
 &gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;公式推导&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;计算&lt;strong&gt;距离&lt;/strong&gt;：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716538.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716538.assets&#34;
 	
 	
 	
@@ -3810,7 +3809,7 @@
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;核函数&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;即$\Phi(x$，将低维中决策边界可能复杂过饱和的情况变换为高维中更简单决策边界的情况&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716539.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716539.assets&#34;
 	
 	
 	
@@ -3821,7 +3820,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;高斯核函数：$K(X,Y)=exp{-\frac{||X-Y||^2}{2\sigma^2}}$&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/machine_learning_note.zh-cn.assets/-172845431716540.assets&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/machine_learning_note.zh-cn.assets/-172845431716540.assets&#34;
 	
 	
 	

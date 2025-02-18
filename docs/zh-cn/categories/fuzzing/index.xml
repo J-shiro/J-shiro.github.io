@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>fuzzing on J-shiro&#39;s 博客</title>
-        <link>https://J-shiro.github.io/zh-cn/categories/fuzzing/</link>
-        <description>Recent content in fuzzing on J-shiro&#39;s 博客</description>
+        <title>Fuzzing on J-shiro&#39;s 博客</title>
+        <link>http://localhost:1313/zh-cn/categories/fuzzing/</link>
+        <description>Recent content in Fuzzing on J-shiro&#39;s 博客</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en-us</language>
-        <lastBuildDate>Wed, 09 Oct 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://J-shiro.github.io/zh-cn/categories/fuzzing/index.xml" rel="self" type="application/rss+xml" /><item>
+        <language>zh-cn</language>
+        <lastBuildDate>Wed, 09 Oct 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/zh-cn/categories/fuzzing/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Fuzzing笔记</title>
-        <link>https://J-shiro.github.io/zh-cn/p/fuzzing%E7%AC%94%E8%AE%B0/</link>
+        <link>http://localhost:1313/zh-cn/p/fuzzing%E7%AC%94%E8%AE%B0/</link>
         <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/zh-cn/p/fuzzing%E7%AC%94%E8%AE%B0/</guid>
-        <description>&lt;img src="https://J-shiro.github.io/img/note.jpg" alt="Featured image of post Fuzzing笔记" /&gt;&lt;h2 id=&#34;工具&#34;&gt;工具&lt;/h2&gt;
+        <guid>http://localhost:1313/zh-cn/p/fuzzing%E7%AC%94%E8%AE%B0/</guid>
+        <description>&lt;img src="http://localhost:1313/img/note.jpg" alt="Featured image of post Fuzzing笔记" /&gt;&lt;h2 id=&#34;工具&#34;&gt;工具&lt;/h2&gt;
 &lt;h3 id=&#34;afl&#34;&gt;AFL++&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;编译&lt;/strong&gt;获取可被测试的程序&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;

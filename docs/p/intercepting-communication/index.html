@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="en-us" dir="ltr">
-    <head><meta charset='utf-8'>
+<html lang="en" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='ASU CSE 365, intercepting communication(finish)'><title>Intercepting Communication</title>
 
-<link rel='canonical' href='https://J-shiro.github.io/p/intercepting-communication/'>
+<link rel='canonical' href='http://localhost:1313/p/intercepting-communication/'>
 
 <link rel="stylesheet" href="/scss/style.min.b18c0607927efd48b36f5d027b549e77e30ee300e22b6461d063f1df6ea2466b.css"><meta property='og:title' content='Intercepting Communication'>
 <meta property='og:description' content='ASU CSE 365, intercepting communication(finish)'>
-<meta property='og:url' content='https://J-shiro.github.io/p/intercepting-communication/'>
+<meta property='og:url' content='http://localhost:1313/p/intercepting-communication/'>
 <meta property='og:site_name' content='J-shiro&#39;s Blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2023-02-10T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2023-02-10T00:00:00&#43;00:00'/><meta property='og:image' content='https://J-shiro.github.io/p/intercepting-communication/pwncollege.png' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2023-02-10T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2023-02-10T00:00:00&#43;00:00'/><meta property='og:image' content='http://localhost:1313/p/intercepting-communication/pwncollege.png' />
 <meta name="twitter:title" content="Intercepting Communication">
 <meta name="twitter:description" content="ASU CSE 365, intercepting communication(finish)"><meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content='https://J-shiro.github.io/p/intercepting-communication/pwncollege.png' />
+    <meta name="twitter:image" content='http://localhost:1313/p/intercepting-communication/pwncollege.png' />
     <link rel="shortcut icon" href="https://j-shiro.github.io/img/somebody.png" />
 
     </head>
@@ -58,7 +58,7 @@
                     
                     
                         
-                        <img src="/img/avatar_hu42aab1a06b48994d4eab55119e198264_548369_300x0_resize_box_3.png" width="300"
+                        <img src="/img/avatar_hu_a291887a020c52cf.png" width="300"
                             height="300" class="site-logo" loading="lazy" alt="Avatar">
                     
                 
@@ -216,9 +216,9 @@
 
                     <select name="language" onchange="window.location.href = this.selectedOptions[0].value">
                         
-                            <option value="https://J-shiro.github.io/" selected>English</option>
+                            <option value="http://localhost:1313/" selected>English</option>
                         
-                            <option value="https://J-shiro.github.io/zh-cn/" >中文</option>
+                            <option value="http://localhost:1313/zh-cn/" >中文</option>
                         
                     </select>
                 </li>
@@ -253,8 +253,8 @@
     <header class="article-header">
         <div class="article-image">
             <a href="/p/intercepting-communication/">
-                <img src="/p/intercepting-communication/pwncollege_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_800x0_resize_box_3.png"
-                        srcset="/p/intercepting-communication/pwncollege_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_800x0_resize_box_3.png 800w, /p/intercepting-communication/pwncollege_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_1600x0_resize_box_3.png 1600w"
+                <img src="/p/intercepting-communication/pwncollege_hu_a5dbf0f5841ad402.png"
+                        srcset="/p/intercepting-communication/pwncollege_hu_a5dbf0f5841ad402.png 800w, /p/intercepting-communication/pwncollege_hu_68ef3494951ddcbe.png 1600w"
                         width="800" 
                         height="276" 
                         loading="lazy"
@@ -352,8 +352,7 @@
 <p>A&mdash;-email&mdash;&ndash;&gt;B</p>
 <p>A&mdash;-email&ndash;&gt;postal service box&mdash;&mdash;&gt;B</p>
 <p>##mailingprotocol is important!!</p>
-<p>A&mdash;-email&ndash;&gt;postal service box&mdash;&mdash;&gt;C (not B)</p>
-</blockquote>
+<p>A&mdash;-email&ndash;&gt;postal service box&mdash;&mdash;&gt;C (not B)</p></blockquote>
 <p>②Dynamic network</p>
 <p>physically linked</p>
 <p><img src="/img/pwn_college/lesson/dnetwork.png"
@@ -371,20 +370,20 @@
 <p>Host A to Host B : eth0 &mdash;&gt;vethA &mdash;&gt;bridge0 &mdash;&gt;vethB &mdash;&gt;eth0</p>
 <p>②Ethernet packet structure</p>
 <div class="table-wrapper"><table>
-<thead>
-<tr>
-<th>Destination Mac Address</th>
-<th>Source Mac Address</th>
-<th>Type</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>6 bytes</td>
-<td>6 bytes</td>
-<td>2 bytes</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th>Destination Mac Address</th>
+          <th>Source Mac Address</th>
+          <th>Type</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>6 bytes</td>
+          <td>6 bytes</td>
+          <td>2 bytes</td>
+      </tr>
+  </tbody>
 </table></div>
 <p><img src="/img/pwn_college/lesson/Estruct.png"
 	
@@ -1220,7 +1219,7 @@
         
         
             <div class="article-image">
-                <img src="/p/debugging-refresher/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_250x150_fill_box_smart1_3.png" 
+                <img src="/p/debugging-refresher/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu_98b89bc9017f0e68.png" 
                         width="250" 
                         height="150" 
                         loading="lazy"
@@ -1244,7 +1243,7 @@
         
         
             <div class="article-image">
-                <img src="/p/pwncollege_note7/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_250x150_fill_box_smart1_3.png" 
+                <img src="/p/pwncollege_note7/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu_98b89bc9017f0e68.png" 
                         width="250" 
                         height="150" 
                         loading="lazy"
@@ -1268,7 +1267,7 @@
         
         
             <div class="article-image">
-                <img src="/p/pwncollege_note6/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_250x150_fill_box_smart1_3.png" 
+                <img src="/p/pwncollege_note6/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu_98b89bc9017f0e68.png" 
                         width="250" 
                         height="150" 
                         loading="lazy"
@@ -1292,7 +1291,7 @@
         
         
             <div class="article-image">
-                <img src="/p/building-a-web-server/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_250x150_fill_box_smart1_3.png" 
+                <img src="/p/building-a-web-server/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu_98b89bc9017f0e68.png" 
                         width="250" 
                         height="150" 
                         loading="lazy"
@@ -1316,7 +1315,7 @@
         
         
             <div class="article-image">
-                <img src="/p/pwncollege_note3/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu81903c89f724cd0b9fb6316b0c4cba8d_28255_250x150_fill_box_smart1_3.png" 
+                <img src="/p/pwncollege_note3/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu_98b89bc9017f0e68.png" 
                         width="250" 
                         height="150" 
                         loading="lazy"
@@ -1401,7 +1400,7 @@
         
             
         
-        共 21.67k 字 · 共 11篇文章
+        共 21.69k 字 · 共 11篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---

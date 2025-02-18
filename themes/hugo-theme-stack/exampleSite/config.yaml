@@ -1,7 +1,10 @@
 baseurl: https://example.com
 languageCode: en-us
 theme: hugo-theme-stack
-paginate: 5
+# paginate: 5
+pagination:
+  disableAliases: false
+  pagerSize: 10
 title: Example Site
 
 languages:

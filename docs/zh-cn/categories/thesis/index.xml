@@ -2,59 +2,59 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Thesis on J-shiro&#39;s 博客</title>
-        <link>https://J-shiro.github.io/zh-cn/categories/thesis/</link>
+        <link>http://localhost:1313/zh-cn/categories/thesis/</link>
         <description>Recent content in Thesis on J-shiro&#39;s 博客</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en-us</language>
-        <lastBuildDate>Thu, 24 Oct 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://J-shiro.github.io/zh-cn/categories/thesis/index.xml" rel="self" type="application/rss+xml" /><item>
+        <language>zh-cn</language>
+        <lastBuildDate>Thu, 24 Oct 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/zh-cn/categories/thesis/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>论文阅读记录</title>
-        <link>https://J-shiro.github.io/zh-cn/p/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95/</link>
+        <link>http://localhost:1313/zh-cn/p/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95/</link>
         <pubDate>Thu, 24 Oct 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://J-shiro.github.io/zh-cn/p/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95/</guid>
-        <description>&lt;img src="https://J-shiro.github.io/img/thesis.jpg" alt="Featured image of post 论文阅读记录" /&gt;&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;论文&lt;/th&gt;
-&lt;th&gt;开源&lt;/th&gt;
-&lt;th&gt;阅读状态&lt;/th&gt;
-&lt;th&gt;是否复现&lt;/th&gt;
-&lt;th&gt;类型&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;LLM-Fuzzer: Scaling Assessment of Large Language Model Jailbreaks&lt;/td&gt;
-&lt;td&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/sherdencooper/GPTFuzz&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+        <guid>http://localhost:1313/zh-cn/p/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95/</guid>
+        <description>&lt;img src="http://localhost:1313/img/thesis.jpg" alt="Featured image of post 论文阅读记录" /&gt;&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;论文&lt;/th&gt;
+          &lt;th&gt;开源&lt;/th&gt;
+          &lt;th&gt;阅读状态&lt;/th&gt;
+          &lt;th&gt;是否复现&lt;/th&gt;
+          &lt;th&gt;类型&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;LLM-Fuzzer: Scaling Assessment of Large Language Model Jailbreaks&lt;/td&gt;
+          &lt;td&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/sherdencooper/GPTFuzz&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://github.com/sherdencooper/GPTFuzz&lt;/a&gt;&lt;/td&gt;
-&lt;td&gt;sc&lt;/td&gt;
-&lt;td&gt;n&lt;/td&gt;
-&lt;td&gt;大模型模糊测试&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;FairECom: Towards Proof of E-Commerce Fairness Against Price Discrimination&lt;/td&gt;
-&lt;td&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/CyberSec-Dev/FairECom&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+          &lt;td&gt;sc&lt;/td&gt;
+          &lt;td&gt;n&lt;/td&gt;
+          &lt;td&gt;大模型模糊测试&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;FairECom: Towards Proof of E-Commerce Fairness Against Price Discrimination&lt;/td&gt;
+          &lt;td&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/CyberSec-Dev/FairECom&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://github.com/CyberSec-Dev/FairECom&lt;/a&gt;&lt;/td&gt;
-&lt;td&gt;pc&lt;/td&gt;
-&lt;td&gt;n&lt;/td&gt;
-&lt;td&gt;价格歧视规避&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;PyRTFuzz: Detecting Bugs in Python Runtimes via Two-Level Collaborative Fuzzing&lt;/td&gt;
-&lt;td&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/awen-li/PyRTFuzz&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+          &lt;td&gt;pc&lt;/td&gt;
+          &lt;td&gt;n&lt;/td&gt;
+          &lt;td&gt;价格歧视规避&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;PyRTFuzz: Detecting Bugs in Python Runtimes via Two-Level Collaborative Fuzzing&lt;/td&gt;
+          &lt;td&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/awen-li/PyRTFuzz&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://github.com/awen-li/PyRTFuzz&lt;/a&gt;&lt;/td&gt;
-&lt;td&gt;n&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;td&gt;Python模糊测试&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Towards Robust Detection of Open Source Software Supply Chain Poisoning Attacks in Industry Environments&lt;/td&gt;
-&lt;td&gt;-&lt;/td&gt;
-&lt;td&gt;fc&lt;/td&gt;
-&lt;td&gt;n&lt;/td&gt;
-&lt;td&gt;软件供应链投毒攻击检测&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
+          &lt;td&gt;n&lt;/td&gt;
+          &lt;td&gt;&lt;/td&gt;
+          &lt;td&gt;Python模糊测试&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Towards Robust Detection of Open Source Software Supply Chain Poisoning Attacks in Industry Environments&lt;/td&gt;
+          &lt;td&gt;-&lt;/td&gt;
+          &lt;td&gt;fc&lt;/td&gt;
+          &lt;td&gt;n&lt;/td&gt;
+          &lt;td&gt;软件供应链投毒攻击检测&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;阅读状态：fc(Fully completed), sc(Substantially completed), pc(Partially completed)&lt;/p&gt;
 </description>
