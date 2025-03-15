@@ -321,7 +321,7 @@
 
 
                 <time class="article-words">
-                    6082 字
+                    6114 字
                 </time>
             </div>
         
@@ -1222,7 +1222,7 @@
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">pair</span><span class="o">&lt;</span><span class="n">set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;::</span><span class="n">iterator</span><span class="p">,</span> <span class="kt">bool</span><span class="o">&gt;</span> <span class="n">ret</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">ret</span> <span class="o">=</span> <span class="n">myset</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span> <span class="c1">// 若已有2，返回（it-&gt;2, false)
-</span></span></span><span class="line"><span class="cl"><span class="c1">// ret.first, ret.second
+</span></span></span><span class="line"><span class="cl"><span class="c1">// ret.first, ret.second 迭代器可通过此获取值
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>查找</strong></p>
@@ -1813,10 +1813,14 @@
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">itr</span> <span class="o">=</span> <span class="n">search_n</span><span class="p">(</span><span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">vec</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">count</span><span class="p">,</span> <span class="n">val</span><span class="p">);</span> <span class="c1">// 查找连续count的val
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">distance</span><span class="p">(</span><span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">itr</span><span class="p">);</span> <span class="c1">// itr的索引, 获取两者间距离
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 强行转换为 int 型: static_cast&lt;int&gt;(distance(nums.begin(), itr))
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
 </span></span><span class="line"><span class="cl"><span class="c1">// 查找子集
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">itr</span> <span class="o">=</span> <span class="n">search</span><span class="p">(</span><span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">vec</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">sub</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">sub</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
@@ -2086,8 +2090,8 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="c1">// vector, deque, array等随机访问迭代器可对迭代器直接加减,比较
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;::</span><span class="n">iterator</span> <span class="n">itr</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="o">++</span><span class="n">itr</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;::</span><span class="n">iterator</span> <span class="n">itr</span><span class="p">;</span> <span class="c1">// 可以直接用 auto 代替
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">++</span><span class="n">itr</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="k">if</span><span class="p">(</span><span class="n">itr2</span><span class="o">&gt;</span><span class="n">itr2</span><span class="p">)</span> <span class="p">...;</span>
 </span></span><span class="line"><span class="cl"><span class="n">itr</span> <span class="o">=</span> <span class="n">itr</span> <span class="o">+</span> <span class="mi">2</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
@@ -2813,13 +2817,7 @@
         
             
         
-            
-        
-            
-        
-            
-        
-        共 221.94k 字 · 共 22篇文章
+        共 215.52k 字 · 共 19篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---

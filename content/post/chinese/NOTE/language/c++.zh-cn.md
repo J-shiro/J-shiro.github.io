@@ -593,7 +593,7 @@ set<int, less<int>> s;
 ```c++
 pair<set<int>::iterator, bool> ret;
 ret = myset.insert(2); // 若已有2，返回（it->2, false)
-// ret.first, ret.second
+// ret.first, ret.second 迭代器可通过此获取值
 ```
 
 **查找**
@@ -964,6 +964,8 @@ itr = find_if_not(vec.begin(), vec.end(), [](int x){return x>80;});
 itr = search_n(vec.begin(), vec.end(), count, val); // 查找连续count的val
 distance(vec.begin(), itr); // itr的索引, 获取两者间距离
 
+// 强行转换为 int 型: static_cast<int>(distance(nums.begin(), itr))
+
 // 查找子集
 itr = search(vec.begin(), vec.end(), sub.begin(), sub.end());
 itr = find_end(vec.begin(), vec.end(), sub.begin(), sub.end()); // 查找最后一个子范围
@@ -1110,7 +1112,7 @@ shuffle(vec.begin(), vec.end(), default_random_engine());
 
 ```c++
 // vector, deque, array等随机访问迭代器可对迭代器直接加减,比较
-vector<int>::iterator itr;
+vector<int>::iterator itr; // 可以直接用 auto 代替
 ++itr;
 if(itr2>itr2) ...;
 itr = itr + 2;

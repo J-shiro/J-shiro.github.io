@@ -331,7 +331,7 @@
 
 
                 <time class="article-words">
-                    1710 字
+                    1824 字
                 </time>
             </div>
         
@@ -518,9 +518,11 @@
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git push origin branch_name <span class="c1"># orgin: git 服务器地址</span>
+</span></span><span class="line"><span class="cl">git push -u origin branch_name <span class="c1"># 无该分支 -u 来创建</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>服务器最新代码拉取到本地并与本地代码合并，等价于<code>git fetch + git merge</code></p>
@@ -532,6 +534,23 @@
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git pull origin brach_name <span class="c1"># main</span>
 </span></span><span class="line"><span class="cl">git pull --rebase <span class="c1"># 等价于 git fetch + git rebase</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>合并他人代码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git fetch <span class="c1"># 显示哪些分支发生更改</span>
+</span></span><span class="line"><span class="cl">git merge orgin/xxx_branch <span class="c1"># 云端他人分支合并到自己分支</span>
+</span></span><span class="line"><span class="cl">git stash <span class="c1"># 处理冲突 将当前工作目录更改丢到一边，使得工作目录保持干净</span>
+</span></span><span class="line"><span class="cl">git merge orgin/xxx_branch
+</span></span><span class="line"><span class="cl">git stash popnv <span class="c1"># 将刚丢到一边的更改捡回来</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>版本提交记录</p>
@@ -565,9 +584,11 @@
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span><span class="lnt">6
+</span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git branch xxx <span class="c1"># 创建</span>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git branch <span class="c1"># 查看分支</span>
+</span></span><span class="line"><span class="cl">git branch xxx <span class="c1"># 创建</span>
 </span></span><span class="line"><span class="cl">git branch -m old_name new_name <span class="c1"># 重命名</span>
 </span></span><span class="line"><span class="cl">git branch -a <span class="c1"># 查看本地版本库和远程版本库上的分支列表</span>
 </span></span><span class="line"><span class="cl">git branch -r <span class="c1"># 远程版本库的分支列表</span>
@@ -934,13 +955,7 @@
         
             
         
-            
-        
-            
-        
-            
-        
-        共 221.94k 字 · 共 22篇文章
+        共 215.52k 字 · 共 19篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---

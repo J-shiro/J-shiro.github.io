@@ -1,8 +1,8 @@
 ---
 title: "哲学家进餐问题-c代码分析"
-description: 由于我拙劣的编程能力不能自己手搓，于是分析大佬的代码ing..并学点知识
+description: 
 date: 2022-11-18
-image: os-pv.jpg
+image: /img/os-pv.jpg
 math: 
 license: 
 hidden: false
@@ -287,4 +287,3 @@ the process of 0(pid is 5184,ppid is 5183)has finished eating
 end
 ```
 
-代码原文链接：[linux下操作系统哲学家进餐问题参考C代码](https://cxybb.com/article/qq_44528283/115125474)

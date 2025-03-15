@@ -127,6 +127,7 @@ git rm xx.md
 
 ```bash
 git push origin branch_name # orgin: git 服务器地址
+git push -u origin branch_name # 无该分支 -u 来创建
 ```
 
 服务器最新代码拉取到本地并与本地代码合并，等价于`git fetch + git merge`
@@ -134,6 +135,16 @@ git push origin branch_name # orgin: git 服务器地址
 ```bash
 git pull origin brach_name # main
 git pull --rebase # 等价于 git fetch + git rebase
+```
+
+合并他人代码
+
+```bash
+git fetch # 显示哪些分支发生更改
+git merge orgin/xxx_branch # 云端他人分支合并到自己分支
+git stash # 处理冲突 将当前工作目录更改丢到一边，使得工作目录保持干净
+git merge orgin/xxx_branch
+git stash popnv # 将刚丢到一边的更改捡回来
 ```
 
 版本提交记录
@@ -153,6 +164,7 @@ git push origin publish/0.0.1
 分支命令
 
 ```bash
+git branch # 查看分支
 git branch xxx # 创建
 git branch -m old_name new_name # 重命名
 git branch -a # 查看本地版本库和远程版本库上的分支列表

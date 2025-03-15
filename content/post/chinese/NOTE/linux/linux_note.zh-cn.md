@@ -175,6 +175,13 @@ cat ~/.ssh/id_xxx.pub | ssh a@x.x.x.x tee .ssh/authorized_keys
 ssh -i key xxx@ip
 ```
 
+出现密钥变更
+
+```bash
+ssh-keygen -R x.x.x.x # 删除相关信息
+ssh user@x.x.x.x # 重新连接
+```
+
 `scp`是ssh的子命令
 
 ```Bash
@@ -566,3 +573,16 @@ bt # 调用路径
 - `https://command-not-found.com/`网址获取命令所在apt包名
 - `https://packages.ubuntu.com/`或`https://www.gnu.org/software/`中下载包源码
 - `apt source [package_name]`方法直接获取打过补丁的方法
+
+## 操作
+
+添加用户
+
+```bash
+sudo useradd -m xx
+sudo usermod -aG root xx
+sudo passwd xx
+sudo usermod -aG sudo xx
+chsh -s /bin/sh xx
+```
+

@@ -55,14 +55,6 @@
         <description></description>
         </item>
         <item>
-        <title>Blockchain</title>
-        <link>http://localhost:1313/zh-cn/categories/blockchain/</link>
-        <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
-        
-        <guid>http://localhost:1313/zh-cn/categories/blockchain/</guid>
-        <description></description>
-        </item>
-        <item>
         <title>Fuzzing</title>
         <link>http://localhost:1313/zh-cn/categories/fuzzing/</link>
         <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
@@ -108,22 +100,6 @@
         <pubDate>Fri, 18 Nov 2022 00:00:00 +0000</pubDate>
         
         <guid>http://localhost:1313/zh-cn/categories/takenotes/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>Pwn_exercise</title>
-        <link>http://localhost:1313/zh-cn/categories/pwn_exercise/</link>
-        <pubDate>Tue, 25 Oct 2022 00:00:00 +0000</pubDate>
-        
-        <guid>http://localhost:1313/zh-cn/categories/pwn_exercise/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>Anime</title>
-        <link>http://localhost:1313/zh-cn/categories/anime/</link>
-        <pubDate>Sun, 09 Oct 2022 00:00:00 +0000</pubDate>
-        
-        <guid>http://localhost:1313/zh-cn/categories/anime/</guid>
         <description></description>
         </item>
         

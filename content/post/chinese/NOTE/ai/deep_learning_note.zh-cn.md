@@ -241,3 +241,11 @@ nvcc -V # 验证
 conda install pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch -c nvidia
 ```
 
+### Conda
+
+```bash
+conda create -n test python=x.x.x
+source activate base
+conda activate test
+```
+
