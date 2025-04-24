@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='命令 从 git 服务器拉取完整仓库代码
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='命令 先 commit 一次后才会真正创建 master 分支
+从 git 服务器拉取完整仓库代码
 1 git clone xxx.git 配置开发者用户和邮箱，代码每次提交包含配置
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 git config user.name xxx git config user.email xx@xx.com cat .git/config # 查看配置 # 配置代理 git config --global http.proxy 127.0.0.1:7890 git config --global https.proxy 127.0.0.1:7890 # 查看代理 git config --global --get http.proxy git config --global --get https.proxy # 取消 git config --global --unset http.proxy git config --global --unset https.proxy 查看文件变动状态
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 git config user.name xxx git config user.email xx@xx.com cat .git/config # 查看配置 git config --list # 获取所有 git 配置 # 配置代理 git config --global http.proxy 127.0.0.1:7890 git config --global https.proxy 127.0.0.1:7890 # 查看代理 git config --global --get http.proxy git config --global --get https.proxy # 取消 git config --global --unset http.proxy git config --global --unset https.proxy 查看文件变动状态
 '><title>GIT笔记</title>
 
 <link rel='canonical' href='http://localhost:1313/zh-cn/p/git%E7%AC%94%E8%AE%B0/'>
 
 <link rel="stylesheet" href="/scss/style.min.b18c0607927efd48b36f5d027b549e77e30ee300e22b6461d063f1df6ea2466b.css"><meta property='og:title' content='GIT笔记'>
-<meta property='og:description' content='命令 从 git 服务器拉取完整仓库代码
+<meta property='og:description' content='命令 先 commit 一次后才会真正创建 master 分支
+从 git 服务器拉取完整仓库代码
 1 git clone xxx.git 配置开发者用户和邮箱，代码每次提交包含配置
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 git config user.name xxx git config user.email xx@xx.com cat .git/config # 查看配置 # 配置代理 git config --global http.proxy 127.0.0.1:7890 git config --global https.proxy 127.0.0.1:7890 # 查看代理 git config --global --get http.proxy git config --global --get https.proxy # 取消 git config --global --unset http.proxy git config --global --unset https.proxy 查看文件变动状态
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 git config user.name xxx git config user.email xx@xx.com cat .git/config # 查看配置 git config --list # 获取所有 git 配置 # 配置代理 git config --global http.proxy 127.0.0.1:7890 git config --global https.proxy 127.0.0.1:7890 # 查看代理 git config --global --get http.proxy git config --global --get https.proxy # 取消 git config --global --unset http.proxy git config --global --unset https.proxy 查看文件变动状态
 '>
 <meta property='og:url' content='http://localhost:1313/zh-cn/p/git%E7%AC%94%E8%AE%B0/'>
 <meta property='og:site_name' content='J-shiro&#39;s 博客'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-01-14T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-01-14T00:00:00&#43;00:00'/><meta property='og:image' content='http://localhost:1313/img/note.jpg' />
 <meta name="twitter:title" content="GIT笔记">
-<meta name="twitter:description" content="命令 从 git 服务器拉取完整仓库代码
+<meta name="twitter:description" content="命令 先 commit 一次后才会真正创建 master 分支
+从 git 服务器拉取完整仓库代码
 1 git clone xxx.git 配置开发者用户和邮箱，代码每次提交包含配置
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 git config user.name xxx git config user.email xx@xx.com cat .git/config # 查看配置 # 配置代理 git config --global http.proxy 127.0.0.1:7890 git config --global https.proxy 127.0.0.1:7890 # 查看代理 git config --global --get http.proxy git config --global --get https.proxy # 取消 git config --global --unset http.proxy git config --global --unset https.proxy 查看文件变动状态
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 git config user.name xxx git config user.email xx@xx.com cat .git/config # 查看配置 git config --list # 获取所有 git 配置 # 配置代理 git config --global http.proxy 127.0.0.1:7890 git config --global https.proxy 127.0.0.1:7890 # 查看代理 git config --global --get http.proxy git config --global --get https.proxy # 取消 git config --global --unset http.proxy git config --global --unset https.proxy 查看文件变动状态
 "><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='http://localhost:1313/img/note.jpg' />
     <link rel="shortcut icon" href="https://j-shiro.github.io/img/somebody.png" />
@@ -320,7 +323,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 4 分钟
+                    阅读时长: 5 分钟
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -331,7 +334,7 @@
 
 
                 <time class="article-words">
-                    1824 字
+                    2019 字
                 </time>
             </div>
         
@@ -346,6 +349,7 @@
     
     
     <h2 id="命令">命令</h2>
+<p>先 commit 一次后才会真正创建 master 分支</p>
 <p>从 git 服务器拉取完整仓库代码</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -374,12 +378,16 @@
 </span><span class="lnt">14
 </span><span class="lnt">15
 </span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git config user.name xxx
 </span></span><span class="line"><span class="cl">git config user.email xx@xx.com
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">cat .git/config <span class="c1"># 查看配置</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">git config --list <span class="c1"># 获取所有 git 配置</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># 配置代理</span>
 </span></span><span class="line"><span class="cl">git config --global http.proxy 127.0.0.1:7890
@@ -451,9 +459,22 @@
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git ls-files -s
+</span></span><span class="line"><span class="cl">git show --raw <span class="c1"># 最近提交的commit文件</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>撤消上一次commit的内容</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git reset --soft HEAD^
+</span></span><span class="line"><span class="cl">git reset --soft HEAD~1 <span class="c1"># 撤回到上一次还没提交</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>删除暂存区的内容</p>
@@ -525,6 +546,15 @@
 </span></span><span class="line"><span class="cl">git push -u origin branch_name <span class="c1"># 无该分支 -u 来创建</span>
 </span></span></code></pre></td></tr></table>
 </div>
+</div><p>将本地分支推送到对应远程分支</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git push origin dev_tmp:dev_tmp
+</span></span></code></pre></td></tr></table>
+</div>
 </div><p>服务器最新代码拉取到本地并与本地代码合并，等价于<code>git fetch + git merge</code></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -532,7 +562,7 @@
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git pull origin brach_name <span class="c1"># main</span>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git pull origin brach_name <span class="c1"># main or master</span>
 </span></span><span class="line"><span class="cl">git pull --rebase <span class="c1"># 等价于 git fetch + git rebase</span>
 </span></span></code></pre></td></tr></table>
 </div>
@@ -550,7 +580,7 @@
 </span></span><span class="line"><span class="cl">git merge orgin/xxx_branch <span class="c1"># 云端他人分支合并到自己分支</span>
 </span></span><span class="line"><span class="cl">git stash <span class="c1"># 处理冲突 将当前工作目录更改丢到一边，使得工作目录保持干净</span>
 </span></span><span class="line"><span class="cl">git merge orgin/xxx_branch
-</span></span><span class="line"><span class="cl">git stash popnv <span class="c1"># 将刚丢到一边的更改捡回来</span>
+</span></span><span class="line"><span class="cl">git stash pop <span class="c1"># 将刚丢到一边的更改捡回来</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>版本提交记录</p>
@@ -585,6 +615,7 @@
 </span><span class="lnt">5
 </span><span class="lnt">6
 </span><span class="lnt">7
+</span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git branch <span class="c1"># 查看分支</span>
@@ -594,6 +625,7 @@
 </span></span><span class="line"><span class="cl">git branch -r <span class="c1"># 远程版本库的分支列表</span>
 </span></span><span class="line"><span class="cl">git branch -d xxx <span class="c1"># 删除</span>
 </span></span><span class="line"><span class="cl">git branch -vv <span class="c1"># 查看带有最后提交id、最近提交原因等信息的本地版本库分支列表</span>
+</span></span><span class="line"><span class="cl">git branch --set-upstream-to<span class="o">=</span>origin/my_test <span class="c1"># 将本地分支关联到远程分支</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>切换分支</p>
@@ -673,6 +705,19 @@
 </span></span><span class="line"><span class="cl">git stash store ID <span class="c1"># 栈真正创建一个记录，文件并未从工作区移除</span>
 </span></span></code></pre></td></tr></table>
 </div>
+</div><p>gitlab 配置</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># gitlab ssh key</span>
+</span></span><span class="line"><span class="cl">ssh-keygen -t rsa -C <span class="s2">&#34;email.com&#34;</span> <span class="c1"># 查看 id_rsa.pub 复制到 gitlab ssh-key 中</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 即可 git clone</span>
+</span></span></code></pre></td></tr></table>
+</div>
 </div><p>比较工作区、暂存区、本地版本库间文件差异</p>
 <img src="/img/git.zh-cn.assets/image-20250122215003787.png" alt="image-20250122215003787" style="zoom: 67%;" />
 <div class="highlight"><div class="chroma">
@@ -725,7 +770,16 @@
 	
 	
 ></p>
-<h2 id="object">object</h2>
+<p>某分支下专门写注释学习</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git worktree add ../project-a a
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="object">object</h2>
 <ul>
 <li>commit：存储提交信息，一个 commit 对应唯一版本的代码，可找到 tree ID</li>
 <li>tree：存储文件目录信息，可获取不同 blob ID</li>
@@ -740,6 +794,12 @@
 <ul>
 <li>一个主干分支，基于Pull Request往主干分支提交代码</li>
 <li>owner外用户Fork创建自己仓库进行开发</li>
+</ul>
+<h2 id="vscode">Vscode</h2>
+<p>记录与 git 对应命令</p>
+<ul>
+<li>Changes 里文件 &ldquo;+&rdquo; 放到 Staged Changes : <code>git add .</code></li>
+<li><code>√ + message</code> : <code>git commit -m &quot;message&quot;</code></li>
 </ul>
 
 </section>
@@ -953,9 +1013,7 @@
         
             
         
-            
-        
-        共 215.52k 字 · 共 19篇文章
+        共 216.45k 字 · 共 18篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
@@ -1155,6 +1213,7 @@
     <li><a href="#object">object</a></li>
     <li><a href="#refs">Refs</a></li>
     <li><a href="#研发">研发</a></li>
+    <li><a href="#vscode">Vscode</a></li>
   </ol>
 </nav>
         </div>

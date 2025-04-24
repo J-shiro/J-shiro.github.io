@@ -34,7 +34,12 @@ typora-root-url: ..\..\..\..\..\static
 
 **extern**：只声明变量，由外部定义
 
+**explicit**：禁止隐式转换，即不自动将 int 转换为 string
 
+**类型限定词**
+
+- **volatile**：告诉编译器变量可能会被程序外部影响并改变，不进行优化
+- **mutable**：只在类的成员变量中使用，mutable 成员可在 const 成员函数中修改
 
 ### 宏
 
@@ -43,6 +48,16 @@ typora-root-url: ..\..\..\..\..\static
 ```c++
 INT_MAX, INT_MIN // limits.h
 ```
+
+**预定义宏**
+
+```c++
+__LINE__ ; // 程序编译时当前行号
+__FILE__ ; // 程序编译时当前文件名
+__TIME__ ; // 被编译时间
+```
+
+
 
 ### 域
 
@@ -56,9 +71,12 @@ INT_MAX, INT_MIN // limits.h
 
 ```c++
 template<typename T>
-T func(T arg){
+inline T const& func(T const &arg){
 	return T;
 }
+
+template<typename type> ret-type func-name(parameter list); // 函数模板
+template<class type> class class-name{};// 类模板 type 是占位符类型名
 
 // 调用
 cout << func<int>(1);// 不输入<int>由编译器自己判断
@@ -120,6 +138,8 @@ que[idx] = {t.x, t.y};
 
 
 ### 字符串
+
+**原始字符串**：`R"(xxxx)"`，可以插入任何字符串而不作任何转义
 
 - 库类型`std::string`，可变长字符序列
 
@@ -380,8 +400,18 @@ vector<type> name;
 vector<int> pos(128, -1);// 初始化ASCII码共128个元素，每个元素值为-1
 
 vector<pair<int,int>> tint; //每组为一对int型的数组
+tint.emplace(xx, xx);
 // 取数 tint[i].first, tint[i].second ...
 vector<int> a({1,2,3});
+```
+
+**比较**
+
+```c++
+vector<int> xx(25, 0);
+vector<int> yy(25, 0);
+
+xx == yy; // 可直接比较
 ```
 
 **判空**
@@ -628,6 +658,13 @@ if(it != myset.end())
 myset.load_factor(); // 装载因子
 myset.bucket(x); // x的索引
 myset.bucket_count(); // 索引总数
+```
+
+**数组转集合**
+
+```c++
+unordered_set<int> us(nums.begin(), nums.end());
+us.contains(xxx) // 包含
 ```
 
 
@@ -886,6 +923,40 @@ vector<int> vec = {1,2,3,4,1,2,3,4};
 inplace_merge(vec.begin(), vec.begin()+4, vec.end()); // 1,1,2,2,3,3,4,4
 ```
 
+**类型转换**
+
+```c++
+// void * 指针转换为具体类型指针
+auto *xxx = static_cast<some_type *>(voidPtr);
+// xxx 强制转换为 type 类型
+reinterpret_cast<type>(xxx);
+```
+
+**异常处理**
+
+```c++
+throw "xxx"
+
+try{
+	xx
+}catch( ExceptionName e){
+	xx
+}catch(const char * msg){
+	cerr << msg << endl;
+}
+```
+
+**计时**
+
+```c++
+auto start = std::chrono::high_resolution_clock::now();
+auto end = std::chrono::high_resolution_clock::now();
+auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+std::cout << duration.count() << std::endl;
+```
+
+
+
 ## 高级操作
 
 ### 排序
@@ -912,8 +983,6 @@ stable_partition(vec.begin(), vec.end(), lessThanten); // 保持原有顺序
 ```c++
 reverse(str.begin(), str.end());
 ```
-
-
 
 ### 查找
 
@@ -1330,7 +1399,24 @@ floor()// 向下取整
 ifstream inf("h.txt");
 int i;
 inf >> i; // 读一个字
+
+std::string line;
+while(std::getline(inf, line)) // 读一行
+    xxx
 ```
+
+**一行读取**
+
+```c++
+std::ifstream file;
+file.open("xx", ios::out | ios::in); // 读写
+cin.getline(data, 100);
+file << data << endl;
+file >> data;
+
+```
+
+
 
 ```c++
 ifstream inf("x.txt");
@@ -1432,9 +1518,56 @@ while(*i != 'x'){
 copy(istreambuf_iterator<char>(cin), istreambuf_iterator<char>(), ostreambuf_iterator<char>(cout));// 和上面基本一样，除了遇x不退出
 ```
 
+### 信号处理
+
+```c++
+signal(registered signal, signal handler); // signal: SIGINT
+void signalHandler(int signum) { xxx }
+
+// raise() 生成信号
+int raise(signal sig);
+rasise(SIGINT);
+```
+
+### 多线程
+
+```c++
+std::thread t1(callable_func, args...);
+t1.join(); // 等待线程完成
+detach(); // 将线程与主线程分离，线程后台独立运行，主线程不再等待他
+
+// Lambda 表达式内联定义线程执行代码
+std::thread t2([](int args)) {
+	func_content
+}, arg);
+```
+
+**互斥量**
+
+```c++
+std::mutex mtx;
+mtx.lock(); // 锁定互斥锁
+
+// 访问共享资源
+mtx.unlock(); // 释放互斥锁
+
+std::lock_guard<std::mutex> lock(mtx); // 作用域锁，构造时锁定析构时解锁，自动锁定和释放
+// 访问共享资源
+
+std::unique_lock<std::mutex> ul(mtx);
+// 访问或修改共享资源
+// ul.unlock(); // 可选：手动解锁
+```
+
+
+
 ## 语法
 
 ### 继承
+
+```c++
+class class2: public clas {}
+```
 
 派生类可以访问基类中的public和protected成员；外部类只能访问类的public成员
 
@@ -1442,13 +1575,36 @@ copy(istreambuf_iterator<char>(cin), istreambuf_iterator<char>(), ostreambuf_ite
 
 调用成员函数时，会根据调用函数的对象的类型来执行不同的函数
 
-**虚函数**：关键字为virtual，派生类重新定义基类中定义的虚函数时，会告诉编译器不要静态链接到该函数，而是使用动态链接根据所调用的对象类型来选择调用的函数
+**虚函数**：关键字为virtual，派生类重写基类中定义的虚函数时，会告诉编译器不要静态链接到该函数，而是使用动态链接根据所调用的对象类型来选择调用的函数
+
+```c++
+// 重写
+void func() const override { xxxx }
+```
+
+包含**纯虚函数**的类为抽象类，不能实例化，强制派生类提供具体实现
+
+```c++
+virtual int vfunc() = 0;
+```
+
+```c++
+Base_class *ptr; // 基类指针
+ptr = new Drive_class(); // 实例化派生类
+delete ptr;
+```
+
+
 
 ### 重载
 
 在同一个作用域内，可以声明几个功能类似的同名函数，但是这些同名函数的形式参数（指参数的个数、类型或者顺序）必须不同
 
 **重载运算符**
+
+```c++
+class_name operator + (const class_name &, const class_name &)
+```
 
 ```c++
 class Box

@@ -323,7 +323,7 @@ vim的配置在~/.vimrc中
 
 
                 <time class="article-time--reading">
-                    阅读时长: 9 分钟
+                    阅读时长: 10 分钟
                 </time>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -334,7 +334,7 @@ vim的配置在~/.vimrc中
 
 
                 <time class="article-words">
-                    4441 字
+                    4675 字
                 </time>
             </div>
         
@@ -381,6 +381,8 @@ vim的配置在~/.vimrc中
 <p><strong>安装deb文件</strong>：<code>sudo dpkg -i</code></p>
 <p><strong>本地监听某端口</strong>：<code>nc -l port</code></p>
 <p><strong>深入查看头文件定义</strong>：<code>find /usr/include | grep xxx.h</code></p>
+<p><strong>记录某文件出现多少次该单词</strong>：<code>grep -o &quot;xxx&quot; file.txt | wc -l</code></p>
+<p><strong>删除某环境变量</strong>：<code>unset xx</code></p>
 <p><strong>链接</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -400,6 +402,8 @@ vim的配置在~/.vimrc中
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tar -zvcf a.tar.gz a <span class="c1"># 压缩</span>
@@ -407,6 +411,8 @@ vim的配置在~/.vimrc中
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">zip -r a.zip ./* <span class="c1"># 压缩</span>
 </span></span><span class="line"><span class="cl">unzip -d /xxx a.zip <span class="c1"># 解压</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">gzip -d xx.gz <span class="c1"># 解压</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>命令行命令</strong></p>
@@ -445,7 +451,8 @@ vim的配置在~/.vimrc中
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">grep -r -A <span class="m">10</span> <span class="s2">&#34;struct name&#34;</span> /usr/include <span class="c1"># 额外显示10行</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="具体命令">具体命令</h2>
+</div><p>查看局域网 IP：<code>ipconfig</code>，查看公网出口 IP：<code>curl cip.cc</code> 或 <code>ip138.com</code></p>
+<h2 id="具体命令">具体命令</h2>
 <h3 id="netstat">netstat</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -559,6 +566,27 @@ vim的配置在~/.vimrc中
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">rsync -avP local_file user@x.x.x.x:destination <span class="c1"># 本地到远程</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># -a: 递归复制  -v: 显示详细信息  -P: 允许断点续传, 显示传输进度信息</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>windows主机vscode免密ssh登录到服务器</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># windows 下</span>
+</span></span><span class="line"><span class="cl">ssh-keygen -t rsa
+</span></span><span class="line"><span class="cl">cat id_rsa.pub <span class="c1"># 将其公钥放入 Linux 服务器的 ~/.ssh/authorized_keys 中</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">ssh username@ip
+</span></span><span class="line"><span class="cl">ssh root@ip
+</span></span><span class="line"><span class="cl">scp username@remote_host:/path/to/remote/file /path/to/local/destination <span class="c1"># 拉取文件到本地</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="strace">strace</h3>
@@ -826,7 +854,20 @@ vim的配置在~/.vimrc中
 <li>text object文本对象，<code>w</code>单词，<code>s</code>句子，<code>p</code>段落</li>
 </ul>
 <p>可以用<code>a</code>或<code>i</code>加上字符`(, &lt;, {, [, &ldquo;, ``等选择包括中的内容</p>
-<h3 id="command">Command</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 删除100行后数据</span>
+</span></span><span class="line"><span class="cl">100G
+</span></span><span class="line"><span class="cl">dG
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="command">Command</h3>
+<p><strong>每行开头加{结尾加}</strong>：<code>:%s/^/{/ | s/$/}/</code></p>
 <p><strong>显示行号</strong>：<code>:set nu</code></p>
 <p><strong>全局替换</strong>：<code>:% s/被替换单词/替换为的单词/g</code></p>
 <p><strong>替换命令</strong>：<code>:[range]s[ubstitute]/{pattern}/{string}/[flags]</code></p>
@@ -849,6 +890,7 @@ vim的配置在~/.vimrc中
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>跳转到第n行</strong>：<code>:n</code></p>
+<p><strong>删除</strong>：<code>:1, xxd</code>删除1-xx行，<code>:xx, $d</code>删除xx到最后一行</p>
 <p><strong>Buffer切换</strong></p>
 <ul>
 <li>
@@ -1018,6 +1060,15 @@ vim的配置在~/.vimrc中
 </span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="k">$(</span><span class="nv">patsubst</span> <span class="nv">pattern</span>, <span class="nv">replacement</span>, <span class="nv">text</span><span class="k">)</span>	<span class="c"># 将text字符串满足pattern的替换为replacement
 </span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="k">$(</span><span class="nv">foreach</span> <span class="nv">var</span>, <span class="nv">list</span>, <span class="nv">text</span><span class="k">)</span>	<span class="c"># list中逐一取出到var, 执行text表达式
 </span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>运行</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">make -j12 <span class="c1"># 多线程执行不同构建任务</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="gdb">GDB</h2>
 <p>调试代码，加入参数</p>
@@ -1283,9 +1334,7 @@ vim的配置在~/.vimrc中
         
             
         
-            
-        
-        共 215.52k 字 · 共 19篇文章
+        共 216.45k 字 · 共 18篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---

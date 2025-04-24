@@ -54,6 +54,14 @@
           &lt;td&gt;n&lt;/td&gt;
           &lt;td&gt;软件供应链投毒攻击检测&lt;/td&gt;
       &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Cognitive Bias in Decision-Making with LLMs&lt;/td&gt;
+          &lt;td&gt;&lt;a class=&#34;link&#34; href=&#34;https://huggingface.co/datasets/jecht/cognitive_bias&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://huggingface.co/datasets/jecht/cognitive_bias&lt;/a&gt; 数据集&lt;/td&gt;
+          &lt;td&gt;fc&lt;/td&gt;
+          &lt;td&gt;n&lt;/td&gt;
+          &lt;td&gt;大模型认知偏差检测&lt;/td&gt;
+      &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;阅读状态：fc(Fully completed), sc(Substantially completed), pc(Partially completed)&lt;/p&gt;

@@ -81,6 +81,10 @@ vim的配置在`~/.vimrc`中
 
 **深入查看头文件定义**：`find /usr/include | grep xxx.h`
 
+**记录某文件出现多少次该单词**：`grep -o "xxx" file.txt | wc -l`
+
+**删除某环境变量**：`unset xx`
+
 **链接**
 
 ```bash
@@ -96,6 +100,8 @@ tar -zvxf a.tar.gz  # 解压
 
 zip -r a.zip ./* # 压缩
 unzip -d /xxx a.zip # 解压
+
+gzip -d xx.gz # 解压
 ```
 
 **命令行命令**
@@ -122,7 +128,7 @@ find xxx -type f | xargs cat # xargs
 grep -r -A 10 "struct name" /usr/include # 额外显示10行
 ```
 
-
+查看局域网 IP：`ipconfig`，查看公网出口 IP：`curl cip.cc` 或 `ip138.com`
 
 ## 具体命令
 
@@ -195,6 +201,18 @@ scp -r user@x.x.x.x:remote_file local_destination # 远程到本地
 ```Bash
 rsync -avP local_file user@x.x.x.x:destination # 本地到远程
 # -a: 递归复制  -v: 显示详细信息  -P: 允许断点续传, 显示传输进度信息
+```
+
+**windows主机vscode免密ssh登录到服务器**
+
+```bash
+# windows 下
+ssh-keygen -t rsa
+cat id_rsa.pub # 将其公钥放入 Linux 服务器的 ~/.ssh/authorized_keys 中
+
+ssh username@ip
+ssh root@ip
+scp username@remote_host:/path/to/remote/file /path/to/local/destination # 拉取文件到本地
 ```
 
 ### strace
@@ -397,7 +415,17 @@ xx{a..c} # 自动补全为xxa, xxb, xxc
 
 可以用`a`或`i`加上字符`(, <, {, [, ", ``等选择包括中的内容
 
+```bash
+# 删除100行后数据
+100G
+dG
+```
+
+
+
 ### Command
+
+**每行开头加{结尾加}**：`:%s/^/{/ | s/$/}/`
 
 **显示行号**：`:set nu`
 
@@ -421,6 +449,8 @@ xx{a..c} # 自动补全为xxa, xxb, xxc
 ```
 
 **跳转到第n行**：`:n`
+
+**删除**：`:1, xxd`删除1-xx行，`:xx, $d`删除xx到最后一行
 
 **Buffer切换**
 
@@ -547,6 +577,14 @@ $(wildcard pattern)					# 返回满足pattern的文件列表
 $(patsubst pattern, replacement, text)	# 将text字符串满足pattern的替换为replacement
 $(foreach var, list, text)	# list中逐一取出到var, 执行text表达式
 ```
+
+**运行**
+
+```bash
+make -j12 # 多线程执行不同构建任务
+```
+
+
 
 ## GDB
 
