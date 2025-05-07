@@ -61,7 +61,7 @@
                     
                     
                         
-                        <img src="/img/avatar_hu_a291887a020c52cf.png" width="300"
+                        <img src="/img/avatar_hu6886133658591222341.png" width="300"
                             height="300" class="site-logo" loading="lazy" alt="Avatar">
                     
                 
@@ -2653,7 +2653,8 @@
 </ul>
 <p><strong>Canary</strong></p>
 <blockquote>
-<p>有canary栈溢出无法执行，在函数入口处从fs(32位)/gs(64位)寄存器偏移处读取一个值，实际读取TLS中的<code>stack_guard</code>，IDA中可分析识别出canary</p></blockquote>
+<p>有canary栈溢出无法执行，在函数入口处从fs(32位)/gs(64位)寄存器偏移处读取一个值，实际读取TLS中的<code>stack_guard</code>，IDA中可分析识别出canary</p>
+</blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -4111,7 +4112,8 @@
 </ol>
 <h3 id="ret2shellcode">ret2shellcode</h3>
 <blockquote>
-<p>无后门函数且栈可执行时，使用ret2shellcode</p></blockquote>
+<p>无后门函数且栈可执行时，使用ret2shellcode</p>
+</blockquote>
 <p>shellcode汇编</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -4419,7 +4421,8 @@
 ></p>
 <img src="/img/pwn_note.zh-cn.assets/image-20241028230454709.png" alt="image-20241028230454709" style="zoom: 67%;" />
 <blockquote>
-<p>由于服务器一定开启了ASLR，所以返回地址并不一定得覆盖为shellcode地址，因为不能确定所以需要使用【Nop滑梯】</p></blockquote>
+<p>由于服务器一定开启了ASLR，所以返回地址并不一定得覆盖为shellcode地址，因为不能确定所以需要使用【Nop滑梯】</p>
+</blockquote>
 <p><strong>shellcode技巧</strong></p>
 <p><strong>① 当前方执行完read函数就执行shellcode，且此时输入极少</strong></p>
 <div class="highlight"><div class="chroma">
@@ -5307,7 +5310,8 @@
 <li><code>PR_SET_SECCOMP</code>是linux内核提供的一种机制，限制进程可执行的系统调用，可通过<code>prctl()</code>系统调用设置（可以通过<code>PR_SET_SECCOMP</code>设置进程的seccomp过滤器或<code>PR_SET_NO_NEW_PRIVS</code>设置进程的<code>no_new_privs</code>标志</li>
 <li>seccomp过滤器通过BPF(Berkeley Packet Filter)程序实现，可以过滤进程所发起的系统调用并限制；seccomp过滤器只在进程启动时设置，一旦设置不可修改</li>
 <li><code>PR_SET_NO_NEW_PRIVS</code>标志可禁止进程获取更高权限，防止进程提权</li>
-</ol></blockquote>
+</ol>
+</blockquote>
 <ul>
 <li>采用prctl函数调用</li>
 <li>使用seccomp库函数</li>
@@ -7387,7 +7391,8 @@
 <li>ecx 值装载到 esp 寄存器</li>
 <li>特权级切换为Ring3</li>
 <li>继续执行Ring3代码</li>
-</ol></blockquote>
+</ol>
+</blockquote>
 <p><strong>AUXV辅助向量</strong></p>
 <ul>
 <li>
@@ -7702,7 +7707,8 @@
 <li>接着【vuln ebp】地址<code>pop</code>给<strong>ebp</strong>，此时<strong>ebp</strong>指向恶意伪造地址且esp+offset</li>
 <li><code>esp＋offset</code>后指向返回地址-恶意代码地址，执行<code>ret</code>，恶意代码地址pop给eip，此时执行eip处指令且栈已完成迁移</li>
 <li>此时eip和ebp同时指向恶意代码地址，新栈中由read提前读入构建好ROP链，即可完成利用</li>
-</ol></blockquote>
+</ol>
+</blockquote>
 <p><strong>漏洞点</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -10156,7 +10162,8 @@
 </div><img src="/img/pwn_note.zh-cn.assets/image-20241127233211910.png" alt="image-20241127233211910" style="zoom: 67%;" />
 <p><strong>控制fd指针</strong></p>
 <blockquote>
-<p><strong>__free_hook劫持</strong></p></blockquote>
+<p><strong>__free_hook劫持</strong></p>
+</blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -10180,7 +10187,8 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><blockquote>
-<p><strong>tcache_perthread_struct劫持</strong></p></blockquote>
+<p><strong>tcache_perthread_struct劫持</strong></p>
+</blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -10209,7 +10217,8 @@
 </li>
 </ul>
 <blockquote>
-<p><strong>__malloc_hook劫持</strong></p></blockquote>
+<p><strong>__malloc_hook劫持</strong></p>
+</blockquote>
 <ul>
 <li>可以接着<strong>通过修改结构体中的<code>tcache_entry</code></strong>，其每隔8字节是一个指向tcache bin的地址，覆盖其中一个地址为【malloc_hook-0x13】地址来劫持malloc</li>
 <li>若要向malloc_hook地址申请0x20的chunk，需要劫持tcache_entry中属于0x30（0x20+0x10）的位置</li>
@@ -13019,7 +13028,8 @@
 <li>设置<code>_IO_write_end = _IO_write_ptr</code>（非必须）</li>
 </ul>
 <blockquote>
-<p>无输出时可以通过 house of roman 申请到目标地址进行劫持</p></blockquote>
+<p>无输出时可以通过 house of roman 申请到目标地址进行劫持</p>
+</blockquote>
 <p><strong>劫持到<code>_IO_2_1_stdout_</code>构造payload泄露地址内容</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -16436,7 +16446,7 @@
         
             
         
-        共 216.45k 字 · 共 18篇文章
+        共 217.37k 字 · 共 18篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---

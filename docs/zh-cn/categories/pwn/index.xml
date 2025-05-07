@@ -11558,7 +11558,8 @@
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;Canary&lt;/strong&gt;&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;有canary栈溢出无法执行，在函数入口处从fs(32位)/gs(64位)寄存器偏移处读取一个值，实际读取TLS中的&lt;code&gt;stack_guard&lt;/code&gt;，IDA中可分析识别出canary&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;有canary栈溢出无法执行，在函数入口处从fs(32位)/gs(64位)寄存器偏移处读取一个值，实际读取TLS中的&lt;code&gt;stack_guard&lt;/code&gt;，IDA中可分析识别出canary&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -13016,7 +13017,8 @@
 &lt;/ol&gt;
 &lt;h3 id=&#34;ret2shellcode&#34;&gt;ret2shellcode&lt;/h3&gt;
 &lt;blockquote&gt;
-&lt;p&gt;无后门函数且栈可执行时，使用ret2shellcode&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;无后门函数且栈可执行时，使用ret2shellcode&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;shellcode汇编&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -13324,7 +13326,8 @@
 &gt;&lt;/p&gt;
 &lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241028230454709.png&#34; alt=&#34;image-20241028230454709&#34; style=&#34;zoom: 67%;&#34; /&gt;
 &lt;blockquote&gt;
-&lt;p&gt;由于服务器一定开启了ASLR，所以返回地址并不一定得覆盖为shellcode地址，因为不能确定所以需要使用【Nop滑梯】&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;由于服务器一定开启了ASLR，所以返回地址并不一定得覆盖为shellcode地址，因为不能确定所以需要使用【Nop滑梯】&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;&lt;strong&gt;shellcode技巧&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;① 当前方执行完read函数就执行shellcode，且此时输入极少&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -14212,7 +14215,8 @@
 &lt;li&gt;&lt;code&gt;PR_SET_SECCOMP&lt;/code&gt;是linux内核提供的一种机制，限制进程可执行的系统调用，可通过&lt;code&gt;prctl()&lt;/code&gt;系统调用设置（可以通过&lt;code&gt;PR_SET_SECCOMP&lt;/code&gt;设置进程的seccomp过滤器或&lt;code&gt;PR_SET_NO_NEW_PRIVS&lt;/code&gt;设置进程的&lt;code&gt;no_new_privs&lt;/code&gt;标志&lt;/li&gt;
 &lt;li&gt;seccomp过滤器通过BPF(Berkeley Packet Filter)程序实现，可以过滤进程所发起的系统调用并限制；seccomp过滤器只在进程启动时设置，一旦设置不可修改&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;PR_SET_NO_NEW_PRIVS&lt;/code&gt;标志可禁止进程获取更高权限，防止进程提权&lt;/li&gt;
-&lt;/ol&gt;&lt;/blockquote&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
 &lt;ul&gt;
 &lt;li&gt;采用prctl函数调用&lt;/li&gt;
 &lt;li&gt;使用seccomp库函数&lt;/li&gt;
@@ -16292,7 +16296,8 @@
 &lt;li&gt;ecx 值装载到 esp 寄存器&lt;/li&gt;
 &lt;li&gt;特权级切换为Ring3&lt;/li&gt;
 &lt;li&gt;继续执行Ring3代码&lt;/li&gt;
-&lt;/ol&gt;&lt;/blockquote&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;&lt;strong&gt;AUXV辅助向量&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -16607,7 +16612,8 @@
 &lt;li&gt;接着【vuln ebp】地址&lt;code&gt;pop&lt;/code&gt;给&lt;strong&gt;ebp&lt;/strong&gt;，此时&lt;strong&gt;ebp&lt;/strong&gt;指向恶意伪造地址且esp+offset&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;esp＋offset&lt;/code&gt;后指向返回地址-恶意代码地址，执行&lt;code&gt;ret&lt;/code&gt;，恶意代码地址pop给eip，此时执行eip处指令且栈已完成迁移&lt;/li&gt;
 &lt;li&gt;此时eip和ebp同时指向恶意代码地址，新栈中由read提前读入构建好ROP链，即可完成利用&lt;/li&gt;
-&lt;/ol&gt;&lt;/blockquote&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;&lt;strong&gt;漏洞点&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -19061,7 +19067,8 @@
 &lt;/div&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241127233211910.png&#34; alt=&#34;image-20241127233211910&#34; style=&#34;zoom: 67%;&#34; /&gt;
 &lt;p&gt;&lt;strong&gt;控制fd指针&lt;/strong&gt;&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;__free_hook劫持&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;__free_hook劫持&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -19085,7 +19092,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;tcache_perthread_struct劫持&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;tcache_perthread_struct劫持&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -19114,7 +19122,8 @@
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;__malloc_hook劫持&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;__malloc_hook劫持&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;ul&gt;
 &lt;li&gt;可以接着&lt;strong&gt;通过修改结构体中的&lt;code&gt;tcache_entry&lt;/code&gt;&lt;/strong&gt;，其每隔8字节是一个指向tcache bin的地址，覆盖其中一个地址为【malloc_hook-0x13】地址来劫持malloc&lt;/li&gt;
 &lt;li&gt;若要向malloc_hook地址申请0x20的chunk，需要劫持tcache_entry中属于0x30（0x20+0x10）的位置&lt;/li&gt;
@@ -21924,7 +21933,8 @@
 &lt;li&gt;设置&lt;code&gt;_IO_write_end = _IO_write_ptr&lt;/code&gt;（非必须）&lt;/li&gt;
 &lt;/ul&gt;
 &lt;blockquote&gt;
-&lt;p&gt;无输出时可以通过 house of roman 申请到目标地址进行劫持&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;无输出时可以通过 house of roman 申请到目标地址进行劫持&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;&lt;strong&gt;劫持到&lt;code&gt;_IO_2_1_stdout_&lt;/code&gt;构造payload泄露地址内容&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;

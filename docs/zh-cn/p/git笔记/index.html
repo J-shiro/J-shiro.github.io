@@ -70,7 +70,7 @@
                     
                     
                         
-                        <img src="/img/avatar_hu_a291887a020c52cf.png" width="300"
+                        <img src="/img/avatar_hu6886133658591222341.png" width="300"
                             height="300" class="site-logo" loading="lazy" alt="Avatar">
                     
                 
@@ -334,7 +334,7 @@
 
 
                 <time class="article-words">
-                    2019 字
+                    2157 字
                 </time>
             </div>
         
@@ -448,11 +448,21 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git commit -m <span class="s2">&#34;description&#34;</span> <span class="c1"># 会创建新的tree、blob、commit object</span>
-</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 可以直接换行</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># --amend 只添加 修改 和 删除 的文件到本地版本库，修改最近一次commit信息，修改后commit id变化</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">feat/fix/...: xxxx
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">- xxxx
+</span></span><span class="line"><span class="cl">- xxxx
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>查看commit添加的内容</p>
@@ -581,6 +591,36 @@
 </span></span><span class="line"><span class="cl">git stash <span class="c1"># 处理冲突 将当前工作目录更改丢到一边，使得工作目录保持干净</span>
 </span></span><span class="line"><span class="cl">git merge orgin/xxx_branch
 </span></span><span class="line"><span class="cl">git stash pop <span class="c1"># 将刚丢到一边的更改捡回来</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>远程分支存在本地分支没有的代码，本地分支存在远程分支没有的代码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git pull --no-rebase origin branch_name
+</span></span><span class="line"><span class="cl">// 处理冲突
+</span></span><span class="line"><span class="cl">git add xxx
+</span></span><span class="line"><span class="cl">git rm xxx
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">git commit xxx
+</span></span><span class="line"><span class="cl">git push origin branch_name:branch_name
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>当<code>git reset HEAD~3</code>使得远程分支高于本地分支多个版本，而需要远程分支强制回滚到本地某个分支(不建议使用)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git push --force-with-lease origin branch_name
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>版本提交记录</p>
@@ -1013,7 +1053,7 @@
         
             
         
-        共 216.45k 字 · 共 18篇文章
+        共 217.37k 字 · 共 18篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---

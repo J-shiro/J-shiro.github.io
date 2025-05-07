@@ -2555,7 +2555,8 @@
 &lt;li&gt;&lt;code&gt;&amp;lt;&lt;/code&gt;需要转义为&lt;code&gt;\&amp;lt;&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;[&lt;/code&gt;需要转义为&lt;code&gt;\[&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;先下标再上标&lt;/li&gt;
-&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;&lt;strong&gt;灰度图&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;一般为3个数相乘，前两个数是长宽，单位为像素，最后一个数是指RGB通道数，灰度图为1，相乘的结果作为维数，输入值将平展为一列向量&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;均方误差&lt;/strong&gt;&lt;/p&gt;
