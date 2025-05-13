@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Web on J-shiro&#39;s 博客</title>
-        <link>http://localhost:1313/zh-cn/categories/web/</link>
+        <link>https://J-shiro.github.io/zh-cn/categories/web/</link>
         <description>Recent content in Web on J-shiro&#39;s 博客</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
-        <lastBuildDate>Wed, 09 Oct 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/zh-cn/categories/web/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 09 Oct 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://J-shiro.github.io/zh-cn/categories/web/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>WEB笔记</title>
-        <link>http://localhost:1313/zh-cn/p/web%E7%AC%94%E8%AE%B0/</link>
+        <link>https://J-shiro.github.io/zh-cn/p/web%E7%AC%94%E8%AE%B0/</link>
         <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/zh-cn/p/web%E7%AC%94%E8%AE%B0/</guid>
-        <description>&lt;img src="http://localhost:1313/img/note.jpg" alt="Featured image of post WEB笔记" /&gt;&lt;p&gt;寻找文件：&lt;code&gt;/tmp&lt;/code&gt;，&lt;code&gt;env&lt;/code&gt;，&lt;code&gt;/etc/passwd&lt;/code&gt;&lt;/p&gt;
+        <guid>https://J-shiro.github.io/zh-cn/p/web%E7%AC%94%E8%AE%B0/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/img/note.jpg" alt="Featured image of post WEB笔记" /&gt;&lt;p&gt;寻找文件：&lt;code&gt;/tmp&lt;/code&gt;，&lt;code&gt;env&lt;/code&gt;，&lt;code&gt;/etc/passwd&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;找文件名：&lt;code&gt;find / -name &amp;quot;*flag*.txt&amp;quot;&lt;/code&gt;&lt;/p&gt;
 &lt;h2 id=&#34;工具&#34;&gt;工具&lt;/h2&gt;
 &lt;h3 id=&#34;hackbar&#34;&gt;HackBar&lt;/h3&gt;

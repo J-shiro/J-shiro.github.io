@@ -2,20 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>J-shiro&#39;s Blog</title>
-        <link>http://localhost:1313/</link>
+        <link>https://J-shiro.github.io/</link>
         <description>Recent content on J-shiro&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
-        <lastBuildDate>Sun, 12 Mar 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 12 Mar 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://J-shiro.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Introduction</title>
-        <link>http://localhost:1313/p/introduction/</link>
+        <link>https://J-shiro.github.io/p/introduction/</link>
         <pubDate>Wed, 14 Sep 2022 20:22:06 +0800</pubDate>
         
-        <guid>http://localhost:1313/p/introduction/</guid>
-        <description>&lt;img src="http://localhost:1313/p/introduction/introduction.jpg" alt="Featured image of post Introduction" /&gt;&lt;h2 id=&#34;about-me&#34;&gt;About Me&lt;/h2&gt;
+        <guid>https://J-shiro.github.io/p/introduction/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/p/introduction/introduction.jpg" alt="Featured image of post Introduction" /&gt;&lt;h2 id=&#34;about-me&#34;&gt;About Me&lt;/h2&gt;
 &lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;tags：&lt;/strong&gt; Breaking &lt;strong&gt;/&lt;/strong&gt; drawing &lt;strong&gt;/&lt;/strong&gt; wotayi &lt;strong&gt;/&lt;/strong&gt; security &lt;strong&gt;/&lt;/strong&gt; PingPong &lt;br&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;tags：&lt;/strong&gt; Breaking &lt;strong&gt;/&lt;/strong&gt; drawing &lt;strong&gt;/&lt;/strong&gt; wotayi &lt;strong&gt;/&lt;/strong&gt; security &lt;strong&gt;/&lt;/strong&gt; PingPong &lt;br&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;Now I am learning the PWN. I may write some markdown about what I have learnt. &lt;span class=&#34;spoiler&#34; &gt; Actually, I am still a rookie. Hope you like some of my articles.  &lt;/span&gt;
   Peace and love!&lt;/p&gt;
 &lt;p&gt;&lt;span style=&#34;background: #86cce8&#34;&gt;   I am still just an undergraduate student who has been confused, and I may participate in the postgraduate entrance examination in the future.  I will record some content related to life, study and interests here&lt;/span&gt;&lt;/p&gt;
@@ -25,11 +24,11 @@
         </item>
         <item>
         <title>Debugging Refresher</title>
-        <link>http://localhost:1313/p/debugging-refresher/</link>
+        <link>https://J-shiro.github.io/p/debugging-refresher/</link>
         <pubDate>Sun, 12 Mar 2023 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/p/debugging-refresher/</guid>
-        <description>&lt;img src="http://localhost:1313/p/debugging-refresher/pwncollege.png" alt="Featured image of post Debugging Refresher" /&gt;&lt;h1 id=&#34;debugging-refresher&#34;&gt;Debugging Refresher&lt;/h1&gt;
+        <guid>https://J-shiro.github.io/p/debugging-refresher/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/p/debugging-refresher/pwncollege.png" alt="Featured image of post Debugging Refresher" /&gt;&lt;h1 id=&#34;debugging-refresher&#34;&gt;Debugging Refresher&lt;/h1&gt;
 &lt;p&gt;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;&lt;strong&gt;ASU CSE 365&lt;/strong&gt;: System Security&lt;/p&gt;
 &lt;h2 id=&#34;gdb-walkthrough&#34;&gt;GDB Walkthrough&lt;/h2&gt;
 &lt;h2 id=&#34;embryogdb&#34;&gt;embryogdb&lt;/h2&gt;
@@ -183,14 +182,13 @@
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;blockquote&gt;
-&lt;p&gt;The address can be specified using a register name, symbol name, or absolute address&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;The address can be specified using a register name, symbol name, or absolute address&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;For example, &lt;code&gt;x/8i $rip&lt;/code&gt; will print the next 8 instructions from the current instruction pointer. &lt;code&gt;x/16i main&lt;/code&gt; will print the first 16 instructions of main. You can also use &lt;code&gt;disassemble main&lt;/code&gt;, or &lt;code&gt;disas main&lt;/code&gt; for short, to print all of the instructions of main. Alternatively, &lt;code&gt;x/16gx $rsp&lt;/code&gt; will print the first 16 values on the stack.&lt;code&gt;x/gx $rbp-0x32&lt;/code&gt; will print the local variable stored there on the stack.&lt;/p&gt;
 &lt;p&gt;You will probably want to view your instructions using the CORRECT assembly syntax. You can do that with the command &lt;code&gt;set disassembly-flavor intel&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/debugging-refresher/index.assets/image-20230312223322758.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/p/debugging-refresher/index.assets/image-20230312223322758.png&#34;
 	width=&#34;584&#34;
 	height=&#34;390&#34;
-	srcset=&#34;http://localhost:1313/p/debugging-refresher/index.assets/image-20230312223322758_hu2870419598176421142.png 480w, http://localhost:1313/p/debugging-refresher/index.assets/image-20230312223322758_hu10988757927869981060.png 1024w&#34;
+	srcset=&#34;https://J-shiro.github.io/p/debugging-refresher/index.assets/image-20230312223322758_hu_b4b2612665b94fa9.png 480w, https://J-shiro.github.io/p/debugging-refresher/index.assets/image-20230312223322758_hu_5b5cde19cd38531a.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -413,10 +411,10 @@
 &lt;ul&gt;
 &lt;li&gt;In this level we should look carefully at the logic of this program. First we can use &lt;code&gt;display/8i $rip&lt;/code&gt; to find out how the program works:&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/debugging-refresher/index.assets/image-20230319190108201.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/p/debugging-refresher/index.assets/image-20230319190108201.png&#34;
 	width=&#34;617&#34;
 	height=&#34;106&#34;
-	srcset=&#34;http://localhost:1313/p/debugging-refresher/index.assets/image-20230319190108201_hu1488156036749751494.png 480w, http://localhost:1313/p/debugging-refresher/index.assets/image-20230319190108201_hu10893271198533564136.png 1024w&#34;
+	srcset=&#34;https://J-shiro.github.io/p/debugging-refresher/index.assets/image-20230319190108201_hu_815690b3ccc2eca4.png 480w, https://J-shiro.github.io/p/debugging-refresher/index.assets/image-20230319190108201_hu_fdf401a31c2da527.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20230319190108201&#34;
@@ -570,11 +568,11 @@ harder to get this flag!&lt;/p&gt;
         </item>
         <item>
         <title>PwnCollege_Note7</title>
-        <link>http://localhost:1313/p/pwncollege_note7/</link>
+        <link>https://J-shiro.github.io/p/pwncollege_note7/</link>
         <pubDate>Tue, 07 Mar 2023 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/p/pwncollege_note7/</guid>
-        <description>&lt;img src="http://localhost:1313/p/pwncollege_note7/pwncollege.png" alt="Featured image of post PwnCollege_Note7" /&gt;&lt;h1 id=&#34;sandboxing&#34;&gt;Sandboxing&lt;/h1&gt;
+        <guid>https://J-shiro.github.io/p/pwncollege_note7/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/p/pwncollege_note7/pwncollege.png" alt="Featured image of post PwnCollege_Note7" /&gt;&lt;h1 id=&#34;sandboxing&#34;&gt;Sandboxing&lt;/h1&gt;
 &lt;p&gt;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;&lt;strong&gt;ASU CSE 365&lt;/strong&gt;: System Security&lt;/p&gt;
 &lt;h2 id=&#34;sandboxing-introduction&#34;&gt;Sandboxing: Introduction&lt;/h2&gt;
 &lt;p&gt;untrusted code/data should live in a process with almost 0 permissions&lt;/p&gt;
@@ -583,10 +581,10 @@ harder to get this flag!&lt;/p&gt;
 &lt;li&gt;spawn &amp;ldquo;sandboxed&amp;rdquo; child processes&lt;/li&gt;
 &lt;li&gt;when a child needs to perform a privileged action, it asks the parent&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/pwncollege_note7/index.assets/image-20230307172617141.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/p/pwncollege_note7/index.assets/image-20230307172617141.png&#34;
 	width=&#34;1170&#34;
 	height=&#34;303&#34;
-	srcset=&#34;http://localhost:1313/p/pwncollege_note7/index.assets/image-20230307172617141_hu17348866965870764885.png 480w, http://localhost:1313/p/pwncollege_note7/index.assets/image-20230307172617141_hu548536003820227848.png 1024w&#34;
+	srcset=&#34;https://J-shiro.github.io/p/pwncollege_note7/index.assets/image-20230307172617141_hu_f06e1f3614743793.png 480w, https://J-shiro.github.io/p/pwncollege_note7/index.assets/image-20230307172617141_hu_ae529591ad0d2e15.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -601,11 +599,11 @@ harder to get this flag!&lt;/p&gt;
         </item>
         <item>
         <title>PwnCollege_Note6</title>
-        <link>http://localhost:1313/p/pwncollege_note6/</link>
+        <link>https://J-shiro.github.io/p/pwncollege_note6/</link>
         <pubDate>Fri, 03 Mar 2023 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/p/pwncollege_note6/</guid>
-        <description>&lt;img src="http://localhost:1313/p/pwncollege_note6/pwncollege.png" alt="Featured image of post PwnCollege_Note6" /&gt;&lt;h1 id=&#34;shellcode-injection&#34;&gt;Shellcode Injection&lt;/h1&gt;
+        <guid>https://J-shiro.github.io/p/pwncollege_note6/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/p/pwncollege_note6/pwncollege.png" alt="Featured image of post PwnCollege_Note6" /&gt;&lt;h1 id=&#34;shellcode-injection&#34;&gt;Shellcode Injection&lt;/h1&gt;
 &lt;p&gt;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;&lt;strong&gt;ASU CSE 365&lt;/strong&gt;: System Security&lt;/p&gt;
 &lt;h2 id=&#34;shellcode-injection-introduction&#34;&gt;Shellcode Injection: Introduction&lt;/h2&gt;
 &lt;p&gt;①an example of vulnerability:&lt;/p&gt;
@@ -652,12 +650,11 @@ harder to get this flag!&lt;/p&gt;
 &lt;/div&gt;&lt;blockquote&gt;
 &lt;p&gt;use &lt;strong&gt;gcc -w -z execstack -o a a.c&lt;/strong&gt; to compile&lt;/p&gt;
 &lt;p&gt;-w: Does not generate any warning information&lt;/p&gt;
-&lt;p&gt;-z: pass the keyword &amp;mdash;-&amp;gt; linker&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/pwncollege_note6/index.assets/image-20230307183451013.png&#34;
+&lt;p&gt;-z: pass the keyword &amp;mdash;-&amp;gt; linker&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230307183451013.png&#34;
 	width=&#34;968&#34;
 	height=&#34;83&#34;
-	srcset=&#34;http://localhost:1313/p/pwncollege_note6/index.assets/image-20230307183451013_hu6601715686506506716.png 480w, http://localhost:1313/p/pwncollege_note6/index.assets/image-20230307183451013_hu15107907198210842219.png 1024w&#34;
+	srcset=&#34;https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230307183451013_hu_d56fee3e6f9e747a.png 480w, https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230307183451013_hu_1b7a8cd8b2051b63.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -674,10 +671,10 @@ harder to get this flag!&lt;/p&gt;
 &lt;p&gt;results:&lt;/p&gt;
 &lt;img src=&#34;index.assets/image-20230307184408869.png&#34; alt=&#34;image-20230307184408869&#34; style=&#34;zoom: 80%;&#34; /&gt;
 &lt;p&gt;use gdb to debugging:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/pwncollege_note6/index.assets/image-20230307190620265.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230307190620265.png&#34;
 	width=&#34;930&#34;
 	height=&#34;148&#34;
-	srcset=&#34;http://localhost:1313/p/pwncollege_note6/index.assets/image-20230307190620265_hu17170311146550119940.png 480w, http://localhost:1313/p/pwncollege_note6/index.assets/image-20230307190620265_hu9432351956070867538.png 1024w&#34;
+	srcset=&#34;https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230307190620265_hu_17cc8ee15fd0433d.png 480w, https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230307190620265_hu_b3d82fb096a14eac.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20230307190620265&#34;
@@ -688,10 +685,10 @@ harder to get this flag!&lt;/p&gt;
 		data-flex-basis=&#34;1508px&#34;
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/pwncollege_note6/index.assets/image-20230307190643496.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230307190643496.png&#34;
 	width=&#34;1287&#34;
 	height=&#34;318&#34;
-	srcset=&#34;http://localhost:1313/p/pwncollege_note6/index.assets/image-20230307190643496_hu41243912337787598.png 480w, http://localhost:1313/p/pwncollege_note6/index.assets/image-20230307190643496_hu10008335216813878709.png 1024w&#34;
+	srcset=&#34;https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230307190643496_hu_b5b0e5f128df176a.png 480w, https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230307190643496_hu_df24f65c7181f8e1.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20230307190643496&#34;
@@ -704,10 +701,10 @@ harder to get this flag!&lt;/p&gt;
 &gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;x/s&lt;/strong&gt;: viewing the string at an address&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;x/i&lt;/strong&gt;: view the instructions at an address&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/pwncollege_note6/index.assets/image-20230307190745633.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230307190745633.png&#34;
 	width=&#34;608&#34;
 	height=&#34;125&#34;
-	srcset=&#34;http://localhost:1313/p/pwncollege_note6/index.assets/image-20230307190745633_hu1319327254247542376.png 480w, http://localhost:1313/p/pwncollege_note6/index.assets/image-20230307190745633_hu15494383060529564638.png 1024w&#34;
+	srcset=&#34;https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230307190745633_hu_e14be126a0e75db6.png 480w, https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230307190745633_hu_d8feead76dc7083b.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20230307190745633&#34;
@@ -810,10 +807,10 @@ harder to get this flag!&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#extract the .text (raw bytes of the shellcode)&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/pwncollege_note6/index.assets/image-20230308145843974.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230308145843974.png&#34;
 	width=&#34;949&#34;
 	height=&#34;749&#34;
-	srcset=&#34;http://localhost:1313/p/pwncollege_note6/index.assets/image-20230308145843974_hu15962654895060106015.png 480w, http://localhost:1313/p/pwncollege_note6/index.assets/image-20230308145843974_hu16291705659977301482.png 1024w&#34;
+	srcset=&#34;https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230308145843974_hu_11448afc2a0587b1.png 480w, https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230308145843974_hu_1dc2f7fb116293b5.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -822,10 +819,10 @@ harder to get this flag!&lt;/p&gt;
 		data-flex-basis=&#34;304px&#34;
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/pwncollege_note6/index.assets/image-20230308150055638.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230308150055638.png&#34;
 	width=&#34;957&#34;
 	height=&#34;638&#34;
-	srcset=&#34;http://localhost:1313/p/pwncollege_note6/index.assets/image-20230308150055638_hu2003882038597559396.png 480w, http://localhost:1313/p/pwncollege_note6/index.assets/image-20230308150055638_hu3591311367596341772.png 1024w&#34;
+	srcset=&#34;https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230308150055638_hu_93008b41c7f610f3.png 480w, https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230308150055638_hu_b5e477b1f6be98a0.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -836,12 +833,11 @@ harder to get this flag!&lt;/p&gt;
 &gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;shellcoding&lt;/strong&gt;&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;&lt;code&gt;echo &amp;quot;&amp;quot; &amp;gt;&amp;gt; shellcode-raw&lt;/code&gt; to make a newline&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/pwncollege_note6/index.assets/image-20230308150737870.png&#34;
+&lt;p&gt;&lt;code&gt;echo &amp;quot;&amp;quot; &amp;gt;&amp;gt; shellcode-raw&lt;/code&gt; to make a newline&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230308150737870.png&#34;
 	width=&#34;632&#34;
 	height=&#34;169&#34;
-	srcset=&#34;http://localhost:1313/p/pwncollege_note6/index.assets/image-20230308150737870_hu11539413754774153929.png 480w, http://localhost:1313/p/pwncollege_note6/index.assets/image-20230308150737870_hu9425898020204298839.png 1024w&#34;
+	srcset=&#34;https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230308150737870_hu_9cb92c1c642ac70b.png 480w, https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230308150737870_hu_ef4499bf762749cd.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -867,10 +863,10 @@ harder to get this flag!&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;step one instruction(step over call):ni, NOT n
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/pwncollege_note6/index.assets/image-20230308161613858.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230308161613858.png&#34;
 	width=&#34;1240&#34;
 	height=&#34;466&#34;
-	srcset=&#34;http://localhost:1313/p/pwncollege_note6/index.assets/image-20230308161613858_hu1657238193791649869.png 480w, http://localhost:1313/p/pwncollege_note6/index.assets/image-20230308161613858_hu6304866028363116262.png 1024w&#34;
+	srcset=&#34;https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230308161613858_hu_b1df9e378b53f5cc.png 480w, https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230308161613858_hu_ab5fca3ec29cb963.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -895,10 +891,10 @@ harder to get this flag!&lt;/p&gt;
 &lt;li&gt;8-byte qword: mov &lt;strong&gt;QWORD PTR&lt;/strong&gt; [rax], rbx&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;②forbidden byte&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/pwncollege_note6/index.assets/image-20230309134015663.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230309134015663.png&#34;
 	width=&#34;859&#34;
 	height=&#34;294&#34;
-	srcset=&#34;http://localhost:1313/p/pwncollege_note6/index.assets/image-20230309134015663_hu15210393904193370582.png 480w, http://localhost:1313/p/pwncollege_note6/index.assets/image-20230309134015663_hu14768458100796656895.png 1024w&#34;
+	srcset=&#34;https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230309134015663_hu_94aefe63aa1272a.png 480w, https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230309134015663_hu_1b7eb2bd15ec171.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -907,10 +903,10 @@ harder to get this flag!&lt;/p&gt;
 		data-flex-basis=&#34;701px&#34;
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/pwncollege_note6/index.assets/image-20230309134226499.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230309134226499.png&#34;
 	width=&#34;1795&#34;
 	height=&#34;269&#34;
-	srcset=&#34;http://localhost:1313/p/pwncollege_note6/index.assets/image-20230309134226499_hu6066362707506868642.png 480w, http://localhost:1313/p/pwncollege_note6/index.assets/image-20230309134226499_hu6990370668195372126.png 1024w&#34;
+	srcset=&#34;https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230309134226499_hu_ee80eb6dd809d86.png 480w, https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230309134226499_hu_713792ad2748e24d.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -934,8 +930,7 @@ harder to get this flag!&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;when testing this, we need to make sure .text is writable:&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;gcc &lt;strong&gt;-Wl, -N  &amp;ndash;static&lt;/strong&gt; -nostdlib -o shellcode shellcode.s&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;gcc &lt;strong&gt;-Wl, -N  &amp;ndash;static&lt;/strong&gt; -nostdlib -o shellcode shellcode.s&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;③ multi-stage shellcode&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;stage 1:&lt;/strong&gt; read(0, rip, 1000)&lt;/p&gt;
 &lt;ul&gt;
@@ -972,10 +967,10 @@ harder to get this flag!&lt;/p&gt;
 &lt;li&gt;Jump to the shellcode&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;③JIT&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/pwncollege_note6/index.assets/image-20230311174455341.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230311174455341.png&#34;
 	width=&#34;1612&#34;
 	height=&#34;652&#34;
-	srcset=&#34;http://localhost:1313/p/pwncollege_note6/index.assets/image-20230311174455341_hu13078373795550346114.png 480w, http://localhost:1313/p/pwncollege_note6/index.assets/image-20230311174455341_hu16821557413094064327.png 1024w&#34;
+	srcset=&#34;https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230311174455341_hu_88b70ba76c159fb5.png 480w, https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230311174455341_hu_68a45ba0a0a12322.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -984,10 +979,10 @@ harder to get this flag!&lt;/p&gt;
 		data-flex-basis=&#34;593px&#34;
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/pwncollege_note6/index.assets/image-20230311174814275.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230311174814275.png&#34;
 	width=&#34;1284&#34;
 	height=&#34;517&#34;
-	srcset=&#34;http://localhost:1313/p/pwncollege_note6/index.assets/image-20230311174814275_hu15913035757388560742.png 480w, http://localhost:1313/p/pwncollege_note6/index.assets/image-20230311174814275_hu4984634734976717046.png 1024w&#34;
+	srcset=&#34;https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230311174814275_hu_114b6ecb512e3f3c.png 480w, https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230311174814275_hu_73f99fffcdb743c.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -1017,10 +1012,10 @@ harder to get this flag!&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;shellcode injection technique: JIT spraying&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/pwncollege_note6/index.assets/image-20230311194659606.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230311194659606.png&#34;
 	width=&#34;1271&#34;
 	height=&#34;142&#34;
-	srcset=&#34;http://localhost:1313/p/pwncollege_note6/index.assets/image-20230311194659606_hu161499871820128735.png 480w, http://localhost:1313/p/pwncollege_note6/index.assets/image-20230311194659606_hu1822569877349886624.png 1024w&#34;
+	srcset=&#34;https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230311194659606_hu_96821b6489af779b.png 480w, https://J-shiro.github.io/p/pwncollege_note6/index.assets/image-20230311194659606_hu_1fb13bd548a85f3f.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -1838,8 +1833,7 @@ actual functionality of your code begins. When control flow hits any of these in
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;Actually I still don&amp;rsquo;t know why the stderr, stdout, stdin which were being closed work and why the &lt;code&gt;chmod&lt;/code&gt; command can solve this question. I just know it is a way to be able to cat the flag&lt;/strong&gt;. Maybe the chmod didn&amp;rsquo;t use the stdin, stdout and stderr so we bypassed it.&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Actually I still don&amp;rsquo;t know why the stderr, stdout, stdin which were being closed work and why the &lt;code&gt;chmod&lt;/code&gt; command can solve this question. I just know it is a way to be able to cat the flag&lt;/strong&gt;. Maybe the chmod didn&amp;rsquo;t use the stdin, stdout and stderr so we bypassed it.&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;level8: &lt;strong&gt;only reading 0x12 bytes from stdin.&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;So we should replace the command like &lt;code&gt;mov xxx, xxx&lt;/code&gt; and &lt;code&gt;xor xxx, xxx&lt;/code&gt; with the &lt;code&gt;push&lt;/code&gt; , &lt;code&gt;pop&lt;/code&gt; and &lt;code&gt;mov xxx, rsp&lt;/code&gt;. the &lt;code&gt;chmod&lt;/code&gt; is what we need to do.&lt;/p&gt;
 &lt;p&gt;First, the linux &lt;strong&gt;soft link&lt;/strong&gt; and &lt;strong&gt;chmod&lt;/strong&gt; has a feature that Chmod does not work directly on soft links(which is the link file) when it operates on them, but directly on the files it points to(which is the true file). It just like we link a &lt;code&gt;f&lt;/code&gt; file in my home/hacker directory to the &lt;code&gt;/flag&lt;/code&gt; and we chmod the &lt;code&gt;f&lt;/code&gt; file not the &lt;code&gt;/flag&lt;/code&gt; file, if we succeed in changing the permissions of &lt;code&gt;f&lt;/code&gt; file, we succeed in changing the permissions of &lt;code&gt;/flag&lt;/code&gt; file, too.&lt;/p&gt;
@@ -1909,8 +1903,7 @@ actual functionality of your code begins. When control flow hits any of these in
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;level9: &lt;strong&gt;modified shellcode by overwriting every other 10 bytes with 0xcc.&lt;/strong&gt;&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;0xcc, when interpreted as an instruction is an &lt;strong&gt;&lt;code&gt;INT 3&lt;/code&gt;&lt;/strong&gt;, which is an interrupt to call into the debugger.Every 10 bytes, our command is overwritten with 10 interrupt commands(int 3 ), so we need to skip it using the &lt;code&gt;.rept .endr&lt;/code&gt; and &lt;code&gt;jmp&lt;/code&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;0xcc, when interpreted as an instruction is an &lt;strong&gt;&lt;code&gt;INT 3&lt;/code&gt;&lt;/strong&gt;, which is an interrupt to call into the debugger.Every 10 bytes, our command is overwritten with 10 interrupt commands(int 3 ), so we need to skip it using the &lt;code&gt;.rept .endr&lt;/code&gt; and &lt;code&gt;jmp&lt;/code&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -1958,8 +1951,7 @@ actual functionality of your code begins. When control flow hits any of these in
 &lt;/div&gt;&lt;p&gt;level10: &lt;strong&gt;sorted your shellcode using bubblesort. This sort processed your shellcode 8 bytes at a time.&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;Keep in mind the impact of memory endianness(The Byte Storage Order of the memory) on this sort(e.g., the LSB being the right-most byte).&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;the code of level8 can go through it&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;the code of level8 can go through it&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -2013,8 +2005,7 @@ actual functionality of your code begins. When control flow hits any of these in
 &lt;p&gt;because we only have stage-1 shellcode so we can still use the code of level10 and get the flag.&lt;/p&gt;
 &lt;p&gt;level12: &lt;strong&gt;requires that every byte in your shellcode is unique&lt;/strong&gt;&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;This level means that each byte of the machine code required to be entered is different. In level11 will be failed in bytes5 because push command is used twice so there&amp;rsquo;re two 6a&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;This level means that each byte of the machine code required to be entered is different. In level11 will be failed in bytes5 because push command is used twice so there&amp;rsquo;re two 6a&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -2046,11 +2037,11 @@ actual functionality of your code begins. When control flow hits any of these in
         </item>
         <item>
         <title>Intercepting Communication</title>
-        <link>http://localhost:1313/p/intercepting-communication/</link>
+        <link>https://J-shiro.github.io/p/intercepting-communication/</link>
         <pubDate>Fri, 10 Feb 2023 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/p/intercepting-communication/</guid>
-        <description>&lt;img src="http://localhost:1313/p/intercepting-communication/pwncollege.png" alt="Featured image of post Intercepting Communication" /&gt;&lt;h1 id=&#34;intercepting-communication&#34;&gt;Intercepting Communication&lt;/h1&gt;
+        <guid>https://J-shiro.github.io/p/intercepting-communication/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/p/intercepting-communication/pwncollege.png" alt="Featured image of post Intercepting Communication" /&gt;&lt;h1 id=&#34;intercepting-communication&#34;&gt;Intercepting Communication&lt;/h1&gt;
 &lt;p&gt;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;&lt;strong&gt;ASU CSE 365&lt;/strong&gt;: Introduction to Cybersecurity&lt;/p&gt;
 &lt;h2 id=&#34;intercepting-communication-introduction&#34;&gt;Intercepting Communication: Introduction&lt;/h2&gt;
 &lt;p&gt;①network communication&lt;/p&gt;
@@ -2058,11 +2049,10 @@ actual functionality of your code begins. When control flow hits any of these in
 &lt;p&gt;A&amp;mdash;-email&amp;mdash;&amp;ndash;&amp;gt;B&lt;/p&gt;
 &lt;p&gt;A&amp;mdash;-email&amp;ndash;&amp;gt;postal service box&amp;mdash;&amp;mdash;&amp;gt;B&lt;/p&gt;
 &lt;p&gt;##mailingprotocol is important!!&lt;/p&gt;
-&lt;p&gt;A&amp;mdash;-email&amp;ndash;&amp;gt;postal service box&amp;mdash;&amp;mdash;&amp;gt;C (not B)&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;A&amp;mdash;-email&amp;ndash;&amp;gt;postal service box&amp;mdash;&amp;mdash;&amp;gt;C (not B)&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;②Dynamic network&lt;/p&gt;
 &lt;p&gt;physically linked&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/lesson/dnetwork.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/dnetwork.png&#34;
 	
 	
 	
@@ -2092,7 +2082,7 @@ actual functionality of your code begins. When control flow hits any of these in
       &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/lesson/Estruct.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/Estruct.png&#34;
 	
 	
 	
@@ -2128,7 +2118,7 @@ actual functionality of your code begins. When control flow hits any of these in
     &lt;iframe id=&#34;googleSlideIframe&#34;
             width=&#34;100%&#34;
             height=&#34;100%&#34;
-            src=&#34;http://localhost:1313/img/pdf/IP1.pdf&#34;
+            src=&#34;https://J-shiro.github.io/img/pdf/IP1.pdf&#34;
             frameborder=&#34;0&#34;
             allowfullscreen=&#34;&#34; &gt;
     &lt;/iframe&gt;
@@ -2173,7 +2163,7 @@ actual functionality of your code begins. When control flow hits any of these in
     &lt;iframe id=&#34;googleSlideIframe&#34;
             width=&#34;100%&#34;
             height=&#34;100%&#34;
-            src=&#34;http://localhost:1313/img/pdf/TCP1.pdf&#34;
+            src=&#34;https://J-shiro.github.io/img/pdf/TCP1.pdf&#34;
             frameborder=&#34;0&#34;
             allowfullscreen=&#34;&#34; &gt;
     &lt;/iframe&gt;
@@ -2189,7 +2179,7 @@ actual functionality of your code begins. When control flow hits any of these in
 &lt;li&gt;Window Size: sending data should be shorter than this size at once&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;TCP flags&lt;/strong&gt; (6 of 9)&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/lesson/TCPflags.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/TCPflags.png&#34;
 	
 	
 	
@@ -2198,7 +2188,7 @@ actual functionality of your code begins. When control flow hits any of these in
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;TCP Transmission&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/lesson/TCPt.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/TCPt.png&#34;
 	
 	
 	
@@ -2233,7 +2223,7 @@ actual functionality of your code begins. When control flow hits any of these in
     &lt;iframe id=&#34;googleSlideIframe&#34;
             width=&#34;100%&#34;
             height=&#34;100%&#34;
-            src=&#34;http://localhost:1313/img/pdf/ARP1.pdf&#34;
+            src=&#34;https://J-shiro.github.io/img/pdf/ARP1.pdf&#34;
             frameborder=&#34;0&#34;
             allowfullscreen=&#34;&#34; &gt;
     &lt;/iframe&gt;
@@ -2376,7 +2366,7 @@ actual functionality of your code begins. When control flow hits any of these in
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;level6: &lt;strong&gt;monitor slow traffic from a remote host&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;we use the wireshark to monitor the traffic in eth0, and click the &lt;code&gt;Follow-TCP Stream&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/level6/Wireshark1.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/level6/Wireshark1.png&#34;
 	
 	
 	
@@ -2384,7 +2374,7 @@ actual functionality of your code begins. When control flow hits any of these in
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/level6/Wireshark2.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/level6/Wireshark2.png&#34;
 	
 	
 	
@@ -2555,7 +2545,7 @@ actual functionality of your code begins. When control flow hits any of these in
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;② B&amp;mdash;-&amp;gt;A &lt;strong&gt;SYN,ACK&lt;/strong&gt; (seq=&lt;code&gt;B&lt;/code&gt;, ack=&lt;code&gt;(A+1)&lt;/code&gt;)&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/level11/Handshake.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/level11/Handshake.png&#34;
 	
 	
 	
@@ -2890,11 +2880,11 @@ actual functionality of your code begins. When control flow hits any of these in
         </item>
         <item>
         <title>Building a Web Server</title>
-        <link>http://localhost:1313/p/building-a-web-server/</link>
+        <link>https://J-shiro.github.io/p/building-a-web-server/</link>
         <pubDate>Thu, 22 Dec 2022 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/p/building-a-web-server/</guid>
-        <description>&lt;img src="http://localhost:1313/p/building-a-web-server/pwncollege.png" alt="Featured image of post Building a Web Server" /&gt;&lt;h1 id=&#34;building-a-web-server&#34;&gt;Building a Web Server&lt;/h1&gt;
+        <guid>https://J-shiro.github.io/p/building-a-web-server/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/p/building-a-web-server/pwncollege.png" alt="Featured image of post Building a Web Server" /&gt;&lt;h1 id=&#34;building-a-web-server&#34;&gt;Building a Web Server&lt;/h1&gt;
 &lt;p&gt;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;&lt;strong&gt;ASU CSE 365&lt;/strong&gt;: Introduction to Cybersecurity&lt;/p&gt;
 &lt;h2 id=&#34;building-a-web-server-introduction&#34;&gt;Building a Web Server: Introduction&lt;/h2&gt;
 &lt;p&gt;①Computation&lt;/p&gt;
@@ -2922,7 +2912,7 @@ actual functionality of your code begins. When control flow hits any of these in
     &lt;iframe id=&#34;googleSlideIframe&#34;
             width=&#34;100%&#34;
             height=&#34;100%&#34;
-            src=&#34;http://localhost:1313/img/pdf/BaWS1.pdf&#34;
+            src=&#34;https://J-shiro.github.io/img/pdf/BaWS1.pdf&#34;
             frameborder=&#34;0&#34;
             allowfullscreen=&#34;&#34; &gt;
     &lt;/iframe&gt;
@@ -2938,7 +2928,7 @@ actual functionality of your code begins. When control flow hits any of these in
 &lt;p&gt;&lt;strong&gt;open(char &lt;code&gt;*&lt;/code&gt;pathname, int flags, mode_t mode)&lt;/strong&gt; opens the file specified by pathname. If the specified file doesn&amp;rsquo;t exist, it may optionally be created(if O_CREAT is specified in flags), the return value of it is a file descriptor that used in subsequent system calls(read(2),write(2),lseek(2),fcntl(2)) to refer to the open file.&lt;/p&gt;
 &lt;p&gt;②Linux process&lt;/p&gt;
 &lt;p&gt;struct task_struct *current&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/lesson/struct.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/struct.png&#34;
 	
 	
 	
@@ -2971,7 +2961,7 @@ actual functionality of your code begins. When control flow hits any of these in
     &lt;iframe id=&#34;googleSlideIframe&#34;
             width=&#34;100%&#34;
             height=&#34;100%&#34;
-            src=&#34;http://localhost:1313/img/pdf/BaWS2.pdf&#34;
+            src=&#34;https://J-shiro.github.io/img/pdf/BaWS2.pdf&#34;
             frameborder=&#34;0&#34;
             allowfullscreen=&#34;&#34; &gt;
     &lt;/iframe&gt;
@@ -2980,7 +2970,7 @@ actual functionality of your code begins. When control flow hits any of these in
 &lt;/html&gt;
 &lt;p&gt;In the end, the file descriptor is 3 for &amp;lsquo;/flag&amp;rsquo; and the RAX is set to 3 as the result of &lt;code&gt;open() syscall&lt;/code&gt; . It saved the data into the kernel memory.&lt;/p&gt;
 &lt;p&gt;③system calls&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/lesson/systemcall.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/systemcall.png&#34;
 	
 	
 	
@@ -3042,7 +3032,7 @@ actual functionality of your code begins. When control flow hits any of these in
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/lesson/structlesson.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/structlesson.png&#34;
 	
 	
 	
@@ -3074,7 +3064,7 @@ actual functionality of your code begins. When control flow hits any of these in
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;⑥accept TCP/IP network connections&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/lesson/acceptTCP.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/acceptTCP.png&#34;
 	
 	
 	
@@ -3083,7 +3073,7 @@ actual functionality of your code begins. When control flow hits any of these in
 	
 &gt;&lt;/p&gt;
 &lt;h2 id=&#34;building-a-web-server-http&#34;&gt;Building a Web Server: HTTP&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/lesson/Uhttp.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/Uhttp.png&#34;
 	
 	
 	
@@ -3120,7 +3110,7 @@ actual functionality of your code begins. When control flow hits any of these in
     &lt;iframe id=&#34;googleSlideIframe&#34;
             width=&#34;100%&#34;
             height=&#34;100%&#34;
-            src=&#34;http://localhost:1313/img/pdf/BaWS5.pdf&#34;
+            src=&#34;https://J-shiro.github.io/img/pdf/BaWS5.pdf&#34;
             frameborder=&#34;0&#34;
             allowfullscreen=&#34;&#34; &gt;
     &lt;/iframe&gt;
@@ -3293,8 +3283,7 @@ actual functionality of your code begins. When control flow hits any of these in
 &lt;/div&gt;
 &lt;/div&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;int socket(int domain, int type, int protocol)&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;need: &lt;strong&gt;socket(AF_INET, SOCK_STREAM, IPPROTO_IP)&lt;/strong&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;need: &lt;strong&gt;socket(AF_INET, SOCK_STREAM, IPPROTO_IP)&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;First, we can write it in a c program and look at the errors so that we can put the header files(.h) to c program, seeing each argument&lt;/p&gt;
@@ -3307,7 +3296,7 @@ actual functionality of your code begins. When control flow hits any of these in
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;(such as the IPPROTO_IP in netinet/in.h is 0)&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/level2/cpro.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/level2/cpro.png&#34;
 	
 	
 	
@@ -3315,7 +3304,7 @@ actual functionality of your code begins. When control flow hits any of these in
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/level2/ctoas.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/level2/ctoas.png&#34;
 	
 	
 	
@@ -3425,8 +3414,7 @@ actual functionality of your code begins. When control flow hits any of these in
 &lt;/table&gt;
 &lt;blockquote&gt;
 &lt;p&gt;*&lt;em&gt;int bind(int sockfd, const struct sockaddr &lt;em&gt;addr, socklen_t addrlen)&lt;/em&gt;&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;func: Bind a socket file that specifies the communication protocol to the IP and port&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;func: Bind a socket file that specifies the communication protocol to the IP and port&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -3635,8 +3623,7 @@ actual functionality of your code begins. When control flow hits any of these in
   &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;int listen(int sockfd, int backlog)&lt;/strong&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;int listen(int sockfd, int backlog)&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -3707,8 +3694,7 @@ actual functionality of your code begins. When control flow hits any of these in
   &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;blockquote&gt;
-&lt;p&gt;*&lt;em&gt;int accept(int sockfd, struct sockaddr &lt;code&gt;*&lt;/code&gt;addr, socklen_t &lt;em&gt;addrlen)&lt;/em&gt;&lt;/em&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;*&lt;em&gt;int accept(int sockfd, struct sockaddr &lt;code&gt;*&lt;/code&gt;addr, socklen_t &lt;em&gt;addrlen)&lt;/em&gt;&lt;/em&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;I write a c program about the accept and &lt;code&gt;objdump&lt;/code&gt; it, then I find that the &lt;code&gt;NULL&lt;/code&gt; should only set to the &lt;code&gt;0x0&lt;/code&gt; to the register. It works.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -3814,8 +3800,7 @@ actual functionality of your code begins. When control flow hits any of these in
 &lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;ssize_t read(int fd, void &lt;code&gt;*&lt;/code&gt;buf, size_t count);&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;ssize_t write (int filedes, void &lt;code&gt;*&lt;/code&gt; buf, size_t nbytes);&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;int close(int fd);&lt;/strong&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;int close(int fd);&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;Only show the newly added code:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -4210,8 +4195,7 @@ actual functionality of your code begins. When control flow hits any of these in
   &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;pid_t fork(void);&lt;/strong&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;pid_t fork(void);&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;For the parent process it will get the ID or return Number of the new created child processes and the child process get the &lt;code&gt;0&lt;/code&gt; ID so we need to use conditional jumps to distinguish between them.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -4343,8 +4327,7 @@ actual functionality of your code begins. When control flow hits any of these in
   &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;int open(const char &lt;code&gt;*&lt;/code&gt;pathname, int flags, mode_t mode);&lt;/strong&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;int open(const char &lt;code&gt;*&lt;/code&gt;pathname, int flags, mode_t mode);&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -4357,7 +4340,7 @@ actual functionality of your code begins. When control flow hits any of these in
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;the 3rd argument of &lt;code&gt;0777&lt;/code&gt; is OCT so we need to change it to the HEX &lt;code&gt;1FF&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;POST&lt;/code&gt;:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/level10/POST.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/level10/POST.png&#34;
 	
 	
 	
@@ -4366,7 +4349,7 @@ actual functionality of your code begins. When control flow hits any of these in
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;and we should do in level10 is :&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/level10/TODO.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/level10/TODO.png&#34;
 	
 	
 	
@@ -5055,7 +5038,7 @@ actual functionality of your code begins. When control flow hits any of these in
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;level11: &lt;strong&gt;respond to multiple concurrent GET and POST requests&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/level11/PG.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/level11/PG.png&#34;
 	
 	
 	
@@ -5599,11 +5582,11 @@ actual functionality of your code begins. When control flow hits any of these in
         </item>
         <item>
         <title>PwnCollege_Note3</title>
-        <link>http://localhost:1313/p/pwncollege_note3/</link>
+        <link>https://J-shiro.github.io/p/pwncollege_note3/</link>
         <pubDate>Tue, 29 Nov 2022 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/p/pwncollege_note3/</guid>
-        <description>&lt;img src="http://localhost:1313/p/pwncollege_note3/pwncollege.png" alt="Featured image of post PwnCollege_Note3" /&gt;&lt;h1 id=&#34;assembly-crash-course&#34;&gt;Assembly Crash Course&lt;/h1&gt;
+        <guid>https://J-shiro.github.io/p/pwncollege_note3/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/p/pwncollege_note3/pwncollege.png" alt="Featured image of post PwnCollege_Note3" /&gt;&lt;h1 id=&#34;assembly-crash-course&#34;&gt;Assembly Crash Course&lt;/h1&gt;
 &lt;p&gt;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;&lt;strong&gt;ASU CSE 365&lt;/strong&gt;: Introduction to Cybersecurity&lt;/p&gt;
 &lt;h2 id=&#34;assembly-crash-course-computer-architecture&#34;&gt;Assembly Crash Course: Computer Architecture&lt;/h2&gt;
 &lt;p&gt;①all roads lead to cpu&lt;/p&gt;
@@ -5616,7 +5599,7 @@ actual functionality of your code begins. When control flow hits any of these in
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;②logic gates&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/lesson/LogicGate.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/LogicGate.png&#34;
 	
 	
 	
@@ -5626,7 +5609,7 @@ actual functionality of your code begins. When control flow hits any of these in
 &gt;&lt;/p&gt;
 &lt;p&gt;and gate&amp;amp;	or gate≥1	xor gate=1	not gate1&lt;/p&gt;
 &lt;p&gt;③&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/lesson/ComputerA.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/ComputerA.png&#34;
 	
 	
 	
@@ -5658,7 +5641,7 @@ actual functionality of your code begins. When control flow hits any of these in
 &lt;p&gt;①Expressing text&lt;/p&gt;
 &lt;p&gt;ASCII(American Standard Code for Information Exchange): Specified how to encode, in 7 bits, the English alphabet and common symbols.&lt;/p&gt;
 &lt;p&gt;below: the top is the first hex digit, the left is the second hex digit&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/lesson/ascii.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/ascii.png&#34;
 	
 	
 	
@@ -5690,8 +5673,7 @@ actual functionality of your code begins. When control flow hits any of these in
 &lt;p&gt;drawback2: arithmetic operations have to be signedness-aware&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;(unsigned) 0b00000000 - 1 = 0 - 1 = 255 == 0b11111111&lt;/p&gt;
-&lt;p&gt;(signed) 	 0b00000000 - 1 = 0 - 1 = -1    == 0b10000001&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;(signed) 	 0b00000000 - 1 = 0 - 1 = -1    == 0b10000001&lt;/p&gt;&lt;/blockquote&gt;
 &lt;ul&gt;
 &lt;li&gt;two&amp;rsquo;s complement&lt;/li&gt;
 &lt;/ul&gt;
@@ -5707,7 +5689,7 @@ actual functionality of your code begins. When control flow hits any of these in
 &lt;li&gt;unsigned: -128-&amp;gt;127             signed: 0-&amp;gt;255&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;⑤anatomy of a word&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/lesson/Word.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/Word.png&#34;
 	
 	
 	
@@ -5730,7 +5712,7 @@ actual functionality of your code begins. When control flow hits any of these in
 &lt;li&gt;eip(x86), rip(amd64), r15(arm)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;①partial accesses on amd64&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/lesson/register1.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/register1.png&#34;
 	
 	
 	
@@ -5780,7 +5762,7 @@ actual functionality of your code begins. When control flow hits any of these in
 &lt;p&gt;rax is now 0xffffffffffffffff(both 4294967295 and -1)&lt;/p&gt;
 &lt;p&gt;③register arithmetic&lt;/p&gt;
 &lt;p&gt;most arithmetic instructions the first specified register stores the result&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/lesson/operation.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/operation.png&#34;
 	
 	
 	
@@ -5882,7 +5864,7 @@ actual functionality of your code begins. When control flow hits any of these in
 &lt;/div&gt;&lt;p&gt;&lt;strong&gt;Each addressed memory location contains one byte!!!: 8-byte write at address 0x133337 will write to addresses 0x133337 through 0x13333f&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;④Memory Endianess&lt;/p&gt;
 &lt;p&gt;backwards&amp;mdash;&amp;gt;in little endian&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/lesson/endian.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/endian.png&#34;
 	
 	
 	
@@ -5939,7 +5921,7 @@ actual functionality of your code begins. When control flow hits any of these in
 &lt;/div&gt;
 &lt;/div&gt;&lt;h2 id=&#34;assembly-crash-course-control-flow&#34;&gt;Assembly Crash Course: Control Flow&lt;/h2&gt;
 &lt;p&gt;①CPU execute instructions&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/lesson/control.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/control.png&#34;
 	
 	
 	
@@ -5948,7 +5930,7 @@ actual functionality of your code begins. When control flow hits any of these in
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;jmp: eb====&amp;gt;eb 04 :(skip 4 bytes)&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/lesson/control2.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/control2.png&#34;
 	
 	
 	
@@ -5957,7 +5939,7 @@ actual functionality of your code begins. When control flow hits any of these in
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;②Conditional Jumps&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/lesson/conditionjump.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/conditionjump.png&#34;
 	
 	
 	
@@ -6121,7 +6103,7 @@ actual functionality of your code begins. When control flow hits any of these in
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;strong&gt;examples&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/lesson/syscall.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/syscall.png&#34;
 	
 	
 	
@@ -6410,7 +6392,7 @@ actual functionality of your code begins. When control flow hits any of these in
       &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/level6/rax.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/level6/rax.png&#34;
 	
 	
 	
@@ -6457,7 +6439,7 @@ shr reg1, x      &amp;lt;=&amp;gt;     Shift reg1 right by x&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;level8: &lt;strong&gt;and,or,xor,no&lt;/strong&gt;&amp;mdash;-&amp;gt;bitwise logic&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/level8/andorxor.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/level8/andorxor.png&#34;
 	
 	
 	
@@ -6702,8 +6684,7 @@ shr reg1, x      &amp;lt;=&amp;gt;     Shift reg1 right by x&lt;/p&gt;
 &lt;li&gt;At 0x51 write the following code:&lt;/li&gt;
 &lt;li&gt;Place the top value on the stack into register rdi&lt;/li&gt;
 &lt;li&gt;jmp to the absolute address 0x403000&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/blockquote&gt;
+&lt;/ol&gt;&lt;/blockquote&gt;
 &lt;p&gt;we should use the &lt;code&gt;.rept count ... .endr&lt;/code&gt; : Repeat the sequence of lines between the .rept directive and the next .endr directive count times.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -6740,8 +6721,7 @@ y = [x+4] - [x+8] - [x+12]
 else:
 y = [x+4] * [x+8] * [x+12]
 where:
-x = rdi, y = rax. Assume each dereferenced value is a &lt;strong&gt;signed dword&lt;/strong&gt; .&lt;/p&gt;
-&lt;/blockquote&gt;
+x = rdi, y = rax. Assume each dereferenced value is a &lt;strong&gt;signed dword&lt;/strong&gt; .&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -6808,8 +6788,7 @@ x = rdi, y = rax. Assume each dereferenced value is a &lt;strong&gt;signed dword
 0: jmp do_thing_0
 1: jmp do_thing_1
 2: jmp do_thing_2
-default: jmp do_default_thing&lt;/p&gt;
-&lt;/blockquote&gt;
+default: jmp do_default_thing&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;reduced else-if&lt;/p&gt;
 &lt;p&gt;using jump table: A jump table is a contiguous section of memory that holds addresses of places to jump&lt;/p&gt;
 &lt;p&gt;jump table could look like:&lt;/p&gt;
@@ -6817,8 +6796,7 @@ default: jmp do_default_thing&lt;/p&gt;
 &lt;p&gt;[0x1337] = address of do_thing_0
 [0x1337+0x8] = address of do_thing_1
 [0x1337+0x10] = address of do_thing_2
-[0x1337+0x18] = address of do_default_thing&lt;/p&gt;
-&lt;/blockquote&gt;
+[0x1337+0x18] = address of do_default_thing&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;&lt;strong&gt;implement:&lt;/strong&gt;&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;if rdi is 0:
@@ -6830,16 +6808,14 @@ jmp 0x4031f1
 else if rdi is 3:
 jmp 0x4032b9
 else:
-jmp 0x40337c&lt;/p&gt;
-&lt;/blockquote&gt;
+jmp 0x40337c&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;&lt;strong&gt;an example jump table:&lt;/strong&gt;&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;[0x4041df] = 0x403040
 [0x4041e7] = 0x4030f7
 [0x4041ef] = 0x4031f1
 [0x4041f7] = 0x4032b9
-[0x4041ff] = 0x40337c&lt;/p&gt;
-&lt;/blockquote&gt;
+[0x4041ff] = 0x40337c&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;&lt;strong&gt;constraints:&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;assume rdi will NOT be negative&lt;/li&gt;
@@ -7033,8 +7009,7 @@ jmp 0x40337c&lt;/p&gt;
 &lt;/div&gt;&lt;p&gt;&lt;strong&gt;functions&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;level22: &lt;strong&gt;function&lt;/strong&gt; &amp;mdash;-&amp;gt;a callable segment of code that does not destory control flow. Use the &amp;ldquo;call&amp;rdquo; and &amp;ldquo;ret&amp;rdquo; instructions&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;ip control 、utilize the stack to save things 、call other functions provided&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;ip control 、utilize the stack to save things 、call other functions provided&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;The &amp;ldquo;call&amp;rdquo; instruction pushes the memory address of the next instruction onto the stack and then jumps to the value stored in the first argument.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -7311,11 +7286,11 @@ jmp 0x40337c&lt;/p&gt;
         </item>
         <item>
         <title>Talking Web</title>
-        <link>http://localhost:1313/p/talking-web/</link>
+        <link>https://J-shiro.github.io/p/talking-web/</link>
         <pubDate>Thu, 17 Nov 2022 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/p/talking-web/</guid>
-        <description>&lt;img src="http://localhost:1313/p/talking-web/pwncollege.png" alt="Featured image of post Talking Web" /&gt;&lt;h1 id=&#34;talking-web&#34;&gt;Talking Web&lt;/h1&gt;
+        <guid>https://J-shiro.github.io/p/talking-web/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/p/talking-web/pwncollege.png" alt="Featured image of post Talking Web" /&gt;&lt;h1 id=&#34;talking-web&#34;&gt;Talking Web&lt;/h1&gt;
 &lt;p&gt;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;&lt;strong&gt;ASU CSE 365&lt;/strong&gt;: Introduction to Cybersecurity&lt;/p&gt;
 &lt;h2 id=&#34;talking-web-introduction&#34;&gt;Talking Web: Introduction&lt;/h2&gt;
 &lt;p&gt;static http request:&lt;/p&gt;
@@ -7349,7 +7324,7 @@ jmp 0x40337c&lt;/p&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;talking-web-the-internet&#34;&gt;Talking Web: The Internet&lt;/h2&gt;
 &lt;p&gt;TCP/IP&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/lesson/TCPIP.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/TCPIP.png&#34;
 	
 	
 	
@@ -7377,7 +7352,7 @@ jmp 0x40337c&lt;/p&gt;
 &lt;p&gt;3xx: &lt;strong&gt;Redirection&lt;/strong&gt;-Further action must be taken in order to complete the request&lt;/p&gt;
 &lt;p&gt;4xx: &lt;strong&gt;Client Error&lt;/strong&gt;-The request contains bad syntax or can&amp;rsquo;t be fulfilled&lt;/p&gt;
 &lt;p&gt;5xx: &lt;strong&gt;Server Error&lt;/strong&gt;-The server failed to fulfill an apparently valid request&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/lesson/StatusCode.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/StatusCode.png&#34;
 	
 	
 	
@@ -7388,36 +7363,30 @@ jmp 0x40337c&lt;/p&gt;
 &lt;p&gt;④ GET&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;GET /greet HTTP/1.0&lt;/p&gt;
-&lt;p&gt;Host: hello.example.com&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;Host: hello.example.com&lt;/p&gt;&lt;/blockquote&gt;
 &lt;blockquote&gt;
 &lt;p&gt;HTTP/1.0 200 OK&lt;/p&gt;
 &lt;p&gt;Content-Type: text/html; charset=UTF-8&lt;/p&gt;
 &lt;p&gt;Content-Length: 39&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;&amp;lt;html&amp;gt;&amp;lt;body&amp;gt;Hello, World!&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;&lt;/code&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;&lt;code&gt;&amp;lt;html&amp;gt;&amp;lt;body&amp;gt;Hello, World!&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;&lt;/code&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;⑤ HEAD&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;HEAD /greet HTTP/1.0&lt;/p&gt;
-&lt;p&gt;Host: hello.example.com&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;Host: hello.example.com&lt;/p&gt;&lt;/blockquote&gt;
 &lt;blockquote&gt;
 &lt;p&gt;HTTP/1.0 200 OK&lt;/p&gt;
 &lt;p&gt;Content-Type: text/html; charset=UTF-8&lt;/p&gt;
-&lt;p&gt;Content-Length: 39&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;Content-Length: 39&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;⑥ POST&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;POST /greet HTTP/1.0&lt;/p&gt;
 &lt;p&gt;Host: hello.example.com&lt;/p&gt;
 &lt;p&gt;Content-Length: 11&lt;/p&gt;
 &lt;p&gt;Content-Type: application/x-www-form-urlencoded&lt;/p&gt;
-&lt;p&gt;name=Connor&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;name=Connor&lt;/p&gt;&lt;/blockquote&gt;
 &lt;blockquote&gt;
 &lt;p&gt;HTTP/1.0 200 OK&lt;/p&gt;
-&lt;p&gt;Content-Length: 0&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;Content-Length: 0&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;talking-web-urls-and-encoding&#34;&gt;Talking Web: URLs and Encoding&lt;/h2&gt;
 &lt;p&gt;① URL: &lt;code&gt;&amp;lt;scheme&amp;gt;://&amp;lt;host&amp;gt;:&amp;lt;port&amp;gt;/&amp;lt;path&amp;gt;?&amp;lt;query&amp;gt;#&amp;lt;fragment&amp;gt;&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;scheme: Protocol used to access resource&lt;/p&gt;
@@ -7428,7 +7397,7 @@ jmp 0x40337c&lt;/p&gt;
 &lt;p&gt;fragment: Client information about the resource&lt;/p&gt;
 &lt;p&gt;②URL encoding&lt;/p&gt;
 &lt;p&gt;SP=%20	#=%23	/=%2F	?=%3F	A=%41&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/lesson/URLenCode.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/URLenCode.png&#34;
 	
 	
 	
@@ -8032,11 +8001,11 @@ jmp 0x40337c&lt;/p&gt;
         </item>
         <item>
         <title>Program Misuse</title>
-        <link>http://localhost:1313/p/program-misuse/</link>
+        <link>https://J-shiro.github.io/p/program-misuse/</link>
         <pubDate>Sat, 29 Oct 2022 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/p/program-misuse/</guid>
-        <description>&lt;img src="http://localhost:1313/p/program-misuse/pwncollege.png" alt="Featured image of post Program Misuse" /&gt;&lt;h1 id=&#34;program-misuse&#34;&gt;Program Misuse&lt;/h1&gt;
+        <guid>https://J-shiro.github.io/p/program-misuse/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/p/program-misuse/pwncollege.png" alt="Featured image of post Program Misuse" /&gt;&lt;h1 id=&#34;program-misuse&#34;&gt;Program Misuse&lt;/h1&gt;
 &lt;p&gt;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;&lt;strong&gt;ASU CSE 365&lt;/strong&gt;: Introduction to Cybersecurity&lt;/p&gt;
 &lt;h2 id=&#34;program-interactionlinux-command-line&#34;&gt;Program Interaction:Linux Command Line&lt;/h2&gt;
 &lt;p&gt;①	&lt;strong&gt;Learning the command line&lt;/strong&gt;&lt;/p&gt;
@@ -8044,7 +8013,7 @@ jmp 0x40337c&lt;/p&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://overthewire.org/wargames/bandit/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Bandit&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/lesson/filesystem.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/lesson/filesystem.png&#34;
 	
 	
 	
@@ -8061,8 +8030,7 @@ jmp 0x40337c&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;p&lt;/code&gt; is a &lt;strong&gt;named pipe&lt;/strong&gt;(FIFO)&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;c&lt;/code&gt; is a &lt;strong&gt;character device file&lt;/strong&gt;(backed by a hardware device that receives and produces data stream)&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;b&lt;/code&gt; is a &lt;strong&gt;block device file&lt;/strong&gt;(backed by a hardware device that stores and loads blocks of data)&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;s&lt;/code&gt; is a &lt;strong&gt;unix socket&lt;/strong&gt;(essentially a local network connection encapsulated in a file)&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;&lt;code&gt;s&lt;/code&gt; is a &lt;strong&gt;unix socket&lt;/strong&gt;(essentially a local network connection encapsulated in a file)&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;④	&lt;strong&gt;Symbolic/soft links&lt;/strong&gt; created by &lt;code&gt;ln -s&lt;/code&gt;(-s stands for symbolic), it likes a pointer&lt;/p&gt;
 &lt;p&gt;⑤	&lt;strong&gt;Hard links&lt;/strong&gt;: it copys the original file. If the original file is deleted, the links won&amp;rsquo;t be deleted, and all the hard links can update the same time.&lt;/p&gt;
 &lt;p&gt;⑥	&lt;strong&gt;pipes&lt;/strong&gt;&lt;/p&gt;
@@ -8130,9 +8098,8 @@ jmp 0x40337c&lt;/p&gt;
 &lt;p&gt;level 1-6: there&amp;rsquo;re some simple programs that can directly read the flag：&lt;strong&gt;cat, more, less, tail, head, sort&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;level 7-9: there&amp;rsquo;re some tools  &amp;mdash;-&amp;gt; over-privileged &lt;strong&gt;editors&lt;/strong&gt;：&lt;strong&gt;vim, emacs, nano&lt;/strong&gt;&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;emacs points to emacs-gtk by default, it will try to open if there&amp;rsquo;s a graphical interface. But gtk can&amp;rsquo;t setuid, so we can use the &lt;code&gt;-nw&lt;/code&gt; to forces the graphics window not to pop up.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/level8/image-20221030103804124.png&#34;
+&lt;p&gt;emacs points to emacs-gtk by default, it will try to open if there&amp;rsquo;s a graphical interface. But gtk can&amp;rsquo;t setuid, so we can use the &lt;code&gt;-nw&lt;/code&gt; to forces the graphics window not to pop up.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/level8/image-20221030103804124.png&#34;
 	
 	
 	
@@ -8311,8 +8278,7 @@ jmp 0x40337c&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;Usage: nice [OPTION] [COMMAND [ARG]&amp;hellip;]&lt;/strong&gt;
-Run COMMAND with an adjusted niceness, which affects process scheduling.With no COMMAND, print the current niceness.  Niceness values range from -20 (most favorable to the process) to 19 (least favorable to the process).&lt;/p&gt;
-&lt;/blockquote&gt;
+Run COMMAND with an adjusted niceness, which affects process scheduling.With no COMMAND, print the current niceness.  Niceness values range from -20 (most favorable to the process) to 19 (least favorable to the process).&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;level 28: &lt;strong&gt;timeout&lt;/strong&gt;&amp;mdash;&amp;gt; start COMMAND, and kill it if still running after DURATION.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Usage: timeout [OPTION] DURATION COMMAND [ARG]&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -8327,8 +8293,7 @@ Run COMMAND with an adjusted niceness, which affects process scheduling.With no 
 &lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;-i, --input=MODE&lt;/code&gt;	adjust standard input stream buffering&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;-o, --output=MODE&lt;/code&gt;	adjust standard output stream buffering&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;-e, --error=MODE&lt;/code&gt;	adjust standard error stream buffering&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;&lt;code&gt;-e, --error=MODE&lt;/code&gt;	adjust standard error stream buffering&lt;/p&gt;&lt;/blockquote&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;If MODE is &lt;code&gt;L&lt;/code&gt; the corresponding stream will be line buffered.This option is invalid with standard input.&lt;/p&gt;
@@ -8433,7 +8398,7 @@ Run COMMAND with an adjusted niceness, which affects process scheduling.With no 
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;whiptail --textbox --scrolltext flag &lt;span class=&#34;m&#34;&gt;20&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;20&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_college/level33/image-20221107161717570.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_college/level33/image-20221107161717570.png&#34;
 	
 	
 	
@@ -8492,8 +8457,7 @@ Run COMMAND with an adjusted niceness, which affects process scheduling.With no 
 &lt;/div&gt;&lt;p&gt;level 36: &lt;strong&gt;ed&lt;/strong&gt;&amp;mdash;&amp;gt; text editor&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;USAGE:	ed [options] [file]&lt;/p&gt;
-&lt;p&gt;Start edit by reading in &amp;lsquo;file&amp;rsquo; if given. If &amp;lsquo;file&amp;rsquo; begins with a &amp;lsquo;!&amp;rsquo;, read output of shell command.&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;Start edit by reading in &amp;lsquo;file&amp;rsquo; if given. If &amp;lsquo;file&amp;rsquo; begins with a &amp;lsquo;!&amp;rsquo;, read output of shell command.&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -8568,8 +8532,7 @@ Run COMMAND with an adjusted niceness, which affects process scheduling.With no 
 &lt;/div&gt;&lt;p&gt;&lt;strong&gt;let you program anything&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;level 41: &lt;strong&gt;perl&lt;/strong&gt;&amp;mdash;&amp;gt; extract the language practical statements&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;Usage: perl [options] [program file] [para]&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;Usage: perl [options] [program file] [para]&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -8736,8 +8699,7 @@ more than one FILE is specified.&lt;/p&gt;
 &lt;/div&gt;&lt;p&gt;level 50: &lt;strong&gt;wget&lt;/strong&gt;&amp;mdash;&amp;gt; a tool for downloading files from the specified URL&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;Usage: wget [OPTION]&amp;hellip; [URL]&amp;hellip;&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;The file to be read is treated as a list of URLs, one per line, which are actually fetched by &lt;code&gt;wget&lt;/code&gt;. The content appears, somewhat modified, as error messages, thus this is not suitable to read arbitrary binary data.&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;The file to be read is treated as a list of URLs, one per line, which are actually fetched by &lt;code&gt;wget&lt;/code&gt;. The content appears, somewhat modified, as error messages, thus this is not suitable to read arbitrary binary data.&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -8785,8 +8747,7 @@ more than one FILE is specified.&lt;/p&gt;
 &lt;/div&gt;&lt;p&gt;&lt;strong&gt;allowing users to load their own code as plugins into the program is dangerous&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;level 51: &lt;strong&gt;ssh-keygen&lt;/strong&gt;&amp;mdash;&amp;gt;Used to generate an SSH public key for the public and private key file, this level is difficult so I can&amp;rsquo;t understand well about it. Maybe I&amp;rsquo;ll explore that later.&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;It loads shared libraries that may be used to run code in the binary execution context.&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;It loads shared libraries that may be used to run code in the binary execution context.&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -8993,11 +8954,11 @@ more than one FILE is specified.&lt;/p&gt;
         </item>
         <item>
         <title>HUGO_blog</title>
-        <link>http://localhost:1313/p/hugo_blog/</link>
+        <link>https://J-shiro.github.io/p/hugo_blog/</link>
         <pubDate>Mon, 24 Oct 2022 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/p/hugo_blog/</guid>
-        <description>&lt;img src="http://localhost:1313/p/hugo_blog/86.jpg" alt="Featured image of post HUGO_blog" /&gt;&lt;h2 id=&#34;git&#34;&gt;git&lt;/h2&gt;
+        <guid>https://J-shiro.github.io/p/hugo_blog/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/p/hugo_blog/86.jpg" alt="Featured image of post HUGO_blog" /&gt;&lt;h2 id=&#34;git&#34;&gt;git&lt;/h2&gt;
 &lt;p&gt;Use the following statement to upload the local file to GitHub.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -9161,10 +9122,10 @@ more than one FILE is specified.&lt;/p&gt;
         </item>
         <item>
         <title>About</title>
-        <link>http://localhost:1313/about/</link>
+        <link>https://J-shiro.github.io/about/</link>
         <pubDate>Tue, 13 Sep 2022 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/about/</guid>
+        <guid>https://J-shiro.github.io/about/</guid>
         <description>&lt;p&gt;This is my first time to create a blog.
 Maybe there&amp;rsquo;re something not so good,
 but I will try my best to make it better.
@@ -9190,27 +9151,27 @@ Learn more and contribute on [GitHub](https://github.com/gohugoio).
         </item>
         <item>
         <title>Archives</title>
-        <link>http://localhost:1313/archives/</link>
+        <link>https://J-shiro.github.io/archives/</link>
         <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/archives/</guid>
+        <guid>https://J-shiro.github.io/archives/</guid>
         <description></description>
         </item>
         <item>
         <title></title>
-        <link>http://localhost:1313/p/</link>
+        <link>https://J-shiro.github.io/p/</link>
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/p/</guid>
+        <guid>https://J-shiro.github.io/p/</guid>
         <description>&lt;p&gt;​&lt;/p&gt;
 </description>
         </item>
         <item>
         <title>Links</title>
-        <link>http://localhost:1313/links/</link>
+        <link>https://J-shiro.github.io/links/</link>
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/links/</guid>
+        <guid>https://J-shiro.github.io/links/</guid>
         <description>&lt;!-- To use this feature, add `links` section to frontmatter.
 
 This page&#39;s frontmatter:
@@ -9231,10 +9192,10 @@ links:
         </item>
         <item>
         <title>Search</title>
-        <link>http://localhost:1313/search/</link>
+        <link>https://J-shiro.github.io/search/</link>
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/search/</guid>
+        <guid>https://J-shiro.github.io/search/</guid>
         <description></description>
         </item>
         

@@ -2,49 +2,49 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Pages on J-shiro&#39;s 博客</title>
-        <link>http://localhost:1313/zh-cn/page/</link>
+        <link>https://J-shiro.github.io/zh-cn/page/</link>
         <description>Recent content in Pages on J-shiro&#39;s 博客</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
-        <lastBuildDate>Wed, 09 Oct 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/zh-cn/page/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 09 Oct 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://J-shiro.github.io/zh-cn/page/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>name</title>
-        <link>http://localhost:1313/zh-cn/name/</link>
+        <link>https://J-shiro.github.io/zh-cn/name/</link>
         <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/zh-cn/name/</guid>
-        <description>&lt;img src="http://localhost:1313/img/note.jpg" alt="Featured image of post name" /&gt;</description>
+        <guid>https://J-shiro.github.io/zh-cn/name/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/img/note.jpg" alt="Featured image of post name" /&gt;</description>
         </item>
         <item>
         <title>档案</title>
-        <link>http://localhost:1313/zh-cn/archives/</link>
+        <link>https://J-shiro.github.io/zh-cn/archives/</link>
         <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/zh-cn/archives/</guid>
+        <guid>https://J-shiro.github.io/zh-cn/archives/</guid>
         <description></description>
         </item>
         <item>
         <title>关于</title>
-        <link>http://localhost:1313/zh-cn/%E5%85%B3%E4%BA%8E/</link>
+        <link>https://J-shiro.github.io/zh-cn/%E5%85%B3%E4%BA%8E/</link>
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/zh-cn/%E5%85%B3%E4%BA%8E/</guid>
+        <guid>https://J-shiro.github.io/zh-cn/%E5%85%B3%E4%BA%8E/</guid>
         <description>&lt;p&gt;这里会记录一些关于学习、生活、兴趣方面的有趣的事，英文界面和中文界面的内容会不相同。&lt;/p&gt;
 </description>
         </item>
         <item>
         <title>链接</title>
-        <link>http://localhost:1313/zh-cn/%E9%93%BE%E6%8E%A5/</link>
+        <link>https://J-shiro.github.io/zh-cn/%E9%93%BE%E6%8E%A5/</link>
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/zh-cn/%E9%93%BE%E6%8E%A5/</guid>
+        <guid>https://J-shiro.github.io/zh-cn/%E9%93%BE%E6%8E%A5/</guid>
         <description></description>
         </item>
         <item>
         <title>搜索</title>
-        <link>http://localhost:1313/zh-cn/search/</link>
+        <link>https://J-shiro.github.io/zh-cn/search/</link>
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/zh-cn/search/</guid>
+        <guid>https://J-shiro.github.io/zh-cn/search/</guid>
         <description></description>
         </item>
         

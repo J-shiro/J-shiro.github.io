@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Blog on J-shiro&#39;s Blog</title>
-        <link>http://localhost:1313/categories/blog/</link>
+        <link>https://J-shiro.github.io/categories/blog/</link>
         <description>Recent content in Blog on J-shiro&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
-        <lastBuildDate>Mon, 24 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/blog/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 24 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://J-shiro.github.io/categories/blog/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>HUGO_blog</title>
-        <link>http://localhost:1313/p/hugo_blog/</link>
+        <link>https://J-shiro.github.io/p/hugo_blog/</link>
         <pubDate>Mon, 24 Oct 2022 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/p/hugo_blog/</guid>
-        <description>&lt;img src="http://localhost:1313/p/hugo_blog/86.jpg" alt="Featured image of post HUGO_blog" /&gt;&lt;h2 id=&#34;git&#34;&gt;git&lt;/h2&gt;
+        <guid>https://J-shiro.github.io/p/hugo_blog/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/p/hugo_blog/86.jpg" alt="Featured image of post HUGO_blog" /&gt;&lt;h2 id=&#34;git&#34;&gt;git&lt;/h2&gt;
 &lt;p&gt;Use the following statement to upload the local file to GitHub.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;

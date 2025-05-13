@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Pwn on J-shiro&#39;s 博客</title>
-        <link>http://localhost:1313/zh-cn/categories/pwn/</link>
+        <link>https://J-shiro.github.io/zh-cn/categories/pwn/</link>
         <description>Recent content in Pwn on J-shiro&#39;s 博客</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
-        <lastBuildDate>Tue, 19 Nov 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/zh-cn/categories/pwn/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 19 Nov 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://J-shiro.github.io/zh-cn/categories/pwn/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>源码分析</title>
-        <link>http://localhost:1313/zh-cn/p/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</link>
+        <link>https://J-shiro.github.io/zh-cn/p/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</link>
         <pubDate>Tue, 19 Nov 2024 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/zh-cn/p/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</guid>
-        <description>&lt;img src="http://localhost:1313/img/note.jpg" alt="Featured image of post 源码分析" /&gt;&lt;h2 id=&#34;heap&#34;&gt;Heap&lt;/h2&gt;
+        <guid>https://J-shiro.github.io/zh-cn/p/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/img/note.jpg" alt="Featured image of post 源码分析" /&gt;&lt;h2 id=&#34;heap&#34;&gt;Heap&lt;/h2&gt;
 &lt;h3 id=&#34;结构&#34;&gt;结构&lt;/h3&gt;
 &lt;h4 id=&#34;malloc_par&#34;&gt;malloc_par&lt;/h4&gt;
 &lt;p&gt;&lt;code&gt;malloc.c&lt;/code&gt;中，记录堆管理器的相关参数&lt;/p&gt;
@@ -1132,7 +1132,7 @@
 &lt;li&gt;&lt;code&gt;bytes&lt;/code&gt;变化堆块大小使得与下一个堆块的&lt;code&gt;prev_size&lt;/code&gt;重合，则8+7向下取整0，最终只申请&lt;code&gt;prev_size+size+bytes&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;若超过下一个堆块的&lt;code&gt;prev_size&lt;/code&gt;，则9+7向下取整0x10，最终申请&lt;code&gt;prev_size+size+bytes+prev_size+size&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;img src=&#34;http://localhost:1313/img/source_analyze.zh-cn.assets/image-20241119131202911.png&#34; alt=&#34;image-20241119131202911&#34; style=&#34;zoom:80%;&#34; /&gt;
+&lt;img src=&#34;https://J-shiro.github.io/img/source_analyze.zh-cn.assets/image-20241119131202911.png&#34; alt=&#34;image-20241119131202911&#34; style=&#34;zoom:80%;&#34; /&gt;
 &lt;h5 id=&#34;get_max_fast&#34;&gt;get_max_fast&lt;/h5&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -5306,7 +5306,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;_IO_FILE&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;stderr&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;FILE&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_IO_2_1_stderr_&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/source_analyze.zh-cn.assets/image-20241206005717674.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/source_analyze.zh-cn.assets/image-20241206005717674.png&#34;
 	
 	
 	
@@ -6024,7 +6024,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;h3 id=&#34;fread&#34;&gt;fread&lt;/h3&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/source_analyze.zh-cn.assets/image-20241206210233580.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/source_analyze.zh-cn.assets/image-20241206210233580.png&#34;
 	
 	
 	
@@ -6467,7 +6467,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;h3 id=&#34;fwrite&#34;&gt;fwrite&lt;/h3&gt;
-&lt;img src=&#34;http://localhost:1313/img/source_analyze.zh-cn.assets/image-20241206205821979.png&#34; alt=&#34;image-20241206205821979&#34; style=&#34;zoom: 80%;&#34; /&gt;
+&lt;img src=&#34;https://J-shiro.github.io/img/source_analyze.zh-cn.assets/image-20241206205821979.png&#34; alt=&#34;image-20241206205821979&#34; style=&#34;zoom: 80%;&#34; /&gt;
 &lt;h4 id=&#34;fwrite-1&#34;&gt;fwrite&lt;/h4&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -9240,11 +9240,11 @@
         </item>
         <item>
         <title>PWN笔记</title>
-        <link>http://localhost:1313/zh-cn/p/pwn%E7%AC%94%E8%AE%B0/</link>
+        <link>https://J-shiro.github.io/zh-cn/p/pwn%E7%AC%94%E8%AE%B0/</link>
         <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/zh-cn/p/pwn%E7%AC%94%E8%AE%B0/</guid>
-        <description>&lt;img src="http://localhost:1313/img/note.jpg" alt="Featured image of post PWN笔记" /&gt;&lt;h2 id=&#34;工具&#34;&gt;工具&lt;/h2&gt;
+        <guid>https://J-shiro.github.io/zh-cn/p/pwn%E7%AC%94%E8%AE%B0/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/img/note.jpg" alt="Featured image of post PWN笔记" /&gt;&lt;h2 id=&#34;工具&#34;&gt;工具&lt;/h2&gt;
 &lt;h3 id=&#34;docker&#34;&gt;Docker&lt;/h3&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -9505,7 +9505,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;h3 id=&#34;tmux&#34;&gt;tmux&lt;/h3&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-17284427308283.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-17284427308283.assets&#34;
 	
 	
 	
@@ -9772,7 +9772,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;strong&gt;栈帧结构&lt;/strong&gt;：调用函数foo，则对栈帧进行改变&lt;/p&gt;
-&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241028170727577.png&#34; alt=&#34;image-20241028170727577&#34; style=&#34;zoom: 50%;&#34; /&gt;
+&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241028170727577.png&#34; alt=&#34;image-20241028170727577&#34; style=&#34;zoom: 50%;&#34; /&gt;
 &lt;h3 id=&#34;pwntools&#34;&gt;pwntools&lt;/h3&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -11433,7 +11433,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241030225430193.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241030225430193.png&#34;
 	
 	
 	
@@ -11558,8 +11558,7 @@
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;Canary&lt;/strong&gt;&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;有canary栈溢出无法执行，在函数入口处从fs(32位)/gs(64位)寄存器偏移处读取一个值，实际读取TLS中的&lt;code&gt;stack_guard&lt;/code&gt;，IDA中可分析识别出canary&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;有canary栈溢出无法执行，在函数入口处从fs(32位)/gs(64位)寄存器偏移处读取一个值，实际读取TLS中的&lt;code&gt;stack_guard&lt;/code&gt;，IDA中可分析识别出canary&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -11755,7 +11754,7 @@
 &lt;li&gt;可重定位文件&lt;code&gt;ET_REL&lt;/code&gt;：编译器生成的目标文件，用于将多个目标文件链接到一个可执行文件或共享库中，后缀&lt;code&gt;.o&lt;/code&gt;，静态链接库&lt;code&gt;.a&lt;/code&gt;也可归为该类&lt;/li&gt;
 &lt;li&gt;核心转储文件&lt;code&gt;ET_CORE&lt;/code&gt;：操作系统在程序崩溃或错误生成的快照，用于调试&lt;/li&gt;
 &lt;/ul&gt;
-&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241101184751998.png&#34; alt=&#34;image-20241101184751998&#34; style=&#34;zoom: 67%;&#34; /&gt;
+&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241101184751998.png&#34; alt=&#34;image-20241101184751998&#34; style=&#34;zoom: 67%;&#34; /&gt;
 &lt;p&gt;&lt;strong&gt;文件头ELF header&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;记录ELF文件组织结构，32位为例&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -11896,7 +11895,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Elf32_Shdr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241101190727706.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241101190727706.png&#34;
 	
 	
 	
@@ -12141,7 +12140,7 @@
 &lt;li&gt;&lt;code&gt;LD_DEBUG&lt;/code&gt;：可以打开动态链接器的调试功能&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;进程&#34;&gt;进程&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241029142856545.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241029142856545.png&#34;
 	
 	
 	
@@ -12211,7 +12210,7 @@
 &lt;/ul&gt;
 &lt;h3 id=&#34;链接&#34;&gt;链接&lt;/h3&gt;
 &lt;p&gt;将多个目标文件及库文件生成最终可执行文件或共享库&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-172844297857414.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-172844297857414.assets&#34;
 	
 	
 	
@@ -12222,7 +12221,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;h4 id=&#34;静态链接&#34;&gt;静态链接&lt;/h4&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-172844297857412.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-172844297857412.assets&#34;
 	
 	
 	
@@ -12279,7 +12278,7 @@
 &lt;/div&gt;&lt;p&gt;&lt;strong&gt;生成重定位表&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;每次程序地址加载变化，需要生成重定位表，以便在可执行文件在加载和执行时进行正确的符号重定位&lt;/p&gt;
 &lt;h4 id=&#34;动态链接&#34;&gt;动态链接&lt;/h4&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-172844297857413.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-172844297857413.assets&#34;
 	
 	
 	
@@ -12332,14 +12331,14 @@
 &lt;li&gt;填入到&lt;code&gt;.got.plt&lt;/code&gt;中&lt;/li&gt;
 &lt;li&gt;调用puts函数&lt;/li&gt;
 &lt;/ol&gt;
-&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241103171751750.png&#34; alt=&#34;image-20241103171751750&#34; style=&#34;zoom:67%;&#34; /&gt;
+&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241103171751750.png&#34; alt=&#34;image-20241103171751750&#34; style=&#34;zoom:67%;&#34; /&gt;
 &lt;p&gt;&lt;strong&gt;再次调用puts函数&lt;/strong&gt;&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;跳转到&lt;code&gt;.plt&lt;/code&gt;中puts表项&lt;/li&gt;
 &lt;li&gt;跳转到&lt;code&gt;.got.plt&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;从&lt;code&gt;.got.plt&lt;/code&gt;跳转到&lt;code&gt;puts&lt;/code&gt;真实地址&lt;/li&gt;
 &lt;/ol&gt;
-&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241103171805836.png&#34; alt=&#34;image-20241103171805836&#34; style=&#34;zoom:67%;&#34; /&gt;
+&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241103171805836.png&#34; alt=&#34;image-20241103171805836&#34; style=&#34;zoom:67%;&#34; /&gt;
 &lt;p&gt;&lt;strong&gt;动态链接过程&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;动态链接器自举&lt;/strong&gt;：自身重定位，OS将进程控制权交给动态链接器，自举代码找自己的GOT，第一个入口即为&lt;code&gt;.dynamic&lt;/code&gt;段，获取本身的重定位表和符号表，进行重定位&lt;/li&gt;
@@ -12367,7 +12366,7 @@
 &lt;ul&gt;
 &lt;li&gt;OS在进程启动前将系统环境变量和进程运行参数提前保存在进程虚拟空间栈中，静态程序&lt;code&gt;_start&lt;/code&gt;处寄存器基本为0，动态程序寄存器大多为垃圾数据&lt;/li&gt;
 &lt;/ul&gt;
-&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241104201214504.png&#34; alt=&#34;image-20241104201214504&#34; style=&#34;zoom:50%;&#34; /&gt;
+&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241104201214504.png&#34; alt=&#34;image-20241104201214504&#34; style=&#34;zoom:50%;&#34; /&gt;
 &lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;rsp指向&lt;strong&gt;命令行参数个数&lt;/strong&gt;【argc】&lt;/p&gt;
@@ -12402,8 +12401,8 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241104203131933.png&#34; alt=&#34;image-20241104203131933&#34;  /&gt;
-&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-172844664601225.assets&#34; alt=&#34;img&#34; style=&#34;zoom:67%;&#34; /&gt;
+&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241104203131933.png&#34; alt=&#34;image-20241104203131933&#34;  /&gt;
+&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-172844664601225.assets&#34; alt=&#34;img&#34; style=&#34;zoom:67%;&#34; /&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;运行程序时，shell 调用  linux 系统调用 &lt;code&gt;execve()&lt;/code&gt; 设置一个堆栈，将 &lt;code&gt;argc&lt;/code&gt; 、 &lt;code&gt;argv&lt;/code&gt; 和 &lt;code&gt;envp&lt;/code&gt; 压入其中&lt;/p&gt;
@@ -12442,7 +12441,7 @@
 &lt;p&gt;&lt;strong&gt;__libc_start_main&lt;/strong&gt;：&lt;code&gt;csu/libc-start.c&lt;/code&gt;中&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;__libc_csu_init&lt;/strong&gt;： &lt;code&gt;csu/elf-init.c&lt;/code&gt;中&lt;/p&gt;
 &lt;p&gt;linux程序执行流程：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-172844664601226.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-172844664601226.assets&#34;
 	
 	
 	
@@ -12487,7 +12486,7 @@
 &lt;li&gt;2节加载到内存中合并为一个段程序头表中这个段的 &lt;code&gt;p_type&lt;/code&gt; 为 &lt;code&gt;PT_TLS(7)&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;每一个线程中每一个使用了 TLS 功能的模块都拥有一个 TLS Block，&lt;code&gt;dtv&lt;/code&gt; 数组中的每一项都是 TLS Block 的入口，程序使用 &lt;code&gt;dlopen&lt;/code&gt; 函数或者 &lt;code&gt;dlfree&lt;/code&gt; 函数加载或者卸载一个具备 TLS 变量的模块&lt;/p&gt;
-&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241103213151137.png&#34; alt=&#34;image-20241103213151137&#34; style=&#34;zoom: 67%;&#34; /&gt;
+&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241103213151137.png&#34; alt=&#34;image-20241103213151137&#34; style=&#34;zoom: 67%;&#34; /&gt;
 &lt;p&gt;&lt;strong&gt;主线程TLS初始化&lt;/strong&gt;： &lt;code&gt;main&lt;/code&gt; 开始前调用 &lt;code&gt;__libc_setup_tls&lt;/code&gt; 初始化 TLS，遍历找到段调用&lt;code&gt;brk&lt;/code&gt;为TLS数据和&lt;code&gt;pthread&lt;/code&gt;结构体分配内存，然后初始化&lt;code&gt;dtv&lt;/code&gt;数组，&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;创建线程时TLS初始化&lt;/strong&gt;：&lt;code&gt;pthread_create&lt;/code&gt; 调用 &lt;code&gt;__pthread_create_2_1&lt;/code&gt; 函数，该函数中调用&lt;code&gt;allocate_stack&lt;/code&gt;中的&lt;code&gt;mmap&lt;/code&gt; 为线程分配栈空间，初始化栈底为一个 &lt;code&gt;pthread&lt;/code&gt; 结构体并将指针 &lt;code&gt;pd&lt;/code&gt; 指向该结构体。最后调用 &lt;code&gt;_dl_allocate_tls&lt;/code&gt; 函数为 TCB 创建 &lt;code&gt;dtv&lt;/code&gt; 数组， fs 寄存器不能在用户态修改&lt;/p&gt;
 &lt;h2 id=&#34;终端处理&#34;&gt;终端处理&lt;/h2&gt;
@@ -12770,7 +12769,7 @@
 &lt;h2 id=&#34;栈溢出漏洞&#34;&gt;栈溢出漏洞&lt;/h2&gt;
 &lt;h3 id=&#34;栈基础&#34;&gt;栈基础&lt;/h3&gt;
 &lt;p&gt;函数调用栈在内存中&lt;strong&gt;从高地址向低地址生长&lt;/strong&gt;，所以栈顶对应内存地址压栈时变小，退栈时变大&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-17284464998305.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-17284464998305.assets&#34;
 	
 	
 	
@@ -12799,7 +12798,7 @@
 &lt;p&gt;当局部变量是数组&lt;code&gt;v[2]&lt;/code&gt;时，索引低的&lt;code&gt;v[0]&lt;/code&gt;靠近rsp，地址更低，索引高的&lt;code&gt;v[1]&lt;/code&gt;靠近rbp，地址更高&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241102182719351.png&#34; alt=&#34;image-20241102182719351&#34; style=&#34;zoom:67%;&#34; /&gt;
+&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241102182719351.png&#34; alt=&#34;image-20241102182719351&#34; style=&#34;zoom:67%;&#34; /&gt;
 &lt;p&gt;&lt;strong&gt;函数开头及结尾&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -13017,8 +13016,7 @@
 &lt;/ol&gt;
 &lt;h3 id=&#34;ret2shellcode&#34;&gt;ret2shellcode&lt;/h3&gt;
 &lt;blockquote&gt;
-&lt;p&gt;无后门函数且栈可执行时，使用ret2shellcode&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;无后门函数且栈可执行时，使用ret2shellcode&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;shellcode汇编&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -13314,7 +13312,7 @@
 &lt;li&gt;输入同样的exp后执行失败，由于高版本linux中程序bss段不再默认可执行导致出错，查看方法：&lt;/li&gt;
 &lt;li&gt;gdb中vmmap找到对应的bss段，buf2地址为0x804a080，不可执行&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-17284464998304.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-17284464998304.assets&#34;
 	
 	
 	
@@ -13324,10 +13322,9 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241028230454709.png&#34; alt=&#34;image-20241028230454709&#34; style=&#34;zoom: 67%;&#34; /&gt;
+&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241028230454709.png&#34; alt=&#34;image-20241028230454709&#34; style=&#34;zoom: 67%;&#34; /&gt;
 &lt;blockquote&gt;
-&lt;p&gt;由于服务器一定开启了ASLR，所以返回地址并不一定得覆盖为shellcode地址，因为不能确定所以需要使用【Nop滑梯】&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;由于服务器一定开启了ASLR，所以返回地址并不一定得覆盖为shellcode地址，因为不能确定所以需要使用【Nop滑梯】&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;&lt;strong&gt;shellcode技巧&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;① 当前方执行完read函数就执行shellcode，且此时输入极少&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -14215,8 +14212,7 @@
 &lt;li&gt;&lt;code&gt;PR_SET_SECCOMP&lt;/code&gt;是linux内核提供的一种机制，限制进程可执行的系统调用，可通过&lt;code&gt;prctl()&lt;/code&gt;系统调用设置（可以通过&lt;code&gt;PR_SET_SECCOMP&lt;/code&gt;设置进程的seccomp过滤器或&lt;code&gt;PR_SET_NO_NEW_PRIVS&lt;/code&gt;设置进程的&lt;code&gt;no_new_privs&lt;/code&gt;标志&lt;/li&gt;
 &lt;li&gt;seccomp过滤器通过BPF(Berkeley Packet Filter)程序实现，可以过滤进程所发起的系统调用并限制；seccomp过滤器只在进程启动时设置，一旦设置不可修改&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;PR_SET_NO_NEW_PRIVS&lt;/code&gt;标志可禁止进程获取更高权限，防止进程提权&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/blockquote&gt;
+&lt;/ol&gt;&lt;/blockquote&gt;
 &lt;ul&gt;
 &lt;li&gt;采用prctl函数调用&lt;/li&gt;
 &lt;li&gt;使用seccomp库函数&lt;/li&gt;
@@ -14583,7 +14579,7 @@
 &lt;/div&gt;&lt;ul&gt;
 &lt;li&gt;&lt;code&gt;/proc/self/mem&lt;/code&gt;: 进程内存内容，open可读可写，修改该文件等效于直接修改当前进程内存&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-172844670575243.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-172844670575243.assets&#34;
 	
 	
 	
@@ -15209,7 +15205,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;eax有时也可由函数返回值来控制，如alarm第一次调用返回上次设置的alarm的剩余时间0&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-172844664600911.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-172844664600911.assets&#34;
 	
 	
 	
@@ -15224,7 +15220,7 @@
 &lt;li&gt;覆盖返回地址后运行到ret（pop eip），即将栈顶元素的值（指向gadget的地址）给eip，此时eip指向了gadget并执行gadget的内容（pop; ret），此时的pop仍然将栈上的值弹出，此时的栈为给指定的寄存器存入值，然后ret继续下一步操作，在Text段中的gadget中连续跳转，最终调用system call&lt;/li&gt;
 &lt;li&gt;可以找libc中的gadget（需要泄露libc基地址）；也可以找程序中的gadget&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-172844664601012.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-172844664601012.assets&#34;
 	
 	
 	
@@ -15234,7 +15230,7 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-172844664601013.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-172844664601013.assets&#34;
 	
 	
 	
@@ -15452,7 +15448,7 @@
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;system@got → &amp;amp; system → system code&lt;/code&gt;，ret的时候覆盖&lt;code&gt;&amp;amp; system&lt;/code&gt;地址&lt;/li&gt;
 &lt;/ul&gt;
-&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241028230609575.png&#34; alt=&#34;image-20241028230609575&#34; style=&#34;zoom:67%;&#34; /&gt;
+&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241028230609575.png&#34; alt=&#34;image-20241028230609575&#34; style=&#34;zoom:67%;&#34; /&gt;
 &lt;p&gt;&lt;strong&gt;解释为何&lt;code&gt;system&lt;/code&gt;和&lt;code&gt;&amp;quot;/bin/sh&amp;quot;&lt;/code&gt;以及&lt;code&gt;exit&lt;/code&gt;和&lt;code&gt;0&lt;/code&gt;要相隔1字节：（也是ROP链）&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;返回地址覆盖为了&lt;code&gt;system&lt;/code&gt;函数地址，通过 &lt;code&gt;ret&lt;/code&gt; 即 &lt;code&gt;pop eip&lt;/code&gt; 将&lt;code&gt;system&lt;/code&gt;地址 pop 给&lt;code&gt;eip&lt;/code&gt;寄存器，&lt;code&gt;eip&lt;/code&gt;指向system函数&lt;/li&gt;
@@ -15460,7 +15456,7 @@
 &lt;li&gt;被调用函数一般寻找参数是从局部变量向上经过调用函数的ebp、返回地址后找参数arg1,2,3&amp;hellip;.，而此时刚好距离arg1——&amp;quot;/bin/sh&amp;quot;相差一个ebp和一个exit()函数，相隔2字节，即找到相应的参数&lt;/li&gt;
 &lt;li&gt;而之后exit()函数地址刚好为system原返回地址的位置，则继续同样操作达成ROP链利用&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-172844664601116.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-172844664601116.assets&#34;
 	
 	
 	
@@ -15713,7 +15709,7 @@
 &lt;li&gt;&lt;code&gt;loc_4006A6&lt;/code&gt; retn后跳转到&lt;code&gt;loc_40690&lt;/code&gt;，最终&lt;code&gt;call [r12+rbx*8]&lt;/code&gt;也可控，rbx为0则直接调用r12中函数，效果：任意函数调用&lt;/li&gt;
 &lt;li&gt;可以通过r13, r14, r15控制rdx, rsi, edi，&lt;strong&gt;需要rbp和rbx比较时相等&lt;/strong&gt;，才不会死循环&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-172844664601117.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-172844664601117.assets&#34;
 	
 	
 	
@@ -16040,7 +16036,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;strong&gt;32位&lt;/strong&gt;&lt;/p&gt;
-&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241107235715100.png&#34; alt=&#34;image-20241107235715100&#34; style=&#34;zoom:50%;&#34; /&gt;
+&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241107235715100.png&#34; alt=&#34;image-20241107235715100&#34; style=&#34;zoom:50%;&#34; /&gt;
 &lt;p&gt;&lt;strong&gt;利用&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;plt表调用&lt;code&gt;_dl_runtime_resolve&lt;/code&gt;动态链接过程步骤5中：&lt;code&gt;_dl_runtime_resolve(link_map_obj, reloc_offset)&lt;/code&gt; 的arg1 ：&lt;code&gt;link_map_obj&lt;/code&gt; push 到栈中，此前的参数为arg2：&lt;code&gt;reloc_offset&lt;/code&gt;，需要栈迁移辅助&lt;/li&gt;
@@ -16058,7 +16054,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;利用：&lt;/p&gt;
-&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241110161157056.png&#34; alt=&#34;image-20241110161157056&#34; style=&#34;zoom: 67%;&#34; /&gt;
+&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241110161157056.png&#34; alt=&#34;image-20241110161157056&#34; style=&#34;zoom: 67%;&#34; /&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -16192,7 +16188,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;fake_link_map&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;p64&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;n64&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;elf&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;bss&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;offset&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;p32&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;7&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;p32&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# Elf64_Rel &amp;lt;-23&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241110201338426.png&#34; alt=&#34;image-20241110201338426&#34; style=&#34;zoom:67%;&#34; /&gt;
+&lt;/div&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241110201338426.png&#34; alt=&#34;image-20241110201338426&#34; style=&#34;zoom:67%;&#34; /&gt;
 &lt;p&gt;一：先栈溢出构造read函数向link_map地址读入&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -16296,8 +16292,7 @@
 &lt;li&gt;ecx 值装载到 esp 寄存器&lt;/li&gt;
 &lt;li&gt;特权级切换为Ring3&lt;/li&gt;
 &lt;li&gt;继续执行Ring3代码&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/blockquote&gt;
+&lt;/ol&gt;&lt;/blockquote&gt;
 &lt;p&gt;&lt;strong&gt;AUXV辅助向量&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -16612,8 +16607,7 @@
 &lt;li&gt;接着【vuln ebp】地址&lt;code&gt;pop&lt;/code&gt;给&lt;strong&gt;ebp&lt;/strong&gt;，此时&lt;strong&gt;ebp&lt;/strong&gt;指向恶意伪造地址且esp+offset&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;esp＋offset&lt;/code&gt;后指向返回地址-恶意代码地址，执行&lt;code&gt;ret&lt;/code&gt;，恶意代码地址pop给eip，此时执行eip处指令且栈已完成迁移&lt;/li&gt;
 &lt;li&gt;此时eip和ebp同时指向恶意代码地址，新栈中由read提前读入构建好ROP链，即可完成利用&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/blockquote&gt;
+&lt;/ol&gt;&lt;/blockquote&gt;
 &lt;p&gt;&lt;strong&gt;漏洞点&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -16627,7 +16621,7 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;strong&gt;原理示意&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;图中 ret 时 rsp 也应该移动&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-172844664601118.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-172844664601118.assets&#34;
 	
 	
 	
@@ -16654,7 +16648,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;lian&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;system_addr&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;main_addr&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;fake_ebp&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;12&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;/bin/sh&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x00&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241107150243704.png&#34; alt=&#34;image-20241107150243704&#34; style=&#34;zoom: 80%;&#34; /&gt;
+&lt;/div&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241107150243704.png&#34; alt=&#34;image-20241107150243704&#34; style=&#34;zoom: 80%;&#34; /&gt;
 &lt;p&gt;&lt;strong&gt;64位&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;有&lt;code&gt;system&lt;/code&gt;函数&lt;code&gt;plt&lt;/code&gt;，有&lt;code&gt;rop&lt;/code&gt;链，得到&lt;code&gt;ebp&lt;/code&gt;栈地址，无&lt;code&gt;/bin/sh&lt;/code&gt;字符串，需自行输入&lt;/li&gt;
@@ -16676,7 +16670,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;           &lt;span class=&#34;n&#34;&gt;p64&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ebp_addr&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x30&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;p64&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;leave_ret_addr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; \\
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-172844664601119.assets&#34; alt=&#34;img&#34; style=&#34;zoom: 50%;&#34; /&gt;
+&lt;/div&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-172844664601119.assets&#34; alt=&#34;img&#34; style=&#34;zoom: 50%;&#34; /&gt;
 &lt;ul&gt;
 &lt;li&gt;buf足够大（0x100），写入利用链&lt;/li&gt;
 &lt;/ul&gt;
@@ -16909,7 +16903,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;strong&gt;Signal机制&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241023232223719.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241023232223719.png&#34;
 	
 	
 	
@@ -17107,7 +17101,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;覆盖或伪造该结构使得将伪造数据恢复到寄存器中，即控制所有寄存器，rip控制为syscall地址，控制rax利用&lt;code&gt;syscall; ret; &lt;/code&gt;可任意系统调用，且需要64位中&lt;code&gt;rax=0xf&lt;/code&gt;触发&lt;code&gt;SYS_rt_sigreturn&lt;/code&gt;系统调用，32位中为&lt;code&gt;0x77&lt;/code&gt;&lt;/p&gt;
-&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241024203344880.png&#34; alt=&#34;image-20241024203344880&#34; style=&#34;zoom:67%;&#34; /&gt;
+&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241024203344880.png&#34; alt=&#34;image-20241024203344880&#34; style=&#34;zoom:67%;&#34; /&gt;
 &lt;p&gt;使用&lt;strong&gt;pwntools&lt;/strong&gt;构造payload&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -17136,7 +17130,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;由于rsp可控，还可利用进行栈迁移，连续多次SROP&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241110220745416.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241110220745416.png&#34;
 	
 	
 	
@@ -17295,7 +17289,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;gdb调试结果&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-172844664601121.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-172844664601121.assets&#34;
 	
 	
 	
@@ -17305,7 +17299,7 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-172844664601122.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-172844664601122.assets&#34;
 	
 	
 	
@@ -17350,7 +17344,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;用户可构造格式化字符串，泄露read的got表地址&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-172844664601123.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-172844664601123.assets&#34;
 	
 	
 	
@@ -17442,7 +17436,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;下图为向read的got表中写入8&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-172844664601124.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-172844664601124.assets&#34;
 	
 	
 	
@@ -17652,7 +17646,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;h2 id=&#34;堆溢出漏洞&#34;&gt;堆溢出漏洞&lt;/h2&gt;
-&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-172844670575344.assets&#34; alt=&#34;img&#34; style=&#34;zoom: 80%;&#34; /&gt;
+&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-172844670575344.assets&#34; alt=&#34;img&#34; style=&#34;zoom: 80%;&#34; /&gt;
 &lt;p&gt;&lt;strong&gt;调试&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -17869,7 +17863,7 @@
 &lt;li&gt;&lt;strong&gt;P（PREV_INUSE）&lt;/strong&gt;：P=0 表示pre_chunk空闲可合并，mchunk_prev_size才有效，P=1表示前一个chunk被分配，堆中第一个被分配的内存块的 size 字段的 P 位都会被设置为 1&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;malloced chunk及free chunk&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241118185316263.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241118185316263.png&#34;
 	
 	
 	
@@ -17893,7 +17887,7 @@
 &lt;li&gt;small bins，large bins，unsorted bin维护在bins数组中，共127项，每连续两个chunk指针维护一个bin(fd和bk)&lt;/li&gt;
 &lt;li&gt;small bins中chunk大小[32~1008]，large bins的每个bin中chunk大小在一个范围内&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241118182846943.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241118182846943.png&#34;
 	
 	
 	
@@ -17910,7 +17904,7 @@
 &lt;li&gt;malloc&amp;mdash;-&amp;gt;遍历时将会进行【sort分类到其他bins中】以及【合并free chunk】，故不能先unsorted bin attack任意地址写后再遍历，因为遍历时会程序崩溃&lt;/li&gt;
 &lt;li&gt;当malloc小于unsorted bin大小的块时，会将unsorted bin中堆块&lt;strong&gt;切割&lt;/strong&gt;后返回，free时靠着top chunk会合并&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-172844670575348.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-172844670575348.assets&#34;
 	
 	
 	
@@ -17937,7 +17931,7 @@
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;fastbin&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;--&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;third_free_chunk&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;--&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;second_free_chunk&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;--&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;first_free_chunk&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;--&lt;/span&gt; &lt;span class=&#34;mh&#34;&gt;0x00&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241118184536264.png&#34; alt=&#34;image-20241118184536264&#34; style=&#34;zoom: 80%;&#34; /&gt;
+&lt;/div&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241118184536264.png&#34; alt=&#34;image-20241118184536264&#34; style=&#34;zoom: 80%;&#34; /&gt;
 &lt;p&gt;&lt;strong&gt;安全检查&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -17974,7 +17968,7 @@
 &lt;li&gt;glibc-2.26 (ubuntu 17.10) 后引入，扩大版fastbin，无double free机制，&lt;strong&gt;LIFO&lt;/strong&gt;&lt;/li&gt;
 &lt;li&gt;free的chunk小于small bin size时，放入tcache，塞&lt;strong&gt;满&lt;/strong&gt;7个后，大小相同的free chunk进入fastbin或unsorted bin；tcache中&lt;strong&gt;chunk不合并&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-172844670575350.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-172844670575350.assets&#34;
 	
 	
 	
@@ -18031,7 +18025,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;__thread&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tcache_perthread_struct&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;tcache&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;NULL&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 减少线程竞争
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241118215138701.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241118215138701.png&#34;
 	
 	
 	
@@ -18078,7 +18072,7 @@
 &lt;li&gt;每个bin中的chunk大小都相等，bins[2] ~ bins[63]，62个循环双向链表，FIFO&lt;/li&gt;
 &lt;li&gt;管理32位中16、24、32、40、&amp;hellip;、504 Bytes的free chunks，64位最大chunk为1008字节(0x3f0)，按 bk 方向取 chunk&lt;/li&gt;
 &lt;/ul&gt;
-&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241118193142122.png&#34; alt=&#34;image-20241118193142122&#34; style=&#34;zoom:80%;&#34; /&gt;
+&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241118193142122.png&#34; alt=&#34;image-20241118193142122&#34; style=&#34;zoom:80%;&#34; /&gt;
 &lt;h5 id=&#34;large-bins&#34;&gt;Large bins&lt;/h5&gt;
 &lt;ul&gt;
 &lt;li&gt;每个bin中的chunk大小是一个范围，不相等，&lt;strong&gt;fd指针指向的方向上按照chunk大小降序排序，bk指向最小chunk&lt;/strong&gt;&lt;/li&gt;
@@ -18113,7 +18107,7 @@
 &lt;li&gt;large bin中有多个不同大小的chunk时，&lt;code&gt;fd_nextsize&lt;/code&gt;连接比他小的第一个chunk，&lt;code&gt;bk_nextsize&lt;/code&gt;对应反过来连接&lt;/li&gt;
 &lt;li&gt;large bin最小的一组chunk中的第一个chunk的&lt;code&gt;fd_nextsize&lt;/code&gt;连接最大的chunk，最大的chunk的&lt;code&gt;bk_nextsize&lt;/code&gt;相反&lt;/li&gt;
 &lt;/ul&gt;
-&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241118201403530.png&#34; alt=&#34;image-20241118201403530&#34; style=&#34;zoom:80%;&#34; /&gt;
+&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241118201403530.png&#34; alt=&#34;image-20241118201403530&#34; style=&#34;zoom:80%;&#34; /&gt;
 &lt;h3 id=&#34;漏洞点&#34;&gt;漏洞点&lt;/h3&gt;
 &lt;h4 id=&#34;unlink&#34;&gt;Unlink&lt;/h4&gt;
 &lt;ul&gt;
@@ -18181,7 +18175,7 @@
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;&lt;strong&gt;原理&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241124144320139.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241124144320139.png&#34;
 	
 	
 	
@@ -18196,7 +18190,7 @@
 &lt;li&gt;此时向P1中写数据，实际是向P1指向的指针数组的第一项内写数据，可以写入&lt;code&gt;__free_hook&lt;/code&gt;地址，再向指针数组第一项内写数据即向&lt;code&gt;__free_hook&lt;/code&gt;所在地址写数据，写入&lt;code&gt;system&lt;/code&gt;函数地址，此时free一个写了&lt;code&gt;/bin/sh&lt;/code&gt;内容的堆块可以get shell&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;老版本利用：无对 chunk 的 size 检查和双向链表检查&lt;/strong&gt;&lt;/p&gt;
-&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-172844676894983.assets&#34; alt=&#34;img&#34; style=&#34;zoom: 33%;&#34; /&gt;
+&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-172844676894983.assets&#34; alt=&#34;img&#34; style=&#34;zoom: 33%;&#34; /&gt;
 &lt;p&gt;&lt;strong&gt;free(Q)时&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;前向合并，前chunk use，不合并&lt;/li&gt;
@@ -18223,7 +18217,7 @@
 &lt;li&gt;实现**任意地址写：**向可写地址&lt;code&gt;target addr&lt;/code&gt;中写入&lt;code&gt;expect value&lt;/code&gt;，&lt;strong&gt;其中expect value + 0x10 地址具有可写的权限&lt;/strong&gt;&lt;/li&gt;
 &lt;li&gt;此时可以将存储&lt;code&gt;malloc&lt;/code&gt;地址的&lt;code&gt;recordlist[2]&lt;/code&gt;内容覆盖为恶意地址&lt;code&gt;recordlist[2]-0x18=recordlist[0]&lt;/code&gt;，修改可以将malloc数组全部指针修改为其他的地址并通过&lt;code&gt;change&lt;/code&gt;写入恶意内容&lt;/li&gt;
 &lt;/ul&gt;
-&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-172844676894984.assets&#34; alt=&#34;img&#34; style=&#34;zoom:50%;&#34; /&gt;
+&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-172844676894984.assets&#34; alt=&#34;img&#34; style=&#34;zoom:50%;&#34; /&gt;
 &lt;p&gt;构造链模版&lt;strong&gt;不完全RELRO泄露libc基址+getshell&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -18262,7 +18256,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;strong&gt;利用&lt;/strong&gt;：o+3是调用func1，但篡改后相当于调用shellcode&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-172844670575454.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-172844670575454.assets&#34;
 	
 	
 	
@@ -18273,7 +18267,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;hacknote&lt;/strong&gt;基本实现：一次malloc两个堆块，且第一个堆块固定为8字节，第二个堆块自己申请&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-172844670575455.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-172844670575455.assets&#34;
 	
 	
 	
@@ -18285,7 +18279,7 @@
 &gt;&lt;/p&gt;
 &lt;p&gt;此处也存在&lt;strong&gt;漏洞点&lt;/strong&gt;：打印为&lt;code&gt;(*notelist[i])(notelist[i])&lt;/code&gt;调用puts打印content内容（32位下）&lt;/p&gt;
 &lt;p&gt;利用方法：先申请两个远大于0x8的note0, note1，共4个堆块，删除0，删除1，进入相应fastbin中，再申请0x8的note并修改print_note，调用print_note即调用system函数&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-172844670575456.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-172844670575456.assets&#34;
 	
 	
 	
@@ -18360,7 +18354,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;delete_chunk&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241130124443597.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241130124443597.png&#34;
 	
 	
 	
@@ -18384,7 +18378,7 @@
 &lt;p&gt;释放chunk1，修改chunk3的&lt;code&gt;prev_size&lt;/code&gt;和&lt;code&gt;PREV_INUSE&lt;/code&gt;位，释放chunk3与chunk1合并造成堆叠&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241215152616483.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241215152616483.png&#34;
 	
 	
 	
@@ -18429,7 +18423,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;② 只可控堆块的&lt;code&gt;size&lt;/code&gt;最低1字节&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241215162113697.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241215162113697.png&#34;
 	
 	
 	
@@ -18512,7 +18506,7 @@
 &lt;li&gt;在不泄露堆地址的情况下构造满足 &lt;code&gt;fd-&amp;gt;bk == bk-&amp;gt;fd == p &lt;/code&gt;的 &lt;strong&gt;fake chunk&lt;/strong&gt;（图省略data段）&lt;/li&gt;
 &lt;li&gt;注意利用过程中为何可以使用off-by-null，是因为chunk4在chunk3中且刚好在chunk10-0x20位置&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241218152800794.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241218152800794.png&#34;
 	
 	
 	
@@ -18523,7 +18517,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;① 伪造出 fake chunk 4 的 fd 和 bk 分别指向chunk1和chunk6&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241218142727180.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241218142727180.png&#34;
 	
 	
 	
@@ -18582,7 +18576,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;② 利用 unsorted bin 伪造 chunk1 的 bk&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241218150334780.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241218150334780.png&#34;
 	
 	
 	
@@ -18615,7 +18609,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;③  unsorted bin 从 bk 开始取，因此借助 large bin 和部分覆盖来伪造 chunk6 的 fd&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241218153850945.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241218153850945.png&#34;
 	
 	
 	
@@ -18650,7 +18644,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;④ 完成堆叠&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241218155502252.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241218155502252.png&#34;
 	
 	
 	
@@ -18740,7 +18734,7 @@
 &lt;p&gt;在第四次 malloc 可实现在任意地址分配 fastbin 块，后续利用&lt;code&gt;Arbitrary Alloc&lt;/code&gt;劫持malloc_hook为one_gadget&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241125141220909.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241125141220909.png&#34;
 	
 	
 	
@@ -18859,7 +18853,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;劫持&lt;code&gt;__malloc_hook&lt;/code&gt;构造的payload填入的位置为【malloc_hook地址 - 0x23 + 0x10】或者【malloc_hook地址 - 0x23】，即修改fd指向该位置，data进入的位置是在&lt;code&gt;prev_size&lt;/code&gt;和&lt;code&gt;size&lt;/code&gt;域后面的，一般直接填入&lt;code&gt;b&amp;quot;a&amp;quot; * 0x13 + p64(one_gadget)&lt;/code&gt;，0x13为需要的padding&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241125005030065.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241125005030065.png&#34;
 	
 	
 	
@@ -18874,7 +18868,7 @@
 &lt;li&gt;存在one_gadget有条件的情况需要使用&lt;strong&gt;realloc，realloc中有许多push操作以及调整rsp的操作&lt;/strong&gt;&lt;/li&gt;
 &lt;li&gt;如要求&lt;code&gt;[rsp+0x30]&lt;/code&gt;必须为NULL或者是0，通过realloc来调整栈帧，rsp在栈上，通过push增加栈的高度&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-172844676894974.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-172844676894974.assets&#34;
 	
 	
 	
@@ -19064,11 +19058,10 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;show&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# 泄露堆地址，通过偏移可获取tcache结构体基地址&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241127233211910.png&#34; alt=&#34;image-20241127233211910&#34; style=&#34;zoom: 67%;&#34; /&gt;
+&lt;/div&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241127233211910.png&#34; alt=&#34;image-20241127233211910&#34; style=&#34;zoom: 67%;&#34; /&gt;
 &lt;p&gt;&lt;strong&gt;控制fd指针&lt;/strong&gt;&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;__free_hook劫持&lt;/strong&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;__free_hook劫持&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -19092,8 +19085,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;tcache_perthread_struct劫持&lt;/strong&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;tcache_perthread_struct劫持&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -19122,8 +19114,7 @@
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;__malloc_hook劫持&lt;/strong&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;__malloc_hook劫持&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;ul&gt;
 &lt;li&gt;可以接着&lt;strong&gt;通过修改结构体中的&lt;code&gt;tcache_entry&lt;/code&gt;&lt;/strong&gt;，其每隔8字节是一个指向tcache bin的地址，覆盖其中一个地址为【malloc_hook-0x13】地址来劫持malloc&lt;/li&gt;
 &lt;li&gt;若要向malloc_hook地址申请0x20的chunk，需要劫持tcache_entry中属于0x30（0x20+0x10）的位置&lt;/li&gt;
@@ -19195,7 +19186,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;edit&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;p64&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;target&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# 然后malloc 3次申请出target&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241128153011470.png&#34; alt=&#34;image-20241128153011470&#34; style=&#34;zoom: 67%;&#34; /&gt;
+&lt;/div&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241128153011470.png&#34; alt=&#34;image-20241128153011470&#34; style=&#34;zoom: 67%;&#34; /&gt;
 &lt;p&gt;④ &lt;strong&gt;House of Botcake&lt;/strong&gt;&lt;/p&gt;
 &lt;h4 id=&#34;fastbin-reverse&#34;&gt;Fastbin Reverse&lt;/h4&gt;
 &lt;ul&gt;
@@ -19203,7 +19194,7 @@
 &lt;li&gt;修改fastbin中chunk的fd指针，会在fd+0x10(target)地址处写入极大值&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;calloc情况&lt;/strong&gt;&lt;/p&gt;
-&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241128201222311.png&#34; alt=&#34;image-20241128201222311&#34; style=&#34;zoom: 80%;&#34; /&gt;
+&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241128201222311.png&#34; alt=&#34;image-20241128201222311&#34; style=&#34;zoom: 80%;&#34; /&gt;
 &lt;p&gt;&lt;strong&gt;malloc情况&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;由于malloc从tcache bin中取，需要先消耗完tcache中的chunk再触发stash&lt;/li&gt;
@@ -19249,7 +19240,7 @@
 &lt;li&gt;small bin 2个堆块时绕过第一次从small bin取堆块检查，tcache放5个堆块&lt;/li&gt;
 &lt;li&gt;最终效果：任意地址malloc，任意地址写值&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241214184017817.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241214184017817.png&#34;
 	
 	
 	
@@ -19527,7 +19518,7 @@
 &lt;li&gt;劫持 large bin 中一个&lt;strong&gt;在同等大小 chunk 中 bk 方向最靠前的 chunk&lt;/strong&gt; 的 &lt;strong&gt;bk&lt;/strong&gt; 和 &lt;strong&gt;bk_nextsize&lt;/strong&gt;&lt;/li&gt;
 &lt;li&gt;然后释放一个比该 chunk &lt;strong&gt;稍大一些&lt;/strong&gt;的 chunk&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241126133526023.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241126133526023.png&#34;
 	
 	
 	
@@ -19630,7 +19621,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;申请0x500的大堆可使得target指向 0x420 victim&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241127125247206.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241127125247206.png&#34;
 	
 	
 	
@@ -19645,7 +19636,7 @@
 &lt;li&gt;unsorted bin中直接切割chunk条件中的&lt;code&gt;victim==av-&amp;gt;last_remainder&lt;/code&gt;不满足，进入large bin触发attack&lt;/li&gt;
 &lt;li&gt;接着程序在large bin中按size升序找合适的chunk切割出所需内存，通过bk_nextsize访问最小的chunk即访问到0x430的堆&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241127132408572.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241127132408572.png&#34;
 	
 	
 	
@@ -19699,9 +19690,9 @@
 &lt;p&gt;glibc-2.23中指向main_arena偏移88的地址&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-172844676894980.assets&#34; alt=&#34;img&#34;  /&gt;
+&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-172844676894980.assets&#34; alt=&#34;img&#34;  /&gt;
 &lt;p&gt;&lt;strong&gt;通过main_arena获取libc基址：main_arena存储在libc.so.6文件的.data段，IDA打开libc文件，搜索&lt;code&gt;malloc_trim()&lt;/code&gt;，如图得到偏移地址&lt;/strong&gt;&lt;/p&gt;
-&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-172844676894981.assets&#34; alt=&#34;img&#34; style=&#34;zoom:80%;&#34; /&gt;
+&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-172844676894981.assets&#34; alt=&#34;img&#34; style=&#34;zoom:80%;&#34; /&gt;
 &lt;p&gt;获取libc基址后获取&lt;code&gt;malloc_hook&lt;/code&gt;和&lt;code&gt;realloc&lt;/code&gt;地址&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -19804,7 +19795,7 @@
 &lt;p&gt;&lt;code&gt;malloc&lt;/code&gt;触发漏洞达成写大数（地址数），即向&lt;code&gt;target_addr&lt;/code&gt;写入&lt;code&gt;unsorted_chunks(av)&lt;/code&gt;值——&lt;code&gt;mainarena&lt;/code&gt;偏移地址&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241125180540007.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241125180540007.png&#34;
 	
 	
 	
@@ -20034,7 +20025,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;new&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mh&#34;&gt;0x200&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# target劫持&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241128190118374.png&#34; alt=&#34;image-20241128190118374&#34; style=&#34;zoom: 80%;&#34; /&gt;
+&lt;/div&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241128190118374.png&#34; alt=&#34;image-20241128190118374&#34; style=&#34;zoom: 80%;&#34; /&gt;
 &lt;h4 id=&#34;house-of-io&#34;&gt;House of IO&lt;/h4&gt;
 &lt;p&gt;将&lt;code&gt;tcache_perthread_struct&lt;/code&gt;结构体释放，再申请回来控制整个tcache分配&lt;/p&gt;
 &lt;h4 id=&#34;house-of-spirit&#34;&gt;House of Spirit&lt;/h4&gt;
@@ -20042,7 +20033,7 @@
 &lt;li&gt;glibc-2.23，在目标位置伪造fastbin然后释放，最终实现指定地址分配chunk&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;适用场景&lt;/strong&gt;：需对不可控的中间区域进行利用&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241228000142845.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241228000142845.png&#34;
 	
 	
 	
@@ -20179,7 +20170,7 @@
 &lt;p&gt;利用：fastbin attack &amp;amp; unsorted bin attack&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241221224207019.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241221224207019.png&#34;
 	
 	
 	
@@ -20252,7 +20243,7 @@
 &lt;/div&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;溢出修改chunk2的&lt;code&gt;prev_size&lt;/code&gt;为&lt;code&gt;&amp;amp;chunk2 - &amp;amp;fake_chunk&lt;/code&gt;并将&lt;code&gt;PREV_INUSE&lt;/code&gt;置0，&lt;code&gt;free chunk2&lt;/code&gt;触发&lt;code&gt;House Of Einherjar&lt;/code&gt;将fake chunk到chunk2在unsorted bin中完成合并&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241224200905322.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241224200905322.png&#34;
 	
 	
 	
@@ -20623,7 +20614,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;bck&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;fd&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;unsorted_chunks&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;av&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20250104145453251.png&#34; alt=&#34;image-20250104145453251&#34; style=&#34;zoom: 80%;&#34; /&gt;
+&lt;/div&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20250104145453251.png&#34; alt=&#34;image-20250104145453251&#34; style=&#34;zoom: 80%;&#34; /&gt;
 &lt;ul&gt;
 &lt;li&gt;大小属于large bin，large bin 中 chunk 按大小降序排列&lt;/li&gt;
 &lt;li&gt;首先特判大小小于最小 chunk 情况： &lt;code&gt;bk&lt;/code&gt; 访问最小的 chunk ，根据构造，待加入 large bin 的 chunk 大于 large bin 中最小 chunk&lt;/li&gt;
@@ -20690,7 +20681,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;large bin attack 修改了 fake chunk 的 size 和 bk 字段，开启PIE情况下 size 被错位修改为堆地址的开头&lt;code&gt;0x56&lt;/code&gt;或&lt;code&gt;0x55&lt;/code&gt;，下图中省略了一些线，可根据源码调试补充&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20250104173240765.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20250104173240765.png&#34;
 	
 	
 	
@@ -20717,7 +20708,7 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;最终修改后的fake chunk将被申请出来，以0x50大小的堆块返回，即可劫持目标&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;利用&lt;/strong&gt;&lt;/p&gt;
-&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20250104125535345.png&#34; alt=&#34;image-20250104125535345&#34; style=&#34;zoom:67%;&#34; /&gt;
+&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20250104125535345.png&#34; alt=&#34;image-20250104125535345&#34; style=&#34;zoom:67%;&#34; /&gt;
 &lt;p&gt;申请 large bin chunk 以及 unsorted bin chunk（顺带泄露libc）&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -20838,7 +20829,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20250105164023680.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20250105164023680.png&#34;
 	
 	
 	
@@ -20889,7 +20880,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20250109230747083.png&#34; alt=&#34;image-20250109230747083&#34; style=&#34;zoom:80%;&#34; /&gt;
+&lt;/div&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20250109230747083.png&#34; alt=&#34;image-20250109230747083&#34; style=&#34;zoom:80%;&#34; /&gt;
 &lt;p&gt;若释放一个 0xa0 大小的 chunk 到 small bins 中可将 binmap 中第 9 位置位，此时可将 binmap 作为 0x200 大小chunk，bk指向 main_arena 的 next，next指向 main_arena&lt;/p&gt;
 &lt;h4 id=&#34;house-of-banana&#34;&gt;House Of Banana&lt;/h4&gt;
 &lt;p&gt;&lt;strong&gt;条件&lt;/strong&gt;&lt;/p&gt;
@@ -20943,7 +20934,7 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;strong&gt;利用构造&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;不可随意构造结构，否则可能卡在&lt;code&gt;_dl_sort_maps&lt;/code&gt;函数中，最终利用&lt;code&gt;_dl_fini&lt;/code&gt;中&lt;code&gt;_dl_call_fini&lt;/code&gt;的&lt;code&gt;((fini_t)array[sz])();&lt;/code&gt;，劫持&lt;code&gt;array&lt;/code&gt;最后一项为 one_gadget 或 backdoor 函数达成利用&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20250106205528076.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20250106205528076.png&#34;
 	
 	
 	
@@ -20954,7 +20945,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;伪造堆块为link_map结构体，其中l_init_called设为&lt;code&gt;p8(1 &amp;lt;&amp;lt; 4)&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20250106233302379.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20250106233302379.png&#34;
 	
 	
 	
@@ -20979,7 +20970,7 @@
 &lt;ul&gt;
 &lt;li&gt;把 &lt;code&gt;tcachebin[0x90]&lt;/code&gt; 填满， &lt;code&gt;smallbin[0x90]&lt;/code&gt; 释放进 7 个 chunk且申请过程用小chunk 分隔开防止合并&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20250107221505413.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20250107221505413.png&#34;
 	
 	
 	
@@ -20992,7 +20983,7 @@
 &lt;ul&gt;
 &lt;li&gt;把 smallbin 最后一个 chunk 的 &lt;code&gt;size&lt;/code&gt; 由 0x90 改成 0xb0 ，并释放到 &lt;code&gt;tcachebin[0xb0]&lt;/code&gt;，这将改变其 &lt;code&gt;bk&lt;/code&gt; 指向 &lt;code&gt;tcache_perthread_struct&lt;/code&gt;，此时 fd 指向的内容key为堆地址去掉最低3字节的值（初次加密），可泄露堆地址，由偏移也可得到tcache_perthread_struct 地址&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20250107221700359.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20250107221700359.png&#34;
 	
 	
 	
@@ -21027,7 +21018,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;edit&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;p64&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;p64&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;heap_base&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;mh&#34;&gt;0x10&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;mh&#34;&gt;0x18&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;mh&#34;&gt;0x20&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20250107221801028.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20250107221801028.png&#34;
 	
 	
 	
@@ -21040,7 +21031,7 @@
 &lt;ul&gt;
 &lt;li&gt;耗尽&lt;code&gt;tcachebin[0x90]&lt;/code&gt;中 7 个 chunk，再malloc分配一次则触发 tcache stash unlink，之后再malloc能分配到&lt;code&gt;tcache_perthread_struct&lt;/code&gt;结构体进行劫持&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20250107221921525.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20250107221921525.png&#34;
 	
 	
 	
@@ -21061,7 +21052,7 @@
 &lt;li&gt;修改 global_max_fast 为极大值（可使用 large bin attack），使 fastbinsY 数组越界，此时超过0x80大小的 chunk 释放仍会进入到fastbin中&lt;/li&gt;
 &lt;li&gt;原先构造 chunk 大小计算为&lt;code&gt;chunk size = [(&amp;amp;target - &amp;amp;fastbinsY) * 2] + 0x20&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20250106000423810.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20250106000423810.png&#34;
 	
 	
 	
@@ -21073,7 +21064,7 @@
 &gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;利用&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;① 向 target 写入一个堆地址&lt;/p&gt;
-&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20250106001721829.png&#34; alt=&#34;image-20250106001721829&#34; style=&#34;zoom:67%;&#34; /&gt;
+&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20250106001721829.png&#34; alt=&#34;image-20250106001721829&#34; style=&#34;zoom:67%;&#34; /&gt;
 &lt;p&gt;② 上图通过 UAF 伪造 chunk 的 fd 为 value，将该 chunk malloc 出来，链表操作可使得 target 写入 value 任意值&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -21098,7 +21089,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;③ 将任意地址值写到其它任意地址：向 target1 写 target2的值&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20250106003019971.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20250106003019971.png&#34;
 	
 	
 	
@@ -21349,7 +21340,7 @@
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;条件&lt;/strong&gt;：堆，开启沙箱不能execve，需要orw，能在&lt;code&gt;__free_hook&lt;/code&gt;处申请构造大堆块&lt;/li&gt;
 &lt;/ul&gt;
-&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241215223446557.png&#34; alt=&#34;image-20241215223446557&#34; style=&#34;zoom:67%;&#34; /&gt;
+&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241215223446557.png&#34; alt=&#34;image-20241215223446557&#34; style=&#34;zoom:67%;&#34; /&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -21557,7 +21548,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;delete_chunk&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241219201658648.png&#34; alt=&#34;image-20241219201658648&#34; style=&#34;zoom: 67%;&#34; /&gt;
+&lt;/div&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241219201658648.png&#34; alt=&#34;image-20241219201658648&#34; style=&#34;zoom: 67%;&#34; /&gt;
 &lt;p&gt;&lt;strong&gt;gadget2&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;在gadget1基础上修改&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -21604,7 +21595,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;svcudp_reply&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;44&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;:&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;call&lt;/span&gt;   &lt;span class=&#34;n&#34;&gt;QWORD&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;PTR&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;rax&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x28&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241219210148601.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241219210148601.png&#34;
 	
 	
 	
@@ -21817,7 +21808,7 @@
 &lt;li&gt;堆无输出功能时，劫持&lt;code&gt;_IO_2_1_stdout_&lt;/code&gt;结构体泄露libc基址&lt;/li&gt;
 &lt;li&gt;bss段中可能存放stdout对应IO_FILE的地址，修改&lt;code&gt;stdout&lt;/code&gt;的&lt;code&gt;FILE&lt;/code&gt;结构体中的缓冲区指针进行信息泄漏&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-1728446804381106.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-1728446804381106.assets&#34;
 	
 	
 	
@@ -21933,8 +21924,7 @@
 &lt;li&gt;设置&lt;code&gt;_IO_write_end = _IO_write_ptr&lt;/code&gt;（非必须）&lt;/li&gt;
 &lt;/ul&gt;
 &lt;blockquote&gt;
-&lt;p&gt;无输出时可以通过 house of roman 申请到目标地址进行劫持&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;无输出时可以通过 house of roman 申请到目标地址进行劫持&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;&lt;strong&gt;劫持到&lt;code&gt;_IO_2_1_stdout_&lt;/code&gt;构造payload泄露地址内容&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -22127,7 +22117,7 @@
 &lt;li&gt;&lt;strong&gt;触发&lt;/strong&gt;：需要劫持vtable指向某处，使得下一个调用的vtable中函数位置错位为&lt;code&gt;_IO_str_finish&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;printf&lt;/code&gt;函数会调用&lt;code&gt;_IO_new_file_xsputn&lt;/code&gt;，将vtable指向&lt;code&gt;&amp;amp;_IO_str_jumps - 0x28&lt;/code&gt;位置，如下图&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20250120214839473.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20250120214839473.png&#34;
 	
 	
 	
@@ -22314,7 +22304,7 @@
 &lt;li&gt;将 vtable 伪造在 &lt;code&gt;_IO_2_1_stderr + 0x10&lt;/code&gt; 处使得&lt;code&gt;_IO_2_1_stderr&lt;/code&gt;的&lt;code&gt;fp-&amp;gt;_IO_write_ptr&lt;/code&gt;恰好对应于&lt;code&gt;vtable&lt;/code&gt;的&lt;code&gt;_IO_overflow&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;将&lt;code&gt;fp-&amp;gt;_IO_write_ptr&lt;/code&gt;写入&lt;code&gt;system&lt;/code&gt;函数地址，&lt;code&gt;_IO_overflow&lt;/code&gt;传参为&lt;code&gt;_IO_2_1_stderr&lt;/code&gt;结构体，将该结构体起始位置写入&lt;code&gt;/bin/sh&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20250111200739846.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20250111200739846.png&#34;
 	
 	
 	
@@ -22502,7 +22492,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20250111200846661.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20250111200846661.png&#34;
 	
 	
 	
@@ -22606,7 +22596,7 @@
 &lt;ul&gt;
 &lt;li&gt;修改unsorted bin chunk 的 size 为 &lt;strong&gt;0x61&lt;/strong&gt; ，且 bk 字段指向 &lt;code&gt;_IO_list_all - 0x10&lt;/code&gt;，同时在 chunk 中伪造 &lt;code&gt;IO_FILE&lt;/code&gt;结构体&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20250111214201279.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20250111214201279.png&#34;
 	
 	
 	
@@ -22809,7 +22799,7 @@
 &lt;/ol&gt;
 &lt;p&gt;在两个函数中都会调用函数，劫持&lt;code&gt;__printf_function_table&lt;/code&gt;和&lt;code&gt;__printf_arginfo_table&lt;/code&gt;指针写入one_gadget获取shell&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;利用&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20250121225208401.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20250121225208401.png&#34;
 	
 	
 	
@@ -22965,7 +22955,7 @@
 &lt;li&gt;覆盖&lt;code&gt;stderr&lt;/code&gt;为堆地址，同House of Kiwi，伪造&lt;code&gt;_IO_cookie_file&lt;/code&gt;，修改vtable函数指向的指针&lt;/li&gt;
 &lt;li&gt;改坏 top chunk 通过&lt;code&gt;__malloc_assert&lt;/code&gt;触发漏洞，且可结合setcontext利用rop&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20250122182857674.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20250122182857674.png&#34;
 	
 	
 	
@@ -23158,7 +23148,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;add&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mh&#34;&gt;0xa0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; 
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20250122210010100.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20250122210010100.png&#34;
 	
 	
 	
@@ -23177,7 +23167,7 @@
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;add&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mh&#34;&gt;0x94&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;​	&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20250122210209656.png&#34;
+&lt;/div&gt;&lt;p&gt;​	&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20250122210209656.png&#34;
 	
 	
 	
@@ -23199,7 +23189,7 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20250122211820980.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20250122211820980.png&#34;
 	
 	
 	
@@ -23285,7 +23275,7 @@
 &lt;li&gt;通过gdb命令&lt;code&gt;u _IO_str_overflow&lt;/code&gt;中&lt;code&gt;call *ABS*+0xabc@plt&lt;/code&gt;指令所在地址中实际call的地址0xbcd，&lt;code&gt;u 0xbcd&lt;/code&gt;中&lt;code&gt;bnd jmp qword ptr [rip + offset]&lt;/code&gt;找到的地址处找到memcpy@got表地址&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;利用&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20250123202353253.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20250123202353253.png&#34;
 	
 	
 	
@@ -23478,7 +23468,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;tcache_max_bytes&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;mp_&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;88&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/-172844676894978.assets&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/-172844676894978.assets&#34;
 	
 	
 	
@@ -23516,7 +23506,7 @@
 &lt;li&gt;修改&lt;code&gt;vtable&lt;/code&gt;，程序调用&lt;code&gt;_wide_vtable&lt;/code&gt;中函数，再将&lt;code&gt;_wide_vtable&lt;/code&gt;指向一个伪造函数表劫持执行流&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;利用&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20250124161719221.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20250124161719221.png&#34;
 	
 	
 	
@@ -23906,7 +23896,7 @@
 &lt;li&gt;&lt;code&gt;codecvt-&amp;gt;__cd_in.step-&amp;gt;__shlib_handle&lt;/code&gt;设置为&lt;code&gt;0&lt;/code&gt;，即满足&lt;code&gt;*C = 0&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;codecvt-&amp;gt;__cd_in.step-&amp;gt;__fct&lt;/code&gt;设置为地址&lt;code&gt;D&lt;/code&gt;,地址&lt;code&gt;D&lt;/code&gt;用于控制&lt;code&gt;rip&lt;/code&gt;，即满足&lt;code&gt;*(C + 0x28) = D&lt;/code&gt;。当调用到&lt;code&gt;D&lt;/code&gt;的时候，此时的&lt;code&gt;rdi&lt;/code&gt;为&lt;code&gt;C&lt;/code&gt;。如果&lt;code&gt;_wide_data&lt;/code&gt;也可控的话，&lt;code&gt;rsi&lt;/code&gt;也能控制&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20250126203031787.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20250126203031787.png&#34;
 	
 	
 	
@@ -24158,7 +24148,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;strong&gt;利用&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20250126223346993.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20250126223346993.png&#34;
 	
 	
 	
@@ -24488,7 +24478,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;strong&gt;利用&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20250127213018398.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20250127213018398.png&#34;
 	
 	
 	
@@ -24957,7 +24947,7 @@
 &lt;li&gt;&lt;code&gt;(fp)-&amp;gt;_IO_buf_end - (fp)-&amp;gt;_IO_buf_base&lt;/code&gt; 要足够大，一般设置 &lt;code&gt;(fp)-&amp;gt;_IO_buf_end = 0xFFFFFFFFFFFFFFF0&lt;/code&gt; 即可&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;利用&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/60649d737092dba6af8cb8c9977061aa.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/60649d737092dba6af8cb8c9977061aa.png&#34;
 	
 	
 	
@@ -25108,7 +25098,7 @@
 &lt;p&gt;第2个进程写入值将覆盖logcount，达成&lt;strong&gt;任意写&lt;/strong&gt;，第3个进程写入值将通过read修改memory[logcount]内容达成&lt;strong&gt;任意地址写&lt;/strong&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/pwn_note.zh-cn.assets/image-20241101000216869.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/pwn_note.zh-cn.assets/image-20241101000216869.png&#34;
 	
 	
 	

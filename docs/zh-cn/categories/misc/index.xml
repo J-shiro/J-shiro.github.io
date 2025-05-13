@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Misc on J-shiro&#39;s 博客</title>
-        <link>http://localhost:1313/zh-cn/categories/misc/</link>
+        <link>https://J-shiro.github.io/zh-cn/categories/misc/</link>
         <description>Recent content in Misc on J-shiro&#39;s 博客</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
-        <lastBuildDate>Wed, 09 Oct 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/zh-cn/categories/misc/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 09 Oct 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://J-shiro.github.io/zh-cn/categories/misc/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>MISC笔记</title>
-        <link>http://localhost:1313/zh-cn/p/misc%E7%AC%94%E8%AE%B0/</link>
+        <link>https://J-shiro.github.io/zh-cn/p/misc%E7%AC%94%E8%AE%B0/</link>
         <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/zh-cn/p/misc%E7%AC%94%E8%AE%B0/</guid>
-        <description>&lt;img src="http://localhost:1313/img/note.jpg" alt="Featured image of post MISC笔记" /&gt;&lt;h2 id=&#34;工具&#34;&gt;工具&lt;/h2&gt;
+        <guid>https://J-shiro.github.io/zh-cn/p/misc%E7%AC%94%E8%AE%B0/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/img/note.jpg" alt="Featured image of post MISC笔记" /&gt;&lt;h2 id=&#34;工具&#34;&gt;工具&lt;/h2&gt;
 &lt;h3 id=&#34;pngcheck&#34;&gt;pngcheck&lt;/h3&gt;
 &lt;p&gt;目录下CMD调用：&lt;code&gt;pngcheck -v file&lt;/code&gt;&lt;/p&gt;
 &lt;h3 id=&#34;f5-steganography&#34;&gt;F5-steganography&lt;/h3&gt;
@@ -41,7 +41,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;h3 id=&#34;stegsolve&#34;&gt;&lt;strong&gt;Stegsolve&lt;/strong&gt;&lt;/h3&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/misc_note.zh-cn.assets/-17284513528809.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/misc_note.zh-cn.assets/-17284513528809.assets&#34;
 	
 	
 	
@@ -229,7 +229,7 @@
 &lt;p&gt;&lt;strong&gt;核心价值观编码&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;https://ctf.bugku.com/tool/cvecode&lt;/code&gt;网站进行解密&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;小鹤双拼&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/misc_note.zh-cn.assets/-17284513528791.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/misc_note.zh-cn.assets/-17284513528791.assets&#34;
 	
 	
 	
@@ -262,7 +262,7 @@
 &lt;p&gt;文件结尾：&lt;code&gt;ffd9&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;JPG包含&lt;code&gt;JFIF&lt;/code&gt;与&lt;code&gt;Exif&lt;/code&gt;两种文件结构&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;更改大小&lt;/strong&gt;：可以在010editor中查看以下两个选项&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/misc_note.zh-cn.assets/-17284513528792.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/misc_note.zh-cn.assets/-17284513528792.assets&#34;
 	
 	
 	
@@ -280,7 +280,7 @@
 &lt;/ul&gt;
 &lt;p&gt;PNG文件可以在CyberChef中输入进行&lt;strong&gt;异或&lt;/strong&gt;操作，获取加密后文件&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;图片宽高修改：010editor中报错&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/misc_note.zh-cn.assets/-17284513528793.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/misc_note.zh-cn.assets/-17284513528793.assets&#34;
 	
 	
 	
@@ -290,7 +290,7 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/misc_note.zh-cn.assets/-17284513528794.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/misc_note.zh-cn.assets/-17284513528794.assets&#34;
 	
 	
 	
@@ -354,7 +354,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;压缩文件有密码，内容少的话，可以使用CRC校验值爆破&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/misc_note.zh-cn.assets/-17284513528805.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/misc_note.zh-cn.assets/-17284513528805.assets&#34;
 	
 	
 	
@@ -460,7 +460,7 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;strong&gt;处理数据包&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;实现从 n 个数据包中提取其中包含的JPEG图片&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/misc_note.zh-cn.assets/-17284513528806.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/misc_note.zh-cn.assets/-17284513528806.assets&#34;
 	
 	
 	
@@ -662,7 +662,7 @@
 &lt;h3 id=&#34;lsb隐写&#34;&gt;LSB隐写&lt;/h3&gt;
 &lt;p&gt;Least Significant Bit, PNG图片&lt;/p&gt;
 &lt;p&gt;png图片存储中，每个颜色表示有8bit，即256种颜色，一共包含256&lt;em&gt;256&lt;/em&gt;256=16777216种颜色，人类的眼睛可以区分约1,000万种不同的颜色，剩下无法区分的颜色有6777216&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/misc_note.zh-cn.assets/-17284513528807.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/misc_note.zh-cn.assets/-17284513528807.assets&#34;
 	
 	
 	
@@ -923,7 +923,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;strong&gt;福尔摩斯跳舞小人加密&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/misc_note.zh-cn.assets/-17284513528808.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/misc_note.zh-cn.assets/-17284513528808.assets&#34;
 	
 	
 	
@@ -960,8 +960,7 @@
     &gt;https://zh.wikipedia.org/wiki/Unicode%E5%AD%97%E7%AC%A6%E5%88%97%E8%A1%A8&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://symbl.cc/cn/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://symbl.cc/cn/&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/blockquote&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
 </description>
         </item>
         

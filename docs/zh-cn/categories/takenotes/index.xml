@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Takenotes on J-shiro&#39;s 博客</title>
-        <link>http://localhost:1313/zh-cn/categories/takenotes/</link>
+        <link>https://J-shiro.github.io/zh-cn/categories/takenotes/</link>
         <description>Recent content in Takenotes on J-shiro&#39;s 博客</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
-        <lastBuildDate>Fri, 18 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/zh-cn/categories/takenotes/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 18 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://J-shiro.github.io/zh-cn/categories/takenotes/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>哲学家进餐问题-c代码分析</title>
-        <link>http://localhost:1313/zh-cn/p/%E5%93%B2%E5%AD%A6%E5%AE%B6%E8%BF%9B%E9%A4%90%E9%97%AE%E9%A2%98-c%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/</link>
+        <link>https://J-shiro.github.io/zh-cn/p/%E5%93%B2%E5%AD%A6%E5%AE%B6%E8%BF%9B%E9%A4%90%E9%97%AE%E9%A2%98-c%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/</link>
         <pubDate>Fri, 18 Nov 2022 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/zh-cn/p/%E5%93%B2%E5%AD%A6%E5%AE%B6%E8%BF%9B%E9%A4%90%E9%97%AE%E9%A2%98-c%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/</guid>
-        <description>&lt;img src="http://localhost:1313/img/os-pv.jpg" alt="Featured image of post 哲学家进餐问题-c代码分析" /&gt;&lt;h2 id=&#34;问题分析&#34;&gt;问题分析&lt;/h2&gt;
+        <guid>https://J-shiro.github.io/zh-cn/p/%E5%93%B2%E5%AD%A6%E5%AE%B6%E8%BF%9B%E9%A4%90%E9%97%AE%E9%A2%98-c%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/img/os-pv.jpg" alt="Featured image of post 哲学家进餐问题-c代码分析" /&gt;&lt;h2 id=&#34;问题分析&#34;&gt;问题分析&lt;/h2&gt;
 &lt;p&gt;使用信号量机制解决，会出现产生死锁的情况，所以需要解决死锁，有一种方法为&lt;strong&gt;至多只允许四位哲学家同时去拿左边的筷子，最终能保证至少有一位哲学家能够进餐，并在用毕时能释放用过的两只筷子&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;

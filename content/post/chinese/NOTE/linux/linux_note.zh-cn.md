@@ -85,6 +85,8 @@ vim的配置在`~/.vimrc`中
 
 **删除某环境变量**：`unset xx`
 
+**更改文件夹用户及用户组**：`chown -R username:groupname directory_path`
+
 **链接**
 
 ```bash
@@ -196,7 +198,7 @@ scp -i secret_key -r local_file user@x.x.x.x:remote_file_location # 本地到远
 scp -r user@x.x.x.x:remote_file local_destination # 远程到本地
 ```
 
-`rsync`同样可以传输文件
+`rsync`同样可以传输文件，用于备份+镜像，只对差异文件更新，快速
 
 ```Bash
 rsync -avP local_file user@x.x.x.x:destination # 本地到远程
@@ -204,6 +206,8 @@ rsync -avP local_file user@x.x.x.x:destination # 本地到远程
 ```
 
 **windows主机vscode免密ssh登录到服务器**
+
+A 把公钥给 B，使得A可远程免密登录B
 
 ```bash
 # windows 下

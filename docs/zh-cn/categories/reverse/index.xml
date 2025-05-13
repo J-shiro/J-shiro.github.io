@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Reverse on J-shiro&#39;s 博客</title>
-        <link>http://localhost:1313/zh-cn/categories/reverse/</link>
+        <link>https://J-shiro.github.io/zh-cn/categories/reverse/</link>
         <description>Recent content in Reverse on J-shiro&#39;s 博客</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
-        <lastBuildDate>Wed, 09 Oct 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/zh-cn/categories/reverse/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 09 Oct 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://J-shiro.github.io/zh-cn/categories/reverse/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>REVERSE笔记</title>
-        <link>http://localhost:1313/zh-cn/p/reverse%E7%AC%94%E8%AE%B0/</link>
+        <link>https://J-shiro.github.io/zh-cn/p/reverse%E7%AC%94%E8%AE%B0/</link>
         <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/zh-cn/p/reverse%E7%AC%94%E8%AE%B0/</guid>
-        <description>&lt;img src="http://localhost:1313/img/note.jpg" alt="Featured image of post REVERSE笔记" /&gt;&lt;h2 id=&#34;基础知识&#34;&gt;基础知识&lt;/h2&gt;
+        <guid>https://J-shiro.github.io/zh-cn/p/reverse%E7%AC%94%E8%AE%B0/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/img/note.jpg" alt="Featured image of post REVERSE笔记" /&gt;&lt;h2 id=&#34;基础知识&#34;&gt;基础知识&lt;/h2&gt;
 &lt;p&gt;除了逆向外也可以尝试&lt;strong&gt;爆破&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -125,7 +125,7 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/image-20241022224820682.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/image-20241022224820682.png&#34;
 	
 	
 	
@@ -446,7 +446,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;strong&gt;struct&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/-172845173251511.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/-172845173251511.assets&#34;
 	
 	
 	
@@ -644,7 +644,7 @@
 &lt;li&gt;驱动程序：&lt;code&gt;sys, vxd&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;对象文件：&lt;code&gt;obj&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/-17284517325131.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/-17284517325131.assets&#34;
 	
 	
 	
@@ -655,7 +655,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;DOS头&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/-17284517325142.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/-17284517325142.assets&#34;
 	
 	
 	
@@ -667,7 +667,7 @@
 &gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;DOS存根&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;向下兼容，用DOSBox执行PE会输出红色框中字符串&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/-17284517325143.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/-17284517325143.assets&#34;
 	
 	
 	
@@ -678,7 +678,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;NT头&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/-17284517325144.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/-17284517325144.assets&#34;
 	
 	
 	
@@ -689,7 +689,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;映射&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/-17284517325145.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/-17284517325145.assets&#34;
 	
 	
 	
@@ -716,7 +716,7 @@
 &lt;li&gt;程序载入前相当于&lt;code&gt;INT&lt;/code&gt;，指向 &lt;code&gt;IMAGE_IMPORT_BY_NAME&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;程序载入后存储外部引入函数的位置&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/-17284517325146.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/-17284517325146.assets&#34;
 	
 	
 	
@@ -728,7 +728,7 @@
 &gt;&lt;/p&gt;
 &lt;h5 id=&#34;eat&#34;&gt;EAT&lt;/h5&gt;
 &lt;p&gt;(Export Address Table)&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/-17284517325147.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/-17284517325147.assets&#34;
 	
 	
 	
@@ -748,7 +748,7 @@
 &lt;/ol&gt;
 &lt;h5 id=&#34;peb&#34;&gt;PEB&lt;/h5&gt;
 &lt;p&gt;（Process Environment Block）&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/-17284517325148.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/-17284517325148.assets&#34;
 	
 	
 	
@@ -1335,7 +1335,7 @@
 &lt;li&gt;64位调试32位程序使用Scyllahide后会报错&lt;/li&gt;
 &lt;li&gt;设置扩展参数&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/image-20241022105920446.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/image-20241022105920446.png&#34;
 	
 	
 	
@@ -1367,7 +1367,7 @@
 &lt;p&gt;&lt;code&gt;Ctrl + x&lt;/code&gt;：对变量输入，可以获取哪个函数使用了这个变量&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;动态调试&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;选择Load WIndows debugger调试器，设置断点在某一代码行，需要在&lt;code&gt;Debugger&lt;/code&gt;中打开&lt;code&gt;Use source-level debugging&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/-17284517325159.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/-17284517325159.assets&#34;
 	
 	
 	
@@ -1581,7 +1581,7 @@
 &lt;p&gt;&lt;strong&gt;&lt;code&gt;hex(0xffffffff -  0x61c88647 + 1)&lt;/code&gt;&lt;/strong&gt; &lt;strong&gt;得到 0x9e3779b9&lt;/strong&gt;&lt;/p&gt;
 &lt;h4 id=&#34;tea&#34;&gt;TEA&lt;/h4&gt;
 &lt;p&gt;Tiny Encryption Algorithm，使用Feistel分组加密框架，64轮迭代，原文以8字节(64位)为一组，密钥16字节(128位)，具体实现过程：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/-172845173251510.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/-172845173251510.assets&#34;
 	
 	
 	
@@ -1812,7 +1812,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;h4 id=&#34;xxtea&#34;&gt;XXTEA&lt;/h4&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/-172845181249123.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/-172845181249123.assets&#34;
 	
 	
 	
@@ -1953,7 +1953,7 @@
 &lt;li&gt;轮密钥 rK 有32个，32位为单位，每一次迭代为一轮F函数&lt;/li&gt;
 &lt;li&gt;$X_{i+4}=F(X_i,X_{i+1},X_{i+2},X_{i+3},rK_i)=X_i ⊕ T( X_{i+1}⊕X_{i+2}⊕X_{i+3}⊕rK_i)$&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/-172845181249224.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/-172845181249224.assets&#34;
 	
 	
 	
@@ -1970,7 +1970,7 @@
 &lt;/ol&gt;
 &lt;p&gt;$B =（b_0,b_1,b_2,b_3）= τ(A)=(Sbox(a_0),Sbox(a_0),Sbox(a_0),Sbox(a_0))$&lt;/p&gt;
 &lt;p&gt;查表规则：有 F 行 F 列，输入的32位可表示为2个十六进制数，一个做行一个做列找值替换&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/-172845181249225.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/-172845181249225.assets&#34;
 	
 	
 	
@@ -1987,7 +1987,7 @@
 &lt;p&gt;&lt;strong&gt;轮密钥扩展&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;密钥128位，$MK=(MK_0,MK_1,MK_2,MK_3)$，轮密钥由密钥生成&lt;/p&gt;
 &lt;p&gt;系统参数：$FK=(FK_0,FK_1,FK_2,FK_3)$，固定参数：$CK=(CK_0,CK_1,\cdots ,CK_{31})$&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/-172845181249326.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/-172845181249326.assets&#34;
 	
 	
 	
@@ -1997,7 +1997,7 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/-172845181249327.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/-172845181249327.assets&#34;
 	
 	
 	
@@ -2474,7 +2474,7 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;h3 id=&#34;rc4&#34;&gt;RC4&lt;/h3&gt;
 &lt;p&gt;对称加密算法，包括&lt;strong&gt;初始化算法&lt;/strong&gt;（KSA)和&lt;strong&gt;加密算法&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/-172845181249328.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/-172845181249328.assets&#34;
 	
 	
 	
@@ -2669,7 +2669,7 @@
 &lt;h2 id=&#34;代码混淆&#34;&gt;代码混淆&lt;/h2&gt;
 &lt;h3 id=&#34;脏字节&#34;&gt;脏字节&lt;/h3&gt;
 &lt;p&gt;在汇编中加入&lt;code&gt;db 232&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/-172845181249329.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/-172845181249329.assets&#34;
 	
 	
 	
@@ -2680,7 +2680,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;h3 id=&#34;花指令&#34;&gt;花指令&lt;/h3&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/-172845181249330.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/-172845181249330.assets&#34;
 	
 	
 	
@@ -2807,7 +2807,7 @@
 &lt;p&gt;绕过：通过动态调试修改RIP直接跳到main函数 或 patch/nop反调试函数&lt;/p&gt;
 &lt;h3 id=&#34;ollvm&#34;&gt;OLLVM&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;Obfuscator-LLVM，原理：通过修改“LLVM-IR”完成，本质是一个LLVM-PASS——一套IR代码优化脚本&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/-172845181249331.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/-172845181249331.assets&#34;
 	
 	
 	
@@ -2819,7 +2819,7 @@
 &gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;控制流平坦化&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;将基本控制流并列，由&lt;strong&gt;主分发器&lt;/strong&gt;来决定执行顺序&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/-172845181249332.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/-172845181249332.assets&#34;
 	
 	
 	
@@ -2843,7 +2843,7 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;strong&gt;虚假控制流&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;将原本顺序执行转为条件执行，条件为“永真式”导致不会执行虚假块，但IDA会进行控制流分析&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/-172845181249333.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/-172845181249333.assets&#34;
 	
 	
 	
@@ -3001,7 +3001,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;h2 id=&#34;壳&#34;&gt;壳&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/-172845181249334.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/-172845181249334.assets&#34;
 	
 	
 	
@@ -3038,7 +3038,7 @@
 &lt;p&gt;&lt;strong&gt;Ollydbg&lt;/strong&gt;：只能调试32位&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;使用OD进行UPX手动脱壳&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;第一条指令一般为pushad，将寄存器值存入栈中，保存上下文&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/-172845181249435.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/-172845181249435.assets&#34;
 	
 	
 	
@@ -3049,7 +3049,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;F8单步执行，此时寄存器ESP值发生改变&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/-172845181249436.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/-172845181249436.assets&#34;
 	
 	
 	
@@ -3060,7 +3060,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;寄存器窗口 &amp;gt; ESP &amp;gt; HW break[ESP] 或 [数据窗口中跟随] 转到内存视图 &amp;gt; 此处ESP地址设置断点-硬件访问&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/-172845181249437.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/-172845181249437.assets&#34;
 	
 	
 	
@@ -3072,7 +3072,7 @@
 &gt;&lt;/p&gt;
 &lt;p&gt;F9运行到断点处，上图&lt;code&gt;003B750F&lt;/code&gt;的上一行为&lt;code&gt;popad&lt;/code&gt;，当执行到popad时，将会恢复ESP，此时将会触发硬件断点，中断&lt;/p&gt;
 &lt;p&gt;发现一个大跳转&lt;code&gt;jmp UPX&lt;/code&gt;，于是F4到jmp代码处 &amp;gt; F8步入&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/-172845181249438.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/-172845181249438.assets&#34;
 	
 	
 	
@@ -3082,7 +3082,7 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/reverse_note.zh-cn.assets/-172845181249439.assets&#34;
+&lt;p&gt;&lt;img src=&#34;https://J-shiro.github.io/img/reverse_note.zh-cn.assets/-172845181249439.assets&#34;
 	
 	
 	

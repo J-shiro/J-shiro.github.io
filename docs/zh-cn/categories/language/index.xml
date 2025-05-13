@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Language on J-shiro&#39;s 博客</title>
-        <link>http://localhost:1313/zh-cn/categories/language/</link>
+        <link>https://J-shiro.github.io/zh-cn/categories/language/</link>
         <description>Recent content in Language on J-shiro&#39;s 博客</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
-        <lastBuildDate>Wed, 05 Feb 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/zh-cn/categories/language/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 05 Feb 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://J-shiro.github.io/zh-cn/categories/language/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>C&#43;&#43;</title>
-        <link>http://localhost:1313/zh-cn/p/c-/</link>
+        <link>https://J-shiro.github.io/zh-cn/p/c-/</link>
         <pubDate>Wed, 05 Feb 2025 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/zh-cn/p/c-/</guid>
-        <description>&lt;img src="http://localhost:1313/img/note.jpg" alt="Featured image of post C&#43;&#43;" /&gt;&lt;h2 id=&#34;环境&#34;&gt;环境&lt;/h2&gt;
+        <guid>https://J-shiro.github.io/zh-cn/p/c-/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/img/note.jpg" alt="Featured image of post C&#43;&#43;" /&gt;&lt;h2 id=&#34;环境&#34;&gt;环境&lt;/h2&gt;
 &lt;h3 id=&#34;编译&#34;&gt;编译&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;gcc&lt;/code&gt;主要编译C语言，对于C++代码只编译而不自动链接C++标准库，需要使用&lt;code&gt;-lstdc++&lt;/code&gt;指定&lt;/li&gt;
@@ -2829,11 +2829,11 @@
         </item>
         <item>
         <title>GO</title>
-        <link>http://localhost:1313/zh-cn/p/go/</link>
+        <link>https://J-shiro.github.io/zh-cn/p/go/</link>
         <pubDate>Sat, 25 Jan 2025 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/zh-cn/p/go/</guid>
-        <description>&lt;img src="http://localhost:1313/img/note.jpg" alt="Featured image of post GO" /&gt;&lt;ul&gt;
+        <guid>https://J-shiro.github.io/zh-cn/p/go/</guid>
+        <description>&lt;img src="https://J-shiro.github.io/img/note.jpg" alt="Featured image of post GO" /&gt;&lt;ul&gt;
 &lt;li&gt;Google开发，高性能，高并发，静态编译，垃圾回收，标准库丰富，跨平台&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;环境&#34;&gt;环境&lt;/h2&gt;

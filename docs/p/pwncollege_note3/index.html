@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+    <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='ASU CSE 365, assembly crash course'><title>PwnCollege_Note3</title>
 
-<link rel='canonical' href='http://localhost:1313/p/pwncollege_note3/'>
+<link rel='canonical' href='https://J-shiro.github.io/p/pwncollege_note3/'>
 
 <link rel="stylesheet" href="/scss/style.min.b18c0607927efd48b36f5d027b549e77e30ee300e22b6461d063f1df6ea2466b.css"><meta property='og:title' content='PwnCollege_Note3'>
 <meta property='og:description' content='ASU CSE 365, assembly crash course'>
-<meta property='og:url' content='http://localhost:1313/p/pwncollege_note3/'>
+<meta property='og:url' content='https://J-shiro.github.io/p/pwncollege_note3/'>
 <meta property='og:site_name' content='J-shiro&#39;s Blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2022-11-29T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-11-29T00:00:00&#43;00:00'/><meta property='og:image' content='http://localhost:1313/p/pwncollege_note3/pwncollege.png' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2022-11-29T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-11-29T00:00:00&#43;00:00'/><meta property='og:image' content='https://J-shiro.github.io/p/pwncollege_note3/pwncollege.png' />
 <meta name="twitter:title" content="PwnCollege_Note3">
 <meta name="twitter:description" content="ASU CSE 365, assembly crash course"><meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content='http://localhost:1313/p/pwncollege_note3/pwncollege.png' />
+    <meta name="twitter:image" content='https://J-shiro.github.io/p/pwncollege_note3/pwncollege.png' />
     <link rel="shortcut icon" href="https://j-shiro.github.io/img/somebody.png" />
 
     </head>
@@ -58,7 +58,7 @@
                     
                     
                         
-                        <img src="/img/avatar_hu6886133658591222341.png" width="300"
+                        <img src="/img/avatar_hu_a291887a020c52cf.png" width="300"
                             height="300" class="site-logo" loading="lazy" alt="Avatar">
                     
                 
@@ -216,9 +216,9 @@
 
                     <select name="language" onchange="window.location.href = this.selectedOptions[0].value">
                         
-                            <option value="http://localhost:1313/" selected>English</option>
+                            <option value="https://J-shiro.github.io/" selected>English</option>
                         
-                            <option value="http://localhost:1313/zh-cn/" >中文</option>
+                            <option value="https://J-shiro.github.io/zh-cn/" >中文</option>
                         
                     </select>
                 </li>
@@ -253,8 +253,8 @@
     <header class="article-header">
         <div class="article-image">
             <a href="/p/pwncollege_note3/">
-                <img src="/p/pwncollege_note3/pwncollege_hu10266470383197418779.png"
-                        srcset="/p/pwncollege_note3/pwncollege_hu10266470383197418779.png 800w, /p/pwncollege_note3/pwncollege_hu2825446190110970576.png 1600w"
+                <img src="/p/pwncollege_note3/pwncollege_hu_a5dbf0f5841ad402.png"
+                        srcset="/p/pwncollege_note3/pwncollege_hu_a5dbf0f5841ad402.png 800w, /p/pwncollege_note3/pwncollege_hu_68ef3494951ddcbe.png 1600w"
                         width="800" 
                         height="276" 
                         loading="lazy"
@@ -431,8 +431,7 @@
 <p>drawback2: arithmetic operations have to be signedness-aware</p>
 <blockquote>
 <p>(unsigned) 0b00000000 - 1 = 0 - 1 = 255 == 0b11111111</p>
-<p>(signed) 	 0b00000000 - 1 = 0 - 1 = -1    == 0b10000001</p>
-</blockquote>
+<p>(signed) 	 0b00000000 - 1 = 0 - 1 = -1    == 0b10000001</p></blockquote>
 <ul>
 <li>two&rsquo;s complement</li>
 </ul>
@@ -1443,8 +1442,7 @@ shr reg1, x      &lt;=&gt;     Shift reg1 right by x</p>
 <li>At 0x51 write the following code:</li>
 <li>Place the top value on the stack into register rdi</li>
 <li>jmp to the absolute address 0x403000</li>
-</ol>
-</blockquote>
+</ol></blockquote>
 <p>we should use the <code>.rept count ... .endr</code> : Repeat the sequence of lines between the .rept directive and the next .endr directive count times.</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -1481,8 +1479,7 @@ y = [x+4] - [x+8] - [x+12]
 else:
 y = [x+4] * [x+8] * [x+12]
 where:
-x = rdi, y = rax. Assume each dereferenced value is a <strong>signed dword</strong> .</p>
-</blockquote>
+x = rdi, y = rax. Assume each dereferenced value is a <strong>signed dword</strong> .</p></blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -1549,8 +1546,7 @@ x = rdi, y = rax. Assume each dereferenced value is a <strong>signed dword</stro
 0: jmp do_thing_0
 1: jmp do_thing_1
 2: jmp do_thing_2
-default: jmp do_default_thing</p>
-</blockquote>
+default: jmp do_default_thing</p></blockquote>
 <p>reduced else-if</p>
 <p>using jump table: A jump table is a contiguous section of memory that holds addresses of places to jump</p>
 <p>jump table could look like:</p>
@@ -1558,8 +1554,7 @@ default: jmp do_default_thing</p>
 <p>[0x1337] = address of do_thing_0
 [0x1337+0x8] = address of do_thing_1
 [0x1337+0x10] = address of do_thing_2
-[0x1337+0x18] = address of do_default_thing</p>
-</blockquote>
+[0x1337+0x18] = address of do_default_thing</p></blockquote>
 <p><strong>implement:</strong></p>
 <blockquote>
 <p>if rdi is 0:
@@ -1571,16 +1566,14 @@ jmp 0x4031f1
 else if rdi is 3:
 jmp 0x4032b9
 else:
-jmp 0x40337c</p>
-</blockquote>
+jmp 0x40337c</p></blockquote>
 <p><strong>an example jump table:</strong></p>
 <blockquote>
 <p>[0x4041df] = 0x403040
 [0x4041e7] = 0x4030f7
 [0x4041ef] = 0x4031f1
 [0x4041f7] = 0x4032b9
-[0x4041ff] = 0x40337c</p>
-</blockquote>
+[0x4041ff] = 0x40337c</p></blockquote>
 <p><strong>constraints:</strong></p>
 <ul>
 <li>assume rdi will NOT be negative</li>
@@ -1774,8 +1767,7 @@ jmp 0x40337c</p>
 </div><p><strong>functions</strong></p>
 <p>level22: <strong>function</strong> &mdash;-&gt;a callable segment of code that does not destory control flow. Use the &ldquo;call&rdquo; and &ldquo;ret&rdquo; instructions</p>
 <blockquote>
-<p>ip control 、utilize the stack to save things 、call other functions provided</p>
-</blockquote>
+<p>ip control 、utilize the stack to save things 、call other functions provided</p></blockquote>
 <p>The &ldquo;call&rdquo; instruction pushes the memory address of the next instruction onto the stack and then jumps to the value stored in the first argument.</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -2088,7 +2080,7 @@ jmp 0x40337c</p>
         
         
             <div class="article-image">
-                <img src="/p/debugging-refresher/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu15089156146463134155.png" 
+                <img src="/p/debugging-refresher/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu_98b89bc9017f0e68.png" 
                         width="250" 
                         height="150" 
                         loading="lazy"
@@ -2112,7 +2104,7 @@ jmp 0x40337c</p>
         
         
             <div class="article-image">
-                <img src="/p/pwncollege_note7/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu15089156146463134155.png" 
+                <img src="/p/pwncollege_note7/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu_98b89bc9017f0e68.png" 
                         width="250" 
                         height="150" 
                         loading="lazy"
@@ -2136,7 +2128,7 @@ jmp 0x40337c</p>
         
         
             <div class="article-image">
-                <img src="/p/pwncollege_note6/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu15089156146463134155.png" 
+                <img src="/p/pwncollege_note6/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu_98b89bc9017f0e68.png" 
                         width="250" 
                         height="150" 
                         loading="lazy"
@@ -2160,7 +2152,7 @@ jmp 0x40337c</p>
         
         
             <div class="article-image">
-                <img src="/p/intercepting-communication/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu15089156146463134155.png" 
+                <img src="/p/intercepting-communication/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu_98b89bc9017f0e68.png" 
                         width="250" 
                         height="150" 
                         loading="lazy"
@@ -2184,7 +2176,7 @@ jmp 0x40337c</p>
         
         
             <div class="article-image">
-                <img src="/p/building-a-web-server/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu15089156146463134155.png" 
+                <img src="/p/building-a-web-server/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu_98b89bc9017f0e68.png" 
                         width="250" 
                         height="150" 
                         loading="lazy"

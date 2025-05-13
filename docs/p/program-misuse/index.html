@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+    <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='ASU CSE 365, program misuse.(finish)'><title>Program Misuse</title>
 
-<link rel='canonical' href='http://localhost:1313/p/program-misuse/'>
+<link rel='canonical' href='https://J-shiro.github.io/p/program-misuse/'>
 
 <link rel="stylesheet" href="/scss/style.min.b18c0607927efd48b36f5d027b549e77e30ee300e22b6461d063f1df6ea2466b.css"><meta property='og:title' content='Program Misuse'>
 <meta property='og:description' content='ASU CSE 365, program misuse.(finish)'>
-<meta property='og:url' content='http://localhost:1313/p/program-misuse/'>
+<meta property='og:url' content='https://J-shiro.github.io/p/program-misuse/'>
 <meta property='og:site_name' content='J-shiro&#39;s Blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2022-10-29T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-10-29T00:00:00&#43;00:00'/><meta property='og:image' content='http://localhost:1313/p/program-misuse/pwncollege.png' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2022-10-29T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-10-29T00:00:00&#43;00:00'/><meta property='og:image' content='https://J-shiro.github.io/p/program-misuse/pwncollege.png' />
 <meta name="twitter:title" content="Program Misuse">
 <meta name="twitter:description" content="ASU CSE 365, program misuse.(finish)"><meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content='http://localhost:1313/p/program-misuse/pwncollege.png' />
+    <meta name="twitter:image" content='https://J-shiro.github.io/p/program-misuse/pwncollege.png' />
     <link rel="shortcut icon" href="https://j-shiro.github.io/img/somebody.png" />
 
     </head>
@@ -58,7 +58,7 @@
                     
                     
                         
-                        <img src="/img/avatar_hu6886133658591222341.png" width="300"
+                        <img src="/img/avatar_hu_a291887a020c52cf.png" width="300"
                             height="300" class="site-logo" loading="lazy" alt="Avatar">
                     
                 
@@ -216,9 +216,9 @@
 
                     <select name="language" onchange="window.location.href = this.selectedOptions[0].value">
                         
-                            <option value="http://localhost:1313/" selected>English</option>
+                            <option value="https://J-shiro.github.io/" selected>English</option>
                         
-                            <option value="http://localhost:1313/zh-cn/" >中文</option>
+                            <option value="https://J-shiro.github.io/zh-cn/" >中文</option>
                         
                     </select>
                 </li>
@@ -253,8 +253,8 @@
     <header class="article-header">
         <div class="article-image">
             <a href="/p/program-misuse/">
-                <img src="/p/program-misuse/pwncollege_hu10266470383197418779.png"
-                        srcset="/p/program-misuse/pwncollege_hu10266470383197418779.png 800w, /p/program-misuse/pwncollege_hu2825446190110970576.png 1600w"
+                <img src="/p/program-misuse/pwncollege_hu_a5dbf0f5841ad402.png"
+                        srcset="/p/program-misuse/pwncollege_hu_a5dbf0f5841ad402.png 800w, /p/program-misuse/pwncollege_hu_68ef3494951ddcbe.png 1600w"
                         width="800" 
                         height="276" 
                         loading="lazy"
@@ -369,8 +369,7 @@
 <p><code>p</code> is a <strong>named pipe</strong>(FIFO)</p>
 <p><code>c</code> is a <strong>character device file</strong>(backed by a hardware device that receives and produces data stream)</p>
 <p><code>b</code> is a <strong>block device file</strong>(backed by a hardware device that stores and loads blocks of data)</p>
-<p><code>s</code> is a <strong>unix socket</strong>(essentially a local network connection encapsulated in a file)</p>
-</blockquote>
+<p><code>s</code> is a <strong>unix socket</strong>(essentially a local network connection encapsulated in a file)</p></blockquote>
 <p>④	<strong>Symbolic/soft links</strong> created by <code>ln -s</code>(-s stands for symbolic), it likes a pointer</p>
 <p>⑤	<strong>Hard links</strong>: it copys the original file. If the original file is deleted, the links won&rsquo;t be deleted, and all the hard links can update the same time.</p>
 <p>⑥	<strong>pipes</strong></p>
@@ -438,8 +437,7 @@
 <p>level 1-6: there&rsquo;re some simple programs that can directly read the flag：<strong>cat, more, less, tail, head, sort</strong></p>
 <p>level 7-9: there&rsquo;re some tools  &mdash;-&gt; over-privileged <strong>editors</strong>：<strong>vim, emacs, nano</strong></p>
 <blockquote>
-<p>emacs points to emacs-gtk by default, it will try to open if there&rsquo;s a graphical interface. But gtk can&rsquo;t setuid, so we can use the <code>-nw</code> to forces the graphics window not to pop up.</p>
-</blockquote>
+<p>emacs points to emacs-gtk by default, it will try to open if there&rsquo;s a graphical interface. But gtk can&rsquo;t setuid, so we can use the <code>-nw</code> to forces the graphics window not to pop up.</p></blockquote>
 <p><img src="/img/pwn_college/level8/image-20221030103804124.png"
 	
 	
@@ -619,8 +617,7 @@
 </div>
 </div><blockquote>
 <p><strong>Usage: nice [OPTION] [COMMAND [ARG]&hellip;]</strong>
-Run COMMAND with an adjusted niceness, which affects process scheduling.With no COMMAND, print the current niceness.  Niceness values range from -20 (most favorable to the process) to 19 (least favorable to the process).</p>
-</blockquote>
+Run COMMAND with an adjusted niceness, which affects process scheduling.With no COMMAND, print the current niceness.  Niceness values range from -20 (most favorable to the process) to 19 (least favorable to the process).</p></blockquote>
 <p>level 28: <strong>timeout</strong>&mdash;&gt; start COMMAND, and kill it if still running after DURATION.</p>
 <p><strong>Usage: timeout [OPTION] DURATION COMMAND [ARG]</strong></p>
 <div class="highlight"><div class="chroma">
@@ -635,8 +632,7 @@ Run COMMAND with an adjusted niceness, which affects process scheduling.With no 
 <blockquote>
 <p><code>-i, --input=MODE</code>	adjust standard input stream buffering</p>
 <p><code>-o, --output=MODE</code>	adjust standard output stream buffering</p>
-<p><code>-e, --error=MODE</code>	adjust standard error stream buffering</p>
-</blockquote>
+<p><code>-e, --error=MODE</code>	adjust standard error stream buffering</p></blockquote>
 <ul>
 <li>
 <p>If MODE is <code>L</code> the corresponding stream will be line buffered.This option is invalid with standard input.</p>
@@ -800,8 +796,7 @@ Run COMMAND with an adjusted niceness, which affects process scheduling.With no 
 </div><p>level 36: <strong>ed</strong>&mdash;&gt; text editor</p>
 <blockquote>
 <p>USAGE:	ed [options] [file]</p>
-<p>Start edit by reading in &lsquo;file&rsquo; if given. If &lsquo;file&rsquo; begins with a &lsquo;!&rsquo;, read output of shell command.</p>
-</blockquote>
+<p>Start edit by reading in &lsquo;file&rsquo; if given. If &lsquo;file&rsquo; begins with a &lsquo;!&rsquo;, read output of shell command.</p></blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -876,8 +871,7 @@ Run COMMAND with an adjusted niceness, which affects process scheduling.With no 
 </div><p><strong>let you program anything</strong></p>
 <p>level 41: <strong>perl</strong>&mdash;&gt; extract the language practical statements</p>
 <blockquote>
-<p>Usage: perl [options] [program file] [para]</p>
-</blockquote>
+<p>Usage: perl [options] [program file] [para]</p></blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -1044,8 +1038,7 @@ more than one FILE is specified.</p>
 </div><p>level 50: <strong>wget</strong>&mdash;&gt; a tool for downloading files from the specified URL</p>
 <blockquote>
 <p><strong>Usage: wget [OPTION]&hellip; [URL]&hellip;</strong></p>
-<p>The file to be read is treated as a list of URLs, one per line, which are actually fetched by <code>wget</code>. The content appears, somewhat modified, as error messages, thus this is not suitable to read arbitrary binary data.</p>
-</blockquote>
+<p>The file to be read is treated as a list of URLs, one per line, which are actually fetched by <code>wget</code>. The content appears, somewhat modified, as error messages, thus this is not suitable to read arbitrary binary data.</p></blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -1093,8 +1086,7 @@ more than one FILE is specified.</p>
 </div><p><strong>allowing users to load their own code as plugins into the program is dangerous</strong></p>
 <p>level 51: <strong>ssh-keygen</strong>&mdash;&gt;Used to generate an SSH public key for the public and private key file, this level is difficult so I can&rsquo;t understand well about it. Maybe I&rsquo;ll explore that later.</p>
 <blockquote>
-<p>It loads shared libraries that may be used to run code in the binary execution context.</p>
-</blockquote>
+<p>It loads shared libraries that may be used to run code in the binary execution context.</p></blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -1337,7 +1329,7 @@ more than one FILE is specified.</p>
         
         
             <div class="article-image">
-                <img src="/p/debugging-refresher/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu15089156146463134155.png" 
+                <img src="/p/debugging-refresher/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu_98b89bc9017f0e68.png" 
                         width="250" 
                         height="150" 
                         loading="lazy"
@@ -1361,7 +1353,7 @@ more than one FILE is specified.</p>
         
         
             <div class="article-image">
-                <img src="/p/pwncollege_note7/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu15089156146463134155.png" 
+                <img src="/p/pwncollege_note7/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu_98b89bc9017f0e68.png" 
                         width="250" 
                         height="150" 
                         loading="lazy"
@@ -1385,7 +1377,7 @@ more than one FILE is specified.</p>
         
         
             <div class="article-image">
-                <img src="/p/pwncollege_note6/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu15089156146463134155.png" 
+                <img src="/p/pwncollege_note6/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu_98b89bc9017f0e68.png" 
                         width="250" 
                         height="150" 
                         loading="lazy"
@@ -1409,7 +1401,7 @@ more than one FILE is specified.</p>
         
         
             <div class="article-image">
-                <img src="/p/intercepting-communication/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu15089156146463134155.png" 
+                <img src="/p/intercepting-communication/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu_98b89bc9017f0e68.png" 
                         width="250" 
                         height="150" 
                         loading="lazy"
@@ -1433,7 +1425,7 @@ more than one FILE is specified.</p>
         
         
             <div class="article-image">
-                <img src="/p/building-a-web-server/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu15089156146463134155.png" 
+                <img src="/p/building-a-web-server/pwncollege.e5d9ba40a3ab83d3efc6ebb212095592_hu_98b89bc9017f0e68.png" 
                         width="250" 
                         height="150" 
                         loading="lazy"

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
-    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+    <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='配置 bash的配置在~/.bashrc中
 git的配置在~/.gitconfig中
 vim的配置在~/.vimrc中
 基础命令 tree：列举所有文件，递归列举文件
 '><title>LINUX笔记</title>
 
-<link rel='canonical' href='http://localhost:1313/zh-cn/p/linux%E7%AC%94%E8%AE%B0/'>
+<link rel='canonical' href='https://J-shiro.github.io/zh-cn/p/linux%E7%AC%94%E8%AE%B0/'>
 
 <link rel="stylesheet" href="/scss/style.min.b18c0607927efd48b36f5d027b549e77e30ee300e22b6461d063f1df6ea2466b.css"><meta property='og:title' content='LINUX笔记'>
 <meta property='og:description' content='配置 bash的配置在~/.bashrc中
@@ -15,16 +15,16 @@ git的配置在~/.gitconfig中
 vim的配置在~/.vimrc中
 基础命令 tree：列举所有文件，递归列举文件
 '>
-<meta property='og:url' content='http://localhost:1313/zh-cn/p/linux%E7%AC%94%E8%AE%B0/'>
+<meta property='og:url' content='https://J-shiro.github.io/zh-cn/p/linux%E7%AC%94%E8%AE%B0/'>
 <meta property='og:site_name' content='J-shiro&#39;s 博客'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-10-09T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2024-10-09T00:00:00&#43;00:00'/><meta property='og:image' content='http://localhost:1313/img/note.jpg' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-10-09T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2024-10-09T00:00:00&#43;00:00'/><meta property='og:image' content='https://J-shiro.github.io/img/note.jpg' />
 <meta name="twitter:title" content="LINUX笔记">
 <meta name="twitter:description" content="配置 bash的配置在~/.bashrc中
 git的配置在~/.gitconfig中
 vim的配置在~/.vimrc中
 基础命令 tree：列举所有文件，递归列举文件
 "><meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content='http://localhost:1313/img/note.jpg' />
+    <meta name="twitter:image" content='https://J-shiro.github.io/img/note.jpg' />
     <link rel="shortcut icon" href="https://j-shiro.github.io/img/somebody.png" />
 
     </head>
@@ -70,7 +70,7 @@ vim的配置在~/.vimrc中
                     
                     
                         
-                        <img src="/img/avatar_hu6886133658591222341.png" width="300"
+                        <img src="/img/avatar_hu_a291887a020c52cf.png" width="300"
                             height="300" class="site-logo" loading="lazy" alt="Avatar">
                     
                 
@@ -228,9 +228,9 @@ vim的配置在~/.vimrc中
 
                     <select name="language" onchange="window.location.href = this.selectedOptions[0].value">
                         
-                            <option value="http://localhost:1313/" >English</option>
+                            <option value="https://J-shiro.github.io/" >English</option>
                         
-                            <option value="http://localhost:1313/zh-cn/" selected>中文</option>
+                            <option value="https://J-shiro.github.io/zh-cn/" selected>中文</option>
                         
                     </select>
                 </li>
@@ -334,7 +334,7 @@ vim的配置在~/.vimrc中
 
 
                 <time class="article-words">
-                    4675 字
+                    4733 字
                 </time>
             </div>
         
@@ -383,6 +383,7 @@ vim的配置在~/.vimrc中
 <p><strong>深入查看头文件定义</strong>：<code>find /usr/include | grep xxx.h</code></p>
 <p><strong>记录某文件出现多少次该单词</strong>：<code>grep -o &quot;xxx&quot; file.txt | wc -l</code></p>
 <p><strong>删除某环境变量</strong>：<code>unset xx</code></p>
+<p><strong>更改文件夹用户及用户组</strong>：<code>chown -R username:groupname directory_path</code></p>
 <p><strong>链接</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -557,7 +558,7 @@ vim的配置在~/.vimrc中
 </span></span><span class="line"><span class="cl">scp -r user@x.x.x.x:remote_file local_destination <span class="c1"># 远程到本地</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><code>rsync</code>同样可以传输文件</p>
+</div><p><code>rsync</code>同样可以传输文件，用于备份+镜像，只对差异文件更新，快速</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -569,6 +570,7 @@ vim的配置在~/.vimrc中
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>windows主机vscode免密ssh登录到服务器</strong></p>
+<p>A 把公钥给 B，使得A可远程免密登录B</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -827,8 +829,7 @@ vim的配置在~/.vimrc中
 <p><strong>行间搜索移动</strong>：<code>f{char}</code>移动到char字符上，用<code>;</code>和<code>,</code>搜索<strong>下一个</strong>和<strong>上一个</strong>，<code>t{char}</code>移动到char前一个字符，<code>F{char}</code>反过来搜前面的char字符</p>
 <p><strong>页面移动</strong>：<code>gg/G</code>移动到文件开头/结尾，<code>H/M/L</code>跳转到屏幕开头/中间/结尾；<code>ctrl+u</code>, <code>ctrl+f</code>上下翻页；<code>zz</code>把屏幕置为中间</p>
 <blockquote>
-<p>使用<code>ci</code>加上一个 <code>'</code> 或 <code>&lt;</code> 或 <code>&quot;</code> 或 <code>《</code> 都可以删除以此符号包含的文本并进行替换输入</p>
-</blockquote>
+<p>使用<code>ci</code>加上一个 <code>'</code> 或 <code>&lt;</code> 或 <code>&quot;</code> 或 <code>《</code> 都可以删除以此符号包含的文本并进行替换输入</p></blockquote>
 <p><strong>重复之前的操作</strong>：<code>.</code></p>
 <p><strong>光标设置</strong></p>
 <ol>
@@ -1335,7 +1336,7 @@ vim的配置在~/.vimrc中
         
             
         
-        共 217.37k 字 · 共 18篇文章
+        共 217.43k 字 · 共 18篇文章
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
         <br />本站访客数<span id="busuanzi_value_site_uv"></span>人次---
