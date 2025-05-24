@@ -1,0 +1,20 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Language - 分类 - J-shiro's Blog</title><link>https://j-shiro.github.io/categories/language/</link><description>Language - 分类 - J-shiro's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Wed, 05 Feb 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://j-shiro.github.io/categories/language/" rel="self" type="application/rss+xml"/><item><title>C++</title><link>https://j-shiro.github.io/c/</link><pubDate>Wed, 05 Feb 2025 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/c/</guid><description><![CDATA[<h2 id="环境">环境</h2>
+<h3 id="编译">编译</h3>
+<ul>
+<li><code>gcc</code>主要编译C语言，对于C++代码只编译而不自动链接C++标准库，需要使用<code>-lstdc++</code>指定</li>
+<li><code>g++</code>专门编译C++代码，自动链接C++标准库</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="复制到剪贴板"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./a.out &lt;infile&gt; outfile <span class="c1"># 文件重定向, infile文件中为输入</span></span></span></code></pre></div></div>
+<h2 id="基础">基础</h2>
+<h3 id="关键字">关键字</h3>
+<p><strong>extern</strong>：只声明变量，由外部定义</p>]]></description></item><item><title>GO</title><link>https://j-shiro.github.io/go/</link><pubDate>Sat, 25 Jan 2025 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/go/</guid><description><![CDATA[<ul>
+<li>Google开发，高性能，高并发，静态编译，垃圾回收，标准库丰富，跨平台</li>
+</ul>
+<h2 id="环境">环境</h2>
+<p><strong>编译运行</strong></p>
+<p><code>GOPATH</code>下包含目录<code>bin</code>(存放编译后的二进制文件)、<code>pkg</code>(存放编译后的库文件)、<code>src</code>(存放源码文件)</p>]]></description></item></channel></rss>

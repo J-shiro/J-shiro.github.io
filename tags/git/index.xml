@@ -1,0 +1,34 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Git - 标签 - J-shiro's Blog</title><link>https://j-shiro.github.io/tags/git/</link><description>Git - 标签 - J-shiro's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Tue, 14 Jan 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://j-shiro.github.io/tags/git/" rel="self" type="application/rss+xml"/><item><title>GIT</title><link>https://j-shiro.github.io/git/</link><pubDate>Tue, 14 Jan 2025 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/git/</guid><description><![CDATA[<h2 id="命令">命令</h2>
+<p>先 commit 一次后才会真正创建 master 分支</p>
+<p>从 git 服务器拉取完整仓库代码</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="复制到剪贴板"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git clone xxx.git</span></span></code></pre></div></div>
+<p>配置开发者用户和邮箱，代码每次提交包含配置</p>
+<div class="code-block code-line-numbers" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="复制到剪贴板"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git config user.name xxx
+</span></span><span class="line"><span class="cl">git config user.email xx@xx.com
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">cat .git/config <span class="c1"># 查看配置</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">git config --list <span class="c1"># 获取所有 git 配置</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 配置代理</span>
+</span></span><span class="line"><span class="cl">git config --global http.proxy 127.0.0.1:7890
+</span></span><span class="line"><span class="cl">git config --global https.proxy 127.0.0.1:7890
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看代理</span>
+</span></span><span class="line"><span class="cl">git config --global --get http.proxy
+</span></span><span class="line"><span class="cl">git config --global --get https.proxy
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 取消</span>
+</span></span><span class="line"><span class="cl">git config --global --unset http.proxy
+</span></span><span class="line"><span class="cl">git config --global --unset https.proxy</span></span></code></pre></div></div>
+<p>查看文件变动状态</p>]]></description></item></channel></rss>

@@ -1,0 +1,10 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Ability - 标签 - J-shiro's Blog</title><link>https://j-shiro.github.io/tags/ability/</link><description>Ability - 标签 - J-shiro's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Wed, 09 Oct 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://j-shiro.github.io/tags/ability/" rel="self" type="application/rss+xml"/><item><title>搜索</title><link>https://j-shiro.github.io/search/</link><pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/search/</guid><description><![CDATA[<h2 id="google">Google</h2>
+<ul>
+<li><code>intitle:xxxx</code>：限定标题</li>
+<li><code>allintitle:xxx</code>：限定标题多个关键词</li>
+<li><code>intext:xxx</code>：限定内容关键词</li>
+<li><code>inurl:xxx</code>：限定网址关键词</li>
+<li><code>site:xxx.com</code>：限定网址来源</li>
+<li><code>imagesize:2560x1440</code>：限定图片尺寸</li>
+<li><code>filetype:ppt</code>：限定文件格式</li>
+</ul>]]></description></item></channel></rss>

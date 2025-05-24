@@ -1,0 +1,6 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Linux - 标签 - J-shiro's Blog</title><link>https://j-shiro.github.io/tags/linux/</link><description>Linux - 标签 - J-shiro's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Wed, 09 Oct 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://j-shiro.github.io/tags/linux/" rel="self" type="application/rss+xml"/><item><title>LINUX</title><link>https://j-shiro.github.io/linux_note/</link><pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/linux_note/</guid><description><![CDATA[<h2 id="配置">配置</h2>
+<p>bash的配置在<code>~/.bashrc</code>中</p>
+<p>git的配置在<code>~/.gitconfig</code>中</p>
+<p>vim的配置在<code>~/.vimrc</code>中</p>
+<h2 id="基础命令">基础命令</h2>
+<p><strong>tree</strong>：列举所有文件，递归列举文件</p>]]></description></item></channel></rss>

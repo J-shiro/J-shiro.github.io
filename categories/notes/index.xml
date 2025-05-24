@@ -1,0 +1,182 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Notes - 分类 - J-shiro's Blog</title><link>https://j-shiro.github.io/categories/notes/</link><description>Notes - 分类 - J-shiro's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Wed, 05 Feb 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://j-shiro.github.io/categories/notes/" rel="self" type="application/rss+xml"/><item><title>C++</title><link>https://j-shiro.github.io/c/</link><pubDate>Wed, 05 Feb 2025 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/c/</guid><description><![CDATA[<h2 id="环境">环境</h2>
+<h3 id="编译">编译</h3>
+<ul>
+<li><code>gcc</code>主要编译C语言，对于C++代码只编译而不自动链接C++标准库，需要使用<code>-lstdc++</code>指定</li>
+<li><code>g++</code>专门编译C++代码，自动链接C++标准库</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="复制到剪贴板"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./a.out &lt;infile&gt; outfile <span class="c1"># 文件重定向, infile文件中为输入</span></span></span></code></pre></div></div>
+<h2 id="基础">基础</h2>
+<h3 id="关键字">关键字</h3>
+<p><strong>extern</strong>：只声明变量，由外部定义</p>]]></description></item><item><title>GO</title><link>https://j-shiro.github.io/go/</link><pubDate>Sat, 25 Jan 2025 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/go/</guid><description><![CDATA[<ul>
+<li>Google开发，高性能，高并发，静态编译，垃圾回收，标准库丰富，跨平台</li>
+</ul>
+<h2 id="环境">环境</h2>
+<p><strong>编译运行</strong></p>
+<p><code>GOPATH</code>下包含目录<code>bin</code>(存放编译后的二进制文件)、<code>pkg</code>(存放编译后的库文件)、<code>src</code>(存放源码文件)</p>]]></description></item><item><title>GIT</title><link>https://j-shiro.github.io/git/</link><pubDate>Tue, 14 Jan 2025 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/git/</guid><description><![CDATA[<h2 id="命令">命令</h2>
+<p>先 commit 一次后才会真正创建 master 分支</p>
+<p>从 git 服务器拉取完整仓库代码</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="复制到剪贴板"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git clone xxx.git</span></span></code></pre></div></div>
+<p>配置开发者用户和邮箱，代码每次提交包含配置</p>
+<div class="code-block code-line-numbers" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="复制到剪贴板"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git config user.name xxx
+</span></span><span class="line"><span class="cl">git config user.email xx@xx.com
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">cat .git/config <span class="c1"># 查看配置</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">git config --list <span class="c1"># 获取所有 git 配置</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 配置代理</span>
+</span></span><span class="line"><span class="cl">git config --global http.proxy 127.0.0.1:7890
+</span></span><span class="line"><span class="cl">git config --global https.proxy 127.0.0.1:7890
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看代理</span>
+</span></span><span class="line"><span class="cl">git config --global --get http.proxy
+</span></span><span class="line"><span class="cl">git config --global --get https.proxy
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 取消</span>
+</span></span><span class="line"><span class="cl">git config --global --unset http.proxy
+</span></span><span class="line"><span class="cl">git config --global --unset https.proxy</span></span></code></pre></div></div>
+<p>查看文件变动状态</p>]]></description></item><item><title>glibc源码分析</title><link>https://j-shiro.github.io/source_analyze/</link><pubDate>Tue, 19 Nov 2024 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/source_analyze/</guid><description><![CDATA[<h2 id="heap">Heap</h2>
+<h3 id="结构">结构</h3>
+<h4 id="malloc_par">malloc_par</h4>
+<p><code>malloc.c</code>中，记录堆管理器的相关参数</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-c">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="复制到剪贴板"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">malloc_par</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">trim_threshold</span><span class="p">;</span> <span class="c1">// 收缩阈值 默认128KB
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">  	用于控制main_arena中保留的内存量
+</span></span></span><span class="line"><span class="cl"><span class="cm">  	当释放的chunk为mmap获得的，同时大小大于mmap_threshold，更新mmap_threshold同时将trim_threshold乘2;
+</span></span></span><span class="line"><span class="cl"><span class="cm">  	当释放的chunk大小在 fast bin 范围内，合并完 size 大于 FASTBIN_CONSOLIDATION_THRESHOLD:0x10000，根据该字段缩小 top chunk
+</span></span></span><span class="line"><span class="cl"><span class="cm">  */</span>
+</span></span><span class="line"><span class="cl">  <span class="n">INTERNAL_SIZE_T</span> <span class="n">top_pad</span><span class="p">;</span>			<span class="c1">// 初始化或扩展堆时申请内存是否添加额外pad，默认为0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    								<span class="c1">// 调用sbrk函数时在原有请求大小上添加的一个值，是一个填充
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">INTERNAL_SIZE_T</span> <span class="n">mmap_threshold</span><span class="p">;</span>	<span class="c1">// mmap分配阈值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="cm">/* 
+</span></span></span><span class="line"><span class="cl"><span class="cm">  	决定sysmalloc用mmap还是sbrk分配内存界限, &gt;则mmap, &lt;则sbrk,
+</span></span></span><span class="line"><span class="cl"><span class="cm">  	若释放的内存通过mmap得到的, 则mmap_threshold与该内存大小取max, 且该值最大不超过DEFAULT_MMAP_THRESHOLD_MAX:0x2000000
+</span></span></span><span class="line"><span class="cl"><span class="cm">  */</span>
+</span></span><span class="line"><span class="cl">  <span class="n">INTERNAL_SIZE_T</span> <span class="n">arena_test</span><span class="p">;</span> <span class="c1">// 最小分配区
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">INTERNAL_SIZE_T</span> <span class="n">arena_max</span><span class="p">;</span>  <span class="c1">// 最大分配区
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span> 
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">n_mmaps</span><span class="p">;</span>			<span class="c1">// mmap分配的内存数量, mmap一次+1, munmap一次-1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">int</span> <span class="n">n_mmaps_max</span><span class="p">;</span>		<span class="c1">// 最多能mmap的内存数量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">int</span> <span class="n">max_n_mmaps</span><span class="p">;</span>		<span class="c1">// n_mmaps达到过的最大值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">no_dyn_threshold</span><span class="p">;</span>	<span class="c1">// 是否开启mmap分配阈值动态调整，默认为0开启
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span> 
+</span></span><span class="line"><span class="cl">  <span class="n">INTERNAL_SIZE_T</span> <span class="n">mmapped_mem</span><span class="p">;</span>		<span class="c1">// 当前 mmap 分配的内存大小总和
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="cm">/*INTERNAL_SIZE_T  sbrked_mem;*/</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/*INTERNAL_SIZE_T  max_sbrked_mem;*/</span>
+</span></span><span class="line"><span class="cl">  <span class="n">INTERNAL_SIZE_T</span> <span class="n">max_mmapped_mem</span><span class="p">;</span>	<span class="c1">// mmap 的内存大小总和达到过的最大值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">INTERNAL_SIZE_T</span> <span class="n">max_total_mem</span><span class="p">;</span>  <span class="c1">// 单线程情况下统计进程分配的内存总数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span> 
+</span></span><span class="line"><span class="cl">  <span class="kt">char</span> <span class="o">*</span><span class="n">sbrk_base</span><span class="p">;</span> <span class="c1">// brk系统调用申请的heap区域的起始地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">};</span></span></span></code></pre></div></div>
+<p>该结构体类型实例<code>mp_</code>来记录ptmalloc参数</p>]]></description></item><item><title>LINUX</title><link>https://j-shiro.github.io/linux_note/</link><pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/linux_note/</guid><description><![CDATA[<h2 id="配置">配置</h2>
+<p>bash的配置在<code>~/.bashrc</code>中</p>
+<p>git的配置在<code>~/.gitconfig</code>中</p>
+<p>vim的配置在<code>~/.vimrc</code>中</p>
+<h2 id="基础命令">基础命令</h2>
+<p><strong>tree</strong>：列举所有文件，递归列举文件</p>]]></description></item><item><title>MISC</title><link>https://j-shiro.github.io/misc_note/</link><pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/misc_note/</guid><description><![CDATA[<h2 id="工具">工具</h2>
+<h3 id="pngcheck">pngcheck</h3>
+<p>目录下CMD调用：<code>pngcheck -v file</code></p>
+<h3 id="f5-steganography">F5-steganography</h3>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-Bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="复制到剪贴板"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">java Extract ../../Desktop/xxx.jpg -p password</span></span></code></pre></div></div>
+<h3 id="aircrack-ng">aircrack-ng</h3>
+<h3 id="hashcat">hashcat</h3>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="复制到剪贴板"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./hashcat -m <span class="m">22000</span> -a <span class="m">3</span> &lt;path_to_hash_hc22000_file&gt; -1 &lt;custom_charset&gt; ?1?1?1?1?1?1?1?1
+</span></span><span class="line"><span class="cl"><span class="c1"># -m 22000 用于 WPA/WPA2 模式</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># -a 3 Brute-Force攻击模式</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># -1: 所以使用?1, 每个?1代表一个字符位置 --custom-charset1=abcdefg...也可</span></span></span></code></pre></div></div>
+<h3 id="stegsolve"><strong>Stegsolve</strong></h3>
+
+<h3 id="volatility">Volatility</h3>
+<p>取证工具</p>]]></description></item><item><title>PWN</title><link>https://j-shiro.github.io/pwn_note/</link><pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/pwn_note/</guid><description><![CDATA[<h2 id="工具">工具</h2>
+<h3 id="docker">Docker</h3>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-Bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="复制到剪贴板"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">docker pull xxx/xxx:last <span class="c1"># 拉取docker镜像</span>
+</span></span><span class="line"><span class="cl">docker images <span class="c1"># 查看镜像</span>
+</span></span><span class="line"><span class="cl">docker rmi &lt;CONTAINER IMAGE ID&gt; <span class="c1"># 删除镜像</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">docker start &lt;CONTAINER ID&gt; <span class="c1"># 开启容器</span>
+</span></span><span class="line"><span class="cl">docker stop &lt;CONTAINER ID&gt;  <span class="c1"># 关闭容器</span>
+</span></span><span class="line"><span class="cl">docker ps -a <span class="c1"># 查看容器</span>
+</span></span><span class="line"><span class="cl">docker rm -f &lt;CONTAINER ID&gt; <span class="c1"># 删除容器</span></span></span></code></pre></div></div>
+<p><strong>生成容器</strong></p>]]></description></item><item><title>REVERSE</title><link>https://j-shiro.github.io/reverse_note/</link><pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/reverse_note/</guid><description><![CDATA[<h2 id="基础知识">基础知识</h2>
+<p>除了逆向外也可以尝试<strong>爆破</strong></p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-c">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="复制到剪贴板"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">cipher</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mh">0xffffffff</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cipher</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">//加密异或等操作
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">cipher</span><span class="o">==</span><span class="mi">20241212153</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;flag1:%x</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div>
+<h3 id="windows">Windows</h3>
+<p><code>kernel32.dll</code>：控制系统内存管理、数据输入输出、中断处理，当Windows启动时，其驻留在内存中特定的写保护区域，使别的程序无法占用该内存区域</p>]]></description></item><item><title>WEB</title><link>https://j-shiro.github.io/web_note/</link><pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/web_note/</guid><description><![CDATA[<p>寻找文件：<code>/tmp</code>，<code>env</code>，<code>/etc/passwd</code></p>
+<p>找文件名：<code>find / -name &quot;*flag*.txt&quot;</code></p>
+<h2 id="工具">工具</h2>
+<h3 id="hackbar">HackBar</h3>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-c">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="复制到剪贴板"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">devtools</span>
+</span></span><span class="line"><span class="cl"><span class="n">X</span><span class="o">-</span><span class="n">Forwarded</span><span class="o">-</span><span class="nl">For</span><span class="p">:</span> <span class="mf">127.0.0.1</span> <span class="c1">// 只允许本机登录
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 识别通过HTTP代理或负载均衡器连接到Web服务器的客户端的原始IP地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">User</span> <span class="nl">Agent</span><span class="p">:</span> <span class="c1">// 向服务器发出请求的客户端软件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nl">Referer</span><span class="p">:</span> <span class="c1">// 链接到当前请求页面的前一个网页的URL
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nl">Cookie</span><span class="p">:</span> <span class="n">xx</span><span class="o">=</span><span class="n">xx</span> <span class="c1">// 有时根据提示输入
+</span></span></span></code></pre></div></div>
+<p><strong>Post data</strong></p>]]></description></item><item><title>搜索</title><link>https://j-shiro.github.io/search/</link><pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/search/</guid><description><![CDATA[<h2 id="google">Google</h2>
+<ul>
+<li><code>intitle:xxxx</code>：限定标题</li>
+<li><code>allintitle:xxx</code>：限定标题多个关键词</li>
+<li><code>intext:xxx</code>：限定内容关键词</li>
+<li><code>inurl:xxx</code>：限定网址关键词</li>
+<li><code>site:xxx.com</code>：限定网址来源</li>
+<li><code>imagesize:2560x1440</code>：限定图片尺寸</li>
+<li><code>filetype:ppt</code>：限定文件格式</li>
+</ul>]]></description></item></channel></rss>
