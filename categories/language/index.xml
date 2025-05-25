@@ -17,4 +17,24 @@
 </ul>
 <h2 id="环境">环境</h2>
 <p><strong>编译运行</strong></p>
-<p><code>GOPATH</code>下包含目录<code>bin</code>(存放编译后的二进制文件)、<code>pkg</code>(存放编译后的库文件)、<code>src</code>(存放源码文件)</p>]]></description></item></channel></rss>
+<p><code>GOPATH</code>下包含目录<code>bin</code>(存放编译后的二进制文件)、<code>pkg</code>(存放编译后的库文件)、<code>src</code>(存放源码文件)</p>]]></description></item><item><title>Python</title><link>https://j-shiro.github.io/python/</link><pubDate>Mon, 25 Jul 2022 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/python/</guid><description><![CDATA[<h2 id="环境">环境</h2>
+<h3 id="pip">pip</h3>
+<p><strong>手动安装包</strong></p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-bash">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="复制到剪贴板"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">python3 setup.py install</span></span></code></pre></div></div>
+<p><strong>pip 安装</strong></p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-python">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="复制到剪贴板"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">pip</span> <span class="nb">list</span> <span class="c1">#列出当前已安装的所有模块</span>
+</span></span><span class="line"><span class="cl"><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">upgrade</span> <span class="n">xxx</span> <span class="c1"># 升级xxx模块</span>
+</span></span><span class="line"><span class="cl"><span class="n">pip</span> <span class="n">uninstall</span> <span class="n">xxx</span> <span class="c1"># 卸载xxx模块</span>
+</span></span><span class="line"><span class="cl"><span class="n">pip</span> <span class="n">install</span> <span class="n">xxx</span><span class="o">.</span><span class="n">whl</span> <span class="c1"># 使用whl文件直接安装xxx</span></span></span></code></pre></div></div>
+<h2 id="基本操作">基本操作</h2>
+<p><strong>查看版本</strong></p>]]></description></item></channel></rss>
