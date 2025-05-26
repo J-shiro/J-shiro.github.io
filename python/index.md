@@ -179,6 +179,12 @@ a.conjugate() # 共轭复数
 - 八进制：0o 开头
 - 二进制：0b 开头
 
+**浮点数**
+
+```python
+print(f"{x:.2f}") # x 小数点后2位
+```
+
 ### 元组
 
 元组（tuple）为不可变序列类型，一旦创建后其内容就不能被修改，元组访问处理速度比列表更快
@@ -941,6 +947,41 @@ res = any(char in forbidden for char in word) # True
 any：遍历逐个取生成器表达式的值，若有单词中任何一个字母是属于禁止的都返回`true`
 
 ### AI
+
+#### pyplot
+
+```python
+plt.hist(x) # 直方图
+```
+
+#### numpy
+
+广播机制：shape 不相等时会复制调整使得运算通过
+
+```python
+np.array([[1, 2]])   # 1*2矩阵
+np.array([[1], [2]]) # 2*1矩阵
+# n 个中括号即 n 维矩阵
+
+a = np.random.randn(5, 1) # 随机生成 5*1 矩阵
+
+tensor_type.numpy() # array([[xx]], dtype=float32 将Tensor类型转换为np数组
+
+np.matmul(a, b) # 矩阵乘法 或 a @ b
+np.exp(V) # V中每个元素i: 求e^i
+np.log(V)
+np.abs(V) # 绝对值
+np.maximum(V, 0)
+np.sum(A)
+A.sum(axis=0) # 垂直方向求和 axis=1 水平求和
+AT = A.T # 矩阵转置
+# [2, ] [2, 1] 区别
+[1 2] # 秩为1的数组
+[[1]
+ [2]] # 2*1的矩阵
+
+[::3, ::2] # 每 3 行一跳，每 2 列一跳
+```
 
 #### pytorch
 
