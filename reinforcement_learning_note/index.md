@@ -85,7 +85,7 @@ $return=R_1 \cdot (\gamma) + R_2 \cdot (\gamma)^2 + \cdots + R_n\cdot (\gamma)^n
 Q函数表示在状态 s 下采取动作 a 后**期望总回报**
 
 - 最优Q函数：Q*(s, a)，从 s 开始，执行动作 a，按照最优策略执行后续动作，最终获得的最大期望回报
-- 构建最优策略：$\pi^{*}(s)=\arg \max\limits_{a}Q^{*}(s,a)$
+- 构建最优策略：$\pi^{\*}(s)=\arg \max\limits_{a}Q^{*}(s,a)$
 
 
 
