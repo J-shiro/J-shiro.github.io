@@ -1,0 +1,7 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>NLP - 标签 - J-shiro's Blog</title><link>https://j-shiro.github.io/tags/nlp/</link><description>NLP - 标签 - J-shiro's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sat, 12 Oct 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://j-shiro.github.io/tags/nlp/" rel="self" type="application/rss+xml"/><item><title>自然语言处理</title><link>https://j-shiro.github.io/nlp_note/</link><pubDate>Sat, 12 Oct 2024 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/nlp_note/</guid><description><![CDATA[<p>自然语言处理，Natural language processing (NLP) ，有监督学习</p>
+<h3 id="序列模型">序列模型</h3>
+<p>文本是一种<strong>序列数据</strong>，一句话是由一个个按顺序排列的单词组成的</p>
+<p><strong>数据表示</strong></p>
+<ul>
+<li>
+<p>$X^{(i)} = [x_1^{(i)}, x_2^{(i)}, \dots, x_{T_x^{(i)}}^{(i)}]$： 第 $i$ 个样本的输入序列，有 $T_x^{(i)}$ 个元素（单词/字符等）</p>]]></description></item></channel></rss>

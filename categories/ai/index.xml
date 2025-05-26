@@ -9,4 +9,10 @@
 <li>极大神经网络在适当正则化下不损害性能，拥有低偏差：惩罚力度小，拟合高；惩罚力度大，平稳</li>
 <li>停滞区（plateaus）使学习过程慢</li>
 </ul>
-<p><strong>参数随机初始化</strong></p>]]></description></item></channel></rss>
+<p><strong>参数随机初始化</strong></p>]]></description></item><item><title>自然语言处理</title><link>https://j-shiro.github.io/nlp_note/</link><pubDate>Sat, 12 Oct 2024 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/nlp_note/</guid><description><![CDATA[<p>自然语言处理，Natural language processing (NLP) ，有监督学习</p>
+<h3 id="序列模型">序列模型</h3>
+<p>文本是一种<strong>序列数据</strong>，一句话是由一个个按顺序排列的单词组成的</p>
+<p><strong>数据表示</strong></p>
+<ul>
+<li>
+<p>$X^{(i)} = [x_1^{(i)}, x_2^{(i)}, \dots, x_{T_x^{(i)}}^{(i)}]$： 第 $i$ 个样本的输入序列，有 $T_x^{(i)}$ 个元素（单词/字符等）</p>]]></description></item></channel></rss>
