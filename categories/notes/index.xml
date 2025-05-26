@@ -91,7 +91,18 @@
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span> 
 </span></span><span class="line"><span class="cl">  <span class="kt">char</span> <span class="o">*</span><span class="n">sbrk_base</span><span class="p">;</span> <span class="c1">// brk系统调用申请的heap区域的起始地址
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">};</span></span></span></code></pre></div></div>
-<p>该结构体类型实例<code>mp_</code>来记录ptmalloc参数</p>]]></description></item><item><title>LINUX</title><link>https://j-shiro.github.io/linux_note/</link><pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/linux_note/</guid><description><![CDATA[<h2 id="配置">配置</h2>
+<p>该结构体类型实例<code>mp_</code>来记录ptmalloc参数</p>]]></description></item><item><title>深度学习</title><link>https://j-shiro.github.io/deep_learning_note/</link><pubDate>Sat, 12 Oct 2024 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/deep_learning_note/</guid><description><![CDATA[<h2 id="神经网络">神经网络</h2>
+<p><strong>整体框架</strong></p>
+
+<p><strong>特点</strong></p>
+<ul>
+<li>堆叠：$f=W_3max(0,W_2max(0,W_1x))$，参数极多</li>
+<li>神经元个数影响：神经元多，分类效果好</li>
+<li>参数个数影响：参数多，拟合高</li>
+<li>极大神经网络在适当正则化下不损害性能，拥有低偏差：惩罚力度小，拟合高；惩罚力度大，平稳</li>
+<li>停滞区（plateaus）使学习过程慢</li>
+</ul>
+<p><strong>参数随机初始化</strong></p>]]></description></item><item><title>LINUX</title><link>https://j-shiro.github.io/linux_note/</link><pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/linux_note/</guid><description><![CDATA[<h2 id="配置">配置</h2>
 <p>bash的配置在<code>~/.bashrc</code>中</p>
 <p>git的配置在<code>~/.gitconfig</code>中</p>
 <p>vim的配置在<code>~/.vimrc</code>中</p>
@@ -170,13 +181,4 @@
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nl">Referer</span><span class="p">:</span> <span class="c1">// 链接到当前请求页面的前一个网页的URL
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nl">Cookie</span><span class="p">:</span> <span class="n">xx</span><span class="o">=</span><span class="n">xx</span> <span class="c1">// 有时根据提示输入
 </span></span></span></code></pre></div></div>
-<p><strong>Post data</strong></p>]]></description></item><item><title>搜索</title><link>https://j-shiro.github.io/search/</link><pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/search/</guid><description><![CDATA[<h2 id="google">Google</h2>
-<ul>
-<li><code>intitle:xxxx</code>：限定标题</li>
-<li><code>allintitle:xxx</code>：限定标题多个关键词</li>
-<li><code>intext:xxx</code>：限定内容关键词</li>
-<li><code>inurl:xxx</code>：限定网址关键词</li>
-<li><code>site:xxx.com</code>：限定网址来源</li>
-<li><code>imagesize:2560x1440</code>：限定图片尺寸</li>
-<li><code>filetype:ppt</code>：限定文件格式</li>
-</ul>]]></description></item></channel></rss>
+<p><strong>Post data</strong></p>]]></description></item></channel></rss>

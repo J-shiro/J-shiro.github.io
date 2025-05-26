@@ -1,0 +1,12 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>AI - 分类 - J-shiro's Blog</title><link>https://j-shiro.github.io/categories/ai/</link><description>AI - 分类 - J-shiro's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sat, 12 Oct 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://j-shiro.github.io/categories/ai/" rel="self" type="application/rss+xml"/><item><title>深度学习</title><link>https://j-shiro.github.io/deep_learning_note/</link><pubDate>Sat, 12 Oct 2024 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/deep_learning_note/</guid><description><![CDATA[<h2 id="神经网络">神经网络</h2>
+<p><strong>整体框架</strong></p>
+
+<p><strong>特点</strong></p>
+<ul>
+<li>堆叠：$f=W_3max(0,W_2max(0,W_1x))$，参数极多</li>
+<li>神经元个数影响：神经元多，分类效果好</li>
+<li>参数个数影响：参数多，拟合高</li>
+<li>极大神经网络在适当正则化下不损害性能，拥有低偏差：惩罚力度小，拟合高；惩罚力度大，平稳</li>
+<li>停滞区（plateaus）使学习过程慢</li>
+</ul>
+<p><strong>参数随机初始化</strong></p>]]></description></item></channel></rss>

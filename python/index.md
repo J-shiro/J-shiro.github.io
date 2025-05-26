@@ -940,3 +940,57 @@ res = any(char in forbidden for char in word) # True
 
 any：遍历逐个取生成器表达式的值，若有单词中任何一个字母是属于禁止的都返回`true`
 
+### AI
+
+#### pytorch
+
+```python
+# 使用 conda 安装 GPU 支持的 torch
+conda install cuda -c nvidia/label/cuda-12.4.0
+nvcc -V # 验证
+conda install pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch -c nvidia
+```
+
+#### Conda
+
+```python
+conda create -n test python=x.x.x
+source activate base
+conda activate test
+```
+
+#### TensorFlow
+
+使用TensorFlow构建神经网络模式
+
+```Python
+model = Sequential([Dense(units = 153, activation = 'sigmoid'), # 全连接层 layer1
+                    Dense(units = 21, activation = 'sigmoid')]) # layer2
+# activation: linear, relu, sigmoid, softmax
+
+x = np.array([[xx, xx], [xx, xx]])
+y = np.array([xx, xx])
+
+model.compile(loss=BinaryCrossentropy()) # 损失函数
+# BinaryCrossentropy 适用于二元分类0或1: 逻辑回归 二元交叉熵函数
+# MeanSquaredError 适用于回归: 预测数值 
+# SparseCategoricalCrossentropy  适用于SoftMax多分类 稀疏范畴交叉熵函数 得到N个值中的一个值
+
+model.fit(x, y, epochs=100) # fit:实现反向传播  epochs: 梯度下降/迭代次数
+
+model.predict(x_new)
+```
+
+SoftMax / Sigmoid中：
+
+```Python
+# 前面的Dense最后一层activation使用'linear'输出中间值
+model.compile(loss=SparseCategoricalCrossentropy(from_logits=True))
+# 损失值不标准化为概率, 使得数字更准确, SoftMax操作交给TensorFlow的损失函数计算
+
+# 预测
+logits = model(X) # SoftMax输出z1-zN, 即非概率   Sigmoid输出z, 非概率
+f_x = tf.nn.softmax(logits) # tf.nn.sigmoid(logits) 将中间值单独调用函数转为概率
+```
+
+

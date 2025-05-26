@@ -255,6 +255,23 @@ cat xxx | sed -E 's/x(hello)?xxx(.*)xx/\2/'
 # 将匹配到的内容用(.*)中的内容替换
 ```
 
+### screen
+
+用于后台挂载
+
+```bash
+screen -S xxx # 新建
+screen -r xxx # 进入
+screen -ls # 列举
+
+# screen 中滑动
+ctrl + A, [
+# screen 中跳出
+ctrl + A, ctrl + D
+```
+
+
+
 ## shell
 
 可以用`shellcheck`命令检查shell脚本错误

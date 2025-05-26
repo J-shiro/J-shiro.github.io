@@ -139,7 +139,18 @@
       </tr>
   </tbody>
 </table>
-<p>阅读状态：fc(Fully completed), sc(Substantially completed), pc(Partially completed)</p>]]></description></item><item><title>LINUX</title><link>https://j-shiro.github.io/linux_note/</link><pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/linux_note/</guid><description><![CDATA[<h2 id="配置">配置</h2>
+<p>阅读状态：fc(Fully completed), sc(Substantially completed), pc(Partially completed)</p>]]></description></item><item><title>深度学习</title><link>https://j-shiro.github.io/deep_learning_note/</link><pubDate>Sat, 12 Oct 2024 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/deep_learning_note/</guid><description><![CDATA[<h2 id="神经网络">神经网络</h2>
+<p><strong>整体框架</strong></p>
+
+<p><strong>特点</strong></p>
+<ul>
+<li>堆叠：$f=W_3max(0,W_2max(0,W_1x))$，参数极多</li>
+<li>神经元个数影响：神经元多，分类效果好</li>
+<li>参数个数影响：参数多，拟合高</li>
+<li>极大神经网络在适当正则化下不损害性能，拥有低偏差：惩罚力度小，拟合高；惩罚力度大，平稳</li>
+<li>停滞区（plateaus）使学习过程慢</li>
+</ul>
+<p><strong>参数随机初始化</strong></p>]]></description></item><item><title>LINUX</title><link>https://j-shiro.github.io/linux_note/</link><pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/linux_note/</guid><description><![CDATA[<h2 id="配置">配置</h2>
 <p>bash的配置在<code>~/.bashrc</code>中</p>
 <p>git的配置在<code>~/.gitconfig</code>中</p>
 <p>vim的配置在<code>~/.vimrc</code>中</p>
@@ -202,20 +213,4 @@
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div>
 <h3 id="windows">Windows</h3>
-<p><code>kernel32.dll</code>：控制系统内存管理、数据输入输出、中断处理，当Windows启动时，其驻留在内存中特定的写保护区域，使别的程序无法占用该内存区域</p>]]></description></item><item><title>WEB</title><link>https://j-shiro.github.io/web_note/</link><pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/web_note/</guid><description><![CDATA[<p>寻找文件：<code>/tmp</code>，<code>env</code>，<code>/etc/passwd</code></p>
-<p>找文件名：<code>find / -name &quot;*flag*.txt&quot;</code></p>
-<h2 id="工具">工具</h2>
-<h3 id="hackbar">HackBar</h3>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
-    <div class="code-header language-c">
-        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
-        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
-        <span class="copy" title="复制到剪贴板"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
-    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">devtools</span>
-</span></span><span class="line"><span class="cl"><span class="n">X</span><span class="o">-</span><span class="n">Forwarded</span><span class="o">-</span><span class="nl">For</span><span class="p">:</span> <span class="mf">127.0.0.1</span> <span class="c1">// 只允许本机登录
-</span></span></span><span class="line"><span class="cl"><span class="c1">// 识别通过HTTP代理或负载均衡器连接到Web服务器的客户端的原始IP地址
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">User</span> <span class="nl">Agent</span><span class="p">:</span> <span class="c1">// 向服务器发出请求的客户端软件
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nl">Referer</span><span class="p">:</span> <span class="c1">// 链接到当前请求页面的前一个网页的URL
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nl">Cookie</span><span class="p">:</span> <span class="n">xx</span><span class="o">=</span><span class="n">xx</span> <span class="c1">// 有时根据提示输入
-</span></span></span></code></pre></div></div>
-<p><strong>Post data</strong></p>]]></description></item></channel></rss>
+<p><code>kernel32.dll</code>：控制系统内存管理、数据输入输出、中断处理，当Windows启动时，其驻留在内存中特定的写保护区域，使别的程序无法占用该内存区域</p>]]></description></item></channel></rss>
