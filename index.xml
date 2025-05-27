@@ -134,7 +134,7 @@
           <td>PyRTFuzz: Detecting Bugs in Python Runtimes via Two-Level Collaborative Fuzzing</td>
           <td><a href="https://github.com/awen-li/PyRTFuzz" target="_blank" rel="noopener noreffer ">https://github.com/awen-li/PyRTFuzz</a></td>
           <td>n</td>
-          <td></td>
+          <td>n</td>
           <td>Python模糊测试</td>
       </tr>
       <tr>
@@ -150,6 +150,13 @@
           <td>fc</td>
           <td>n</td>
           <td>大模型认知偏差检测</td>
+      </tr>
+      <tr>
+          <td>Generative AI for Game Theory-based Mobile Networking</td>
+          <td>-</td>
+          <td>fc</td>
+          <td>n</td>
+          <td>博弈论，生成式AI</td>
       </tr>
   </tbody>
 </table>
