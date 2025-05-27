@@ -733,10 +733,6 @@ x86-64中寄存器：RBP、RSP、RIP、RAX、RBX、RCX、RDX、RDI、RSI、R8~R1
 
 ## 工具
 
-### PE-bear
-
-### 010Editor
-
 ### GDB
 
 **查看格式**
@@ -962,8 +958,6 @@ pip install frida-tools
 
 （Detect It Easy）查壳工具
 
-### Peid
-
 ### Exeinfo PE
 
 查壳工具
@@ -1056,8 +1050,6 @@ pip install frida-tools
 可以对代码转到对应的内存空间位置：右键 > 在内存布局中转到
 
 搜索命令：右键 > 所有用户模块 > 命令，如寻找`pushad`
-
-### GNU Binary Utilities
 
 ### GDB/PWNDBG
 
@@ -1989,17 +1981,7 @@ F9运行到断点处，上图`003B750F`的上一行为`popad`，当执行到popa
 
 打开文件先查看系统断点，`F9`运行进入断点处，有多个`push`操作
 
-#### ASPack
-
 ### 加密壳
-
-#### ASProtect
-
-#### Armadillo
-
-#### EXECryptor
-
-#### Themida
 
 #### VMP
 
@@ -2029,12 +2011,6 @@ void BF(){
     CloseHandle(h);
 }
 ```
-
-
-
-### 混淆壳
-
-### 虚拟机壳
 
 ## 脱壳
 
@@ -2105,9 +2081,6 @@ jadx打开文件后，`AndroidManifest.xml`文件中包括**配置信息**等
 
 `APK`文件若PC模拟器无法打开，则直接尝试手机安装打开，版本问题
 
-## .Net
-
-### C#
 
 ## python
 
@@ -2124,7 +2097,7 @@ help(xxx) # 可以查看信息
 
 ## VM
 
-维护opcode操作码表模拟虚拟机操作，`switch`对于不同的码进行相应操作，一般来说都是对**单字符**进行处理（友好出题人，先使用IDA动态调试跟踪操作
+维护opcode操作码表模拟虚拟机操作，`switch`对于不同的码进行相应操作，一般来说都是对**单字符**进行处理，先使用IDA动态调试跟踪操作
 
 **Frida插桩测试**
 

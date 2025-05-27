@@ -1,0 +1,6 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Reinforcement Learning - 标签 - J-shiro's Blog</title><link>https://j-shiro.github.io/tags/reinforcement-learning/</link><description>Reinforcement Learning - 标签 - J-shiro's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sat, 12 Oct 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://j-shiro.github.io/tags/reinforcement-learning/" rel="self" type="application/rss+xml"/><item><title>强化学习</title><link>https://j-shiro.github.io/reinforcement_learning_note/</link><pubDate>Sat, 12 Oct 2024 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/reinforcement_learning_note/</guid><description><![CDATA[<h2 id="概念">概念</h2>
+<p>要素：$state\overset{policy}\longrightarrow action$</p>
+<p><strong>奖励函数</strong></p>
+<ul>
+<li>
+<p>Reward Function，衡量智能体某个状态 s 下采取动作 a 后获得的即时反馈</p>]]></description></item></channel></rss>
