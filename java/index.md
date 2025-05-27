@@ -51,7 +51,7 @@ public class Xxxx {
 >
 > 无static修饰，实例变量：对象的变量，属于每个对象
 
-<img src="/img/Java.zh-cn.assets/image-20250527190020442.png" alt="图片无法加载" />
+<img src="/img/java.zh-cn.assets/image-20250527190020442.png" alt="图片无法加载" />
 
 >  static 修饰，静态方法：属于类， classname.func，设计工具类，可private私有化构造函数
 >
@@ -1045,7 +1045,7 @@ try(// 只能放置资源对象，用完会自动调用close函数关闭
 
 资源一般指最终实现了AutoCloseable接口
 
-<img src="/img/Java.zh-cn.assets/image-20250527202528146.png" alt="图片无法加载" />
+<img src="/img/java.zh-cn.assets/image-20250527202528146.png" alt="图片无法加载" />
 
 #### 字符流
 
@@ -1308,7 +1308,7 @@ pool.shutdownNow(); // 立刻关闭线程池，停止正在执行的任务
 
 任务拒绝策略
 
-<img src="/img/Java.zh-cn.assets/image-20250527203014591.png" alt="图片无法加载" />
+<img src="/img/java.zh-cn.assets/image-20250527203014591.png" alt="图片无法加载" />
 
 **Callable**: `Future<T> submit(Callable<T> task); // 执行，返回未来任务对象，用于获取线程返回结果`
 
@@ -1463,7 +1463,7 @@ public @interface A {
 public @interface B ... 
 ```
 
-<img src="/img/Java.zh-cn.assets/image-20250527203248794.png" alt="图片无法加载" />
+<img src="/img/java.zh-cn.assets/image-20250527203248794.png" alt="图片无法加载" />
 
 **解析**
 
