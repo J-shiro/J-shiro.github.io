@@ -1,0 +1,7 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>LangChain - 标签 - J-shiro's Blog</title><link>https://j-shiro.github.io/tags/langchain/</link><description>LangChain - 标签 - J-shiro's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Fri, 01 Nov 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://j-shiro.github.io/tags/langchain/" rel="self" type="application/rss+xml"/><item><title>LangChain</title><link>https://j-shiro.github.io/langchain_note/</link><pubDate>Fri, 01 Nov 2024 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/langchain_note/</guid><description><![CDATA[<h2 id="基本知识">基本知识</h2>
+<ul>
+<li>
+<p>LangChain是一个基于大语言模型（LLMs）用于构建端到端语言模型应用的框架</p>
+</li>
+<li>
+<p>组件：模型（Models）、提示模板（Prompts）、数据检索（Indexes）、记忆（Memory）、链（Chains）、代理（Agents）</p>]]></description></item></channel></rss>
