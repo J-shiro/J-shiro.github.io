@@ -4491,7 +4491,7 @@ sysexit  # Ring0 返回 Ring3
 ② 内核为进程保存上下文，跳转到注册好的 signal handler 处理 signal
 
 1. 【**signal frame**入用户空间栈；包含寄存器值和 signal 信息】
-2. 【新返回地址入栈，指向**`sigreturn`**系统调用】
+2. 【新返回地址入栈，指向`sigreturn`系统调用】
 
 ③ signal handler 返回【调用`sigreturn`】
 
@@ -5273,7 +5273,7 @@ BK->fd = FD，即 *(expect value + 0x10) = FD = target addr - 0x18
      // 变式: = *(target addr) 即第四步将是任意地址写, 目标地址内容更改为(目标地址-0x18)
 ```
 
-- 实现**任意地址写：**向可写地址`target addr`中写入`expect value`，**其中 expect value + 0x10 地址具有可写的权限**
+- 实现**任意地址写**：向可写地址`target addr`中写入`expect value`，**其中 expect value + 0x10 地址具有可写的权限**
 - 此时可以将存储`malloc`地址的`recordlist[2]`内容覆盖为恶意地址`recordlist[2]-0x18=recordlist[0]`，修改可以将 malloc 数组全部指针修改为其他的地址并通过`change`写入恶意内容
 
 <img src="/img/pwn_note.zh-cn.assets/172844676894984.png" alt="图片无法加载" />
@@ -5321,7 +5321,7 @@ free(s);
 
 **poison null byte**：适用于 libc-2.27
 
-**漏洞点：**程序向堆缓冲区中写入时，字节数超过了该缓冲区本身所申请的字节数，且刚好越界了一个字节
+**漏洞点**：程序向堆缓冲区中写入时，字节数超过了该缓冲区本身所申请的字节数，且刚好越界了一个字节
 
 ```C
 for(i=0; ;++i)

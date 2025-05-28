@@ -591,7 +591,7 @@ if (!preg_match('/pwd|tac|cat|chr|ord|ls|dir|conv|info|hex|bin|rand|array|source
 @eval($cmd);
 ```
 
-**getallheaders()绕过————**返回当前请求的所有请求头信息（限Apache）
+`getallheaders()`绕过----返回当前请求的所有请求头信息（限Apache）
 
 `var_dump(end(getallheaders()));`测试是否可以获取到返回信息
 
@@ -850,7 +850,7 @@ echo $key
 **任意字符串构造**
 
 - **`%9f`不解析，造成字符串后移一位：%9f数量等于要构造的字符串长度`%9f%9fab`**
-- **`%f0`**吞掉字符串三位：%f0加随便三个字符，结合%9f的后移，**`%f0abc%9f`**达到字符串逃逸
+- `%f0`吞掉字符串三位: %f0加随便三个字符，结合`%9f`的后移，`%f0abc%9f`达到字符串逃逸
 
 注：`substrtr`函数逃逸出的字符不能大于原来的字符数量，此时可通过其他`GET`传入增加字符数量
 

@@ -341,7 +341,7 @@ for i in tmp:
 
 ### WIFI
 
-协议**：802.11**，WPA或WEP加密后数据包
+协议：**802.11**，WPA或WEP加密后数据包
 
 ```bash
 # kali

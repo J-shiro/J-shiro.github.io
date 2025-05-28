@@ -1,0 +1,32 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>CV - 标签 - J-shiro's Blog</title><link>https://j-shiro.github.io/tags/cv/</link><description>CV - 标签 - J-shiro's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sat, 12 Oct 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://j-shiro.github.io/tags/cv/" rel="self" type="application/rss+xml"/><item><title>计算机视觉</title><link>https://j-shiro.github.io/cv_note/</link><pubDate>Sat, 12 Oct 2024 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/cv_note/</guid><description><![CDATA[<h2 id="概念">概念</h2>
+<h3 id="垂直边缘检测">垂直边缘检测</h3>
+<ul>
+<li>灰度图</li>
+</ul>
+
+<p><strong>N x N * f x f = ( N - f + 1 ) * ( N - f + 1)</strong>，f 基本为奇数</p>
+
+<p><strong>滤波器/卷积核</strong></p>
+<ul>
+<li><code>Sobel</code>过滤器：强调方向，垂直方向，中间权重为2</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="复制到剪贴板"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><pre tabindex="0"><code>[-1, 0, 1]
+[-2, 0, 2]
+[-1, 0, 1]</code></pre></div>
+<ul>
+<li><code>Scharr</code>过滤器：更平滑</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="复制到剪贴板"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><pre tabindex="0"><code>[-3, 0, 3]
+[-10, 0, 10]
+[-3, 0, 3]</code></pre></div>
+<p><strong>padding填充</strong></p>]]></description></item></channel></rss>
