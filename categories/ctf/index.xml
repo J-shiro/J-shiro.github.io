@@ -2,7 +2,7 @@
 <h3 id="结构">结构</h3>
 <h4 id="malloc_par">malloc_par</h4>
 <p><code>malloc.c</code>中，记录堆管理器的相关参数</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+<div class="code-block code-line-numbers" style="counter-reset: code-block 0">
     <div class="code-header language-c">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
@@ -80,7 +80,7 @@
 </span></span><span class="line"><span class="cl">docker rm -f &lt;CONTAINER ID&gt; <span class="c1"># 删除容器</span></span></span></code></pre></div></div>
 <p><strong>生成容器</strong></p>]]></description></item><item><title>REVERSE</title><link>https://j-shiro.github.io/reverse_note/</link><pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/reverse_note/</guid><description><![CDATA[<h2 id="基础知识">基础知识</h2>
 <p>除了逆向外也可以尝试<strong>爆破</strong></p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+<div class="code-block code-line-numbers" style="counter-reset: code-block 0">
     <div class="code-header language-c">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>

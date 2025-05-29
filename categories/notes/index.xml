@@ -68,7 +68,7 @@
 <h3 id="结构">结构</h3>
 <h4 id="malloc_par">malloc_par</h4>
 <p><code>malloc.c</code>中，记录堆管理器的相关参数</p>
-<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+<div class="code-block code-line-numbers" style="counter-reset: code-block 0">
     <div class="code-header language-c">
         <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
