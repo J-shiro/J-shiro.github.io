@@ -414,47 +414,55 @@ $\sum_{i=1}^mlog\frac{1}{\sqrt{2\pi}\sigma}exp(-\frac{(y^{(i)}-\theta^Tx^{(i)})^
 
 ### 逻辑回归
 
-logistic regression，二元分类算法，逻辑回归的决策边界可以是**非线性**的，预测一个离散型的因变量
+1. **概述**
 
-**Sigmoid函数**：
+- logistic regression，二元分类算法，输出为类别（0或1）
+- 适合预测离散型因变量，决策边界可以是**非线性**
+
+2. **Sigmoid函数**
 
 - $g(z)=\frac{1}{1+e^{-z}}=P(y=1|x)=\hat y$，**z** 可取任意实数，值域[0, 1]
-- 线性回归中得到的预测值，可以映射到Sigmoid函数中完成**值**到**概率**的转换
+- 线性回归中得到的预测实数值，可以映射到Sigmoid函数中完成**值**到**概率**的转换
 
 <img src="/img/machine_learning_note.zh-cn.assets/172845431716313.png" alt="图片无法加载" />
 
-**预测函数**：$h_{\theta}(x)=g(\theta^Tx)=\frac{1}{1+e^{-\theta^Tx}}$，其中$z=\theta^Tx=\sum_{i=1}^n\theta_ix_i=\theta_0+\theta_1x_1+\cdots+\theta_nx_n$
+3. **预测函数**
 
-**注**：$P(y=1|x;\theta)$**中**$\theta$**表示其为影响该概率的参数**
+$h_{\theta}(x)=g(\theta^Tx)=\frac{1}{1+e^{-\theta^Tx}}$，其中$z=\theta^Tx=\sum_{i=1}^n\theta_ix_i=\theta_0+\theta_1x_1+\cdots+\theta_nx_n$
+
+4. **分类概率**
 
 二分类任务：$\begin{cases}P(y=1|x;\theta)=h_{\theta}(x) \\P(y=0|x;\theta)=1-h_{\theta}(x)\end{cases}$，整合：$P(y|x;\theta)=(h_{\theta}(x))^y(1-h_{\theta}(x))^{1-y}$
 
-对于概率，设定一个阈值a，二分类：**概率大于等于a时，分类为1，当概率小于a时，分类为0**
+-  $P(y=1|x;\theta)$ 中 $\theta$ 是影响该概率的参数
 
-**决策边界**
+- 设定一个阈值 a，概率大于等于 a 时，分类为1，当概率小于 a 时，分类为0
+
+5. **决策边界**
 
 - 决策边界是将图形中的所有像素点代入分类器进行划分，假设划分为了0和1两种，则基于等高线划分为0高度和1高度，则可以绘制出决策边界
-- 当得到参数$\theta$后，则可以代入到边界绘制函数中，将所有像素点进行预测画出决策边界（使用plt.contour函数）
+- 得到参数$\theta$，将特征点代入$h_{\theta}(x)$得到概率，按阈值划分类别，使用`plt.contour`可视化
 
-a为阈值，由$\frac{1}{1+e^{-\theta^Tx}}=a$简化为$\frac{1-a}{a}=e^{-\theta^Tx}$
+> **非线性决策边界**
+>
+> 使用多项式程度（polynomial_degree）来对特征值进行非线性变化
+>
+> 用**多项式线性回归**的式子替代**sigmoid函数**中的 **z** 后通过 **z = 1** 得出决策边界
 
-特殊时，当a=0.5时，上式为$e^{-\theta^Tx}=1=e^0$，即$z=-\theta^Tx=0$，此时为一个决策边界，二维下为直线，多维下为曲线，即等高线
+6. **损失函数与代价函数**
 
-**非线性决策边界**
+> 平方误差代价函数不适合逻辑回归，会导致梯度下降时有多个局部最低点
+>
+>  分类问题的**损失函数**：损失值可以通过作图观察到随着迭代次数增加，逐渐减小趋于稳定
 
-使用多项式程度（polynomial_degree）来对特征值进行非线性变化
+- 根据$l(\theta)=logL(\theta)=\sum_{i=1}^m(y_ilogh_{\theta}(x_i)+(1-y_i)log(1-h_{\theta}(x_i)))$计算
+- 需要借助$f(x)=|logx|$来计算，离1越远损失越大
 
-用**多项式线性回归**的式子替代**sigmoid函数**中的 **z** 后通过 **z = 1** 得出决策边界
-
-**代价函数**
-
-平方误差代价函数不适合逻辑回归，会导致梯度下降时有多个局部最低点
-
-定义**损失函数**
+**但样本损失函数**
 
 $$L(f_{w,b}(x^{(i)}), y^{(i)})=\begin{cases}-log(f_{w,b}(x^{(i)}))\quad y^{(i)}=1\\\ -log(1-f_{w,b}(x^{(i)}))\quad y^{(i)}=0\end{cases}$$
 
-其中f(x)是sigmoid函数，所以取值[0, 1]
+其中$f(x)$是`sigmoid`函数，取值[0, 1]
 
 <img src="/img/machine_learning_note.zh-cn.assets/172845431716314.png" alt="图片无法加载" />
 
@@ -464,36 +472,41 @@ $$L(f_{w,b}(x^{(i)}), y^{(i)})=\begin{cases}-log(f_{w,b}(x^{(i)}))\quad y^{(i)}=
 
 预测值接近1时，损失越高，越接近0，损失最低
 
-损失函数合并为：$L(f_{w,b}(x^{(i)}), y^{(i)})=-y^{(i)}log(f_{w,b}(x^{(i)}))-(1-y^{(i)})log(1-f_{w,b}(x^{(i)})$
+损失函数合并：$L(f_{w,b}(x^{(i)}), y^{(i)})=-y^{(i)}log(f_{w,b}(x^{(i)}))-(1-y^{(i)})log(1-f_{w,b}(x^{(i)})$
 
-即此时**代价函数**为：$J(w,b)=\frac{1}{m}\sum^m_{i=1}L(f_{w,b}(x^{(i)}), y^{(i)})\\ =-\frac{1}{m}\sum^m_{i=1}[y^{(i)}log(f_{w,b}(x^{(i)}))+(1-y^{(i)})log(1-f_{w,b}(x^{(i)}))]$，**二元分类**
+**代价函数**
+
+- $J(w,b)=\frac{1}{m}\sum^m_{i=1}L(f_{w,b}(x^{(i)}), y^{(i)})$
+
+- $=-\frac{1}{m}\sum^m_{i=1}[y^{(i)}log(f_{w,b}(x^{(i)}))+(1-y^{(i)})log(1-f_{w,b}(x^{(i)}))]$
+
+7. **最大似然估计与梯度下降**
 
 - **似然函数**：$L(\theta)=\prod_{i=1}^mP(y_i|x_i;\theta)=\prod_{i=1}^m(h_{\theta}(x_i))^{y_i}(1-h_{\theta}(x_i))^{1-y_i}$
 - **对数似然**：$l(\theta)=logL(\theta)=\sum_{i=1}^m(y_ilogh_{\theta}(x_i)+(1-y_i)log(1-h_{\theta}(x_i)))$
-- **梯度上升求最大值**，引入$J(\theta)=-\frac{1}{m}l(\theta)$**转换**为**梯度下降任务**
+- **梯度上升求最大值**，引入$J(\theta)=-\frac{1}{m}l(\theta)$转换为**梯度下降任务**
 - **求偏导**：$\frac{\partial}{\partial\theta_j}J(\theta)=\cdots=-\frac{1}{m}\sum_{i=1}^m(y_i-g(\theta^Tx_i))x_i^j$
 - **参数更新**：$\theta_j':=\theta_j-\alpha\frac{1}{m}\sum_{i=1}^m(h_{\theta}(x_i)-y_i)x_i^j$
 
-**正则化将代价函数变为**：$J(w,b)-\frac{1}{m}\sum^m_{i=1}[y^{(i)}log(f_{w,b}(x^{(i)}))+(1-y^{(i)})log(1-f_{w,b}(x^{(i)}))]+\frac{\lambda}{2m}\sum^n_{j=1}w_j^2$
+8. **正则化**
+
+防止过拟合，加入惩罚项：
+
+$J(w,b)-\frac{1}{m}\sum^m_{i=1}[y^{(i)}log(f_{w,b}(x^{(i)}))+(1-y^{(i)})log(1-f_{w,b}(x^{(i)}))]+\frac{\lambda}{2m}\sum^n_{j=1}w_j^2$
 
 **多分类逻辑回归**
 
-思路：将多分类转换为**多次二分类**，每次分为2类筛选出其中1类，n分类即进行n次二分类，以概率值进行分类
+- **One-vs-All (OvA)方法**：将多分类转换为**多次二分类**
 
-分类问题的**损失函数**：
-
-损失值可以通过作图观察到随着迭代次数增加，逐渐减小趋于稳定
-
-- 根据$l(\theta)=logL(\theta)=\sum_{i=1}^m(y_ilogh_{\theta}(x_i)+(1-y_i)log(1-h_{\theta}(x_i)))$计算
-- 需要借助$f(x)=|logx|$来计算，离1越远损失越大
+每次分为 2 类筛选出其中 1 类，n 分类即进行 n 次二分类，以概率值进行分类
 
 ### Softmax回归
 
 - 多类别分类，multi class classification
 
-- Logistic回归的推广
+- 多分类Logistic回归的推广
 
-**Softmax计算概率**：
+**Softmax函数**
 
 $\hat P_k=\sigma(s(x))\_k=\frac{exp(s_k(x))}{\sum_{j=1}^Kexp(s_j(x))}$，将不同组的得分值 **s** 进行指数化来使得差异更大
 
@@ -507,7 +520,11 @@ $loss(a_1, \cdots, a_N, y)=\begin{cases}-\log{a_1}\quad if\\,y=1\\\ -\log{a_2}\q
 
 **损失函数（交叉熵）**：$J(\theta)=-\frac{1}{m}\sum_{i=1}^m\sum_{k=1}^Ky_k^{(i)}log(\hat p_k^{(i)})$
 
-运用到神经网络：输出层将需要 N 个神经元，以分为 N 个类别，Softmax激活功能使得$a_i$与$z_1 \cdots z_N$所有值相关，区别于logistic回归：$a_i$只与$z_i$有关
+> 运用到神经网络：输出层将需要 N 个神经元，以分为 N 个类别
+>
+> 使用Softmax激活函数，将得分映射为概率
+>
+> 使得$a_i$与$z_1 \cdots z_N$所有值相关，全局归一化，区别于logistic回归：$a_i$只与$z_i$有关
 
 **多标签分类(multi label classification)**
 
@@ -537,23 +554,35 @@ $loss(a_1, \cdots, a_N, y)=\begin{cases}-\log{a_1}\quad if\\,y=1\\\ -\log{a_2}\q
 
 <img src="/img/machine_learning_note.zh-cn.assets/172845431716317.png" alt="图片无法加载" />
 
-- 可以用于**分类**和**回归**，**有监督算法**
+- **有监督算法**，可以用于**分类**（离散型输出）和**回归**（连续型输出）
 - **根结点**（第一个选择点）到**叶子结点**（最终决策结果）
 - 训练阶段构造树，测试阶段跟随树走一遍，适用于电子表格/结构化数据，不适用于非结构化数据：图像、音频、文本
 
+1️⃣ **决策依据**
+
 **选择决策结点的先后顺序，使用熵的原理，最大化纯度**
 
-**熵**：测量纯度，衡量标准，随机变量不确定性的度量
+✅ **信息熵**（Entropy）
 
-**公式：各个概率都要算，i 个种类**，$H(X)=-\sum p_i\cdot \log_{2} p_i,\,\,\,i=1,2,\cdots,n$，**log函数使得概率pi越靠近1，值越小**
+测量纯度，衡量标准，随机变量不确定性的度量
+
+**公式**
+
+- $H(X)=-\sum p_i\cdot \log_{2} p_i$，$p_i$ 表示第 $i$类样本的概率
+
+- $log$ 函数使得概率 $p_i$ 越靠近1，值越小，熵越小，纯度越高
 
 <img src="/img/machine_learning_note.zh-cn.assets/172845431716318.png" alt="图片无法加载" />
 
 当概率为1或0时纯度最高，熵最小
 
-**信息增益原理**：特征值X使得类Y的不确定性减少的程度，熵减
+✅**信息增益原理**（Information Gain）
 
-以分类猫狗为例，信息增益：$H(p_1^{root})-(w^{left}H(p_1^{left})+w^{right}H(p_1^{right}))$
+用于选择分裂特征，衡量特征能减少多少熵，即特征值X使得类Y的不确定性减少的程度
+
+**公式**：
+
+$H(p_1^{root})-(w^{left}H(p_1^{left})+w^{right}H(p_1^{right}))$
 
 ```Python
 P表示该节点中猫数量占该节点动物数量概率
@@ -571,30 +600,38 @@ W表示该节点动物数量占最初节点动物数量概率
 
 **GINI系数**
 
+- 衡量样本集合的**不纯度**，越小越纯，用于分类时选择最优分裂特征
+
 $Gini(p)=\sum^K_{k=1}p_k(1-p_k)=1-\sum_{k=1}^Kp_k^2$，选取GINI系数最小的来构建优先决策节点
 
 <img src="/img/machine_learning_note.zh-cn.assets/172845431716319.png" alt="图片无法加载" />
 
 **回归树**
 
-决策树推广为回归算法——预测值：使用最终构建好的叶子结点中训练集数据的平均值预测
+- 决策树推广为回归算法，预测值：使用最终构建好的叶子结点中训练集数据的样本平均值
+- 连续型输出
 
 选择决策点：
 
 - 将信息增益公式中计算**熵值**更换为计算**决策分裂完的子集中预测数据值的平均方差**
 - **根结点最初熵值**换为**原始数据的总方差**
+- 分裂标准：使用**平方误差最小化**
 
 **剪枝策略**
 
-- 决策树**过拟合风险**很**大**
+- 决策树**过拟合风险**很大，防止过拟合
 - **预剪枝**：边建立决策树边剪枝，限制深度、叶子结点数、叶子结点样本数、信息增益量等
-- **后剪枝**：建立完决策树后剪枝，通过一定衡量标准：$C_{\alpha}(T)=C(T)+\alpha\cdot|T_{leaf}|$，叶子结点个数$T_{leaf}$，C函数：Gini值乘数量
+- **后剪枝**：建立完决策树后剪枝，根据验证集性能剪除某些分支
+  
+  - 代价函数（CART）：$C_{\alpha}(T)=C(T)+\alpha\cdot|T_{leaf}|$
+  - $T_{leaf}$：叶子结点个数，$C(T)$：Gini值乘数量，$\alpha$：惩罚系数
+  
   - 分别计算分裂前和分裂后的损失值，若剪完后损失值减小则进行剪枝
 
 ### ID3
 
-- 信息增益
-- ID3倾向于选择取值较多的属性作为节点
+- 基于信息增益，适用于分类
+- 倾向于选择取值较多的属性作为节点
 
 **过程**：
 
@@ -624,46 +661,47 @@ $Gini(p)=\sum^K_{k=1}p_k(1-p_k)=1-\sum_{k=1}^Kp_k^2$，选取GINI系数最小的
 
 ### CART
 
-使用**GINI系数**作为衡量标准
+- 使用**GINI系数**作为衡量标准
+- 适用于分类和回归，本质是二叉树
 
 ### 集成学习
 
 **分类**
 
-- **Bagging**：并联，训练多个分类器取平均，$f(x)=\frac{1}{M}\sum_{m=1}^Mf_m(x)$
+- **Bagging**：并行训练多个分类器取平均，降低方差，$f(x)=\frac{1}{M}\sum_{m=1}^Mf_m(x)$，代表为随机森林
 
 <img src="/img/machine_learning_note.zh-cn.assets/172845431716321.png" alt="图片无法加载" />
 
-- **Boosting**：串联，从弱学习器开始加强，通过**加权**来训练，大部分情况下，**经过 boosting 得到的结果偏差（bias）更小，**$F_m(x)=F_{m-1}(x)+argmin_h\sum_{i=1}^nL(y_i,F_{m-1}(x_i)+h(x_i))$
+- **Boosting**：串联，从弱学习器开始加强，通过**加权**来训练，大部分情况下，**经过 boosting 得到的结果偏差更小，**$F_m(x)=F_{m-1}(x)+argmin_h\sum_{i=1}^nL(y_i,F_{m-1}(x_i)+h(x_i))$
 
 <img src="/img/machine_learning_note.zh-cn.assets/172845431716422.png" alt="图片无法加载" />
 
-- **Stacking**：堆叠，聚合多个分类或回归模型（KNN, SVM, RF），第一阶段得出各自结果，第二阶段用前一阶段结果训练
+- **Stacking**：堆叠，聚合多个分类或回归模型（KNN, SVM, RF），第一阶段得出各自结果，第二阶段用前一阶段结果训练，多个模型结果输入，用一个元模型组合结果
 
 <img src="/img/machine_learning_note.zh-cn.assets/172845431716423.png" alt="图片无法加载" />
 
 ### 随机森林
 
-- RF，由于决策树对数据轻微变化敏感
-- 属于Bagging模型
-- 随机：
+- RF，由于决策树对数据轻微变化敏感，属于Bagging模型，由多个决策树组成
+- 能处理高维，抗过拟合，可解释性强，并行化速度快，能给出哪些特征值重要
+- 分别训练多个相同参数的模型，预测时将所有模型结果再进行集成
+- **随机**：
   - **数据随机采样**：原始数据中进行放回抽样（取得值可能重复），构造新的训练集
   - **特征选择随机**：每个节点，选择随机子集k(<n, or $k=\sqrt n$)个特征
-  - **分别训练多个相同参数的模型，预测时将所有模型结果再进行集成**
-- 森林：多个决策树并行放一起
+- **森林**：多个决策树并行放一起
 
 <img src="/img/machine_learning_note.zh-cn.assets/172845431716424.png" alt="图片无法加载" />
 
-能处理高维，可解释性强，并行化速度快，能给出哪些特征值重要
-
-**投票策略**
+✅ **投票策略**
 
 - 软投票：各自分类器的概率值进行加权平均，要求各个分类器都有概率值
 - 硬投票：直接用类别值，少数服从多数
 
-**OOB策略**
+✅ **OOB策略**
 
 **Out of Bag**，在随机抽取的样本中，剩余的样本可以作为验证集进行验证
+
+✅ **提升方法**
 
 **XGBoost**
 
@@ -708,7 +746,7 @@ $Gini(p)=\sum^K_{k=1}p_k(1-p_k)=1-\sum_{k=1}^Kp_k^2$，选取GINI系数最小的
 - 优势：简单，快速，适合常规数据集
 - 劣势：难确定K，复杂度与样本呈线性关系，难发现形状复杂的簇，初始化不当会导致陷入局部最优值
 
-Elbow method-肘法：x轴K的值，y轴代价函数值，看图像是否有斜率突变的情况
+肘法（Elbow method）：x轴K的值，y轴代价函数值，看图像是否有斜率突变的情况
 
 <img src="/img/machine_learning_note.zh-cn.assets/172845431716426.png" alt="图片无法加载" />
 
@@ -779,29 +817,62 @@ $s(i)=\frac{b(i)-a(i)}{max\{a(i),b(i)\}}=\begin{cases}1-\frac{a(i)}{b(i)},\quad 
 ## 异常检测
 
 - Anomaly Detection，非线性检测，无监督学习
-- 数据集：$\{x^{(1)},x^{(2)},\cdots,x^{(m)}\}$，每个$x_i$有 m 个特征$x=[x_1,x_2,\cdots,x_n]$，检测$x_{test}$，以二维即2个特征为例，x轴为x1，y轴为x2，可作图观察点分布
+- 对应的数据特征空间维度为 $n$，样本数为 $m$
+
+1️⃣ **数据集**
+
+- $\{x^{(1)},x^{(2)},\cdots,x^{(m)}\}$
+- 每个样本$x^{(i)}$有 m 个特征$x^{(i)}=[x_1^{(i)},x_2^{(i)},\cdots,x_n^{(i)}]$，检测$x_{test}$是否异常
+- 以二维即2个特征为例，x轴为x1，y轴为x2，可作图观察点分布
+
+2️⃣ **核心方法**
 
 **密度估计**：越内部概率越高，越外圈概率越低，计算$x_{test}$概率
 
 <img src="/img/machine_learning_note.zh-cn.assets/172845431716428.png" alt="图片无法加载" />
 
-**高斯/正态分布**
+> **单变量高斯分布**（Gaussian Distribution）
 
-$p(x)=\frac{1}{\sqrt{2\pi}\sigma}e^{\frac{-(x-\mu)^2}{2\sigma^2}}$，轴线与$\mu$有关，宽度与$\sigma$有关
+$p(x)=\frac{1}{\sqrt{2\pi}\sigma}e^{\frac{-(x-\mu)^2}{2\sigma^2}}$，轴线与均值 $\mu$ 有关，宽度与方差 $\sigma$ 有关
 
 <img src="/img/machine_learning_note.zh-cn.assets/172845431716429.png" alt="图片无法加载" />
 
+> 多特征联合概率密度模型
+
+假设各个特征独立，则联合密度为：$p(x)=\prod_{j=1}^np(x_j;\mu_j,\sigma^2_j)$
+
 **算法实现**
 
-1. 选择n个特征的$x_i$
-2. 通过数据集计算：$\mu_j=\frac{1}{m}\sum_{i=1}^mx_j^{(i)}$和$\sigma_j^2=\frac{1}{m}\sum(x_j^{(i)}-\mu_j)^2$
-3. 给定待测试 x ，计算$p(x)=\prod_{j=1}^np(x_j;\mu_j,\sigma^2_j)=\prod_{j=1}^n\frac{1}{\sqrt{2\pi}\sigma_j}e^{\frac{-(x_j-\mu_j)^2}{2\sigma_j^2}}$，$p(x)\lt \varepsilon$则异常e
+✅ 训练阶段，只用正常样本
+
+1. 选择 n 个特征
+2. 估计参数
+
+   - $\mu_j=\frac{1}{m}\sum_{i=1}^mx_j^{(i)}$
+
+   - $\sigma_j^2=\frac{1}{m}\sum(x_j^{(i)}-\mu_j)^2$
+
+✅ 测试阶段
+
+1. 计算待测点概率密度
+   - $p(x)=\prod_{j=1}^np(x_j;\mu_j,\sigma^2_j)=\prod_{j=1}^n\frac{1}{\sqrt{2\pi}\sigma_j}e^{\frac{-(x_j-\mu_j)^2}{2\sigma_j^2}}$
+
+2. 判断是否异常：$p(x)\lt \varepsilon$ 则异常
 
 **评估方法**
 
-加入标签0正常1异常，分为训练集、交叉验证集、测试集，训练集只测试正常数据；交叉验证集加入少许异常数据预测01，混淆矩阵评估来调整参数及$\varepsilon$；测试集也有少许异常数据测试来公平判断系统
+- 虽然是无监督学习，但为了选择合适$\varepsilon$，借助交叉验证集
+- 与有监督的区别：异常检测中的异常不断变化可能与训练集中不一致，有监督学习区别的垃圾邮件大多与训练集中相似
 
-与有监督的区别：异常检测中的异常不断变化可能与训练集中不一致，有监督学习区别的垃圾邮件大多与训练集中相似
+数据划分：
+
+> 训练集：测试正常数据，估计均值和方差
+>
+> 交叉验证集：加入少许异常数据，帮助设置阈值
+>
+> 测试集：也有少许异常数据测试来公平判断系统
+
+评估指标：混淆矩阵、准确率、召回率、F1值等
 
 **特征选择**
 
@@ -810,7 +881,13 @@ $p(x)=\frac{1}{\sqrt{2\pi}\sigma}e^{\frac{-(x-\mu)^2}{2\sigma^2}}$，轴线与$\
 
 ## 推荐系统
 
-a-d四个人对m1-m5电影评分数据
+- 根据用户的历史行为和物品特征，预测用户可能喜欢的内容
+  - 协同过滤 Collaborative Filtering（CF）
+  - 内容过滤 Content-based Filtering（CBF）
+
+**场景**
+
+a - d 四个人对 m1 - m5 电影评分数据
 
 | Movie | a    | b    | c    | d    | x1(浪漫电影) | x2(动作电影) |
 | ----- | ---- | ---- | ---- | ---- | ------------ | ------------ |
@@ -820,9 +897,13 @@ a-d四个人对m1-m5电影评分数据
 | m4    | 0    | 0    | 5    | 4    | 0.1          | 1.0          |
 | m5    | 0    | 0    | 5    | ?    | 0            | 0.9          |
 
-- $n_u$人数，$n_m$电影数，$r(i,j)=1/0$用户 j 是否给电影 i 打分，$y^{(i,j)}$用户 j 对 i 的打分值，$w^{(j)},b^{(j)}$用户 j 的参数，$x^{(i)}$电影 i 的特征向量
-- 对 a(j) 预测第 3(i) 个电影：假设已得出了 w 和 b
--  $w^{(j)}\cdot x^{(i)}+b^{(j)}=[5\quad 0]\cdot \begin{bmatrix}0.99\\\ 0\end{bmatrix}+0=4.95$
+- $n_u$：人数
+- $n_m$：电影数
+- $r(i,j)=1/0$：用户 j 是否给电影 i 打分
+- $y^{(i,j)}$：用户 j 对 i 的打分值
+- $w^{(j)},b^{(j)}$：用户 j 的参数
+- $x^{(i)}$：电影 i 的特征向量
+- 已知  w 和 b，对 a(j) 预测第 3(i) 个电影：$w^{(j)}\cdot x^{(i)}+b^{(j)}=[5\quad 0]\cdot \begin{bmatrix}0.99\\\ 0\end{bmatrix}+0=4.95$
 
 **成本函数**
 
@@ -863,33 +944,9 @@ a-d四个人对m1-m5电影评分数据
 
 对于用户 j，对于电影 i 预测：$w^{(j)}\cdot x^{(i)}+b^{(j)}+\mu_i$，对于新用户，此时参数均为0，则预测的值为均值而不是0，更合理
 
-线性回归的梯度下降 使用自动求导( **Auto Diff** )实现
-
-```Python
-w = tf.Variable(3) # 优化参数变量 w 初始化为3
-
-for iter in range(iterations):
-    with tf.GradientTape() as tape:
-        # 计算成本函数，tf将操作序列保存在tape中
-    [dJdw] = tape.gradient(costJ, [w]) # tf自动计算导数
-    w.assign_add(-alpha * dJdw) # tf 需要函数更新
-```
-
-**TensorFlow实现**
-
-```Python
-optimizer = keras.optimizers.Adam(learning_rate=0.1)
-for iter in range(iterations):
-    with tf.GradientTape() as tape:
-        cost = cofiCostFuncV(X, W, b, Ynorm, R, num_users, num_movies, lambda)
-        # 参数：训练数据, 参数, 参数, 均值归一化后的目标值, 是否对电影评分的二进制标签数据, 用户数量, 电影数量, 正则化参数
-    grads = tape.gradient(cost, [X, W, b])
-    optimizer.apply_gradients(zip(grads, [X,W,b]))
-```
-
 寻找**相关项：寻找**$x^{(k)}$相似于$x^{(i)}$，求$\sum_{l=1}^n(x_l^{(k)}-x_l^{(i)})^2$
 
-**限制**：冷启动问题——新项很少用户点评
+**限制**：冷启动问题，新项很少用户点评
 
 ### 内容过滤
 
@@ -912,48 +969,40 @@ $g(V_u^{(j)}\cdot V_m^{(i)})$预测用户 j 对电影 i 即$y^{(i,j)}=1$的概�
 
 推荐类似 i 的电影：$small\,\,||V_m^{(k)}-V_m^{(i)}||^2$
 
-大数据集高效推荐：检索（Retrieval），排名（Ranking）
+大数据集高效推荐：
 
-**检索**：生成大量合理项目候选并去除重复项
+- **检索**（Retrieval）：生成大量合理项目候选并去除重复项
 
-**排名**：将候选使用上述神经网络框架预测分数并排名
-
-```Python
-# 已构建了user_NN, item_NN
-input_user = tf.keras.layers.Input(shape=(num_user_features)) # 定义输入层
-vu = user_NN(input_user)
-vu = tf.linalg.l2_normalize(vu, axis=1) # L2范数标准化 同理得到vm
-
-output = tf.keras.layers.Dot(axes=1)([vu, vm]) # 点积层，计算输入向量点积
-model = Model([input_user, input_item], output) # 定义keras模型
-cost = tf.keras.losses.MeanSquaredError()
-```
+- **排名**（Ranking）：将候选使用上述神经网络框架预测分数并排名
 
 ## SVM算法
 
-- Support Vector Machine, **支持向量机**算法，**有监督**算法，解决经典二分类问题
-- 解决：选取最好的决策边界；特征数据本身难分
-- 选出离边界点最远的
+- Support Vector Machine，支持向量机算法，有监督学习，二分类问题
+- 目标：解决特征数据本身难分，在样本空间中找到一条**最优分类超平面（决策边界）**，使得不同类别的数据点被最大间隔（margin）地分开
+- 选出离边界点最远的，分类面离支持点越远，泛化能力越好
 
 <img src="/img/machine_learning_note.zh-cn.assets/172845431716537.png" alt="图片无法加载" />
 
 **公式推导**
 
-计算**距离**：
+**计算距离**
 
 <img src="/img/machine_learning_note.zh-cn.assets/172845431716538.png" alt="图片无法加载" />
 
-**数据标签**定义：
+**数据标签**
 
 - 数据集：$(X_1,Y_1),(X_2,Y_2),\cdots,(X_n,Y_n)$
   - Y为样本类别，X为正例Y=+1；X为负例Y=-1
-- **决策方程**：$y(x)=w^T\Phi(x)+b$，$\Phi(x)$对数据做了变换
+- **决策方程**：$y(x)=w^T\Phi(x)+b$，$\Phi(x)$对数据做了变换，使$x$线性可分
+  - 假设超平面：$w^T\Phi(x)+b=0$
   - $\begin{cases}y(x_i)\gt 0\Leftrightarrow y_i=+1\\\ y(x_i)\lt 0\Leftrightarrow y_i=-1\end{cases}\quad\Rightarrow\quad y_i\cdot y(x_i)\gt 0$
+  
 
-**优化目标**：
+**优化目标**
 
 1. **点到直线的距离**化简：$\frac{y_i\cdot(w^T\cdot \Phi(x_i)+b)}{||w||}$
-2. 目标：找到一条线（w和b），使得离该线最近的点能够最远，$\mathop{arg\,max}\limits_{w,b} \{\frac{1}{||w||}\mathop{min}\limits_{i}[y_i\cdot(w^T\cdot\Phi(x_i)+b]\}$
+2. 目标：找到一条线（w和b），使得离该线最近的点能够最远，最大化间隔
+   - $\mathop{arg\,max}\limits_{w,b} \{\frac{1}{||w||}\mathop{min}\limits_{i}[y_i\cdot(w^T\cdot\Phi(x_i)+b]\}$
 3. 对式子放缩变换，使得$y_i\cdot(w^T\cdot \Phi(x_i)+b)\ge 1$【约束条件】，则对上式中，由于其中的min函数中的项大于等于1，则只需要考虑**目标函数** $\mathop{arg\,max}\limits_{w,b} \frac{1}{||w||}$
 4. 将**求解最大值**转换为**求解最小值**：$max_{w,b}\frac{1}{||w||} \quad\Longrightarrow \quad min_{w,b}\frac{1}{2}w^2$，并用**拉格朗日乘子法**求解
 5. 其中拉格朗日乘子法：待约束的优化问题：
@@ -968,23 +1017,35 @@ cost = tf.keras.losses.MeanSquaredError()
 8. 对$\alpha$求极大值转换为求极小值：$\mathop{min}\limits_{\alpha}\frac{1}{2}\sum_{i=1}^n\sum_{j=1}^n\alpha_i\alpha_jy_iy_j(\Phi(x_i)\cdot\Phi(x_j))-\sum_{i=1}^n\alpha_i$，条件：$\sum_{i=1}^n\alpha_iy_i=0$和$\alpha_i\ge 0$
 9. 实例将x和y代入获得关于$\alpha_i$的等式，然后对各个$\alpha_i$求偏导为0得到$\alpha_i$的值代入可求得w,b，$w=\sum_{i=1}^n\alpha_iy_i\Phi(x_n)$，$b=y_i-\sum_{i=1}^na_iy_i(x_ix_j)$
 
-**调整参数**
+**软间隔**
 
-**软间隔——soft-margin**
+- soft-margin，解决数据不是线性可分情况，容忍少数点被错误分类
 
-有时候数据中存在噪音点，对其进行考虑时会对决策线产生影响，需要要求放松一点，引入松弛因子$\xi_i$有：$y_i(w\cdot x_i+b)\ge 1-\xi_i$
+- 有时候数据中存在噪音点，对其进行考虑时会对决策线产生影响，需要要求放松一点
 
-则新的目标函数：$min\frac{1}{2}||w||^2+C\sum_{i=1}^n\xi_i$，使得函数越小
+引入松弛因子 $\xi_i$ ：$y_i(w\cdot x_i+b)\ge 1-\xi_i$
 
-- **C** 很大时，意味分类严格；很小时，意味有更大错误容忍
+则新的目标函数：$min\frac{1}{2}||w||^2+C\sum_{i=1}^n\xi_i$，使得函数越小，$C$是惩罚系数
+
+- $C$ 很大时，意味分类严格
+- $C$ 很小时，意味有更大错误容忍
 
 **核函数**
 
-即$\Phi(x$，将低维中决策边界可能复杂过饱和的情况变换为高维中更简单决策边界的情况
+- 线性不可分时，将数据从低维映射到高维特征空间可能更容易分，高维映射计算开销大，用核函数替代点积运算$K(x_i, x_j) = \Phi(x_i)^T \Phi(x_j)$
+
+- $\Phi(x)$，将低维中决策边界可能复杂过饱和的情况变换为高维中更简单决策边界的情况
 
 <img src="/img/machine_learning_note.zh-cn.assets/172845431716539.png" alt="图片无法加载" />
 
-高斯核函数：$K(X,Y)=exp\{-\frac{||X-Y||^2}{2\sigma^2}\}$
+**常见核函数**
+
+| 核函数名                          | 表达式                                                    |
+| --------------------------------- | --------------------------------------------------------- |
+| 线性核                            | $K(x, y) = x^T y$                                         |
+| 多项式核                          | $K(x, y) = (x^T y + c)^d$                                 |
+| RBF（高斯）核：处理任意非线性问题 | $K(x, y) = \exp\left(-\frac{|x - y|^2}{2\sigma^2}\right)$ |
+| Sigmoid核                         | $K(x, y) = \tanh(\kappa x^T y + c)$                       |
 
 <img src="/img/machine_learning_note.zh-cn.assets/172845431716540.png" alt="图片无法加载" />
 
