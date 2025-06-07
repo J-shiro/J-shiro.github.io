@@ -143,6 +143,18 @@ struct Q {
 que[idx] = {t.x, t.y};
 ```
 
+**结合容器**
+
+```c++
+struct Data {
+  int a;
+  int b;
+}
+vector<Data> xx;
+xx.push_back(Data(1,2));
+xx.emplace_back(1,2); // 提供构造功能
+```
+
 
 
 ### 字符串
@@ -449,6 +461,18 @@ vector.size()
 vector.push_back({xx,xx,xx})
 vector.pop_back()
 ```
+
+**删除**
+
+```c++
+vector<int> a;
+vector<int>::iterator it;
+
+it = a.erase(it); // 返回删除值的下一个值
+it = a.erase(a.begin(), a.end());
+```
+
+
 
 **清空**
 

@@ -798,6 +798,8 @@ db 2 dup(14h)`表示 define byte定义字节，2个`14h
 
 查看机器码：`Options `> `General `> `opcode`
 
+设置exe文件运行的参数：`Debugger` > `Process options` > `Parameters`
+
 **应用**：
 
 **变量为64位，8字节，则在栈中需要8字节空间**
@@ -2216,6 +2218,94 @@ for i in range(32,128):
         print('Error:', error.strip())
     process.terminate()
 ```
+
+自定义栈 16 位数据 push 操作
+
+```C
+__int64 __fastcall func(__int64 a1, __int16 a2){
+  /* a1：指向栈的指针，64位
+     a2：push到栈的16位数据
+     返回操作前的栈顶指针
+  */
+    __int64 result;
+
+    result = *(_QWORD *)(a1 + 8);
+    // 从 a1 + 8 位置读取 8 字节数据作为栈顶指针
+    // 栈溢出检查
+    // a1 + 536 位置存储栈底指针
+    if (result == *(_QWORD *)(a1 + 536) )
+      BUG()
+    *(_QWORD *)(a1 + 8) = result -2;
+    // 栈顶指针向下移动2字节，栈向低地址增长
+    // 为新的16位数据腾出空间
+    *(_WORD *) (result -2 ) = a2;
+    // 新栈顶写入16位数据
+    return result;
+}
+```
+
+**插桩**
+
+```python
+import frida
+import sys
+import time
+
+def on_message(message, data):
+    if message['type'] == 'send':
+        print("[*] {0}".format(message['payload']))
+    else:
+        print(message)
+
+# 以 spawn 模式 启动 PE 程序，替换为PE 程序路径和参数列表
+process = frida.get_local_device().spawn(["chal.exe", "112233445566778899"])
+session = frida.attach(process)
+print(process)
+
+script_code = """
+var baseAddress = Module.findBaseAddress("chal.exe");
+console.log(baseAddress);
+
+var target = baseAddress.add(0x9A6d7);
+var memcpy_addr = baseAddress.add(0x26c7);
+var pop_func = baseAddress.add(0x9A6d7);
+
+Interceptor.attach(ptr(target), {
+    onEnter: function(args) {
+        console.log("push:", this.context.rax);
+    }
+});
+
+Interceptor.attach(ptr(pop_func), {
+    onEnter: function(args) {
+        console.log("pop: ", this.context.rax);
+    }
+});
+
+Interceptor.attach(ptr(memcmp_addr), {
+    onEnter: function(args) {
+        console.log("memcmp: ", this.context.rdx);
+        console.log(hexdump(this.context.rdx, {
+            offset: 0,
+            length: 64,
+            header: true,
+            ansi: true
+            }));
+    }
+});
+"""
+
+script = session.create_script(script_code)
+script.on('message', on_message)
+script.load()
+
+frida.get_local_device().resume(process) # 等待frida脚本执行完成
+
+input() # 结束目标程序运行
+
+```
+
+
 
 ## 易语言
 
