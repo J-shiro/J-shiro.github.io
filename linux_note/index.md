@@ -224,6 +224,7 @@ awk '$1 == 1 && $2 ~ /^c.*e$/ {print $0}' file # 第 1 列为 1, 第 2 列满足
 ```Bash
 xxx | grep 'xxxx'
 xxx | grep -E "1|2" # 正则: 含1或2
+grep -r "xxx" /etc # 查找文件中内容
 ```
 
 ### sed
@@ -629,6 +630,21 @@ sudo usermod -aG root xx
 sudo passwd xx
 sudo usermod -aG sudo xx
 chsh -s /bin/sh xx
+```
+
+## mac
+
+**Brew 安装旧版本方法**
+
+1. `formulae.brew.sh/`网址搜索`hugo`
+2. 进入`Formula code: xxx.rb on GitHub`
+3. 点击`History`找到对应版本，查看文件
+4. 点击`Raw`获取该文件地址，`wget`下载下来
+5. 安装
+
+```bash
+brew unlink hugo
+brew install hugo.rb
 ```
 
 

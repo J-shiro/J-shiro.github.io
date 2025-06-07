@@ -275,6 +275,19 @@ notepad flag.txt:hello.txt # 查看隐藏文件
 
 HTTP：`右键` > `追踪流` > `HTTP Stream` 可以看到完整请求内容
 
+### https
+
+>  浏览器 Chrome 和 Firefox 通过设置`SSLKEYLOGFILE`环境变量`keylog.log`，指定浏览器在访问`SSL/TLS`网站时，将对应的密钥保存在本地文件中，基于此可以对 https 报文解密，若能窃取到keylog.log则可以窃听流量
+
+**操作**
+
+配置`wireshark`，`首选项`->`Protocols`->`TLS`
+
+- 设置 `TLS debug file`为`debug.log`
+- 设置`(Pre)-Master-Secret log filenmae`为`keylog.log`
+
+
+
 ### USB
 
 - 流量中存有`HID data`，通过`usb.data_len==8`过滤流量，选中右键**应用为列**
