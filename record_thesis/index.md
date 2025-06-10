@@ -9,6 +9,9 @@
 | Towards Robust Detection of Open Source Software Supply Chain Poisoning Attacks in Industry Environments | -                                                           | fc       | n        | 软件供应链投毒攻击检测 |
 | Cognitive Bias in Decision-Making with LLMs                  | https://huggingface.co/datasets/jecht/cognitive_bias 数据集 | fc       | n        | 大模型认知偏差检测     |
 | Generative AI for Game Theory-based Mobile Networking        | -                                                           | fc       | n        | 博弈论，生成式AI       |
+| CORA: Coalitional Rational Advantage Decomposition for Multi-Agent Policy Gradients | -                                                           | pc       | n        | 博弈论                 |
+
+
 
 阅读状态：fc(Fully completed), sc(Substantially completed), pc(Partially completed)
 

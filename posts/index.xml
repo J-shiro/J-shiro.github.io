@@ -164,6 +164,13 @@
           <td>n</td>
           <td>博弈论，生成式AI</td>
       </tr>
+      <tr>
+          <td>CORA: Coalitional Rational Advantage Decomposition for Multi-Agent Policy Gradients</td>
+          <td>-</td>
+          <td>pc</td>
+          <td>n</td>
+          <td>博弈论</td>
+      </tr>
   </tbody>
 </table>
 <p>阅读状态：fc(Fully completed), sc(Substantially completed), pc(Partially completed)</p>]]></description></item><item><title>计算机视觉</title><link>https://j-shiro.github.io/cv_note/</link><pubDate>Sat, 12 Oct 2024 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/cv_note/</guid><description><![CDATA[<h2 id="概念">概念</h2>

@@ -51,6 +51,13 @@
           <td>n</td>
           <td>博弈论，生成式AI</td>
       </tr>
+      <tr>
+          <td>CORA: Coalitional Rational Advantage Decomposition for Multi-Agent Policy Gradients</td>
+          <td>-</td>
+          <td>pc</td>
+          <td>n</td>
+          <td>博弈论</td>
+      </tr>
   </tbody>
 </table>
 <p>阅读状态：fc(Fully completed), sc(Substantially completed), pc(Partially completed)</p>]]></description></item></channel></rss>
