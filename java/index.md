@@ -24,6 +24,8 @@ public class Xxxx {
 
 `ctrl + H`：查看实现类父子关系
 
+`shift + shift`：查找
+
 结构：**项目 - 模块 - 包 - 类**
 
 ## 基本语法
