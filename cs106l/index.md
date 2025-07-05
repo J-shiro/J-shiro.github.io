@@ -193,15 +193,15 @@ set<int>::iterator iter = mySet.upper_bound(3);
     2. 可使用`++`自增
     3. 可以使用`==`和`!=` 进行比较
 
-**Input：**顺序单向数据结构，解引用只读【`find`，`count`，`input stream`】
+**Input**：顺序单向数据结构，解引用只读【`find`，`count`，`input stream`】
 
-**Output：**解引用只写【`copy` ，`output stream`】
+**Output**：解引用只写【`copy` ，`output stream`】
 
-**Forward：**多次遍历，解引用可读可写【`replace` ，`std::forward_list`】
+**Forward**：多次遍历，解引用可读可写【`replace` ，`std::forward_list`】
 
-**Bidirectional：**可**`--`** 后退【`reverse` ，`std::map`，`std::set` ，`std::list`】
+**Bidirectional**：可 `--` 后退【`reverse` ，`std::map`，`std::set` ，`std::list`】
 
-**Random access：**可随意 + 或 - 任意数值【`std::vector`，`std::deque`，`std::string`，`pointer`】
+**Random access**：可随意 + 或 - 任意数值【`std::vector`，`std::deque`，`std::string`，`pointer`】
 
 ## Templates
 
@@ -211,8 +211,8 @@ set<int>::iterator iter = mySet.upper_bound(3);
 - `auto`无法用于参数
 
 ```cpp
-// 声明**模板函数**
-template <typename T>  // T 是**模板参数**，告知编译器 T 是一个类型，尽量将 T 命名为更具信息的名称
+// 声明模板函数
+template <typename T>  // T 是模板参数，告知编译器 T 是一个类型，尽量将 T 命名为更具信息的名称
 pair<T, T> cmp(T a, T b) { // T 在调用函数时被替代
 		// 引用 cmp(const T& a, const T& b) {
 	xxx;
@@ -249,7 +249,7 @@ countOccurences(v1.begin(), v1.end(), v2.begin());
 // 比较 *iter == val 时：int == vector<int>::iterator 导致报错
 ```
 
-**说明：**模板函数实际上定义了每个模板参数必须满足的**隐式接口**，传入的模版参数必须支持函数所假设其具有的操作，否则，编译器就会出现很复杂的报错。
+**说明**：模板函数实际上定义了每个模板参数必须满足的**隐式接口**，传入的模版参数必须支持函数所假设其具有的操作，否则，编译器就会出现很复杂的报错。
 
 **C++20**引入**概念：对模板参数的`requirements` ，显示接口**
 
@@ -346,7 +346,7 @@ enum class Year { FRESHMAN, SOPHOMORE, JUNIOR, SENIOR, GRAD};
 var = Year::GRAD;
 ```
 
-**查找：**google 输入`stl xxx` 进入 [https://en.cppreference.com/](https://en.cppreference.com/) 寻找可使用的函数
+**查找**：google 输入`stl xxx` 进入 [https://en.cppreference.com/](https://en.cppreference.com/) 寻找可使用的函数
 
 实现比较
 
@@ -401,9 +401,9 @@ auto it = std::find_if(v.begin(), v.end(), [](int x) {
 
 // 满足条件元素复制到另一个容器
 std::vector<int> even; // 目标容器
-std::copy_if(v.begin(), v.end(), std::**back_inserter**(even); [](int x) {
-// **迭代器适配器，返回输出迭代器，调用 push_back
-// 使得拷贝时候不会将元素放入未初始化的内存中，而是会不断增加内存**
+std::copy_if(v.begin(), v.end(), std::back_inserter(even); [](int x) {
+// 迭代器适配器，返回输出迭代器，调用 push_back
+// 使得拷贝时候不会将元素放入未初始化的内存中，而是会不断增加内存
 	return x % 2 == 0;
 });
 ```
@@ -558,7 +558,7 @@ ostream& operator<<(std::ostream& os, const Fraction& f) {
 }
 ```
 
-**友元函数：**在类外可访问私有变量，在原 Fraction 类 private 中加入
+**友元函数**：在类外可访问私有变量，在原 Fraction 类 private 中加入
 
 ```cpp
 friend operator<<(ostream& os, const Fraction& f);
@@ -598,7 +598,7 @@ vector<int> operator+(const vector<int>& vec, int elem) {
 }
 
 // 当 vec 析构函数尝试释放内存，底层数组被释放一次
-// 问题**：copy 的析构函数被调用时，会导致2次释放数组**
+// 问题：copy 的析构函数被调用时，会导致2次释放数组
 ```
 
 所以必须**自己实现拷贝构造函数**
