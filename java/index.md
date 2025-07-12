@@ -26,6 +26,10 @@ public class Xxxx {
 
 `shift + shift`：查找
 
+`command + p`： 提示
+
+`comand + o`：实现方法
+
 结构：**项目 - 模块 - 包 - 类**
 
 ## 基本语法
