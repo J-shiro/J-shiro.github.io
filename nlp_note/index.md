@@ -66,7 +66,7 @@
 
 **构建语言模型**
 
-目标：学习一个序列中下一个词的**条件概率**：$P(x^{\<t>}|x^{\<1>}, x^{\<2>},\cdots, x^{<t-1>})$
+目标：学习一个序列中下一个词的**条件概率**：$P(x^{\<t>}|x^{\<1>}, x^{\<2>},\cdots, x^{\<t-1>})$
 
 **数据处理**
 
@@ -199,8 +199,8 @@ $p(t|c)=\frac{e^{\theta_t^Te_c}}{\sum_{j=1}^{10000}e^{\theta_j^Te_c}}$
 
 - （Sequence-to-sequence），机器翻译+语音识别
 - 结构由两个 RNN（或LSTM/GRU）组成：
-  - 编码器 Encoder：将输入句子编码成上下文向量
-  - 解码器 Decoder：逐步生成输出序列
+  - 编码器 Encoder：将输入自然语言序列句子通过隐藏层编码成上下文向量（矩阵）
+  - 解码器 Decoder：通过隐藏层输出解码，逐步生成输出序列
 - 先将语言经过编码器，然后经过解码器进行翻译，计算$P(y^{<1>}|x)$
 
 <img src="/img/nlp_note.zh-cn.assets/172845431716990.png" alt="图片无法加载" />
@@ -223,9 +223,30 @@ $p(t|c)=\frac{e^{\theta_t^Te_c}}{\sum_{j=1}^{10000}e^{\theta_j^Te_c}}$
 
 #### 注意力模型
 
+三个核心变量：查询值Query，键值Key，真值Value
+
+
+
 （attention model），会生成多个注意力权重参数$\alpha$总和为1，将在某个词放入多少注意力，$\alpha^{<t, t'>}$ 表示生成 t 时需要对 t' 花费的注意力是多少  
 
 <img src="/img/nlp_note.zh-cn.assets/172845431716992.png" alt="图片无法加载" />
+
+```json
+{
+	"apple":10, // v or w = [0.5, -0.2, 0.3] 词向量
+	"banana":5,
+	"chair":2
+}
+```
+
+- 每个词具有词向量，表征语义，可用点积衡量相似性：$v\cdot w=\sum_iv_iw_i$
+  - 越大语义越相似，0则表示不相关，负值表示语义相反
+
+- 查询Query为"fruit"，对应词向量为q，将 q 与所有 key 的词向量点积获得**相似度分数向量**：$x=qK^T$，可计算出 Query 与每个键的相似度，结果仍为一列：[xx, xx, xx]
+- Softmax归一化：$softmax(x)=\frac{e^{x_i}}{\sum_je^{x_j}}$，输出为概率分布，和为1，将相似度转换为了注意力权重
+- 将注意力分数和值向量对应乘积，获得一列：$attention(Q,K,V)=softmax(QK^T)V$
+  - 此处Q为矩阵，即多个查询的Query
+- **注意力机制**：放缩Q和K维度，$attention(Q,K,V)=softmax(\frac{QK^T}{\sqrt{d_k}})V$，输出注意力矩阵
 
 ### Transformer
 
@@ -233,7 +254,7 @@ $p(t|c)=\frac{e^{\theta_t^Te_c}}{\sum_{j=1}^{10000}e^{\theta_j^Te_c}}$
 
 **自注意力机制：并行计算**
 
-为每个单词计算出一个基于注意力的表达：$A(q,K,V)$，即$A^{<1>},A^{<2>},\cdot$
+计算本身序列中每个元素对其他元素的注意力分布，为每个单词计算出一个基于注意力的表达：$A(q,K,V)$，即$A^{<1>},A^{<2>},\cdots$
 
 <img src="/img/nlp_note.zh-cn.assets/172845431716993.png" alt="图片无法加载" />
 
@@ -245,6 +266,10 @@ $p(t|c)=\frac{e^{\theta_t^Te_c}}{\sum_{j=1}^{10000}e^{\theta_j^Te_c}}$
 
 <img src="/img/nlp_note.zh-cn.assets/172845431716994.png" alt="图片无法加载" />
 
+**掩码自注意力机制**：忽略一些被屏蔽的token，使得模型只使用历史信息而无法看到未来信息
+
+- 可以达到并行预测效果
+
 **多头注意力机制：循环并行计算自注意力**
 
 通过不同矩阵参数集进行重复多次的自注意力计算，用于回答不同问题：when,where,who,how...
@@ -252,4 +277,6 @@ $p(t|c)=\frac{e^{\theta_t^Te_c}}{\sum_{j=1}^{10000}e^{\theta_j^Te_c}}$
 **transformer架构**
 
 <img src="/img/nlp_note.zh-cn.assets/172845431716995.png" alt="图片无法加载" />
+
+- 每个 Encoder/Decoder 由 6 个 Encoder/Decoder Layer 组成
 

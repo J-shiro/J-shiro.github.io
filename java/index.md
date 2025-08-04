@@ -98,6 +98,20 @@ String[][] s = {
 };
 ```
 
+### 队列
+
+**双端队列**
+
+**ArrayDeque明确规定无法添加null元素，其通过null来表示队列空状态，尝试使用LinkedList**
+
+```java
+Deque<x> stack = new ArrayDeque<x>(); // 双端队列，可用作为栈
+stack.push(xx); // 不可以插入 NULL
+stack.pop();
+```
+
+
+
 ### 字符串
 
 - String，对象类型
@@ -245,7 +259,15 @@ list.set(index, "xxx"); // 修改
 list.subList(start_index, end_index); // 截取
 ```
 
-**LinkedList** ：双向链表，有前后结点地址，有头节点和尾节点，查询慢，增删相对快，可实现对列和栈
+**LinkedList** ：双向链表，有前后结点地址，有头节点和尾节点，查询慢，增删相对快，可实现队列和栈
+
+```java
+// 实现了Deque: Queue<> ← Deque<> ← LinkedList<>
+Queue<xx> queue = new LinkedList<xx>();
+offer(),add(); // 入队
+remove(), poll(); // 出队
+element(), peek(); // 查看队头元素
+```
 
 ```java
 addFirst() // 列表开头插入指定元素
