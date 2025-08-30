@@ -244,6 +244,13 @@ zip由三部分组成：压缩源文件数据区+压缩源文件目录区+压缩
 
 `50 4B`后一段距离会出现`09 00 08 00`，压缩源文件目录区中`09 00`影响加密属性，数字为奇数时为加密，为偶数时不加密
 
+**zip明文攻击**
+
+- 利用压缩包 a 中部分文件内容 f1 已知，对 f1 压缩成压缩包 b
+
+- 且两个压缩包的压缩方法/级别和加密算法必须完全一致
+- 使用 `ARCHPR` 对 a 和 b 进行明文攻击可破解出加密密钥
+
 ### NTFS
 
 **NTFS 交换数据流隐写**
@@ -285,8 +292,6 @@ HTTP：`右键` > `追踪流` > `HTTP Stream` 可以看到完整请求内容
 
 - 设置 `TLS debug file`为`debug.log`
 - 设置`(Pre)-Master-Secret log filenmae`为`keylog.log`
-
-
 
 ### USB
 
@@ -487,6 +492,8 @@ pic.show()
 pic.save("flag.png")
 ```
 
+
+
 ## 文本隐写
 
 **txt零宽度隐写**
@@ -627,3 +634,46 @@ print(text)
 > - 寻找平替在线网站
 > - https://zh.wikipedia.org/wiki/Unicode%E5%AD%97%E7%AC%A6%E5%88%97%E8%A1%A8
 > - https://symbl.cc/cn/
+
+### CNN
+
+**逆向模型**
+
+```python
+import torch
+import torch.nn as nn
+
+class XCNN(nn.Module):
+  pass
+
+model = torch.load("./xx.pt", weights_only=False)
+print(model) # 获取模型详细信息, 具体层参数
+```
+
+函数
+
+```python
+# 二维卷积 输入灰度图通道数 1, 输出 32, 卷积核 3*3
+nn.Conv2d(1, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+# 最大池化层 窗口 2*2 步幅 2: 空间宽高各减半
+nn.MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+# 全连接层 特征数 128 输出 10类
+nn.Linear(in_features=128, out_features=10, bias=True)
+# 激活函数
+torch.relu() 
+```
+
+**预测**
+
+```python
+model.eval()
+img = Image.open(f"xxx.bmp")
+# (H, W) -> (1, H, W) -> (1, 1, H, W) nn.Conv2d 要求输入的形状
+data = torch.tensor(np.array(img), dtype=torch.float32).unsqueeze(0).unsqueeze(0)
+output = model(data) # 经过 model 中的 forward 前向传播，得到 logits 张量(1,10)
+output.argmax(dim=1).item() # 返回 [0..9] 范围内的类别索引
+```
+
+
+
+

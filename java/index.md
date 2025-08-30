@@ -153,7 +153,9 @@ sb.append("xx").append('a'); // 支持链式编程
 String s = sb.toString();
 ```
 
+字母转数字：`ch - 'a'`
 
+字符串转换为字符数组：`"java".toCharArray()`
 
 ### 集合
 
@@ -346,7 +348,8 @@ implements Comparable<Classname> {
 List<String> list = new ArrayList<>();
 Collections.addAll(list, "xx", "bb"); // 可变参数
 Collections.shuffle(list); // 打乱顺序
-Collections.sort(List<T> list, Comparator<? super T> c) // 排序
+Collections.sort(List<T> list, Comparator<? super T> c); // 排序
+Collections.swap(list, i, j); // 交换 i 和 j 位置
 ```
 
 #### Map

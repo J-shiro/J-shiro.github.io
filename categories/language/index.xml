@@ -51,4 +51,4 @@
 </span></span><span class="line"><span class="cl"><span class="n">pip</span> <span class="n">uninstall</span> <span class="n">xxx</span> <span class="c1"># 卸载xxx模块</span>
 </span></span><span class="line"><span class="cl"><span class="n">pip</span> <span class="n">install</span> <span class="n">xxx</span><span class="o">.</span><span class="n">whl</span> <span class="c1"># 使用whl文件直接安装xxx</span></span></span></code></pre></div></div>
 <h2 id="基本操作">基本操作</h2>
-<p><strong>查看版本</strong></p>]]></description></item></channel></rss>
+<p><strong>运行</strong></p>]]></description></item></channel></rss>

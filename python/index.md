@@ -22,6 +22,13 @@ pip install xxx.whl # 使用whl文件直接安装xxx
 
 ## 基本操作
 
+**运行**
+
+```bash
+# 在主项目中运行, python文件中import需要使用绝对路径导入包
+python -m dir1.dir2.xxx
+```
+
 **查看版本**
 
 ```python
