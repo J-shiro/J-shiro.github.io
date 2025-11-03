@@ -2799,7 +2799,7 @@ _IO_FILE *stdin = (FILE *) &_IO_2_1_stdin_;
 _IO_FILE *stdout = (FILE *) &_IO_2_1_stdout_;
 _IO_FILE *stderr = (FILE *) &_IO_2_1_stderr_;
 ```
-<img src="img/source_analyze.zh-cn.assets/image-20241206005717674.png" alt="图片无法加载" />
+<img src="/img/source_analyze.zh-cn.assets/image-20241206005717674.png" alt="图片无法加载" />
 
 #### DEF_STDFILE
 
