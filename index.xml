@@ -1,4 +1,22 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>J-shiro's Blog</title><link>https://j-shiro.github.io/</link><description>Hugo theme - LoveIt</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sat, 05 Jul 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://j-shiro.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>CS106L</title><link>https://j-shiro.github.io/cs106l/</link><pubDate>Sat, 05 Jul 2025 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/cs106l/</guid><description><![CDATA[<p><strong>CS106L 2019 FALL</strong></p>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>J-shiro's Blog</title><link>https://j-shiro.github.io/</link><description>Hugo theme - LoveIt</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Tue, 06 Jan 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://j-shiro.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>GPT-2复现学习</title><link>https://j-shiro.github.io/gpt2_reproduction/</link><pubDate>Tue, 06 Jan 2026 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/gpt2_reproduction/</guid><description><![CDATA[<p><strong>GPT-2复现学习</strong></p>
+<ul>
+<li>from Andrej Karpathy</li>
+<li>包含神经网络、反向传播、语言模型、多层感知机、分词器、复现 GPT-2</li>
+</ul>
+<h2 id="neural-networks-and-backpropagation">neural networks and backpropagation</h2>
+<h3 id="micrograd">micrograd</h3>
+<ul>
+<li>优先使用  micrograd 理解，理解导数</li>
+<li>导数：<code>(f(x+h) - f(x)) / h</code></li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-python">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="复制到剪贴板"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 定义对象的官方字符串表示 Test(test=xxx, is_true=&#39;true&#39;)</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></span></span></code></pre></div></div>
+<p><strong>节点数据结构</strong></p>]]></description></item><item><title>CS106L</title><link>https://j-shiro.github.io/cs106l/</link><pubDate>Sat, 05 Jul 2025 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/cs106l/</guid><description><![CDATA[<p><strong>CS106L 2019 FALL</strong></p>
 <h2 id="stream">Stream</h2>
 <p><a href="https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines" target="_blank" rel="noopener noreffer ">C++ core guidelines</a></p>
 <p><code>istringstream</code>, <code>ostringstream</code></p>
@@ -165,15 +183,4 @@
 <p><strong>奖励函数</strong></p>
 <ul>
 <li>
-<p>Reward Function，衡量智能体某个状态 s 下采取动作 a 后获得的即时反馈</p>]]></description></item><item><title>深度学习</title><link>https://j-shiro.github.io/deep_learning_note/</link><pubDate>Sat, 12 Oct 2024 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/deep_learning_note/</guid><description><![CDATA[<h2 id="神经网络">神经网络</h2>
-<p><strong>整体框架</strong></p>
-
-<p><strong>特点</strong></p>
-<ul>
-<li>堆叠：$f=W_3max(0,W_2max(0,W_1x))$，参数极多</li>
-<li>神经元个数影响：神经元多，分类效果好</li>
-<li>参数个数影响：参数多，拟合高</li>
-<li>极大神经网络在适当正则化下不损害性能，拥有低偏差：惩罚力度小，拟合高；惩罚力度大，平稳</li>
-<li>停滞区（plateaus）使学习过程慢</li>
-</ul>
-<p><strong>参数随机初始化</strong></p>]]></description></item></channel></rss>
+<p>Reward Function，衡量智能体某个状态 s 下采取动作 a 后获得的即时反馈</p>]]></description></item></channel></rss>

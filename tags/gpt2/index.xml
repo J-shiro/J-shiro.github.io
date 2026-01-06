@@ -1,0 +1,19 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Gpt2 - 标签 - J-shiro's Blog</title><link>https://j-shiro.github.io/tags/gpt2/</link><description>Gpt2 - 标签 - J-shiro's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Tue, 06 Jan 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://j-shiro.github.io/tags/gpt2/" rel="self" type="application/rss+xml"/><item><title>GPT-2复现学习</title><link>https://j-shiro.github.io/gpt2_reproduction/</link><pubDate>Tue, 06 Jan 2026 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/gpt2_reproduction/</guid><description><![CDATA[<p><strong>GPT-2复现学习</strong></p>
+<ul>
+<li>from Andrej Karpathy</li>
+<li>包含神经网络、反向传播、语言模型、多层感知机、分词器、复现 GPT-2</li>
+</ul>
+<h2 id="neural-networks-and-backpropagation">neural networks and backpropagation</h2>
+<h3 id="micrograd">micrograd</h3>
+<ul>
+<li>优先使用  micrograd 理解，理解导数</li>
+<li>导数：<code>(f(x+h) - f(x)) / h</code></li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-python">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="复制到剪贴板"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 定义对象的官方字符串表示 Test(test=xxx, is_true=&#39;true&#39;)</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></span></span></code></pre></div></div>
+<p><strong>节点数据结构</strong></p>]]></description></item></channel></rss>
