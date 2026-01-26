@@ -1,0 +1,15 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>BERT - 标签 - J-shiro's Blog</title><link>https://j-shiro.github.io/tags/bert/</link><description>BERT - 标签 - J-shiro's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Mon, 26 Jan 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://j-shiro.github.io/tags/bert/" rel="self" type="application/rss+xml"/><item><title>BERT复现学习</title><link>https://j-shiro.github.io/bert_reproduction/</link><pubDate>Mon, 26 Jan 2026 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/bert_reproduction/</guid><description><![CDATA[<p><strong>BERT复现学习</strong></p>
+<ul>
+<li>2018 年《BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding》</li>
+</ul>
+<p>参考博客：</p>
+<ul>
+<li><a href="https://www.cnblogs.com/nickchen121/p/15114385.html" target="_blank" rel="noopener noreffer ">https://www.cnblogs.com/nickchen121/p/15114385.html</a></li>
+<li><a href="https://adaning.github.io/posts/52648.html" target="_blank" rel="noopener noreffer ">https://adaning.github.io/posts/52648.html</a></li>
+<li><a href="https://wdndev.github.io/paper_reading/1.5.ELMo/index.html" target="_blank" rel="noopener noreffer ">https://wdndev.github.io/paper_reading/1.5.ELMo/index.html</a></li>
+<li><a href="https://blog.csdn.net/kyle1314608/article/details/100595077" target="_blank" rel="noopener noreffer ">https://blog.csdn.net/kyle1314608/article/details/100595077</a></li>
+<li><a href="https://github.com/codertimo/BERT-pytorch/tree/master" target="_blank" rel="noopener noreffer ">https://github.com/codertimo/BERT-pytorch/tree/master</a></li>
+</ul>
+<h2 id="前置研究">前置研究</h2>
+<h3 id="图像领域预训练">图像领域预训练</h3>
+<p>CNN 可以对图片进行特征提取，一张图片放入到 CNN 中，由浅层到深层会分别提取出不同的特征，从“横竖撇捺”到“人脸”，</p>]]></description></item></channel></rss>

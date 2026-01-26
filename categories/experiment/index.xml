@@ -1,0 +1,46 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Experiment - 分类 - J-shiro's Blog</title><link>https://j-shiro.github.io/categories/experiment/</link><description>Experiment - 分类 - J-shiro's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Mon, 26 Jan 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://j-shiro.github.io/categories/experiment/" rel="self" type="application/rss+xml"/><item><title>BERT复现学习</title><link>https://j-shiro.github.io/bert_reproduction/</link><pubDate>Mon, 26 Jan 2026 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/bert_reproduction/</guid><description><![CDATA[<p><strong>BERT复现学习</strong></p>
+<ul>
+<li>2018 年《BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding》</li>
+</ul>
+<p>参考博客：</p>
+<ul>
+<li><a href="https://www.cnblogs.com/nickchen121/p/15114385.html" target="_blank" rel="noopener noreffer ">https://www.cnblogs.com/nickchen121/p/15114385.html</a></li>
+<li><a href="https://adaning.github.io/posts/52648.html" target="_blank" rel="noopener noreffer ">https://adaning.github.io/posts/52648.html</a></li>
+<li><a href="https://wdndev.github.io/paper_reading/1.5.ELMo/index.html" target="_blank" rel="noopener noreffer ">https://wdndev.github.io/paper_reading/1.5.ELMo/index.html</a></li>
+<li><a href="https://blog.csdn.net/kyle1314608/article/details/100595077" target="_blank" rel="noopener noreffer ">https://blog.csdn.net/kyle1314608/article/details/100595077</a></li>
+<li><a href="https://github.com/codertimo/BERT-pytorch/tree/master" target="_blank" rel="noopener noreffer ">https://github.com/codertimo/BERT-pytorch/tree/master</a></li>
+</ul>
+<h2 id="前置研究">前置研究</h2>
+<h3 id="图像领域预训练">图像领域预训练</h3>
+<p>CNN 可以对图片进行特征提取，一张图片放入到 CNN 中，由浅层到深层会分别提取出不同的特征，从“横竖撇捺”到“人脸”，</p>]]></description></item><item><title>Transformer复现学习</title><link>https://j-shiro.github.io/transformer_reproduction/</link><pubDate>Mon, 26 Jan 2026 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/transformer_reproduction/</guid><description><![CDATA[<p><strong>Transformer复现学习</strong></p>
+<ul>
+<li>2017 年 《Attention is All You Need》</li>
+<li>参考博客学习
+<ul>
+<li><a href="https://www.cnblogs.com/skeinz/articles/19429739" target="_blank" rel="noopener noreffer ">https://www.cnblogs.com/skeinz/articles/19429739</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/12630741971" target="_blank" rel="noopener noreffer ">https://zhuanlan.zhihu.com/p/12630741971</a></li>
+<li><a href="https://blog.xlonglong.cn/encoder-decoder/" target="_blank" rel="noopener noreffer ">https://blog.xlonglong.cn/encoder-decoder/</a></li>
+<li><a href="https://www.zhihu.com/tardis/zm/art/600773858" target="_blank" rel="noopener noreffer ">https://www.zhihu.com/tardis/zm/art/600773858</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="词嵌入">词嵌入</h2>
+<p>词元 token 转换为计算机能理解的词嵌入 word embedding，即 token 映射到词向量空间中</p>]]></description></item><item><title>GPT-2复现学习</title><link>https://j-shiro.github.io/gpt2_reproduction/</link><pubDate>Tue, 06 Jan 2026 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/gpt2_reproduction/</guid><description><![CDATA[<p><strong>GPT-2复现学习</strong></p>
+<ul>
+<li>from Andrej Karpathy</li>
+<li>包含神经网络、反向传播、语言模型、多层感知机、分词器、复现 GPT-2</li>
+</ul>
+<h2 id="neural-networks-and-backpropagation">neural networks and backpropagation</h2>
+<h3 id="micrograd">micrograd</h3>
+<ul>
+<li>优先使用  micrograd 理解，理解导数</li>
+<li>导数：<code>(f(x+h) - f(x)) / h</code></li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-python">
+        <span class="code-title"><i class="arrow fas fa-angle-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="复制到剪贴板"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 定义对象的官方字符串表示 Test(test=xxx, is_true=&#39;true&#39;)</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></span></span></code></pre></div></div>
+<p><strong>节点数据结构</strong></p>]]></description></item></channel></rss>

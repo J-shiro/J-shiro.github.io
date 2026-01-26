@@ -1,0 +1,14 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Transformer - 标签 - J-shiro's Blog</title><link>https://j-shiro.github.io/tags/transformer/</link><description>Transformer - 标签 - J-shiro's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Mon, 26 Jan 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://j-shiro.github.io/tags/transformer/" rel="self" type="application/rss+xml"/><item><title>Transformer复现学习</title><link>https://j-shiro.github.io/transformer_reproduction/</link><pubDate>Mon, 26 Jan 2026 00:00:00 +0000</pubDate><author>jshiro</author><guid>https://j-shiro.github.io/transformer_reproduction/</guid><description><![CDATA[<p><strong>Transformer复现学习</strong></p>
+<ul>
+<li>2017 年 《Attention is All You Need》</li>
+<li>参考博客学习
+<ul>
+<li><a href="https://www.cnblogs.com/skeinz/articles/19429739" target="_blank" rel="noopener noreffer ">https://www.cnblogs.com/skeinz/articles/19429739</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/12630741971" target="_blank" rel="noopener noreffer ">https://zhuanlan.zhihu.com/p/12630741971</a></li>
+<li><a href="https://blog.xlonglong.cn/encoder-decoder/" target="_blank" rel="noopener noreffer ">https://blog.xlonglong.cn/encoder-decoder/</a></li>
+<li><a href="https://www.zhihu.com/tardis/zm/art/600773858" target="_blank" rel="noopener noreffer ">https://www.zhihu.com/tardis/zm/art/600773858</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="词嵌入">词嵌入</h2>
+<p>词元 token 转换为计算机能理解的词嵌入 word embedding，即 token 映射到词向量空间中</p>]]></description></item></channel></rss>
